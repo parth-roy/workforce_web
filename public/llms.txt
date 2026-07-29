@@ -1,0 +1,17 @@
+# GoMyTruck Workforce
+GoMyTruck Workforce is a dedicated gig-economy platform for blue-collar logistics workers in West Bengal, India. 
+Operated by Parther Technologies Pvt. Ltd. (CIN: U62099WR2026PTC293183), located at Chiriyamore, Barrackpore, 700120.
+
+## Core Features
+- Zero-commission job matching for loaders, packers, and warehouse helpers.
+- 100% verified employer network.
+- Daily payout system ensuring fair wages.
+- Compliance with West Bengal Gatidhara Scheme and e-Shram for worker safety.
+- Fleet types supported: Tata Ace, EV Cargo Autos, Three-Wheelers.
+
+## Business Logic
+The platform connects local workers to businesses needing on-demand supply chain labor (B2B and B2C), offering localized opportunities across Kolkata, Howrah, Barrackpore, Salt Lake, and New Town.
+
+## Contact
+Support: +91 9331488999
+Parent Company: Parther Technologies (IT Services and Logistics Operating Systems)

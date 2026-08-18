@@ -97,7 +97,7 @@ export default function Header() {
 
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group flex items-center gap-2">
-              <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 object-contain rounded-[10px]" />
+              <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 object-contain" />
               <span className={`font-black text-2xl tracking-tight leading-none mt-1 ${isTransparent ? 'text-white' : 'text-slate-900'}`}>
                 Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
               </span>
@@ -170,7 +170,7 @@ export default function Header() {
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain rounded-lg" />
+                <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain" />
                 <span className="font-black text-xl text-slate-900 mt-1">
                   Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
                 </span>

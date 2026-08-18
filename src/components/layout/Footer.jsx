@@ -49,7 +49,7 @@ export default function Footer() {
           {/* Col 1: Company */}
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
-              <img src="/logo.png" alt="Metro Mitra Logo" loading="lazy" className="h-10 w-10 object-contain rounded-[10px]" />
+              <img src="/logo.png" alt="Metro Mitra Logo" loading="lazy" className="h-10 w-10 object-contain" />
               <span className="font-black text-2xl text-white leading-none mt-1">
                 Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
               </span>

@@ -99,7 +99,7 @@ export default function Header() {
             <Link to="/" className="flex-shrink-0 group flex items-center gap-2">
               <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 object-contain rounded-[10px]" />
               <span className={`font-black text-2xl tracking-tight leading-none mt-1 ${isTransparent ? 'text-white' : 'text-slate-900'}`}>
-                Metro Mitra
+                Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
               </span>
             </Link>
 
@@ -172,7 +172,7 @@ export default function Header() {
               <div className="flex items-center gap-2">
                 <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain rounded-lg" />
                 <span className="font-black text-xl text-slate-900 mt-1">
-                  Metro Mitra
+                  Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
                 </span>
               </div>
               <button onClick={() => setMobileOpen(false)} className="p-1 rounded-lg hover:bg-slate-100">

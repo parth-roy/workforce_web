@@ -7,7 +7,7 @@ export default function SEO({
   schema,
   schemas = [],
   canonical,
-  ogImage = 'https://workforce.gomytruck.com/og-default.jpg',
+  ogImage = 'https://metromitra.com/og-default.jpg',
   breadcrumbs = [],
 }) {
   const allSchemas = []
@@ -23,7 +23,7 @@ export default function SEO({
         '@type': 'ListItem',
         position: i + 1,
         name: b.label,
-        item: `https://workforce.gomytruck.com${b.href}`,
+        item: `https://metromitra.com${b.href}`,
       })),
     })
   }
@@ -40,7 +40,7 @@ export default function SEO({
       <meta property="og:type" content="website" />
       {canonical && <meta property="og:url" content={canonical} />}
       <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="GoMyTruck Workforce" />
+      <meta property="og:site_name" content="Metro Mitra" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />

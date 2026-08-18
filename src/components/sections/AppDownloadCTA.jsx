@@ -3,7 +3,7 @@ import { Download, QrCode } from 'lucide-react'
 
 export default function AppDownloadCTA({
   heading = 'Start Earning Today — Download the App',
-  subheading = 'Join 28,000+ verified workers across West Bengal. Daily pay. Zero commission.',
+  subheading = 'Join 28,000+ verified workers across West Bengal. Daily pay. 0 - 5% lowest commission.',
 }) {
   return (
     <section className="bg-cta-green">
@@ -21,7 +21,7 @@ export default function AppDownloadCTA({
             <div className="flex flex-wrap gap-4">
               {/* Google Play */}
               <a
-                href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce&pcampaignid=web_share"
+                href="https://play.google.com/store/apps/details?id=com.metromitra.workforce&pcampaignid=web_share"
                 className="flex items-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-xl transition-colors"
                 aria-label="Download on Google Play"
               >
@@ -38,7 +38,7 @@ export default function AppDownloadCTA({
           <div className="flex justify-center md:justify-end">
             <img 
               src="/workforce-app.webp" 
-              alt="Scan to Download GoMyTruck App" 
+              alt="Scan to Download Metro Mitra App" 
               className="w-full max-w-[280px] drop-shadow-2xl hover:scale-105 transition-transform duration-300"
             />
           </div>

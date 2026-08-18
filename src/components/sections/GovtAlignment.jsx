@@ -6,14 +6,14 @@ const govPrograms = [
   {
     emoji: '🏛️',
     title: 'e-Shram Integration',
-    description: 'All workers registered on GoMyTruck can link their e-Shram UAN directly in-app, unlocking government social security benefits, accident insurance, and portable work history.',
+    description: 'All workers registered on Metro Mitra can link their e-Shram UAN directly in-app, unlocking government social security benefits, accident insurance, and portable work history.',
     link: 'https://eshram.gov.in',
     cta: 'Learn about e-Shram',
   },
   {
     emoji: '🤝',
     title: 'Gatidhara Scheme Partner',
-    description: 'GoMyTruck is aligned with West Bengal\'s Gatidhara Transport Scheme. Fleet owners and drivers in our network are eligible for subsidised vehicle financing and upskilling credits.',
+    description: 'Metro Mitra is aligned with West Bengal\'s Gatidhara Transport Scheme. Fleet owners and drivers in our network are eligible for subsidised vehicle financing and upskilling credits.',
     link: '#',
     cta: 'WB Transport Scheme',
   },
@@ -39,7 +39,7 @@ export default function GovtAlignment() {
             Backed by Government Digital Infrastructure
           </h2>
           <p className="text-blue-200 text-lg max-w-2xl mx-auto">
-            GoMyTruck is not just a platform — it's part of West Bengal's mission to formalize the gig economy and protect its 23.5 million gig workers.
+            Metro Mitra is not just a platform — it's part of West Bengal's mission to formalize the gig economy and protect its 23.5 million gig workers.
           </p>
         </div>
 

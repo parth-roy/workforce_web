@@ -36,7 +36,7 @@ export default function Layout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <span className="font-black text-2xl text-white">GoMyTruck</span>
+              <span className="font-black text-2xl text-white">Metro Mitra</span>
               <p className="mt-2 text-sm max-w-sm">Parther Technologies Pvt. Ltd.<br/>Barrackpore, West Bengal<br/>CIN: U60232WB2022PTC255655</p>
             </div>
             <div className="md:text-right">

@@ -49,10 +49,9 @@ export default function Footer() {
           {/* Col 1: Company */}
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
-              <img src="/logo.png" alt="GoMyTruck Logo" loading="lazy" className="h-10 w-10 object-contain rounded-[10px]" />
+              <img src="/logo.png" alt="Metro Mitra Logo" loading="lazy" className="h-10 w-10 object-contain rounded-[10px]" />
               <span className="font-black text-2xl text-white leading-none mt-1">
-                Go<span className="text-orange-500">My</span>Truck
-                <span className="text-slate-400 font-bold text-sm ml-1.5">Workforce</span>
+                Metro Mitra
               </span>
             </Link>
             <p className="text-sm leading-relaxed mb-4">
@@ -72,11 +71,11 @@ export default function Footer() {
                 <Mail size={14} />
                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-700 text-xs text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">Email Us</span>
               </a>
-              <a href="https://wa.me/919331488999?text=Hello%20GoMyTruck%20Workforce%20Team!%20I%20am%20interested%20in%20joining.%0A%0AName%3A%20-%0APhone%20Number%3A%20-" aria-label="WhatsApp" className="relative group w-8 h-8 rounded-full bg-slate-800 hover:bg-action-green-700 flex items-center justify-center transition-colors">
+              <a href="https://wa.me/919331488999?text=Hello%20Metro Mitra%20Workforce%20Team!%20I%20am%20interested%20in%20joining.%0A%0AName%3A%20-%0APhone%20Number%3A%20-" aria-label="WhatsApp" className="relative group w-8 h-8 rounded-full bg-slate-800 hover:bg-action-green-700 flex items-center justify-center transition-colors">
                 <MessageCircle size={14} />
                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-700 text-xs text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">WhatsApp</span>
               </a>
-              <a href="https://www.linkedin.com/company/gomytruck/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="relative group w-8 h-8 rounded-full bg-slate-800 hover:bg-trust-blue-700 flex items-center justify-center transition-colors">
+              <a href="https://www.linkedin.com/company/metromitra/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="relative group w-8 h-8 rounded-full bg-slate-800 hover:bg-trust-blue-700 flex items-center justify-center transition-colors">
                 <LinkedinIcon size={14} />
                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-700 text-xs text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">LinkedIn</span>
               </a>
@@ -94,10 +93,10 @@ export default function Footer() {
               ))}
             </ul>
             <div className="mt-6">
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+              <a href="https://play.google.com/store/apps/details?id=com.metromitra.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
                 <img 
                   src="/workforce-app.webp" 
-                  alt="Scan to Download GoMyTruck App" 
+                  alt="Scan to Download Metro Mitra App" 
                   className="w-48 h-auto rounded-xl drop-shadow-lg hover:scale-105 transition-transform duration-300"
                 />
               </a>

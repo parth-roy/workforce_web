@@ -81,7 +81,7 @@ function WorkerHero({ h1, subtitle, badge, cta, stats, heroImage }) {
 
             {/* Trust pills */}
             <div className="flex flex-wrap gap-2 mt-6">
-              {['e-Shram Registered', 'Daily UPI Payouts', 'Zero Commission'].map(t => (
+              {['e-Shram Registered', 'Daily UPI Payouts', '0 - 5% Lowest Commission'].map(t => (
                 <span key={t} className="inline-flex items-center gap-1 text-xs text-blue-200 bg-white/10 rounded-full px-3 py-1">
                   <CheckCircle2 size={11} className="text-action-green-400" />
                   {t}

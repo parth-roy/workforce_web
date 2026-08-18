@@ -7,7 +7,7 @@ const badges = [
   { icon: ShieldCheck,label:'Code on Social Security 2020',       color: 'text-trust-blue-600',   bg: 'bg-trust-blue-50'  },
   { icon: Heart,     label: 'Accident Insurance Covered',         color: 'text-red-500',           bg: 'bg-red-50'         },
   { icon: Handshake, label: 'WB Gatidhara Scheme Partner',        color: 'text-amber-600',         bg: 'bg-amber-50'       },
-  { icon: BadgeCheck,label: 'Zero Commission Deductions',         color: 'text-action-green-600', bg: 'bg-action-green-50'},
+  { icon: BadgeCheck,label: '0 - 5% Lowest Commission',         color: 'text-action-green-600', bg: 'bg-action-green-50'},
 ]
 
 export default function TrustSignals({ extraBadges = [], className = '' }) {

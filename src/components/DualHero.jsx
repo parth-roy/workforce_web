@@ -22,7 +22,7 @@ export default function DualHero({ title, subtitle }) {
 
           {/* Pathway B: B2B Enterprise (Green UI) */}
           <a 
-            href="https://gomytruck.com/enterprise" 
+            href="https://metromitra.com/enterprise" 
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center justify-center p-6 bg-brand-600 hover:bg-brand-500 rounded-2xl shadow-xl transition-all active:scale-95"

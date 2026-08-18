@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://workforce.gomytruck.com/sitemap.xml
+Sitemap: https://metromitra.com/sitemap.xml

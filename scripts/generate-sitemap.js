@@ -6,7 +6,7 @@ import pages from '../src/data/pages.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const BASE_URL = 'https://workforce.gomytruck.com'
+const BASE_URL = 'https://metromitra.com'
 
 function generateSitemap() {
   const currentDate = new Date().toISOString()

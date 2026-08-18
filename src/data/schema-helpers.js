@@ -1,10 +1,10 @@
-const BASE_URL = 'https://workforce.gomytruck.com'
+const BASE_URL = 'https://metromitra.com'
 
 export function createOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'GoMyTruck Workforce',
+    name: 'Metro Mitra',
     legalName: 'Parther Technologies Pvt. Ltd.',
     url: BASE_URL,
     logo: `${BASE_URL}/logo.png`,
@@ -25,8 +25,8 @@ export function createOrganizationSchema() {
       availableLanguage: ['en', 'bn', 'hi'],
     },
     sameAs: [
-      'https://linkedin.com/company/gomytruck',
-      'https://twitter.com/gomytruck',
+      'https://linkedin.com/company/metromitra',
+      'https://twitter.com/metromitra',
     ],
   }
 }
@@ -35,7 +35,7 @@ export function createWebSiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'GoMyTruck Workforce',
+    name: 'Metro Mitra',
     url: BASE_URL,
     potentialAction: {
       '@type': 'SearchAction',
@@ -80,7 +80,7 @@ export function createLocalBusinessSchema({ name, city, latitude, longitude, pat
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: name || 'GoMyTruck Workforce',
+    name: name || 'Metro Mitra',
     image: `${BASE_URL}/og-default.jpg`,
     url: `${BASE_URL}${path}`,
     telephone: '+91-9331488999',
@@ -112,7 +112,7 @@ export function createJobPostingSchema({ title, description, baseSalary, city = 
     employmentType: 'CONTRACTOR',
     hiringOrganization: {
       '@type': 'Organization',
-      name: 'GoMyTruck Workforce',
+      name: 'Metro Mitra',
       sameAs: BASE_URL,
     },
     jobLocation: {
@@ -161,7 +161,7 @@ export function createCollectionPageSchema({ name, description, path }) {
     url: `${BASE_URL}${path}`,
     publisher: {
       '@type': 'Organization',
-      name: 'GoMyTruck Workforce',
+      name: 'Metro Mitra',
       url: BASE_URL,
     },
   }

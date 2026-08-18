@@ -1,5 +1,5 @@
-# GoMyTruck Workforce
-GoMyTruck Workforce is a dedicated gig-economy platform for blue-collar logistics workers in West Bengal, India. 
+# Metro Mitra
+Metro Mitra is a dedicated gig-economy platform for blue-collar logistics workers in West Bengal, India. 
 Operated by Parther Technologies Pvt. Ltd. (CIN: U62099WR2026PTC293183), located at Chiriyamore, Barrackpore, 700120.
 
 ## Core Features

@@ -67,7 +67,7 @@ export default function IndustriesGrid() {
           <p className="section-label">Industries We Serve</p>
           <h2 className="section-title">Workforce Solutions Across Every Sector</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            From FMCG to e-commerce, GoMyTruck powers verified gig workforce across West Bengal's fastest-growing industries.
+            From FMCG to e-commerce, Metro Mitra powers verified gig workforce across West Bengal's fastest-growing industries.
           </p>
         </div>
 

@@ -16,10 +16,10 @@ export default function HomePage() {
   return (
     <>
       <SEO
-        title="GoMyTruck Workforce | West Bengal's Most Trusted Gig Platform"
+        title="Metro Mitra | West Bengal's Most Trusted Gig Platform"
         description="Connect with 28,000+ verified gig workers across West Bengal. Daily pay for workers. Rapid deployment for employers. e-Shram compliant."
         schema={createWebSiteSchema()}
-        canonical="https://workforce.gomytruck.com/"
+        canonical="https://metromitra.com/"
       />
 
       {/* Hero section */}

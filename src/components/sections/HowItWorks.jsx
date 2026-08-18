@@ -22,7 +22,7 @@ const workerSteps = [
     number: '03',
     icon: Wallet,
     title: 'Get Paid Instantly',
-    description: 'Complete your shift. Your earnings are credited to your GoMyTruck wallet within 1 hour. Withdraw to any UPI ID instantly.',
+    description: 'Complete your shift. Your earnings are credited to your Metro Mitra wallet within 1 hour. Withdraw to any UPI ID instantly.',
     color: 'text-amber-600',
     bg: 'bg-amber-50',
   },

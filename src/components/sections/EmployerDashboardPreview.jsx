@@ -47,7 +47,7 @@ export default function EmployerDashboardPreview() {
                 <div className="w-3 h-3 rounded-full bg-action-green-400" />
               </div>
               <div className="flex-1 bg-white rounded-md px-3 py-1 mx-2">
-                <p className="text-xs text-slate-400">employer.gomytruck.com/dashboard</p>
+                <p className="text-xs text-slate-400">employer.metromitra.com/dashboard</p>
               </div>
               <Monitor size={14} className="text-slate-400" />
             </div>

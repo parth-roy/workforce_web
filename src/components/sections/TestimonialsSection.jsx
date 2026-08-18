@@ -8,7 +8,7 @@ const workerTestimonials = [
     location: 'Howrah, Shibpur',
     avatar: 'RM',
     rating: 5,
-    quote: 'Aage naka pe danda karke baith ta tha. Ab phone pe job milti hai aur sham ko paisa aa jata hai. GoMyTruck ne sab change kar diya.',
+    quote: 'Aage naka pe danda karke baith ta tha. Ab phone pe job milti hai aur sham ko paisa aa jata hai. Metro Mitra ne sab change kar diya.',
   },
   {
     name: 'Bimal Das',
@@ -16,7 +16,7 @@ const workerTestimonials = [
     location: 'Taratala Industrial Area',
     avatar: 'BD',
     rating: 5,
-    quote: 'মাসে মাসে মাইনে পেতাম। এখন প্রতিদিন টাকা পাচ্ছি। তিন মাসে নিজের ঘর বানালাম। সবাইকে বলছি GoMyTruck use করো।',
+    quote: 'মাসে মাসে মাইনে পেতাম। এখন প্রতিদিন টাকা পাচ্ছি। তিন মাসে নিজের ঘর বানালাম। সবাইকে বলছি Metro Mitra use করো।',
   },
   {
     name: 'Santosh Kumar',
@@ -35,7 +35,7 @@ const employerTestimonials = [
     company: 'Dankuni Logistics Pvt. Ltd.',
     avatar: 'PA',
     rating: 5,
-    quote: 'We needed 30 loading workers for a festive season rush with 48 hours notice. GoMyTruck delivered 28 verified workers. The compliance dashboard saved us 3 days of HR paperwork.',
+    quote: 'We needed 30 loading workers for a festive season rush with 48 hours notice. Metro Mitra delivered 28 verified workers. The compliance dashboard saved us 3 days of HR paperwork.',
   },
   {
     name: 'Arjun Mehta',

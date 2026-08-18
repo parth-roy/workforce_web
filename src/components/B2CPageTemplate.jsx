@@ -24,7 +24,7 @@ export default function B2CPageTemplate({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-black text-slate-900">Latest Opportunities</h2>
-            <p className="mt-4 text-slate-600 text-lg">Apply directly via WhatsApp. No middlemen. No commissions.</p>
+            <p className="mt-4 text-slate-600 text-lg">Apply directly via WhatsApp. No middlemen. 0 - 5% lowest commission.</p>
           </div>
           
           {jobs.length > 0 ? (

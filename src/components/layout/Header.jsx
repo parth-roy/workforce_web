@@ -97,10 +97,9 @@ export default function Header() {
 
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group flex items-center gap-2">
-              <img src="/logo.png" alt="GoMyTruck Logo" className="h-10 w-10 object-contain rounded-[10px]" />
+              <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 object-contain rounded-[10px]" />
               <span className={`font-black text-2xl tracking-tight leading-none mt-1 ${isTransparent ? 'text-white' : 'text-slate-900'}`}>
-                Go<span className="text-orange-500">My</span>Truck
-                <span className={`font-bold text-sm ml-1.5 ${isTransparent ? 'text-slate-300' : 'text-slate-500'}`}>Workforce</span>
+                Metro Mitra
               </span>
             </Link>
 
@@ -142,7 +141,7 @@ export default function Header() {
               <Link to="/employer-hiring" className="btn-primary-blue text-sm px-4 py-2 rounded-lg shadow-none">
                 Hire Workers
               </Link>
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="btn-primary-green text-sm px-4 py-2 rounded-lg shadow-none">
+              <a href="https://play.google.com/store/apps/details?id=com.metromitra.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="btn-primary-green text-sm px-4 py-2 rounded-lg shadow-none">
                 <Download size={14} />
                 Download App
               </a>
@@ -171,9 +170,9 @@ export default function Header() {
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="GoMyTruck Logo" className="h-8 w-8 object-contain rounded-lg" />
+                <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain rounded-lg" />
                 <span className="font-black text-xl text-slate-900 mt-1">
-                  Go<span className="text-orange-500">My</span>Truck
+                  Metro Mitra
                 </span>
               </div>
               <button onClick={() => setMobileOpen(false)} className="p-1 rounded-lg hover:bg-slate-100">
@@ -222,7 +221,7 @@ export default function Header() {
               <Link to="/employer-hiring" onClick={() => setMobileOpen(false)} className="btn-primary-blue w-full justify-center">
                 Hire Workers
               </Link>
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="btn-primary-green w-full justify-center">
+              <a href="https://play.google.com/store/apps/details?id=com.metromitra.workforce&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="btn-primary-green w-full justify-center">
                 <Download size={16} />
                 Download Worker App
               </a>

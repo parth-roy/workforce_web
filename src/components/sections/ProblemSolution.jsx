@@ -14,7 +14,7 @@ export default function ProblemSolution({ rows = defaultRows }) {
     <section className="section-pad bg-white">
       <div className="container-xl">
         <div className="text-center mb-12">
-          <p className="section-label">Why GoMyTruck</p>
+          <p className="section-label">Why Metro Mitra</p>
           <h2 className="section-title">A Better Way to Work & Hire</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
             The old way was broken. We rebuilt it from the ground up — digital, transparent, and fair for everyone.
@@ -30,7 +30,7 @@ export default function ProblemSolution({ rows = defaultRows }) {
             </div>
             <div className="bg-action-green-50 rounded-2xl px-6 py-4 text-center">
               <CheckCircle2 size={20} className="text-action-green-600 mx-auto mb-1" />
-              <span className="text-sm font-bold text-action-green-700">With GoMyTruck</span>
+              <span className="text-sm font-bold text-action-green-700">With Metro Mitra</span>
             </div>
           </div>
 

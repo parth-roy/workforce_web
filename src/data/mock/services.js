@@ -1,0 +1,60 @@
+/**
+ * indexabilityStatus values:
+ *   "eligible"         — confirmed indexable
+ *   "not-yet-eligible" — architecturally valid, lacking verified evidence
+ *   "noindex"          — explicitly excluded
+ */
+export const mockServices = [
+  {
+    id: 'srv-1',
+    slug: 'warehouse-staffing',
+    name: 'Warehouse Staffing',
+    shortName: 'Warehouse',
+    description: 'Workforce support for warehouse operations including loading, unloading, picking, and packing.',
+    category: 'Logistics',
+    audiences: ['corporate', 'contractor'],
+    icon: 'warehouse',
+    image: '/images/services/warehouse.jpg',
+    roles: ['warehouse-helper', 'loader', 'picker'],
+    serviceType: 'shift',
+    availability: 'active',
+    status: 'active',
+    indexabilityStatus: 'not-yet-eligible',
+  },
+  {
+    id: 'srv-2',
+    slug: 'electrician',
+    name: 'Electrician',
+    shortName: 'Electrician',
+    description: 'Electrical repair, installation, and maintenance services for your home or business.',
+    category: 'Home Services',
+    audiences: ['individual'],
+    icon: 'bolt',
+    image: '/images/services/electrician.jpg',
+    roles: ['electrician'],
+    serviceType: 'task',
+    availability: 'active',
+    status: 'active',
+    useCases: ['Wiring Repair', 'Appliance Installation', 'Routine Maintenance'],
+    whoIsItFor: ['Home users', 'Small businesses', 'Offices'],
+    indexabilityStatus: 'not-yet-eligible',
+  },
+  {
+    id: 'srv-3',
+    slug: 'plumber',
+    name: 'Plumber',
+    shortName: 'Plumber',
+    description: 'Plumbing services for leaks, installations, and pipeline repairs.',
+    category: 'Home Services',
+    audiences: ['individual'],
+    icon: 'wrench',
+    image: '/images/services/plumber.jpg',
+    roles: ['plumber'],
+    serviceType: 'task',
+    availability: 'active',
+    status: 'coming-soon',
+    useCases: ['Leak Repair', 'Pipe Installation', 'Drain Cleaning'],
+    whoIsItFor: ['Home users', 'Retail shops'],
+    indexabilityStatus: 'not-yet-eligible',
+  },
+];

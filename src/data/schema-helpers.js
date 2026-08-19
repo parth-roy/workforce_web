@@ -1,56 +1,205 @@
-const BASE_URL = 'https://metromitra.com'
+/**
+ * src/data/schema-helpers.js
+ * ─────────────────────────────────────────────────────────────────────────────
+ * METRO MITRA — Structured Data Factory
+ * Phase F6.2 — Schema Matrix Implementation
+ *
+ * Rules:
+ * 1. Output is assembled into a single unified `@graph`.
+ * 2. All nodes must have a stable `@id` for relationships.
+ * 3. Never invent data (no fake validThrough, fake salaries, fake ratings).
+ * 4. JobPosting is strictly for real public jobs.
+ */
 
-export function createOrganizationSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Metro Mitra',
-    legalName: 'Parther Technologies Pvt. Ltd.',
-    url: BASE_URL,
-    logo: `${BASE_URL}/logo.png`,
-    foundingDate: '2022',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Barrackpore',
-      addressLocality: 'Kolkata',
-      addressRegion: 'West Bengal',
-      postalCode: '700120',
-      addressCountry: 'IN',
-    },
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '+91-9331488999',
-      contactType: 'customer service',
-      areaServed: 'IN',
-      availableLanguage: ['en', 'bn', 'hi'],
-    },
-    sameAs: [
-      'https://linkedin.com/company/metromitra',
-      'https://twitter.com/metromitra',
-    ],
-  }
+const BASE_URL = 'https://metromitra.com'
+const ORG_ID = `${BASE_URL}/#organization`
+const PARENT_ORG_ID = `${BASE_URL}/#parentOrganization`
+const WEBSITE_ID = `${BASE_URL}/#website`
+
+/**
+ * Helper to ensure a path is clean and root is just '/'
+ */
+function getCanonicalUrl(path = '') {
+  const cleanPath = path === '/' ? '' : path.replace(/\/$/, '')
+  return `${BASE_URL}${cleanPath}`
 }
 
+/**
+ * 1. Metro Mitra Organization Entity
+ */
+export function createOrganizationSchema() {
+  return [
+    {
+      '@id': PARENT_ORG_ID,
+      '@type': 'Organization',
+      name: 'Parther Technologies Pvt. Ltd.',
+      url: BASE_URL,
+    },
+    {
+      '@id': ORG_ID,
+      '@type': 'Organization',
+      name: 'Metro Mitra',
+      description: 'Gig Workforce Platform',
+      url: BASE_URL,
+      logo: `${BASE_URL}/logo.png`,
+      parentOrganization: { '@id': PARENT_ORG_ID },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+91-9331488999',
+        contactType: 'customer service',
+      },
+    }
+  ]
+}
+
+/**
+ * 2. WebSite Entity
+ */
 export function createWebSiteSchema() {
   return {
-    '@context': 'https://schema.org',
+    '@id': WEBSITE_ID,
     '@type': 'WebSite',
     name: 'Metro Mitra',
     url: BASE_URL,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/search?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
+    publisher: { '@id': ORG_ID },
   }
 }
 
-export function createFAQSchema(faqs) {
+/**
+ * 3. WebPage Entity (Default for most pages)
+ */
+export function createWebPageSchema({ title, description, path }) {
+  const canonicalUrl = getCanonicalUrl(path)
   return {
-    '@context': 'https://schema.org',
+    '@id': `${canonicalUrl}/#webpage`,
+    '@type': 'WebPage',
+    url: canonicalUrl,
+    name: title,
+    description: description,
+    isPartOf: { '@id': WEBSITE_ID },
+    about: path === '/' ? { '@id': ORG_ID } : undefined,
+  }
+}
+
+/**
+ * 4. CollectionPage Entity (For Hubs, Catalogs)
+ */
+export function createCollectionPageSchema({ title, description, path }) {
+  const canonicalUrl = getCanonicalUrl(path)
+  return {
+    '@id': `${canonicalUrl}/#webpage`,
+    '@type': 'CollectionPage',
+    url: canonicalUrl,
+    name: title,
+    description: description,
+    isPartOf: { '@id': WEBSITE_ID },
+  }
+}
+
+/**
+ * 5. BreadcrumbList Entity
+ */
+export function createBreadcrumbSchema(breadcrumbs, path) {
+  if (!breadcrumbs || breadcrumbs.length === 0) return null
+  const canonicalUrl = getCanonicalUrl(path)
+  return {
+    '@id': `${canonicalUrl}/#breadcrumb`,
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.label,
+      item: getCanonicalUrl(b.href),
+    })),
+  }
+}
+
+/**
+ * 6. Service Entity (Genuine service offerings)
+ */
+export function createServiceSchema({ name, description, path }) {
+  const canonicalUrl = getCanonicalUrl(path)
+  return {
+    '@id': `${canonicalUrl}/#service`,
+    '@type': 'Service',
+    name: name,
+    description: description,
+    provider: { '@id': ORG_ID },
+    mainEntityOfPage: { '@id': `${canonicalUrl}/#webpage` },
+  }
+}
+
+/**
+ * 7. JobPosting Entity (For REAL jobs only)
+ */
+export function createJobPostingSchema({ job, path }) {
+  if (job.isDemo) return null
+  
+  const canonicalUrl = getCanonicalUrl(path)
+  
+  const schema = {
+    '@id': `${canonicalUrl}/#jobposting`,
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description,
+    mainEntityOfPage: { '@id': `${canonicalUrl}/#webpage` },
+  }
+  
+  if (job.datePosted) {
+    schema.datePosted = job.datePosted
+  }
+  
+  // NEVER invent validThrough. The F6.2 rules are strict on this.
+  if (job.validThrough) {
+    schema.validThrough = job.validThrough
+  }
+  
+  if (job.employmentType) {
+    schema.employmentType = job.employmentType
+  }
+  
+  if (job.hiringOrganization) {
+    schema.hiringOrganization = {
+      '@type': 'Organization',
+      name: job.hiringOrganization.name,
+    }
+  } else {
+    schema.hiringOrganization = { '@id': ORG_ID }
+  }
+  
+  if (job.location) {
+    schema.jobLocation = {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: job.location.city,
+        addressRegion: job.location.state || 'West Bengal',
+        addressCountry: 'IN',
+      },
+    }
+  }
+  
+  if (job.salary) {
+    schema.baseSalary = {
+      '@type': 'MonetaryAmount',
+      currency: 'INR',
+      value: {
+        '@type': 'QuantitativeValue',
+        value: job.salary.amount,
+        unitText: job.salary.unit || 'DAY',
+      },
+    }
+  }
+  
+  return schema
+}
+
+/**
+ * 8. FAQPage Entity
+ */
+export function createFAQSchema(faqs) {
+  if (!faqs || faqs.length === 0) return null;
+  return {
     '@type': 'FAQPage',
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
@@ -60,86 +209,15 @@ export function createFAQSchema(faqs) {
         text: f.answer,
       },
     })),
-  }
+  };
 }
 
-export function createBreadcrumbSchema(breadcrumbs) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: breadcrumbs.map((b, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      name: b.label,
-      item: `${BASE_URL}${b.href}`,
-    })),
-  }
-}
-
-export function createLocalBusinessSchema({ name, city, latitude, longitude, path }) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: name || 'Metro Mitra',
-    image: `${BASE_URL}/og-default.jpg`,
-    url: `${BASE_URL}${path}`,
-    telephone: '+91-9331488999',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: city || 'Kolkata',
-      addressRegion: 'West Bengal',
-      addressCountry: 'IN',
-    },
-    geo: latitude ? {
-      '@type': 'GeoCoordinates',
-      latitude,
-      longitude,
-    } : undefined,
-    priceRange: 'Free',
-    servesCuisine: undefined,
-    areaServed: city || 'Kolkata',
-  }
-}
-
-export function createJobPostingSchema({ title, description, baseSalary, city = 'Kolkata', path }) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'JobPosting',
-    title,
-    description,
-    datePosted: new Date().toISOString().split('T')[0],
-    validThrough: new Date(Date.now() + 90 * 86400000).toISOString().split('T')[0],
-    employmentType: 'CONTRACTOR',
-    hiringOrganization: {
-      '@type': 'Organization',
-      name: 'Metro Mitra',
-      sameAs: BASE_URL,
-    },
-    jobLocation: {
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: city,
-        addressRegion: 'West Bengal',
-        addressCountry: 'IN',
-      },
-    },
-    baseSalary: baseSalary ? {
-      '@type': 'MonetaryAmount',
-      currency: 'INR',
-      value: {
-        '@type': 'QuantitativeValue',
-        value: baseSalary,
-        unitText: 'DAY',
-      },
-    } : undefined,
-    url: `${BASE_URL}${path}`,
-  }
-}
-
+/**
+ * 9. HowTo Entity
+ */
 export function createHowToSchema({ name, description, steps }) {
+  if (!steps || steps.length === 0) return null;
   return {
-    '@context': 'https://schema.org',
     '@type': 'HowTo',
     name,
     description,
@@ -149,20 +227,12 @@ export function createHowToSchema({ name, description, steps }) {
       name: s.title,
       text: s.description,
     })),
-  }
+  };
 }
 
-export function createCollectionPageSchema({ name, description, path }) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name,
-    description,
-    url: `${BASE_URL}${path}`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Metro Mitra',
-      url: BASE_URL,
-    },
-  }
+/**
+ * 10. LocalBusiness (Legacy/Restricted)
+ */
+export function createLocalBusinessSchema({ name, city, path }) {
+  return null; // Explicitly disabled per F6.2 constraints unless justified
 }

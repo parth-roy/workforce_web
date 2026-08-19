@@ -10,17 +10,13 @@ import TrustSignals from '../sections/TrustSignals'
 import GovtAlignment from '../sections/GovtAlignment'
 import AppDownloadCTA from '../sections/AppDownloadCTA'
 import TestimonialsSection from '../sections/TestimonialsSection'
-import { createWebSiteSchema } from '../../data/schema-helpers'
+import { HomePageSEO } from '../../seo/pageMetadata'
 
 export default function HomePage() {
   return (
     <>
-      <SEO
-        title="Metro Mitra | West Bengal's Most Trusted Gig Platform"
-        description="Connect with 28,000+ verified gig workers across West Bengal. Daily pay for workers. Rapid deployment for employers. e-Shram compliant."
-        schema={createWebSiteSchema()}
-        canonical="https://metromitra.com/"
-      />
+      <SEO {...HomePageSEO()} />
+
 
       {/* Hero section */}
       <HeroSection

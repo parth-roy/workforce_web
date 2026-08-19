@@ -1,4 +1,21 @@
+# METRO MITRA — Crawler Policy
+# Phase F6.3 Architecture
+
 User-agent: *
+# Allow public crawling
 Allow: /
 
+# Prevent uncontrolled crawl/indexation of internal search/filter traps
+Disallow: /*?q=
+Disallow: /*?filter=
+Disallow: /*?sort=
+
+# Protect private/authenticated areas (Future Scale)
+Disallow: /company/dashboard/
+Disallow: /company/requests/
+Disallow: /company/locations/
+Disallow: /contractor/dashboard/
+Disallow: /contractor/requests/
+
+# Expose Canonical Sitemap
 Sitemap: https://metromitra.com/sitemap.xml

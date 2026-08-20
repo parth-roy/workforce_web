@@ -67,12 +67,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="pt-8 border-t border-slate-800 text-center md:text-left md:flex justify-between items-center">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain" />
-            <span className="font-black text-xl tracking-tight leading-none mt-1 text-white mr-4">
-              Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
-            </span>
-          </div>
+          <div className="flex items-center mb-4 md:mb-0"><div className="bg-white/95 px-3 py-2 rounded-xl"><img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-auto object-contain" /></div></div>
           <div className="text-xs text-slate-500">
             
           </div>
@@ -81,3 +76,4 @@ export default function Footer() {
     </footer>
   );
 }
+

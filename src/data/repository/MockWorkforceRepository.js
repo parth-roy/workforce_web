@@ -13,6 +13,7 @@ export class MockWorkforceRepository extends WorkforceRepository {
   getLocationBySlug(slug) { return mockLocations.find(l => l.slug === slug); }
   getJobsByRoleAndLocation(roleSlug, locationSlug) {
     return mockJobs.filter(j => 
+      (!j.isDemo) &&
       (!roleSlug || j.roleSlug === roleSlug) && 
       (!locationSlug || j.locationSlug === locationSlug)
     );

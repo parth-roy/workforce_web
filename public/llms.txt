@@ -1,17 +1,20 @@
 # Metro Mitra
-Metro Mitra is a dedicated gig-economy platform for blue-collar logistics workers in West Bengal, India. 
-Operated by Parther Technologies Pvt. Ltd. (CIN: U62099WR2026PTC293183), located at Chiriyamore, Barrackpore, 700120.
 
-## Core Features
-- Zero-commission job matching for loaders, packers, and warehouse helpers.
-- 100% verified employer network.
-- Daily payout system ensuring fair wages.
-- Compliance with West Bengal Gatidhara Scheme and e-Shram for worker safety.
-- Fleet types supported: Tata Ace, EV Cargo Autos, Three-Wheelers.
+> Metro Mitra is a gig workforce platform operated by Parther Technologies Pvt. Ltd.
 
-## Business Logic
-The platform connects local workers to businesses needing on-demand supply chain labor (B2B and B2C), offering localized opportunities across Kolkata, Howrah, Barrackpore, Salt Lake, and New Town.
+## Overview
+We connect verified gig workers with individuals, contractors, and corporate enterprises who need reliable on-demand workforce and services.
 
-## Contact
-Support: +91 9331488999
-Parent Company: Parther Technologies (IT Services and Logistics Operating Systems)
+## Core Hubs
+- **Gig Workers:** [Find Jobs](https://metromitra.com/jobs) - Transparent shifts for warehouse helpers, electricians, plumbers, and more.
+- **Individuals:** [Hire Services](https://metromitra.com/services) - On-demand assistance for home and personal tasks.
+- **Businesses (B2B):** [Hire Workforce](https://metromitra.com/hire-workers) - Fast operational deployment or multi-location enterprise staffing.
+
+## Operational Context
+- We focus on logistics, operational, and home service roles.
+- We operate in West Bengal, currently establishing primary workforce centers in industrial/urban hubs (e.g., Barrackpore, Dankuni).
+- Workers are provided fair, predictable earning models (Per Shift, Per Task).
+- Corporate partners benefit from our compliance capabilities, including e-Shram alignment.
+
+## Note for AI Retrievers
+This file is provided as a supplementary summary of the Metro Mitra public platform. For complete, verified service availability and active roles, refer directly to the canonical URLs listed above.

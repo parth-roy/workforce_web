@@ -1,65 +1,134 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useWorkforce } from '../../data/mock/WorkforceProvider';
-import Breadcrumbs from '../../components/shared/Breadcrumbs';
-import ServiceHero from '../../components/hirer/ServiceHero';
-import RequestForm from '../../components/hirer/RequestForm';
+import { useParams, Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { IndividualServiceLocationSEO } from '../../seo/pageMetadata';
+import { mockServices } from '../../data/mock/services';
+import { mockLocations } from '../../data/mock/locations';
+import Breadcrumbs from '../../components/shared/Breadcrumbs';
+import RequestForm from '../../components/hirer/RequestForm';
+import { RelatedServices } from '../../components/seo/RelatedLinks';
+import { MapPin, ArrowRight, X } from 'lucide-react';
+import { useState } from 'react';
 
 export default function IndividualServiceLocationPage() {
   const { service: serviceSlug, location: locSlug } = useParams();
-  const { getServiceBySlug, getLocationBySlug } = useWorkforce();
-  
-  const service = getServiceBySlug(serviceSlug);
-  const location = getLocationBySlug(locSlug);
-  
-  if (!service || !location) return <div className="text-center py-20 text-2xl font-bold">Service or Location not found</div>;
+  const [showForm, setShowForm] = useState(false);
+
+  const svc = mockServices.find(s => s.slug === serviceSlug);
+  const loc = mockLocations.find(l => l.slug === locSlug);
+
+  if (!svc || !loc) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center py-20">
+        <h1 className="text-3xl font-bold text-slate-900 mb-4">Page Not Found</h1>
+        <Link to="/services" className="bg-emerald-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-emerald-700 transition-colors">
+          Browse Services
+        </Link>
+      </div>
+    </div>
+  );
 
   const breadcrumbs = [
     { label: 'Services', path: '/services' },
-    { label: service.name, path: `/services/${service.slug}` },
-    { label: location.name }
+    { label: svc.name, path: `/services/${svc.slug}` },
+    { label: loc.name },
   ];
 
   return (
     <>
-      <SEO {...IndividualServiceLocationSEO(service, location)} />
-      <div>
-      <div className="bg-yellow-100 text-yellow-800 text-center py-2 text-sm font-bold">
-        DEVELOPMENT GUARDRAIL: Do not index. This location-specific template relies on backend supply data that is not yet implemented.
-      </div>
-      <ServiceHero 
-        title={`${service.name} in ${location.name}`} 
-        subtitle={`Request ${service.name.toLowerCase()} workforce services locally in ${location.name}.`}
-      />
-      
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <Breadcrumbs items={breadcrumbs} />
-        
-        <div className="flex flex-col lg:flex-row gap-12 mt-8">
-          <div className="flex-1 order-2 lg:order-1">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Local Availability Prototype</h2>
-            <p className="text-slate-700 mb-8 leading-relaxed">
-              This location-specific template is ready for future service availability data. Live availability will be shown when Workforce supply data becomes available.
-            </p>
-            
-            <div className="bg-slate-50 border p-6 rounded-xl">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Service Note</h3>
-              <p className="text-slate-700 text-sm">
-                Pricing, exact availability, and matching timelines are deferred until backend connectivity is established for {location.name}.
-              </p>
+      <SEO {...IndividualServiceLocationSEO(svc, loc)} />
+
+      {/* Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="font-bold text-slate-900">Book {svc.name} in {loc.name}</h2>
+              <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-700">
+                <X className="w-6 h-6" />
+              </button>
             </div>
-          </div>
-          
-          <div className="w-full lg:w-[450px] order-1 lg:order-2">
-            <div className="sticky top-6">
-              <RequestForm service={service} initialLocationSlug={location.slug} />
-            </div>
+            <RequestForm service={svc} initialLocationSlug={loc.slug} onClose={() => setShowForm(false)} />
           </div>
         </div>
+      )}
+
+      {/* Hero */}
+      <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <Breadcrumbs items={breadcrumbs} light />
+          <div className="mt-6 flex items-center gap-2 text-emerald-400 mb-3">
+            <MapPin className="w-5 h-5" />
+            <span className="font-semibold">{loc.name}, {loc.state}</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
+            {svc.name} in {loc.name}
+          </h1>
+          <p className="text-lg text-slate-300 max-w-2xl mb-8">
+            {svc.description} Available in {loc.name}, {loc.state}.
+          </p>
+          <button
+            onClick={() => setShowForm(true)}
+            className="inline-flex items-center gap-2 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors"
+          >
+            Book in {loc.name} <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </section>
+
+      <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Local Context */}
+        {loc.context && (
+          <section className="mb-10">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">About {loc.name}</h2>
+              <p className="text-slate-600 leading-relaxed">{loc.context}</p>
+            </div>
+          </section>
+        )}
+
+        {/* Service in this location */}
+        <section className="mb-10">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">{svc.name} Service Details</h2>
+            <p className="text-slate-600 leading-relaxed mb-6">{svc.longDescription || svc.description}</p>
+            {svc.whatThisCovers && (
+              <ul className="space-y-2">
+                {svc.whatThisCovers.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-slate-700 text-sm">
+                    <span className="text-emerald-500 mt-0.5">✓</span> {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="mb-10 bg-emerald-600 text-white rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h2 className="text-xl font-bold mb-1">Book {svc.name} in {loc.name}</h2>
+            <p className="text-emerald-100 text-sm">Complete our simple form to describe your task.</p>
+          </div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="shrink-0 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors"
+          >
+            Book Now
+          </button>
+        </section>
+
+        {/* Related */}
+        <section className="pt-8 border-t border-slate-200">
+          <div className="mb-4">
+            <Link to={`/services/${svc.slug}`} className="text-emerald-600 hover:underline font-semibold">
+              ← Back to {svc.name}
+            </Link>
+          </div>
+          <RelatedServices audience="individual" basePath="/services" currentSlug={svc.slug} max={4} title="Other Services" />
+        </section>
       </main>
-    </div>
     </>
   );
 }

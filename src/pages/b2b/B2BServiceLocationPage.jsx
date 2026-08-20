@@ -4,6 +4,7 @@ import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import SEO from '../../components/ui/SEO';
 import { B2BServiceLocationSEO } from '../../seo/pageMetadata';
+import { RelatedServices, RelatedLocations, RelatedRoles } from '../../components/seo/RelatedLinks';
 
 export default function B2BServiceLocationPage() {
   const { service: serviceSlug, location: locSlug } = useParams();

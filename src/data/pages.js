@@ -210,7 +210,7 @@ const pages = [
     heroSubtitle: 'From entry-level sorting to skilled picking — find warehouse gigs with same-day pay across Kolkata fulfillment centers.',
     heroBadge: '📦 60+ Warehouse Gigs Open',
     heroCta: { label: 'Find Warehouse Work Near You', href: '/gig-jobs-kolkata' },
-    heroImage: '/warehouse-hero.png',
+    heroImage: '/warehouse-hero.webp',
     heroStats: [
       { value: '₹350-700', label: 'Per Day' },
       { value: '60+', label: 'Gigs Open' },
@@ -234,7 +234,7 @@ const pages = [
     heroSubtitle: 'Your earnings hit your wallet within 1 hour of shift completion. 0 - 5% lowest commission. 100% transparent.',
     heroBadge: '⚡ Same-Day UPI Transfer',
     heroCta: { label: 'Find Daily Pay Gigs', href: '/gig-jobs-kolkata' },
-    heroImage: '/daily-payment.png',
+    heroImage: '/daily-payment.webp',
     heroStats: [
       { value: '₹3.2Cr+', label: 'Disbursed' },
       { value: '1 hr', label: 'Pay Time' },
@@ -374,7 +374,7 @@ const pages = [
     heroBadge: '🚛 West Bengal Logistics Hub',
     workerCta: { h2: 'Find Logistics Gigs', desc: 'Browse verified roles — from helpers to supervisors.', label: 'Download App', href: '/gig-jobs-kolkata' },
     employerCta: { h2: 'Hire Logistics Staff', desc: 'Verified workers deployed in under 2.4 hours.', label: 'Contact Sales', href: '/employer-hiring' },
-    heroImage: '/all-worker-roles.png',
+    heroImage: '/all-worker-roles.webp',
     heroStats: [
       { value: '₹14.4L Cr', label: 'West Bengal Logistics Market' },
       { value: '10.5%', label: 'Annual Growth' },
@@ -587,7 +587,7 @@ const pages = [
     heroSubtitle: 'Join 8,200+ active workers across 80+ Kolkata pincodes. Daily UPI payouts. e-Shram registered. Government aligned.',
     heroBadge: '🌆 8,200+ Active Workers in Kolkata',
     heroCta: { label: "Join Kolkata's Largest Workforce", href: '/gig-jobs-kolkata' },
-    heroImage: '/gig-jobs-kolkata.png',
+    heroImage: '/gig-jobs-kolkata.webp',
     heroStats: [
       { value: '8,200+', label: 'Kolkata Workers' },
       { value: '80+', label: 'Pincodes' },

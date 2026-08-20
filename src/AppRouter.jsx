@@ -19,6 +19,11 @@ import B2BServiceLocationPage from './pages/b2b/B2BServiceLocationPage';
 import ContractorPage from './pages/contractor/ContractorPage';
 import CorporatePage from './pages/corporate/CorporatePage';
 
+import AboutPage from './pages/shared/AboutPage';
+import ContactPage from './pages/shared/ContactPage';
+import FAQPage from './pages/shared/FAQPage';
+import GuidesPage from './pages/shared/GuidesPage';
+
 export default function AppRouter() {
   return (
     <Routes>
@@ -46,6 +51,12 @@ export default function AppRouter() {
 
       {/* Corporate Route */}
       <Route path="/for-companies" element={<CorporatePage />} />
+
+      {/* Shared/Static Routes */}
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/faq" element={<FAQPage />} />
+      <Route path="/guides" element={<GuidesPage />} />
     </Routes>
   );
 }

@@ -1,45 +1,34 @@
 # FRONTEND BACKEND DEPENDENCY REGISTRY
 
-This document logs all theoretical frontend-to-backend API dependencies discovered during the UI development phases. It does not mean these APIs are implemented.
+This registry defines the exact backend API capabilities required to connect the frozen frontend architecture to the live backend.
 
-## F3 Dependencies: Individual Hirer
+## P0: Required to Connect the Frontend
+These are the foundational APIs required to make the core product paths functional.
 
-| Feature              | Required Backend Data/Capability  | Future API          | Status |
-| -------------------- | --------------------------------- | ------------------- | ------ |
-| Service Catalog      | Service + audience + role mapping | GET services        | Future |
-| Service availability | Location supply                   | GET availability    | Future |
-| Request creation     | Work Request                      | POST work-requests  | Future |
-| Pricing              | Pricing response                  | Future pricing API  | Future |
-| Matching             | Workforce matching                | Future matching API | Future |
+| Frontend Need | Required Backend Capability | Domain |
+| :--- | :--- | :--- |
+| **B2B / B2C Lead Form** | Lead ingestion API (`POST /api/v1/leads`). | CRM / Marketing |
+| **Worker Catalog** | Public read API for Role Definitions and Location Hubs. | Workforce |
+| **Job Details** | Public read API for specific Job attributes (status, requirements, pay). | Workforce |
+| **Server-Side Rendering (SSR)** | Express.js middleware capable of wrapping `entry-server.jsx` to return raw HTML and real 404/410 HTTP status codes to Googlebot. | Infrastructure |
 
-## F4 Dependencies: Contractor Experience (Refined in F4.2)
+## P1: Required for Evidence-Driven SEO Expansion
+These APIs power the dynamic three-state indexability model (Eligible, Not-Yet-Eligible, Noindex) and the Earnings Evidence Gate.
 
-| Frontend Concept   | Required Backend Capability     | Future Domain      |
-| ------------------ | ------------------------------- | ------------------ |
-| Requirement Type   | Workforce requirement taxonomy  | Workforce          |
-| Service Category   | Service catalog                 | Workforce          |
-| Multiple Roles     | Role requirements               | Workforce          |
-| Per-role shifts    | Role-specific scheduling        | Workforce          |
-| Global shift       | Request-level scheduling        | Workforce          |
-| Role quantity      | Quantity per role               | Workforce          |
-| Worksite           | Deployment location             | Workforce          |
-| Duration           | Work duration/recurrence        | Workforce          |
-| Requirements       | Job requirements                | Workforce          |
-| Contractor Profile | Contractor organization/profile | Identity/Workforce |
-| Saved Worksites    | Contractor locations            | Workforce          |
-| Request History    | WorkRequest history             | Workforce          |
+| Frontend Need | Required Backend Capability | Domain |
+| :--- | :--- | :--- |
+| **GEO Expansion Evidence** | Database `count()` of active jobs per Role + Location to flip "not-yet-eligible" stubs into "eligible" indexable pages. | Workforce / Jobs |
+| **Earnings Evidence Gate** | Live aggregation of verified earnings/payouts per Role to flip `publicAllowed: true` and populate the Earnings blocks securely. | Jobs / Ledger |
+| **Dynamic Sitemap Engine** | Backend chron job or dynamic endpoint to generate `sitemap.xml` based on live indexability evidence instead of mock data. | Infrastructure / SEO |
+| **Service Availability** | Real-time supply verification (workers online in a zone) to dictate B2C Service local eligibility. | Dispatch |
 
-## F5 Corporate Dependencies
+## P2: Required for Scale / Advanced Functionality
+These APIs power complex multi-stage booking and corporate scale.
 
-| Frontend Concept        | Backend Capability     | Future Domain      |
-| ----------------------- | ---------------------- | ------------------ |
-| Organization            | Organization entity    | Identity/Workforce |
-| Membership              | User-role relationship | Identity           |
-| Corporate locations     | Organization locations | Workforce          |
-| Multi-location request  | WorkRequest            | Workforce          |
-| Multi-role requirements | Role requirements      | Workforce          |
-| Shift strategy          | Scheduling             | Workforce          |
-| Recurrence              | Scheduling             | Workforce          |
-| Request history         | WorkRequest history    | Workforce          |
-| Dashboard data          | Workforce read model   | Workforce          |
-| Reports                 | Workforce analytics    | Workforce          |
+| Frontend Need | Required Backend Capability | Domain |
+| :--- | :--- | :--- |
+| **Contractor Booking** | Multi-role, multi-shift workforce request creation (`POST /api/work-requests`). | Booking / Workforce |
+| **Corporate Locations** | Organization entity modeling to manage saved deployment locations. | Identity / Workforce |
+| **Corporate Dashboard** | Workforce analytics read model (fill rates, SLAs, e-Shram compliance metrics). | Analytics |
+| **Live Pricing** | Dynamic pricing algorithm responding to requested roles, duration, and geo-zone. | Pricing Engine |
+| **Worker Matching** | Dispatch engine assigning incoming individual requests to active gig workers. | Dispatch / Socket.io |

@@ -5,6 +5,7 @@ import { routes } from '../../routes/registry';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import SEO from '../../components/ui/SEO';
 import { JobDetailSEO } from '../../seo/pageMetadata';
+import { RelatedRoles, RelatedLocations, RelatedServices } from '../../components/seo/RelatedLinks';
 
 export default function JobDetailPage() {
   const { jobId } = useParams();

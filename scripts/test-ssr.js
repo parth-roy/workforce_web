@@ -142,11 +142,11 @@ const TESTS = [
 
   // ── Individual Service Page ───────────────────────────────────────────────
   {
-    route: '/services/electrician',
+    route: '/services/electrical-services',
     label: 'Individual Service (electrician)',
     assert: {
-      title: 'Electrician Services | Metro Mitra',
-      canonical: 'https://metromitra.com/services/electrician',
+      title: 'Electrical Services Services | Metro Mitra',
+      canonical: 'https://metromitra.com/services/electrical-services',
       robots: 'noindex, nofollow',   // not-yet-eligible
       audience: 'Individual',
           schemaNodes: ["WebPage","BreadcrumbList","Service"],
@@ -155,7 +155,7 @@ const TESTS = [
 
   // ── Individual Service + Location ─────────────────────────────────────────
   {
-    route: '/services/electrician/barrackpore',
+    route: '/services/electrical-services/barrackpore',
     label: 'Individual Service+Location (geo stub)',
     assert: {
       robots: 'noindex, nofollow',

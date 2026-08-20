@@ -394,7 +394,7 @@ export function IndividualServiceLocationSEO(service, location) {
   const path = `/services/${service.slug}/${location.slug}`;
   const title = `${service.name} in ${location.name} | Metro Mitra`;
   const description = `Book ${service.name} in ${location.name}. Reliable local workforce available on demand.`;
-  const indexable = resolveIndexable('not-yet-eligible');
+  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus);
   return {
     title,
     description,
@@ -466,7 +466,7 @@ export function B2BServiceLocationSEO(service, location) {
   const path = `/hire-workers/${service.slug}/${location.slug}`;
   const title = `${service.name} Workforce in ${location.name} | Metro Mitra`;
   const description = `Procure ${service.name} workforce in ${location.name} for your business operations.`;
-  const indexable = resolveIndexable('not-yet-eligible');
+  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus);
   return {
     title,
     description,
@@ -485,4 +485,82 @@ export function B2BServiceLocationSEO(service, location) {
       indexable ? createServiceSchema({ name: `${service.name} in ${location.name}`, description, path }) : null,
     ],
   };
+}
+
+// --- DOMAIN A EXTREME EXPANSION ---
+
+export function WorkerRolesDirectorySEO() {
+  return {
+    title: 'Work Opportunities & Roles | Metro Mitra',
+    description: 'Explore the different types of work and roles available on Metro Mitra. Find warehouse helper, delivery, packing, cleaning, and technical opportunities.',
+    canonicalPath: '/jobs/roles',
+    indexable: true
+  };
+}
+
+export function WorkerOnboardingSEO() {
+  return {
+    title: 'Join as a Worker | Metro Mitra Onboarding',
+    description: 'Learn how to join Metro Mitra as a worker. Discover what you need to sign up, how verification works, and how to find your first job.',
+    canonicalPath: '/join-as-worker',
+    indexable: true
+  };
+}
+
+export function WorkerHowItWorksSEO() {
+  return {
+    title: 'How It Works for Workers | Metro Mitra',
+    description: 'Understand the complete worker journey on Metro Mitra. From registration and profile completion to finding jobs, accepting work, and tracking activity.',
+    canonicalPath: '/workers/how-it-works',
+    indexable: true
+  };
+}
+
+export function WorkerFAQSEO() {
+  return {
+    title: 'Worker FAQ & Help | Metro Mitra',
+    description: 'Frequently asked questions for Metro Mitra workers. Get help with registration, job discovery, role selection, locations, and more.',
+    canonicalPath: '/workers/faq',
+    indexable: true
+  };
+}
+
+// --- DOMAIN B EXTREME EXPANSION ---
+
+export function ServiceCategoryDirectorySEO() {
+  return {
+    title: 'Service Categories | Metro Mitra',
+    description: 'Explore our complete range of service categories, from logistics and technical support to cleaning and delivery personnel.',
+    canonicalPath: '/services/categories',
+    indexable: true
+  };
+}
+
+export function ServiceHowItWorksSEO() {
+  return {
+    title: 'How Hiring Works | Metro Mitra',
+    description: 'Learn how to hire a service or worker on Metro Mitra. Select your service, specify your needs, add a location, set timing, and review your request.',
+    canonicalPath: '/services/how-it-works',
+    indexable: true
+  };
+}
+
+export function ServiceFAQSEO() {
+  return {
+    title: 'Hiring FAQ & Help | Metro Mitra',
+    description: 'Frequently asked questions about hiring services or workers on Metro Mitra. Learn about worker selection, locations, scheduling, and request fulfillment.',
+    canonicalPath: '/services/faq',
+    indexable: true
+  };
+}
+
+export function ServiceHiringFlowSEO(service) {
+if (!service) return { title: 'Hire Service | Metro Mitra', canonicalPath: '/services/hire', indexable: false };
+return {
+title: `Hire ${service.name} | Request Form | Metro Mitra`,
+description: `Request ${service.name} services on Metro Mitra. Fill out the request form to specify workers needed, location, and timing.`,
+canonicalPath: `/services/${service.slug}/hire`,
+indexable: resolveIndexable(service.indexabilityStatus),
+schemas: [createWebPageSchema({ title: `Hire ${service.name}`, description: `Request ${service.name} services.`, path: `/services/${service.slug}/hire` })]
+};
 }

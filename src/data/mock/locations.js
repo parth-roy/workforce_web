@@ -15,7 +15,7 @@ export const mockLocations = [
     context: 'Barrackpore has a mix of small-scale manufacturing units, logistics warehouses, and residential demand for home services. Metro Mitra is building its worker network in this area.',
     availability: 'active',
     industries: ['Logistics', 'Manufacturing', 'Home Services'],
-    indexabilityStatus: 'not-yet-eligible',
+    indexabilityStatus: 'eligible',
   },
   {
     id: 'loc-2',
@@ -27,7 +27,7 @@ export const mockLocations = [
     context: 'Dankuni is one of West Bengal\'s most active logistics corridors, hosting warehouses for major FMCG and e-commerce companies. Worker demand for helpers, loaders, and packers is consistently high in this area.',
     availability: 'active',
     industries: ['Logistics', 'Warehousing', 'FMCG Distribution'],
-    indexabilityStatus: 'not-yet-eligible',
+    indexabilityStatus: 'eligible',
   },
   {
     id: 'loc-3',
@@ -39,7 +39,7 @@ export const mockLocations = [
     context: 'Kolkata has high demand for home services (electricians, plumbers, cleaners) and B2B staffing for retail, hospitality, and warehousing.',
     availability: 'active',
     industries: ['Home Services', 'Retail', 'Hospitality', 'Logistics'],
-    indexabilityStatus: 'not-yet-eligible',
+    indexabilityStatus: 'eligible',
   },
   {
     id: 'loc-4',
@@ -51,6 +51,6 @@ export const mockLocations = [
     context: 'Hooghly district hosts numerous manufacturing and logistics facilities along the Ganges corridor. Labour demand for shift-based work is significant.',
     availability: 'active',
     industries: ['Manufacturing', 'Logistics', 'Textiles'],
-    indexabilityStatus: 'not-yet-eligible',
+    indexabilityStatus: 'eligible',
   },
 ];

@@ -37,7 +37,7 @@ import {
   B2BServiceSEO,
   B2BServiceLocationSEO,
   ContractorSEO,
-  CorporateSEO,
+  CorporateSEO, WorkerRolesDirectorySEO, WorkerOnboardingSEO, WorkerHowItWorksSEO, WorkerFAQSEO, ServiceCategoryDirectorySEO, ServiceHowItWorksSEO, ServiceFAQSEO, ServiceHiringFlowSEO,
 } from '../src/seo/pageMetadata.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -71,6 +71,18 @@ function generateSitemap() {
   addUrl(B2BHirerHubSEO());
   addUrl(ContractorSEO());
   addUrl(CorporateSEO());
+  addUrl(WorkerRolesDirectorySEO());
+  addUrl(WorkerOnboardingSEO());
+  addUrl(WorkerHowItWorksSEO());
+  addUrl(WorkerFAQSEO());
+  addUrl(ServiceCategoryDirectorySEO());
+  addUrl(ServiceHowItWorksSEO());
+  addUrl(ServiceFAQSEO());
+  addUrl({ canonicalPath: '/about', indexable: true });
+  addUrl({ canonicalPath: '/contact', indexable: true });
+  addUrl({ canonicalPath: '/faq', indexable: true });
+  addUrl({ canonicalPath: '/guides', indexable: true });
+
 
   // 2. Worker Role Hubs
   mockRoles.forEach(r => addUrl(WorkerRoleSEO(r)));
@@ -95,6 +107,7 @@ function generateSitemap() {
 
   // 6. Individual Services (B2C)
   mockServices.forEach(s => addUrl(IndividualServiceSEO(s)));
+  mockServices.forEach(s => addUrl(ServiceHiringFlowSEO(s)));
 
   // 7. Individual Service + Location (Geo Stubs B2C)
   mockServices.forEach(s => {

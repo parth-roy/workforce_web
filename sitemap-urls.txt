@@ -1,384 +1,129 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
+
     <loc>https://metromitra.com</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/for-contractors</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/for-companies</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/roles</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/join-as-worker</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/workers/how-it-works</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/workers/faq</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/categories</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/how-it-works</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/faq</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/about</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/contact</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/faq</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/guides</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/warehouse-helper</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/cleaner</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/loader</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/packer</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/plumber</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/technician</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/delivery-associate</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/location/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/location/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/location/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/location/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/warehouse-helper/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/warehouse-helper/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/warehouse-helper/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/warehouse-helper/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/cleaner/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/cleaner/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/cleaner/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/cleaner/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/loader/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/loader/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/loader/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/loader/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/packer/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/packer/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/packer/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/packer/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/plumber/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/plumber/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/plumber/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/plumber/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/technician/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/technician/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/technician/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/technician/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/delivery-associate/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/delivery-associate/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/delivery-associate/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/delivery-associate/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery/hire</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/warehouse-staffing/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/electrical-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/cleaning-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/plumbing-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/appliance-repair/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/services/last-mile-delivery/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/warehouse-staffing</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/electrical-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/cleaning-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/plumbing-services</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/appliance-repair</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/last-mile-delivery</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/warehouse-staffing/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/warehouse-staffing/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/warehouse-staffing/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/warehouse-staffing/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/electrical-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/electrical-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/electrical-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/electrical-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/cleaning-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/cleaning-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/cleaning-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/cleaning-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/plumbing-services/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/plumbing-services/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/plumbing-services/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/plumbing-services/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/appliance-repair/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/appliance-repair/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/appliance-repair/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/appliance-repair/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/last-mile-delivery/barrackpore</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/last-mile-delivery/dankuni</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/last-mile-delivery/kolkata</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/hire-workers/last-mile-delivery/hooghly</loc>
-  </url>
-</urlset>
+

@@ -11,7 +11,7 @@ import { mockJobs } from '../src/data/mock/jobs.js';
 import {
   HomePageSEO, WorkerHubSEO, WorkerRoleSEO, WorkerLocationSEO, WorkerRoleLocationSEO, JobDetailSEO,
   ServicesHubSEO, IndividualServiceSEO, IndividualServiceLocationSEO,
-  B2BHirerHubSEO, B2BServiceSEO, B2BServiceLocationSEO, ContractorSEO, CorporateSEO
+  B2BHirerHubSEO, B2BServiceSEO, B2BServiceLocationSEO, ContractorSEO, CorporateSEO, WorkerRolesDirectorySEO, WorkerOnboardingSEO, WorkerHowItWorksSEO, WorkerFAQSEO, ServiceCategoryDirectorySEO, ServiceHowItWorksSEO, ServiceFAQSEO, ServiceHiringFlowSEO
 } from '../src/seo/pageMetadata.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +50,19 @@ register('/services', ServicesHubSEO(), 'services-hub');
 register('/hire-workers', B2BHirerHubSEO(), 'b2b-hub');
 register('/for-contractors', ContractorSEO(), 'contractor-hub');
 register('/for-companies', CorporateSEO(), 'corporate-hub');
+register('/jobs/roles', WorkerRolesDirectorySEO(), 'worker-roles');
+register('/join-as-worker', WorkerOnboardingSEO(), 'worker-onboarding');
+register('/workers/how-it-works', WorkerHowItWorksSEO(), 'worker-hiw');
+register('/workers/faq', WorkerFAQSEO(), 'worker-faq');
+register('/services/categories', ServiceCategoryDirectorySEO(), 'service-categories');
+register('/services/how-it-works', ServiceHowItWorksSEO(), 'service-hiw');
+register('/services/faq', ServiceFAQSEO(), 'service-faq');
+register('/about', { canonicalPath: '/about', indexable: true }, 'about');
+register('/contact', { canonicalPath: '/contact', indexable: true }, 'contact');
+register('/faq', { canonicalPath: '/faq', indexable: true }, 'faq');
+register('/guides', { canonicalPath: '/guides', indexable: true }, 'guides');
+mockServices.forEach(s => register(`/services/${s.slug}/hire`, ServiceHiringFlowSEO(s), 'service-hire'));
+
 
 // 2. Mock Entities
 mockRoles.forEach(r => register(`/jobs/${r.slug}`, WorkerRoleSEO(r), 'role'));

@@ -73,7 +73,10 @@ export default function Header() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         
         <Link to="/" className="flex items-center gap-2 group z-50 shrink-0">
-          <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-auto object-contain" />
+          <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 object-contain" />
+          <span className="font-black text-2xl tracking-tight leading-none mt-1 text-slate-900">
+            Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -134,7 +137,12 @@ export default function Header() {
       <div className={`fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setMobileOpen(false)} />
       
       <div className={`fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-white z-40 lg:hidden shadow-2xl transition-transform duration-300 ease-out flex flex-col ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="h-20 border-b border-slate-100 flex items-center px-6"><img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-auto object-contain" /></div>
+        <div className="h-20 border-b border-slate-100 flex items-center px-6 gap-2">
+          <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain" />
+          <span className="font-black text-xl tracking-tight leading-none mt-1 text-slate-900">
+            Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
+          </span>
+        </div>
         
         <div className="flex-1 overflow-y-auto px-6 py-4">
           <nav>
@@ -194,4 +202,5 @@ export default function Header() {
     </header>
   );
 }
+
 

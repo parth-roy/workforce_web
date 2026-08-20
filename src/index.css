@@ -8,9 +8,9 @@
   html {
     scroll-behavior: smooth;
   }
-  body {
+  body { overflow-x: clip;
     @apply antialiased text-slate-900 bg-white font-sans;
-    overflow-x: hidden;
+    
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans font-bold;

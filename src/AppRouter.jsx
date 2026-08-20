@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header.jsx';
 import Footer from './components/layout/Footer.jsx';
+import FloatingContact from './components/layout/FloatingContact.jsx';
 
 import HomePage from './components/pages/HomePage';
 import WorkerHubPage from './pages/worker/WorkerHubPage';
@@ -82,6 +83,7 @@ export default function AppRouter() {
     </Routes>
       </main>
       <Footer />
+      <FloatingContact />
     </div>
   );
 }

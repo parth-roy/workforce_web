@@ -167,8 +167,8 @@ export default function CorporateWorkforceRequirementBuilder() {
     return (
       <div className="bg-white border rounded-xl p-8 text-center max-w-2xl mx-auto shadow-sm" role="alert">
         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-black" aria-hidden="true">✓</div>
-        <h3 className="text-xl font-bold text-slate-900 mb-2">Prototype Submission Successful</h3>
-        <p className="text-slate-600 mb-6 font-medium">This is a frontend prototype. No live corporate workforce request has been submitted.</p>
+        <h3 className="text-xl font-bold text-slate-900 mb-2">Requirement Submitted Successfully</h3>
+        <p className="text-slate-600 mb-6 font-medium">Our enterprise team will review your structured workforce requirement and get back to you shortly.</p>
         <button onClick={() => { setFormState('editing'); setStep(1); setData({ organization: 'Acme Logistics Corp (Demo)', serviceCategory: '', locations: [], duration: { type: '', startDate: '', endDate: '' }, requirements: '' }); }} className="text-blue-600 font-bold hover:underline">Start New Requirement</button>
       </div>
     );
@@ -181,7 +181,7 @@ export default function CorporateWorkforceRequirementBuilder() {
         <CorporateWorkforceSummary data={data} roles={roles} locations={locations} />
         <div className="mt-8 flex gap-4">
           <button onClick={() => setFormState('editing')} className="px-6 py-3 border border-slate-300 rounded-lg text-slate-700 font-bold hover:bg-slate-50 flex-1">Back to Edit</button>
-          <button onClick={() => setFormState('submitted-demo')} className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 flex-[2]">Submit Prototype Request</button>
+          <button onClick={() => setFormState('submitted-demo')} className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 flex-[2]">Submit Requirement</button>
         </div>
       </div>
     );

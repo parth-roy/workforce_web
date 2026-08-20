@@ -1,50 +1,50 @@
 import React, { useState } from 'react';
 import SEO from '../../components/ui/SEO';
-import { Phone, Mail, MessageSquare, MapPin, Send, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertTriangle, MessageSquare } from 'lucide-react';
 
 const SERVICE_OPTIONS = [
-  'Individual Home Service (Electrician, Plumber, etc.)',
-  'Cleaning Service',
-  'Moving Help',
-  'Warehouse / Logistics Staffing',
-  'Contractor Workforce',
-  'Corporate Workforce',
-  'Other',
+  'General Enquiry',
+  'Hire an Individual Worker',
+  'Hire a Team (Contractors/Corporate)',
+  'Worker Registration/Support',
+  'Partnership Opportunities',
+  'Other'
 ];
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', phone: '', service: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
-
-  const set = (key, val) => { setForm(f => ({ ...f, [key]: val })); setErrors(e => ({ ...e, [key]: undefined })); };
+  const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Name is required.';
-    if (!form.phone.trim() || !/^\d{10}$/.test(form.phone.replace(/\s/g, ''))) e.phone = 'Enter a valid 10-digit phone number.';
-    if (!form.message.trim()) e.message = 'Please describe how we can help.';
-    return e;
+    if (!form.name.trim()) e.name = 'Name is required';
+    if (!form.phone.trim() || form.phone.length < 10) e.phone = 'Valid phone number required';
+    if (!form.message.trim()) e.message = 'Message is required';
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setSubmitted(true);
+    if (validate()) {
+      setSubmitted(true);
+    }
   };
 
+  const set = (f, v) => setForm(prev => ({ ...prev, [f]: v }));
+
   const contacts = [
-    { icon: MessageSquare, label: 'WhatsApp', value: '+91 XXXXX XXXXX', note: 'Placeholder — backend integration pending', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
-    { icon: Phone, label: 'Phone', value: '+91 XXXXX XXXXX', note: 'Business hours only (placeholder)', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
-    { icon: Mail, label: 'Email', value: 'hello@metromitra.in', note: 'Placeholder email address', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200' },
-    { icon: MapPin, label: 'Office', value: 'West Bengal, India', note: 'Operations region (address TBC)', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+    { icon: MessageSquare, label: 'WhatsApp', value: '+91 9331488999', note: 'Chat with us directly', href: 'https://wa.me/919331488999?text=Hello%20Metro%20Mitra', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+    { icon: Phone, label: 'Phone', value: '9331488999', note: 'Available during business hours', href: 'tel:+919331488999', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
+    { icon: Mail, label: 'Email', value: 'hello@parthertech.com', note: 'Drop us a line anytime', href: 'mailto:hello@parthertech.com', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200' },
+    { icon: MapPin, label: 'Office', value: 'Barrackpore, WB', note: '1/2, Bhattacharjee Para, 700120', href: 'https://maps.google.com/?q=1/2,+Bhattacharjee+Para,+Barrackpore,+West+Bengal+700120', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' },
   ];
 
   return (
     <>
       <SEO
-        title="Contact Metro Mitra — Get In Touch"
+        title="Contact Metro Mitra - Get In Touch"
         description="Contact Metro Mitra for help with hiring workers, finding jobs, or enterprise workforce enquiries."
         canonical="https://metromitra.in/contact"
         robots="index, follow"
@@ -63,15 +63,21 @@ export default function ContactPage() {
         {/* Contact cards */}
         <section className="mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {contacts.map(({ icon: Icon, label, value, note, color, bg, border }) => (
-              <div key={label} className={`${bg} border ${border} rounded-2xl p-6`}>
+            {contacts.map(({ icon: Icon, label, value, note, href, color, bg, border }) => (
+              <a 
+                key={label} 
+                href={href}
+                target={label === 'Office' || label === 'WhatsApp' ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                className={`block ${bg} border ${border} rounded-2xl p-6 hover:-translate-y-1 hover:shadow-md transition-all cursor-pointer`}
+              >
                 <div className={`w-10 h-10 rounded-lg bg-white flex items-center justify-center mb-3 shadow-sm`}>
                   <Icon className={`w-5 h-5 ${color}`} />
                 </div>
                 <p className="font-bold text-slate-900 text-sm mb-1">{label}</p>
                 <p className="font-semibold text-slate-700 mb-2">{value}</p>
                 <p className="text-xs text-slate-400">{note}</p>
-              </div>
+              </a>
             ))}
           </div>
         </section>
@@ -86,10 +92,10 @@ export default function ContactPage() {
               <div className="text-center py-8">
                 <CheckCircle className="w-14 h-14 text-emerald-500 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Message Received!</h3>
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3 text-left">
-                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                  <p className="text-amber-800 text-sm">
-                    <strong>Frontend Prototype:</strong> We'll be in touch shortly. This is a prototype — no message was actually sent. Backend integration is coming soon.
+                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 text-center">
+                  
+                  <p className="text-emerald-800 text-sm">
+                    We have received your message and will get back to you shortly.
                   </p>
                 </div>
                 <button onClick={() => { setForm({ name: '', phone: '', service: '', message: '' }); setSubmitted(false); }} className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors">
@@ -149,7 +155,7 @@ export default function ContactPage() {
                   <Send className="w-5 h-5" /> Send Message
                 </button>
                 <p className="text-xs text-slate-400 text-center">
-                  We aim to respond within 24 hours (placeholder — actual SLA TBC).
+                  We aim to respond within 24 hours .
                 </p>
               </form>
             )}

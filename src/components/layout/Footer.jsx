@@ -74,7 +74,7 @@ export default function Footer() {
             </span>
           </div>
           <div className="text-xs text-slate-500">
-            * This is a prototype frontend. Terms and policies are pending.
+            
           </div>
         </div>
       </div>

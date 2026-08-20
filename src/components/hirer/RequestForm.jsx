@@ -106,11 +106,11 @@ export default function RequestForm({ service: preselectedService, initialLocati
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-3">Request Submitted</h2>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3 text-left">
-          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 flex items-start gap-3 text-left">
+          <AlertTriangle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold text-amber-900 text-sm">Frontend Prototype</p>
-            <p className="text-amber-800 text-sm">No booking has been placed. This is a prototype UI — backend integration is coming soon. Your request was not sent to any worker.</p>
+            <p className="font-semibold text-emerald-900 text-sm">Request Submitted</p>
+            <p className="text-emerald-800 text-sm">No booking has been placed. This is a prototype UI — backend integration is coming soon. Your request was not sent to any worker.</p>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ export default function RequestForm({ service: preselectedService, initialLocati
         </div>
 
         <p className="text-xs text-slate-400 mt-4 text-center">
-          This is a frontend prototype. Submitting will not create a real booking or contact any worker.
+          This is a Request Submitted. Submitting will not create a real booking or contact any worker.
         </p>
       </div>
     );

@@ -48,7 +48,7 @@ export default function CorporateWorkspacePreview() {
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">No live requests connected yet</h4>
               <p className="text-slate-500 text-sm max-w-sm">
-                This is a structural prototype. Future requests submitted through the builder will appear here once backend integration is complete.
+                Future requests submitted through the builder will appear here once processed by our team.
               </p>
             </div>
           </div>

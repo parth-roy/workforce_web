@@ -67,9 +67,11 @@ export default function Footer() {
           ))}
         </div>
         <div className="pt-8 border-t border-slate-800 text-center md:text-left md:flex justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <span className="text-white font-black text-xl mr-4">Metro Mitra</span>
-            <span className="text-sm">© {new Date().getFullYear()} Parther Technologies. All rights reserved.</span>
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <img src="/logo.png" alt="Metro Mitra Logo" className="h-8 w-8 object-contain" />
+            <span className="font-black text-xl tracking-tight leading-none mt-1 text-white mr-4">
+              Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Mitra</span>
+            </span>
           </div>
           <div className="text-xs text-slate-500">
             * This is a prototype frontend. Terms and policies are pending.

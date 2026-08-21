@@ -40,39 +40,50 @@ if (!fs.existsSync(templatePath)) {
 }
 
 const templateHtml = fs.readFileSync(templatePath, 'utf-8');
-const sitemapPath = path.resolve(dist, 'sitemap.xml'); // We assume it's moved or generated in dist/public? Wait, generate-sitemap.js writes to 'public'.
+// We need to prerender ALL routes, including those excluded from the sitemap (like geo-stubs or demo jobs)
+// because users still navigate to them, and they should be fast and have proper <head> tags (e.g. noindex).
 
-// generate-sitemap.js writes to `../public/sitemap.xml`. 
-// Vite copies `public/*` to `dist/` during the client build.
-// So `dist/sitemap.xml` will exist. Let's read it.
-const sitemapDistPath = path.resolve(dist, 'sitemap.xml');
-let urls = [];
-if (fs.existsSync(sitemapDistPath)) {
-  const sitemapXml = fs.readFileSync(sitemapDistPath, 'utf-8');
-  // Simple regex to extract <loc> contents
-  const matches = [...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)];
-  urls = matches.map(m => {
-    // Convert absolute URL to relative path
-    const urlStr = m[1];
-    try {
-      const urlObj = new URL(urlStr);
-      return urlObj.pathname; // e.g. '/', '/jobs'
-    } catch {
-      return urlStr;
-    }
+import { mockRoles } from '../src/data/mock/roles.js';
+import { mockLocations } from '../src/data/mock/locations.js';
+import { mockServices } from '../src/data/mock/services.js';
+import { mockJobs } from '../src/data/mock/jobs.js';
+
+let urls = [
+  '/',
+  '/jobs',
+  '/services',
+  '/hire-workers',
+  '/for-contractors',
+  '/for-companies',
+  '/jobs/roles',
+  '/join-as-worker',
+  '/workers/how-it-works',
+  '/workers/faq',
+  '/services/categories',
+  '/services/how-it-works',
+  '/services/faq',
+  '/about',
+  '/contact',
+  '/faq',
+  '/guides'
+];
+
+mockRoles.forEach(r => urls.push(`/jobs/${r.slug}`));
+mockLocations.forEach(l => urls.push(`/jobs/location/${l.slug}`));
+mockRoles.forEach(r => mockLocations.forEach(l => urls.push(`/jobs/${r.slug}/${l.slug}`)));
+mockJobs.forEach(job => urls.push(`/jobs/detail/${job.id}`));
+mockServices.forEach(s => {
+  urls.push(`/services/${s.slug}`);
+  urls.push(`/services/${s.slug}/hire`);
+  urls.push(`/hire-workers/${s.slug}`);
+  mockLocations.forEach(l => {
+    urls.push(`/services/${s.slug}/${l.slug}`);
+    urls.push(`/hire-workers/${s.slug}/${l.slug}`);
   });
-} else {
-  console.error('❌ dist/sitemap.xml not found. Cannot determine routes to prerender.');
-  process.exit(1);
-}
+});
 
 // Deduplicate and sanitize
 urls = [...new Set(urls)].filter(u => u.startsWith('/'));
-
-// Important: Also add non-indexable routes that we still want to render statically 
-// for the user experience, even if they aren't in the sitemap. 
-// For now, sitemap URLs are our primary SEO target.
-// But we should also make sure 404 or other core pages are rendered if they exist.
 
 async function prerender() {
   console.log(`Starting SSG Prerender for ${urls.length} routes...`);

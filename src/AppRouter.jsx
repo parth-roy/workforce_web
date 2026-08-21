@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header.jsx';
 import Footer from './components/layout/Footer.jsx';
+import ScrollToTop from './components/layout/ScrollToTop.jsx';
 import FloatingContact from './components/layout/FloatingContact.jsx';
 
 import HomePage from './components/pages/HomePage';
@@ -38,6 +39,7 @@ import GuidesPage from './pages/shared/GuidesPage';
 export default function AppRouter() {
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       <Header />
       <main className="flex-grow">
         <Routes>

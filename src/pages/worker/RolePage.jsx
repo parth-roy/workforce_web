@@ -50,10 +50,10 @@ export default function RolePage() {
               <p className="text-lg text-slate-300 max-w-2xl">{role.tagline || role.description}</p>
             </div>
             <Link
-              to="/jobs"
-              className="inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-400 transition-colors whitespace-nowrap shrink-0"
-            >
-              Find Openings <ArrowRight className="w-4 h-4" />
+              to={`/join-as-worker?role=${role.slug}`}
+                className="inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-400 transition-colors whitespace-nowrap shrink-0"
+              >
+                Onboard <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

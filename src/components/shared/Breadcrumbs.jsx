@@ -1,20 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Breadcrumbs({ items }) {
+export default function Breadcrumbs({ items, light = false }) {
   return (
-    <nav className="flex text-sm text-slate-500 mb-6 whitespace-nowrap overflow-x-auto py-2" aria-label="Breadcrumb">
+    <nav className={`flex text-sm mb-6 whitespace-nowrap overflow-x-auto py-2 ${light ? 'text-slate-300' : 'text-slate-500'}`} aria-label="Breadcrumb">
       <ol className="flex items-center space-x-2">
         <li>
-          <Link to="/" className="hover:text-blue-600">Home</Link>
+          <Link to="/" className={`transition-colors ${light ? 'hover:text-white' : 'hover:text-emerald-600'}`}>Home</Link>
         </li>
         {items.map((item, idx) => (
           <li key={idx} className="flex items-center space-x-2">
-            <span className="text-slate-400">/</span>
+            <span className={`${light ? 'text-slate-500' : 'text-slate-400'}`}>/</span>
             {item.path ? (
-              <Link to={item.path} className="hover:text-blue-600">{item.label}</Link>
+              <Link to={item.path} className={`transition-colors ${light ? 'hover:text-white' : 'hover:text-emerald-600'}`}>{item.label}</Link>
             ) : (
-              <span className="text-slate-900 font-medium" aria-current="page">{item.label}</span>
+              <span className={`font-medium ${light ? 'text-white' : 'text-slate-900'}`} aria-current="page">{item.label}</span>
             )}
           </li>
         ))}

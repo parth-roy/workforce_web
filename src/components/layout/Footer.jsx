@@ -29,7 +29,7 @@ const FOOTER_COLUMNS = [
   {
     title: 'For Hirers & Business',
     links: [
-      { label: 'Book a Home Service', href: '/services' },
+      { label: 'Book a Home Service', href: '/services?category=Home+Services' },
       { label: 'Hire Bulk Workforce (B2B)', href: '/hire-workers' },
     ],
   }
@@ -50,7 +50,7 @@ export default function Footer() {
             </div>
             
             <div className="bg-slate-800/50 rounded-2xl p-4 border border-slate-700/50 inline-block mb-6">
-              <p className="text-sm font-bold text-white mb-2 text-center">Download Worker App</p>
+              <p className="text-sm font-bold text-white mb-2 text-center">Download App</p>
               <img src="/workforce-app.webp" alt="Download Metro Mitra App" className="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-xl bg-white p-2 mx-auto" />
               <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="block text-center mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-bold underline">
                 Get it on Google Play
@@ -87,21 +87,25 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-800 text-sm text-slate-400 space-y-4">
           <div>
             <h4 className="text-white font-bold mb-2">Registered Office:</h4>
-            <p>© 2026 Parther Technologies Private Limited (GoMyTruck)</p>
-            <p>Chiriyamore, Barrackpore, North 24 Parganas, West Bengal, 700120, India</p>
+            <p>&copy; 2026 Parther Technologies Private Limited (Metro Mitra)</p>
+            <p>1/2, Bhattacharjee Para, Barrackpore, West Bengal 700120</p>
           </div>
           
           <div className="pt-4 border-t border-slate-800/50">
-            <p className="mb-2">Parther Technologies Private Limited (GoMyTruck) | CIN: U62099WR2026PTC293183 | GSTIN: 19AAQCP8945A1ZY</p>
+            <p className="mb-2">Parther Technologies Private Limited (Metro Mitra) | CIN: U62099WR2026PTC293183 | GSTIN: 19AAQCP8945A1ZY</p>
             <p>Email: hello@parthertech.com</p>
             <p className="mb-4">Phone: +91 9331488999</p>
-            <p className="text-slate-500">GoMyTruck connects customers with independent logistics partners. Coverage, assignment, price and service scope are confirmed for each booking.</p>
+            <p className="text-slate-500">Metro Mitra connects customers with independent workforce and logistics partners. Coverage, assignment, price and service scope are confirmed for each booking.</p>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+
+
+
+
 
 
 

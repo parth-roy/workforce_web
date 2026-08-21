@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
@@ -16,8 +17,24 @@ const CATEGORIES = ['All', 'Home Services', 'Logistics & Labor'];
 
 export default function WorkerHubPage() {
   const { roles, locations } = useWorkforce();
-  const [activeCategory, setActiveCategory] = useState('All');
+  
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialCategory = searchParams.get('category') || 'All';
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+
   const [openFaq, setOpenFaq] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const cat = params.get('category');
+    if (cat && CATEGORIES.includes(cat)) {
+      setActiveCategory(cat);
+    } else if (!cat) {
+      setActiveCategory('All');
+    }
+  }, [location.search]);
+
 
   const filteredRoles = activeCategory === 'All'
     ? roles
@@ -48,9 +65,7 @@ export default function WorkerHubPage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"><Smartphone className="w-5 h-5" /> Download Worker App</a>
-              <Link to="#roles" className="bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
-                Browse Roles
-              </Link>
+              
             </div>
           </div>
         </div>
@@ -207,5 +222,6 @@ export default function WorkerHubPage() {
     </>
   );
 }
+
 
 

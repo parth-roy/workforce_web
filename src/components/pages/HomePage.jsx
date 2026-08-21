@@ -44,7 +44,7 @@ export default function HomePage() {
     {
       icon: User, title: 'Individual Hirer', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100',
       desc: 'Book a cleaner, electrician, plumber, or helper for your home or office.',
-      cta: 'Browse Services', href: '/services',
+      cta: 'Browse Services', href: '/services?category=Home+Services',
     },
     {
       icon: Briefcase, title: 'Find Work', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200',
@@ -77,15 +77,12 @@ export default function HomePage() {
                 <span className="flex h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-pulse" />
                 Gig Workforce Platform — West Bengal
               </span>
-              <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-6">
-                Connect with Skilled<br />
-                <span className="text-emerald-400">Workers & Services</span>
-              </h1>
+              <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">Full-Stack Gig <br /><span className="text-emerald-400">Economy Platform</span></h1>
               <p className="text-xl text-slate-300 mb-10 max-w-2xl">
-                Metro Mitra matches households and businesses with trained gig workers across West Bengal. From a home repair to a warehouse staffing team.
+                Metro Mitra is a technology-driven, full-stack gig economy platform matching households and businesses with trained gig workers across West Bengal.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/services" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
+                <Link to="/services?category=Home+Services" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
                   Hire Services <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link to="/jobs" className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
@@ -282,7 +279,7 @@ export default function HomePage() {
         {/* 8. WHY METRO MITRA */}
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Why Metro Mitra?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Why Metro Mitra? <span className="block text-xl text-emerald-600 mt-2">A Technology-Driven, Full-Stack Gig Economy Platform</span></h2>
             <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">A platform built around transparency and reliability.</p>
             <div className="grid md:grid-cols-3 gap-8">
               {[
@@ -352,3 +349,7 @@ export default function HomePage() {
     </>
   );
 }
+
+
+
+

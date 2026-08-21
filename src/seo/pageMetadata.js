@@ -73,20 +73,17 @@ export function resolveIndexable(status, forceNoindex = false) {
  */
 export function HomePageSEO() {
   const path = '/';
-  const title = 'Metro Mitra — Gig Work & On-Demand Workforce Platform';
-  const description = 'Metro Mitra is a gig workforce platform connecting job seekers with daily shift work and businesses with on-demand staffing across India.';
+  const title = 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform';
+  const description = 'Metro Mitra is a technology-driven, full-stack gig economy platform connecting job seekers with daily shift work and businesses with on-demand staffing across India.';
+  const keywords = 'full-stack gig economy platform, technology-driven gig platform, Metro Mitra, on-demand workforce';
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: true,
     audience: 'General',
     searchIntent: 'Brand Discovery',
-    schemas: [
-      ...createOrganizationSchema(),
-      createWebSiteSchema(),
-      createWebPageSchema({ title, description, path }),
-    ],
   };
 }
 

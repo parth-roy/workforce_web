@@ -56,6 +56,7 @@ const DEFAULT_DESC =
 export default function SEO({
   title,
   description,
+  keywords = 'full-stack gig economy platform, Metro Mitra, workforce',
   schemas = [],
   canonicalPath,
   ogImage = '/og-default.jpg',

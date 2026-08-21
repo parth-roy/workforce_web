@@ -1,81 +1,277 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { WorkerOnboardingSEO } from '../../seo/pageMetadata';
-import { CheckCircle2, User, FileText, MapPin, Search, ShieldCheck } from 'lucide-react';
+import { mockRoles } from '../../data/mock/roles';
+import LocationPicker from '../../components/shared/LocationPicker';
+import { User, FileText, MapPin, Truck, CheckCircle2, Briefcase, ShieldCheck } from 'lucide-react';
 
 export default function WorkerOnboardingPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    jobType: '',
+    city: '',
+    area: '',
+    vehicleType: '',
+    vehicleMake: '',
+    aadharNumber: '',
+    panNumber: '',
+    dlNumber: '',
+    rcNumber: '',
+    insuranceDetails: ''
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roleParam = params.get('role');
+    if (roleParam && mockRoles.some(r => r.slug === roleParam)) {
+      setFormData(prev => ({ ...prev, jobType: roleParam }));
+    }
+  }, [location.search]);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const isDriverRole = ['delivery-associate', 'driver'].includes(formData.jobType);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Live Submission
+      const response = await fetch('https://api.gomytruck.com/api/v1/form-gig-leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        setSubmitted(true);
+        window.scrollTo(0, 0);
+      } else {
+        alert('Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error submitting application. Check your connection.');
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-slate-50 pt-24 pb-16 flex items-center justify-center px-4">
+        <div className="bg-white max-w-lg w-full rounded-2xl shadow-xl p-8 text-center border border-slate-100">
+          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+          </div>
+          <h2 className="text-3xl font-black text-slate-900 mb-4">Application Submitted!</h2>
+          <p className="text-slate-600 mb-8">
+            Thank you for applying to join Metro Mitra. Our verification team will review your details and contact you shortly at <strong>{formData.phone}</strong>.
+          </p>
+          <button onClick={() => navigate('/jobs')} className="bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-emerald-700 transition-colors w-full">
+            Browse Jobs Meanwhile
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <SEO {...WorkerOnboardingSEO()} />
-      <div className="bg-emerald-900 text-white py-16 px-4">
+      <div className="bg-slate-900 text-white pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl md:text-5xl font-black mb-6">Join Metro Mitra as a Worker</h1>
-          <p className="text-xl text-emerald-100 max-w-2xl mx-auto">
-            Discover flexible work opportunities, complete our verification process, and start accessing jobs near you.
+          <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Worker Onboarding</span>
+          <h1 className="text-4xl md:text-5xl font-black mb-4">Join Metro Mitra Network</h1>
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+            Complete your profile below to start accepting gig jobs across West Bengal.
           </p>
         </div>
       </div>
       
-      <main className="container mx-auto max-w-4xl px-4 py-16">
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">What You Need to Join</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <div className="flex items-center gap-3 mb-4">
-                <User className="w-6 h-6 text-emerald-600" />
-                <h3 className="text-xl font-bold">Basic Information</h3>
+      <main className="container mx-auto max-w-3xl px-4 py-12">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex gap-3 mb-8 text-emerald-800">
+          <ShieldCheck className="w-6 h-6 shrink-0 mt-0.5" />
+          <p className="text-sm">
+            <strong>Secure Onboarding:</strong> Your documents are encrypted and securely verified. Aadhar and PAN are mandatory for payment processing. Vehicle documents are only required if you are applying for driving roles.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          
+          {/* 1. Job Type */}
+          <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+              <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
+                <Briefcase className="w-5 h-5" />
               </div>
-              <ul className="space-y-3">
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Full name and age (must be 18+)</li>
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Active phone number</li>
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Profile photo</li>
-              </ul>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Job Profile</h2>
+                <p className="text-sm text-slate-500">Select the primary gig role you are applying for</p>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Job Type (Required)</label>
+              <select 
+                name="jobType" 
+                value={formData.jobType} 
+                onChange={handleInput}
+                required
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                <option value="">-- Select Job Type --</option>
+                {mockRoles.map(r => (
+                  <option key={r.slug} value={r.slug}>{r.name} - {r.category}</option>
+                ))}
+              </select>
+            </div>
+          </section>
+
+          {/* 2. Personal Info */}
+          <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+              <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
+                <User className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Personal Information</h2>
+                <p className="text-sm text-slate-500">Your basic contact details</p>
+              </div>
             </div>
             
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <div className="flex items-center gap-3 mb-4">
-                <FileText className="w-6 h-6 text-emerald-600" />
-                <h3 className="text-xl font-bold">Verification Documents</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">First Name (Required)</label>
+                <input required type="text" name="firstName" value={formData.firstName} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g. Rahul" />
               </div>
-              <ul className="space-y-3">
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Government-issued ID (e.g., Aadhaar/Voter ID)</li>
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Proof of address</li>
-                <li className="flex gap-2 text-slate-700"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" /> Bank account details for payouts</li>
-              </ul>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name (Required)</label>
+                <input required type="text" name="lastName" value={formData.lastName} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g. Sharma" />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Mobile Number (Required)</label>
+                <input required type="tel" name="phone" value={formData.phone} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="+91 9876543210" />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">Onboarding Process</h2>
-          <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-            {[
-              { step: 1, title: 'Download the App', desc: 'Get the Workforce App on your smartphone to start.' },
-              { step: 2, title: 'Register & Select Roles', desc: 'Create an account and tell us what kind of work you want to do (e.g., Warehouse, Delivery).' },
-              { step: 3, title: 'Submit Documents', desc: 'Upload your ID and bank details securely in the app for verification.' },
-              { step: 4, title: 'Profile Verification', desc: 'Our team reviews your profile to ensure safety standards. You will be notified once approved.' },
-              { step: 5, title: 'Start Finding Work', desc: 'Browse available jobs in your location and start requesting assignments.' }
-            ].map((item, index) => (
-              <div key={item.step} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-emerald-500 text-white font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
-                  {item.step}
+          {/* 3. Location */}
+          <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+              <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Work Location</h2>
+                <p className="text-sm text-slate-500">Where you prefer to take jobs</p>
+              </div>
+            </div>
+            <div className="w-full">
+              <LocationPicker 
+                onLocationChange={(loc) => {
+                  setFormData(prev => ({ 
+                    ...prev, 
+                    city: loc.district || loc.state, 
+                    area: loc.address || loc.street || loc.pincode 
+                  }));
+                }} 
+              />
+              {formData.city && (
+                <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-emerald-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-emerald-900">Selected Location:</p>
+                    <p className="text-sm text-emerald-700">{formData.area}, {formData.city}</p>
+                  </div>
                 </div>
-                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
-                  <h3 className="font-bold text-slate-900 text-lg mb-1">{item.title}</h3>
-                  <p className="text-slate-600 text-sm">{item.desc}</p>
+              )}
+            </div>
+          </section>
+
+          {/* 4. Vehicle Details (Optional) */}
+          <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
+                  <Truck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">Vehicle Details</h2>
+                  <p className="text-sm text-slate-500">Required only for drivers & riders</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+              {!isDriverRole && <span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-1 rounded">Optional</span>}
+              {isDriverRole && <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded">Required</span>}
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Vehicle Type</label>
+                <select name="vehicleType" value={formData.vehicleType} onChange={handleInput} required={isDriverRole} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="">-- Select --</option>
+                  <option value="bike">Two Wheeler / Bike</option>
+                  <option value="toto">Toto / E-Rickshaw</option>
+                  <option value="pickup">Pickup Truck / Tata Ace</option>
+                  <option value="none">No Vehicle</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Vehicle Number / Make</label>
+                <input type="text" name="vehicleMake" value={formData.vehicleMake} onChange={handleInput} required={isDriverRole && formData.vehicleType !== 'none'} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g. WB-00-XXXX" />
+              </div>
+            </div>
+          </section>
 
-        <div className="text-center">
-          <p className="text-slate-500 mb-4 italic">Note: The Workforce App is currently in prototype phase. Live onboarding will be available soon.</p>
-          <Link to="/workers/how-it-works" className="inline-block bg-white text-emerald-600 border border-emerald-600 px-8 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors">
-            See How the App Works
-          </Link>
-        </div>
+          {/* 5. Documents */}
+          <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+              <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Verification Documents</h2>
+                <p className="text-sm text-slate-500">Identity and background checks</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Aadhaar Number (Required)</label>
+                <input required type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="XXXX XXXX XXXX" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">PAN Number (Required)</label>
+                <input required type="text" name="panNumber" value={formData.panNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="XXXXX0000X" />
+              </div>
+            </div>
+            
+            <div className="border-t border-slate-100 pt-4 mt-4 grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                  Driving License
+                  {isDriverRole ? <span className="text-red-500">*</span> : <span className="text-slate-400 text-xs font-normal">(Optional)</span>}
+                </label>
+                <input required={isDriverRole} type="text" name="dlNumber" value={formData.dlNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="DL Number" />
+              </div>
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                  Vehicle RC
+                  {isDriverRole ? <span className="text-red-500">*</span> : <span className="text-slate-400 text-xs font-normal">(Optional)</span>}
+                </label>
+                <input required={isDriverRole} type="text" name="rcNumber" value={formData.rcNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="RC Number" />
+              </div>
+            </div>
+          </section>
+
+          <button type="submit" className="w-full bg-emerald-600 text-white px-8 py-5 rounded-xl font-bold text-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200">
+            Submit Application
+          </button>
+        </form>
       </main>
     </>
   );

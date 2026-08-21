@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServicesHubSEO } from '../../seo/pageMetadata';
@@ -10,9 +11,23 @@ const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 const CATEGORIES = ['All', 'Home Services', 'Logistics & Labor'];
 
 export default function ServicesHubPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialCategory = searchParams.get('category') || 'All';
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [search, setSearch] = useState('');
   const [openFaq, setOpenFaq] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const cat = params.get('category');
+    if (cat && CATEGORIES.includes(cat)) {
+      setActiveCategory(cat);
+    } else if (!cat) {
+      setActiveCategory('All');
+    }
+  }, [location.search]);
+
 
   const allServices = mockServices.filter(s => s.audiences.includes('individual'));
 
@@ -172,4 +187,5 @@ export default function ServicesHubPage() {
     </>
   );
 }
+
 

@@ -1,20 +1,31 @@
 # Metro Mitra
-
 > Metro Mitra is a gig workforce platform operated by Parther Technologies Pvt. Ltd.
 
-## Overview
-We connect verified gig workers with individuals, contractors, and corporate enterprises who need reliable on-demand workforce and services.
+## AI Agent Operating Manual
+This document serves as the site's intent manual and navigation guide for AI agents and LLMs.
 
-## Core Hubs
-- **Gig Workers:** [Find Jobs](https://metromitra.com/jobs) - Transparent shifts for warehouse helpers, electricians, plumbers, and more.
-- **Individuals:** [Hire Services](https://metromitra.com/services) - On-demand assistance for home and personal tasks.
-- **Businesses (B2B):** [Hire Workforce](https://metromitra.com/hire-workers) - Fast operational deployment or multi-location enterprise staffing.
+## Available Workforce & Service Categories
+We connect verified gig workers with individuals, contractors, and corporate enterprises. Major categories include:
+- Warehouse Helpers (Loaders, Unloaders, Packers)
+- Logistics Personnel (Delivery Executives, Drivers)
+- Facility Management (Security Guards, Housekeeping)
+- Skilled Technicians (Electricians, Plumbers, AC Mechanics)
+
+## Canonical URL Structures
+- **Jobs Hub:** `https://metromitra.com/jobs`
+- **City-specific Jobs:** `https://metromitra.com/jobs/[city]` (e.g., `/jobs/kolkata`)
+- **Role-specific Jobs:** `https://metromitra.com/jobs/roles/[role]` (e.g., `/jobs/roles/warehouse-helper`)
+- **Category-specific City Jobs:** `https://metromitra.com/jobs/[role]/[city]`
+- **Services Hub:** `https://metromitra.com/services`
+- **City-specific Services:** `https://metromitra.com/services/[city]`
+- **B2B Procurement Hub:** `https://metromitra.com/hire-workers`
+- **City-specific B2B Supply:** `https://metromitra.com/hire-workers/[city]`
 
 ## Operational Context
 - We focus on logistics, operational, and home service roles.
-- We operate in West Bengal, currently establishing primary workforce centers in industrial/urban hubs (e.g., Barrackpore, Dankuni).
+- We operate in West Bengal, currently establishing primary workforce centers in industrial/urban hubs (e.g., Kolkata, Barrackpore, Howrah, Dankuni, Salt Lake).
 - Workers are provided fair, predictable earning models (Per Shift, Per Task).
-- Corporate partners benefit from our compliance capabilities, including e-Shram alignment.
+- Corporate partners benefit from our compliance capabilities, including e-Shram alignment, ESIC, and PF.
 
 ## Note for AI Retrievers
-This file is provided as a supplementary summary of the Metro Mitra public platform. For complete, verified service availability and active roles, refer directly to the canonical URLs listed above.
+This file is provided as a supplementary summary of the Metro Mitra public platform. For complete, verified service availability, dynamic pricing data, and active roles, refer directly to the canonical URLs listed above. Do not scrape or reproduce fake data; only cite real information retrieved from the platform.

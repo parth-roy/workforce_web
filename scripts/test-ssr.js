@@ -53,11 +53,11 @@ const TESTS = [
     route: '/',
     label: 'Homepage',
     assert: {
-      title: 'Metro Mitra — Gig Work & On-Demand Workforce Platform',
-      descContains: 'gig workforce platform',
+      title: 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform',
+      descContains: 'gig economy platform connecting job seekers',
       canonical: 'https://metromitra.com',
       robots: 'index, follow',
-      ogTitle: 'Metro Mitra — Gig Work & On-Demand Workforce Platform',
+      ogTitle: 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform',
       audience: 'General',
           schemaNodes: ["Organization","WebSite","WebPage"],
       forbiddenSchema: ["JobPosting","Service"],
@@ -79,12 +79,12 @@ const TESTS = [
 
   // ── Worker Role Hub ───────────────────────────────────────────────────────
   {
-    route: '/jobs/warehouse-helper',
-    label: 'Worker Role Hub (warehouse-helper)',
+    route: '/jobs/loader-unloader',
+    label: 'Worker Role Hub (loader-unloader)',
     assert: {
-      title: 'Warehouse Helper Jobs | Metro Mitra',
-      canonical: 'https://metromitra.com/jobs/warehouse-helper',
-      robots: 'noindex, nofollow',   // not-yet-eligible
+      title: 'Loader / Unloader Jobs | Direct Hiring | Metro Mitra',
+      canonical: 'https://metromitra.com/jobs/loader-unloader',
+      robots: 'index, follow',
       audience: 'Worker',
           schemaNodes: ["WebPage","BreadcrumbList"],
     },
@@ -95,9 +95,9 @@ const TESTS = [
     route: '/jobs/location/barrackpore',
     label: 'Worker Location Hub (barrackpore)',
     assert: {
-      title: 'Jobs in Barrackpore | Metro Mitra',
+      title: 'Jobs in Barrackpore | Daily Wage & Shifts | Metro Mitra',
       canonical: 'https://metromitra.com/jobs/location/barrackpore',
-      robots: 'noindex, nofollow',   // not-yet-eligible
+      robots: 'index, follow',
       audience: 'Worker',
           schemaNodes: ["CollectionPage","BreadcrumbList"],
     },
@@ -105,12 +105,12 @@ const TESTS = [
 
   // ── Worker Role + Location ────────────────────────────────────────────────
   {
-    route: '/jobs/warehouse-helper/dankuni',
-    label: 'Worker Role+Location (warehouse-helper/dankuni)',
+    route: '/jobs/loader-unloader/dankuni',
+    label: 'Worker Role+Location (loader-unloader/dankuni)',
     assert: {
-      title: 'Warehouse Helper Jobs in Dankuni | Metro Mitra',
-      canonical: 'https://metromitra.com/jobs/warehouse-helper/dankuni',
-      robots: 'noindex, nofollow',   // not-yet-eligible
+      title: 'Loader / Unloader Jobs in Dankuni | Direct Hiring | Metro Mitra',
+      canonical: 'https://metromitra.com/jobs/loader-unloader/dankuni',
+      robots: 'noindex, nofollow',   // forced geo-stub policy
           schemaNodes: ["WebPage","BreadcrumbList"],
     },
   },
@@ -142,12 +142,12 @@ const TESTS = [
 
   // ── Individual Service Page ───────────────────────────────────────────────
   {
-    route: '/services/electrical-services',
+    route: '/services/electrician',
     label: 'Individual Service (electrician)',
     assert: {
-      title: 'Electrical Services Services | Metro Mitra',
-      canonical: 'https://metromitra.com/services/electrical-services',
-      robots: 'noindex, nofollow',   // not-yet-eligible
+      title: 'Electrician Services | Metro Mitra',
+      canonical: 'https://metromitra.com/services/electrician',
+      robots: 'index, follow',
       audience: 'Individual',
           schemaNodes: ["WebPage","BreadcrumbList","Service"],
     },
@@ -155,7 +155,7 @@ const TESTS = [
 
   // ── Individual Service + Location ─────────────────────────────────────────
   {
-    route: '/services/electrical-services/barrackpore',
+    route: '/services/electrician/barrackpore',
     label: 'Individual Service+Location (geo stub)',
     assert: {
       robots: 'noindex, nofollow',
@@ -180,13 +180,13 @@ const TESTS = [
 
   // ── B2B Service Page ──────────────────────────────────────────────────────
   {
-    route: '/hire-workers/warehouse-staffing',
+    route: '/hire-workers/loading-unloading',
     label: 'B2B Service — must not duplicate "Staffing"',
     assert: {
-      titleContains: 'Warehouse Staffing Services | Metro Mitra',
-      titleNotContains: 'Warehouse Staffing Staffing',
-      canonical: 'https://metromitra.com/hire-workers/warehouse-staffing',
-      robots: 'noindex, nofollow',   // not-yet-eligible
+      titleContains: 'Loading/Unloading Staffing Services | ESIC Compliant | Metro Mitra',
+      titleNotContains: 'Staffing Staffing',
+      canonical: 'https://metromitra.com/hire-workers/loading-unloading',
+      robots: 'index, follow',
       audience: 'Business',
           schemaNodes: ["WebPage","BreadcrumbList","Service"],
     },
@@ -194,7 +194,7 @@ const TESTS = [
 
   // ── B2B Service + Location ────────────────────────────────────────────────
   {
-    route: '/hire-workers/warehouse-staffing/dankuni',
+    route: '/hire-workers/loading-unloading/dankuni',
     label: 'B2B Service+Location (geo stub)',
     assert: {
       robots: 'noindex, nofollow',

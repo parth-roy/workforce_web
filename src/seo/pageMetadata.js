@@ -84,6 +84,11 @@ export function HomePageSEO() {
     indexable: true,
     audience: 'General',
     searchIntent: 'Brand Discovery',
+    schemas: [
+      createOrganizationSchema(),
+      createWebSiteSchema(),
+      createWebPageSchema({ title, description, path }),
+    ],
   };
 }
 
@@ -224,8 +229,8 @@ export function CorporateSEO() {
  */
 export function WorkerRoleSEO(role) {
   const path = `/jobs/${role.slug}`;
-  const title = `${role.name} Jobs | Metro Mitra`;
-  const description = `Find open ${role.name} jobs and shifts. Apply today for flexible work and daily payouts.`;
+  const title = `${role.name} Jobs | Direct Hiring | Metro Mitra`;
+  const description = `Find open ${role.name} jobs and shifts. Apply today for flexible gig work, safe environment, and daily payouts. Download the Metro Mitra app.`;
   return {
     title,
     description,
@@ -252,12 +257,22 @@ export function WorkerRoleSEO(role) {
  *
  * Indexability: driven by location.indexabilityStatus.
  *
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, state?: string }} location
  */
 export function WorkerLocationSEO(location) {
   const path = `/jobs/location/${location.slug}`;
-  const title = `Jobs in ${location.name} | Metro Mitra`;
-  const description = `Browse all daily gig jobs, shift work, and open roles available in ${location.name}.`;
+  const title = `Jobs in ${location.name} | Daily Wage & Shifts | Metro Mitra`;
+  const description = `Browse all daily gig jobs, shift work, and open roles available in ${location.name}. Get hired directly with daily payouts.`;
+  
+  const crumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Jobs', href: '/jobs' }
+  ];
+  if (location.state) {
+    crumbs.push({ label: location.state, href: `/jobs/location` }); // Or appropriate hub, just text representation for now
+  }
+  crumbs.push({ label: location.name, href: path });
+  
   return {
     title,
     description,
@@ -267,11 +282,7 @@ export function WorkerLocationSEO(location) {
     searchIntent: 'Location Discovery',
     schemas: [
       createCollectionPageSchema({ title, description, path }),
-      createBreadcrumbSchema([
-        { label: 'Home', href: '/' },
-        { label: 'Jobs', href: '/jobs' },
-        { label: location.name, href: path }
-      ], path),
+      createBreadcrumbSchema(crumbs, path),
     ],
   };
 }
@@ -286,14 +297,31 @@ export function WorkerLocationSEO(location) {
  * Will become "eligible" once the evidence model supplies: active job count,
  * verified worker presence, local wage data. NOT a permanent prohibition.
  *
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} role
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, id?: string }} role
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, id?: string, state?: string, localPricingConfig?: object }} location
  */
 export function WorkerRoleLocationSEO(role, location) {
   const path = `/jobs/${role.slug}/${location.slug}`;
-  const title = `${role.name} Jobs in ${location.name} | Metro Mitra`;
-  const description = `Find ${role.name} jobs and shifts in ${location.name}. Apply today for flexible work and fast payouts.`;
-  const indexable = resolveIndexable(role.indexabilityStatus) && resolveIndexable(location.indexabilityStatus);
+  const title = `${role.name} Jobs in ${location.name} | Direct Hiring | Metro Mitra`;
+  const baseRate = location.localPricingConfig?.minimumFare ? ` Earn up to ₹${location.localPricingConfig.minimumFare} per shift.` : '';
+  const description = `Find verified ${role.name} jobs and shifts in ${location.name}.${baseRate} Apply today for flexible work, safe environment and daily payouts.`;
+  
+  // PHASE 8: GEO-STUB PROTECTION. 
+  // Do not mass-index combinations without verified active supply/demand evidence.
+  // We explicitly force noindex for combinations until evidence is loaded.
+  const hasGenuineEvidence = false; // Mock: require actual supply data to flip this true
+  const indexable = resolveIndexable(role.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
+  
+  const crumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Jobs', href: '/jobs' },
+    { label: `${role.name} Jobs`, href: `/jobs/${role.slug}` }
+  ];
+  if (location.state) {
+    crumbs.push({ label: location.state, href: `/jobs/location` });
+  }
+  crumbs.push({ label: location.name, href: path });
+
   return {
     title,
     description,
@@ -303,12 +331,7 @@ export function WorkerRoleLocationSEO(role, location) {
     searchIntent: 'Local Job Transaction',
     schemas: [
       createWebPageSchema({ title, description, path }),
-      createBreadcrumbSchema([
-        { label: 'Home', href: '/' },
-        { label: 'Jobs', href: '/jobs' },
-        { label: `${role.name} Jobs`, href: `/jobs/${role.slug}` },
-        { label: location.name, href: path }
-      ], path),
+      createBreadcrumbSchema(crumbs, path),
     ],
   };
 }
@@ -391,7 +414,11 @@ export function IndividualServiceLocationSEO(service, location) {
   const path = `/services/${service.slug}/${location.slug}`;
   const title = `${service.name} in ${location.name} | Metro Mitra`;
   const description = `Book ${service.name} in ${location.name}. Reliable local workforce available on demand.`;
-  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus);
+  
+  // PHASE 8: GEO-STUB PROTECTION.
+  const hasGenuineEvidence = false;
+  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
+  
   return {
     title,
     description,
@@ -430,8 +457,8 @@ export function IndividualServiceLocationSEO(service, location) {
 export function B2BServiceSEO(service) {
   const path = `/hire-workers/${service.slug}`;
   const cleanName = service.name.endsWith('Staffing') ? service.name : `${service.name} Staffing`;
-  const title = `${cleanName} Services | Metro Mitra`;
-  const description = service.description || `Request ${service.name} workforce for your business operations. Flexible staffing across shifts and locations.`;
+  const title = `${cleanName} Services | ESIC Compliant | Metro Mitra`;
+  const description = service.description || `Request verified ${service.name} workforce for your business operations. Flexible staffing across shifts, 100% compliant with PF/ESIC regulations.`;
   return {
     title,
     description,
@@ -457,13 +484,19 @@ export function B2BServiceSEO(service) {
  * Indexability: "not-yet-eligible" — geo stubs without confirmed industrial supply.
  *
  * @param {{ name: string, slug: string, indexabilityStatus?: string }} service
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, localPricingConfig?: object }} location
  */
 export function B2BServiceLocationSEO(service, location) {
   const path = `/hire-workers/${service.slug}/${location.slug}`;
-  const title = `${service.name} Workforce in ${location.name} | Metro Mitra`;
-  const description = `Procure ${service.name} workforce in ${location.name} for your business operations.`;
-  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus);
+  const cleanName = service.name.endsWith('Staffing') ? service.name : `${service.name} Staffing`;
+  const title = `${cleanName} in ${location.name} | Verified Supply | Metro Mitra`;
+  const baseRate = location.localPricingConfig?.minimumFare ? ` starting at ₹${location.localPricingConfig.minimumFare}/shift` : '';
+  const description = `Hire verified, background-checked ${service.name} workforce in ${location.name}${baseRate}. Deployment within 48 hours. Fully CLRA and PF compliant workforce. Contact Metro Mitra.`;
+  
+  // PHASE 8: GEO-STUB PROTECTION.
+  const hasGenuineEvidence = false;
+  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
+  
   return {
     title,
     description,
@@ -476,7 +509,7 @@ export function B2BServiceLocationSEO(service, location) {
       createBreadcrumbSchema([
         { label: 'Home', href: '/' },
         { label: 'B2B', href: '/hire-workers' },
-        { label: `${service.name} Staffing`, href: `/hire-workers/${service.slug}` },
+        { label: cleanName, href: `/hire-workers/${service.slug}` },
         { label: location.name, href: path }
       ], path),
       indexable ? createServiceSchema({ name: `${service.name} in ${location.name}`, description, path }) : null,

@@ -5,7 +5,7 @@ import { IndividualServiceLocationSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
 import { mockLocations } from '../../data/mock/locations';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
-import RequestForm from '../../components/hirer/RequestForm';
+import ServiceBookingWizard from '../../components/hirer/ServiceBookingWizard';
 import { RelatedServices } from '../../components/seo/RelatedLinks';
 import { MapPin, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
@@ -40,15 +40,9 @@ export default function IndividualServiceLocationPage() {
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="font-bold text-slate-900">Book {svc.name} in {loc.name}</h2>
-              <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-700">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <RequestForm service={svc} initialLocationSlug={loc.slug} onClose={() => setShowForm(false)} />
+        <div className="fixed inset-0 bg-black/60 z-[110] flex items-end md:items-center justify-center md:p-4" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
+          <div className="w-full md:max-w-lg h-[95vh] md:h-auto animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:fade-in duration-300">
+            <ServiceBookingWizard service={svc} onClose={() => setShowForm(false)} />
           </div>
         </div>
       )}
@@ -132,3 +126,5 @@ export default function IndividualServiceLocationPage() {
     </>
   );
 }
+
+

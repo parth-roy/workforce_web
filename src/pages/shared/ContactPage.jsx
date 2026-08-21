@@ -12,7 +12,7 @@ const SERVICE_OPTIONS = [
 ];
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', phone: '', service: '', message: '' });
+  const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -20,6 +20,7 @@ export default function ContactPage() {
     const e = {};
     if (!form.name.trim()) e.name = 'Name is required';
     if (!form.phone.trim() || form.phone.length < 10) e.phone = 'Valid phone number required';
+    if (form.email.trim() && !/^\S+@\S+\.\S+$/.test(form.email)) e.email = 'Valid email required';
     if (!form.message.trim()) e.message = 'Message is required';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -98,7 +99,7 @@ export default function ContactPage() {
                     We have received your message and will get back to you shortly.
                   </p>
                 </div>
-                <button onClick={() => { setForm({ name: '', phone: '', service: '', message: '' }); setSubmitted(false); }} className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors">
+                <button onClick={() => { setForm({ name: '', phone: '', email: '', service: '', message: '' }); setSubmitted(false); }} className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors">
                   Send Another
                 </button>
               </div>
@@ -124,6 +125,17 @@ export default function ContactPage() {
                     onChange={e => set('phone', e.target.value)}
                     placeholder="10-digit mobile number"
                     className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-colors`}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
+                  {errors.email && <p className="text-red-600 text-xs mb-1">{errors.email}</p>}
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => set('email', e.target.value)}
+                    placeholder="Your email address"
+                    className={`w-full px-4 py-3 border ${errors.email ? 'border-red-400' : 'border-slate-300'} rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-colors`}
                   />
                 </div>
                 <div>
@@ -182,3 +194,4 @@ export default function ContactPage() {
     </>
   );
 }
+

@@ -1,4 +1,3 @@
-
 /**
  * indexabilityStatus values:
  *   "eligible"         - confirmed indexable
@@ -6,230 +5,202 @@
  *   "noindex"          - explicitly excluded
  */
 export const mockServices = [
+  // ---- HOME SERVICES (Individual) ----
   {
-    id: 'srv-1',
-    slug: 'warehouse-staffing',
-    name: 'Warehouse Staffing',
-    shortName: 'Warehouse',
-    tagline: 'Reliable teams for your warehouse operations',
-    description: 'Workforce support for warehouse operations including loading, unloading, picking, and packing.',
-    longDescription: 'Metro Mitra connects warehouses with verified helpers, loaders, and pickers on flexible shift schedules. Whether you need a team for a single day or an ongoing deployment, our platform helps you staff your floor efficiently.',
-    category: 'Logistics',
-    audiences: ['corporate', 'contractor'],
-    icon: 'Package',
-    image: '/images/warehouse-hero.webp',
-    roles: ['warehouse-helper', 'loader', 'packer'],
-    serviceType: 'shift',
-    availability: 'active',
-    status: 'active',
-    useCases: ['Loading & Unloading', 'Inventory Management', 'Packaging', 'Sorting & Dispatch'],
-    whoIsItFor: ['Warehouses', 'Fulfillment Centers', 'E-commerce Operations', 'Cold Storage Facilities'],
-    whatThisCovers: [
-      'Manual loading and unloading of goods',
-      'Inventory sorting and shelving',
-      'Order picking and packing',
-      'Goods dispatch preparation',
-      'General warehouse upkeep'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Specify Requirement', description: 'Tell us how many workers you need, for what roles, and the shift timings.' },
-      { step: 2, title: 'Worker Matching', description: 'Metro Mitra matches your requirement with verified workers in your area.' },
-      { step: 3, title: 'Deployment', description: 'Workers arrive at your facility at the scheduled time.' },
-      { step: 4, title: 'Task Completion', description: 'Track attendance and completion through the platform.' }
-    ],
-    faqs: [
-      { question: 'What is the minimum team size?', answer: 'You can request anywhere from a single worker to a team of 50+, depending on local availability.' },
-      { question: 'Can I request workers for night shifts?', answer: 'Yes, we support day, afternoon, and night shift deployments.' },
-      { question: 'Are the workers verified?', answer: 'All workers go through our standard profile verification process before being eligible for deployment.' }
-    ],
-    requirements: ['Clear task description', 'Safe working environment', 'Supervision on site'],
-    indexabilityStatus: 'eligible'
+    id: 'srv-elec', slug: 'electrician', name: 'Electrician', shortName: 'Electrician',
+    tagline: 'Wiring, repairs & installations',
+    description: 'Professional electricians for wiring, switch repairs, appliance installation, and troubleshooting.',
+    longDescription: 'Hire certified electricians for all your home and office needs. From minor repairs like fixing switches and replacing lights to major installations and wiring troubleshooting, our professionals ensure safety and quality.',
+    category: 'Home Services', audiences: ['individual', 'corporate', 'contractor'],
+    icon: 'Zap', image: '/images/electrical-hero.webp', roles: ['electrician'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Switch Repair', 'Fan Installation', 'Wiring', 'Inverter Setup'],
+    whoIsItFor: ['Homeowners', 'Offices', 'Contractors'],
+    whatThisCovers: ['Diagnosing electrical faults', 'Repairing or replacing switches/sockets', 'Installing fans and light fixtures', 'Wiring replacements'],
+    howItWorks: [{step:1,title:'Book',description:'Choose electrician service.'}, {step:2,title:'Match',description:'Local expert is assigned.'}, {step:3,title:'Service',description:'Electrician arrives and fixes issue.'}, {step:4,title:'Review',description:'Confirm completion.'}],
+    faqs: [{question:'Are materials included?',answer:'No, cost of parts like wires or switches is extra.'}],
+    requirements: ['Clear description of issue', 'Access to main power switch'], indexabilityStatus: 'eligible'
   },
   {
-    id: 'srv-2',
-    slug: 'electrical-services',
-    name: 'Electrical Services',
-    shortName: 'Electrician',
-    tagline: 'Professional electrical installation and repair',
-    description: 'Hire certified electricians for wiring, fixtures, and electrical maintenance.',
-    longDescription: 'Access skilled electricians for your residential, commercial, or construction needs. From simple fixture installations to complex wiring projects, our network of technicians ensures safe and compliant electrical work.',
-    category: 'Technical',
-    audiences: ['individual', 'contractor', 'corporate'],
-    icon: 'Zap',
-    image: '/images/electrician-hero.webp',
-    roles: ['electrician'],
-    serviceType: 'task',
-    availability: 'active',
-    status: 'active',
-    useCases: ['Fixture Installation', 'Wiring Repair', 'Panel Upgrades', 'Commercial Maintenance'],
-    whoIsItFor: ['Homeowners', 'Office Managers', 'Construction Contractors', 'Facility Managers'],
-    whatThisCovers: [
-      'Diagnosis of electrical faults',
-      'Installation of lights, fans, and switches',
-      'Wiring and rewiring tasks',
-      'Electrical panel maintenance',
-      'Safety inspections'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Describe the Issue', description: 'Provide details about the electrical work needed and your location.' },
-      { step: 2, title: 'Get Matched', description: 'We assign a qualified electrician to your request.' },
-      { step: 3, title: 'Service Visit', description: 'The electrician visits the site to diagnose and complete the work.' },
-      { step: 4, title: 'Review & Pay', description: 'Review the completed work and process payment securely.' }
-    ],
-    faqs: [
-      { question: 'Do electricians bring their own tools?', answer: 'Yes, all electricians arrive equipped with standard tools required for diagnosis and repair.' },
-      { question: 'Are materials included in the service cost?', answer: 'The base cost covers labor. Any required materials (wires, switches, fixtures) are billed separately or provided by you.' },
-      { question: 'Is the work guaranteed?', answer: 'Workmanship is backed by our platform service standards.' }
-    ],
-    requirements: ['Clear access to electrical panels', 'Description of the fault', 'Safe working conditions'],
-    indexabilityStatus: 'eligible'
+    id: 'srv-paint', slug: 'painter', name: 'Painter', shortName: 'Painter',
+    tagline: 'Professional painting for home & office',
+    description: 'Skilled painters for interior, exterior, and touch-up painting jobs.',
+    longDescription: 'Refresh your space with our professional painting services. Whether you need a single room touched up or a full house exterior painted, our skilled painters deliver a flawless finish.',
+    category: 'Home Services', audiences: ['individual', 'contractor'],
+    icon: 'Sparkles', image: '/images/cleaning-hero.webp', roles: ['painter'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Interior Painting', 'Exterior Painting', 'Touch-ups', 'Waterproofing'],
+    whoIsItFor: ['Homeowners', 'Contractors', 'Businesses'],
+    whatThisCovers: ['Surface preparation', 'Applying primer and paint', 'Clean-up after painting'],
+    howItWorks: [{step:1,title:'Book',description:'Select painting service.'}, {step:2,title:'Estimate',description:'Painter assesses the scope.'}, {step:3,title:'Paint',description:'The painting is executed.'}, {step:4,title:'Review',description:'Check the finish.'}],
+    faqs: [{question:'Do I buy the paint?',answer:'You can provide the paint, or the painter can procure it for you at cost.'}],
+    requirements: ['Clear area of furniture if possible'], indexabilityStatus: 'eligible'
   },
   {
-    id: 'srv-3',
-    slug: 'cleaning-services',
-    name: 'Cleaning & Sanitation',
-    shortName: 'Cleaning',
-    tagline: 'Deep cleaning for homes, offices, and worksites',
-    description: 'Professional cleaning staff for routine maintenance, deep cleaning, or post-construction clearing.',
-    longDescription: 'Maintain a pristine environment with our cleaning and sanitation services. We provide trained cleaners for residential deep cleaning, daily office upkeep, and heavy-duty post-construction site clearing.',
-    category: 'Service',
-    audiences: ['individual', 'corporate', 'contractor'],
-    icon: 'Sparkles',
-    image: '/images/cleaning-hero.webp',
-    roles: ['cleaner'],
-    serviceType: 'task',
-    availability: 'active',
-    status: 'active',
-    useCases: ['Office Cleaning', 'Residential Deep Clean', 'Post-Construction Clearing', 'Event Cleanup'],
-    whoIsItFor: ['Homeowners', 'Facility Managers', 'Event Organizers', 'Site Contractors'],
-    whatThisCovers: [
-      'Sweeping, mopping, and vacuuming',
-      'Restroom and kitchen sanitation',
-      'Dusting and surface wiping',
-      'Waste removal and disposal',
-      'Specialized deep cleaning (upon request)'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Select Cleaning Type', description: 'Choose between routine, deep, or post-construction cleaning.' },
-      { step: 2, title: 'Set Schedule', description: 'Pick a date and time that works for you.' },
-      { step: 3, title: 'Cleaners Arrive', description: 'Our verified cleaners arrive to perform the requested tasks.' },
-      { step: 4, title: 'Inspection', description: 'Review the area to ensure it meets your standards.' }
-    ],
-    faqs: [
-      { question: 'Do I need to provide cleaning supplies?', answer: 'You can opt for cleaners to bring their own supplies or use yours at a discounted rate.' },
-      { question: 'Can I book a recurring service?', answer: 'Yes, daily, weekly, and monthly schedules are available for corporate clients.' }
-    ],
-    requirements: ['Access to water and electricity', 'Clear scope of work'],
-    indexabilityStatus: 'eligible'
-  },
-  {
-    id: 'srv-4',
-    slug: 'plumbing-services',
-    name: 'Plumbing Services',
-    shortName: 'Plumbing',
-    tagline: 'Expert plumbing repair and installation',
-    description: 'Fix leaks, unclog drains, and install new plumbing fixtures.',
+    id: 'srv-plumb', slug: 'plumber', name: 'Plumber', shortName: 'Plumber',
+    tagline: 'Pipes, leaks & fittings',
+    description: 'Expert plumbers for fixing leaks, installing fixtures, and unblocking drains.',
     longDescription: 'Resolve water and drainage issues quickly with our plumbing services. Our network includes experienced plumbers capable of handling everything from minor leaks to major pipe installations.',
-    category: 'Technical',
-    audiences: ['individual', 'contractor', 'corporate'],
-    icon: 'Wrench',
-    image: '/images/plumbing-hero.webp',
-    roles: ['plumber'],
-    serviceType: 'task',
-    availability: 'active',
-    status: 'active',
+    category: 'Home Services', audiences: ['individual', 'contractor', 'corporate'],
+    icon: 'Wrench', image: '/images/plumbing-hero.webp', roles: ['plumber'],
+    serviceType: 'task', availability: 'active', status: 'active',
     useCases: ['Leak Repair', 'Drain Cleaning', 'Fixture Installation', 'Pipe Maintenance'],
     whoIsItFor: ['Homeowners', 'Property Managers', 'Construction Sites'],
-    whatThisCovers: [
-      'Leak detection and repair',
-      'Clearing blocked drains and toilets',
-      'Installing taps, sinks, and showers',
-      'Pipe repair and replacement'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Report Issue', description: 'Describe the plumbing problem.' },
-      { step: 2, title: 'Plumber Assigned', description: 'A qualified plumber is dispatched to your location.' },
-      { step: 3, title: 'Diagnosis & Fix', description: 'The plumber assesses the issue and performs the repair.' },
-      { step: 4, title: 'Confirmation', description: 'Confirm the leak is fixed or the fixture is working.' }
-    ],
-    faqs: [
-      { question: 'What if emergency parts are needed?', answer: 'The plumber will provide an estimate for the parts before proceeding with the purchase and repair.' }
-    ],
-    requirements: ['Access to main water shutoff', 'Clear description of the problem'],
-    indexabilityStatus: 'eligible'
+    whatThisCovers: ['Leak detection and repair', 'Clearing blocked drains and toilets', 'Installing taps, sinks, and showers', 'Pipe repair and replacement'],
+    howItWorks: [{step:1,title:'Report Issue',description:'Describe the plumbing problem.'}, {step:2,title:'Plumber Assigned',description:'A qualified plumber is dispatched.'}, {step:3,title:'Diagnosis & Fix',description:'The plumber assesses the issue and performs the repair.'}, {step:4,title:'Confirmation',description:'Confirm the leak is fixed.'}],
+    faqs: [{question:'What if emergency parts are needed?',answer:'The plumber will provide an estimate for the parts.'}],
+    requirements: ['Access to main water shutoff'], indexabilityStatus: 'eligible'
   },
   {
-    id: 'srv-5',
-    slug: 'appliance-repair',
-    name: 'Appliance Repair',
-    shortName: 'Appliance',
-    tagline: 'Fast repair for household and commercial appliances',
-    description: 'Diagnose and fix issues with ACs, washing machines, refrigerators, and more.',
-    longDescription: 'Get your essential appliances back in working order. Our technicians specialize in diagnosing and repairing major white goods, ensuring your home or business runs smoothly.',
-    category: 'Technical',
-    audiences: ['individual', 'corporate'],
-    icon: 'Settings',
-    image: '/images/appliance-hero.webp',
-    roles: ['technician'],
-    serviceType: 'task',
-    availability: 'active',
-    status: 'active',
-    useCases: ['AC Servicing', 'Washing Machine Repair', 'Refrigerator Repair', 'Microwave Repair'],
+    id: 'srv-clean', slug: 'cleaning', name: 'Cleaning', shortName: 'Cleaning',
+    tagline: 'Deep cleaning & sweeping',
+    description: 'Professional cleaning staff for routine maintenance, deep cleaning, or post-construction clearing.',
+    longDescription: 'Maintain a pristine environment with our cleaning and sanitation services. We provide trained cleaners for residential deep cleaning, daily office upkeep, and heavy-duty post-construction site clearing.',
+    category: 'Home Services', audiences: ['individual', 'corporate', 'contractor'],
+    icon: 'Sparkles', image: '/images/cleaning-hero.webp', roles: ['cleaner'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Office Cleaning', 'Residential Deep Clean', 'Post-Construction Clearing', 'Event Cleanup'],
+    whoIsItFor: ['Homeowners', 'Facility Managers', 'Event Organizers'],
+    whatThisCovers: ['Sweeping, mopping, and vacuuming', 'Restroom and kitchen sanitation', 'Dusting and surface wiping', 'Waste removal and disposal'],
+    howItWorks: [{step:1,title:'Select Cleaning Type',description:'Choose between routine or deep cleaning.'}, {step:2,title:'Set Schedule',description:'Pick a date and time.'}, {step:3,title:'Cleaners Arrive',description:'Verified cleaners arrive.'}, {step:4,title:'Inspection',description:'Review the area.'}],
+    faqs: [{question:'Do I provide supplies?',answer:'You can opt for cleaners to bring their own supplies or use yours.'}],
+    requirements: ['Access to water and electricity'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-ac', slug: 'ac-repair', name: 'AC Repair', shortName: 'AC Repair',
+    tagline: 'AC servicing, installation & repair',
+    description: 'Expert technicians for split and window AC servicing and gas refilling.',
+    longDescription: 'Stay cool with our comprehensive AC repair and servicing. Whether you need a standard foam-jet cleaning, gas refill, or fixing a cooling issue, our experts handle all major brands.',
+    category: 'Home Services', audiences: ['individual', 'corporate'],
+    icon: 'Wrench', image: '/images/appliance-hero.webp', roles: ['technician'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['AC Servicing', 'Gas Refill', 'Installation', 'Cooling Fix'],
+    whoIsItFor: ['Homeowners', 'Offices', 'Shops'],
+    whatThisCovers: ['Filter cleaning', 'Gas level check', 'Coil cleaning', 'Fault diagnosis'],
+    howItWorks: [{step:1,title:'Book',description:'Select AC service type.'}, {step:2,title:'Technician Visit',description:'Technician arrives.'}, {step:3,title:'Service',description:'AC is cleaned/repaired.'}, {step:4,title:'Check',description:'Verify cooling.'}],
+    faqs: [{question:'Do you service all brands?',answer:'Yes, we service all major brands.'}],
+    requirements: ['Clear access to indoor and outdoor units'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-appliance', slug: 'appliance-repair', name: 'Appliance Repair', shortName: 'Appliance',
+    tagline: 'Fast repair for household appliances',
+    description: 'Diagnose and fix issues with washing machines, refrigerators, microwaves, and more.',
+    longDescription: 'Get your essential appliances back in working order. Our technicians specialize in diagnosing and repairing major white goods, ensuring your home runs smoothly.',
+    category: 'Home Services', audiences: ['individual', 'corporate'],
+    icon: 'Wrench', image: '/images/appliance-hero.webp', roles: ['technician'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Washing Machine Repair', 'Refrigerator Repair', 'Microwave Repair'],
     whoIsItFor: ['Homeowners', 'Restaurants', 'Offices'],
-    whatThisCovers: [
-      'Fault diagnosis',
-      'Part replacement and repair',
-      'Routine maintenance (e.g., AC cleaning)',
-      'Safety and functional testing'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Select Appliance', description: 'Tell us which appliance needs repair and the symptoms.' },
-      { step: 2, title: 'Technician Visit', description: 'A specialist technician visits for diagnosis.' },
-      { step: 3, title: 'Repair Execution', description: 'The repair is carried out, pending part availability.' },
-      { step: 4, title: 'Testing', description: 'The appliance is tested to ensure proper function.' }
-    ],
-    faqs: [
-      { question: 'Is there a visitation fee?', answer: 'A standard diagnostic fee applies, which is often waived if you proceed with the repair.' },
-      { question: 'Are replacement parts genuine?', answer: 'Technicians source OEM or high-quality compatible parts based on your preference and budget.' }
-    ],
-    requirements: ['Appliance make and model', 'Access to power supply'],
-    indexabilityStatus: 'eligible'
+    whatThisCovers: ['Fault diagnosis', 'Part replacement', 'Safety testing'],
+    howItWorks: [{step:1,title:'Book',description:'Tell us the appliance and symptoms.'}, {step:2,title:'Visit',description:'Technician arrives.'}, {step:3,title:'Repair',description:'Issue is fixed.'}, {step:4,title:'Test',description:'Appliance is tested.'}],
+    faqs: [{question:'Are parts genuine?',answer:'Technicians source OEM or high-quality compatible parts.'}],
+    requirements: ['Appliance make and model', 'Access to power'], indexabilityStatus: 'eligible'
   },
   {
-    id: 'srv-6',
-    slug: 'last-mile-delivery',
-    name: 'Last-Mile Delivery Support',
-    shortName: 'Delivery',
+    id: 'srv-security', slug: 'security', name: 'Security', shortName: 'Security',
+    tagline: 'Trusted security personnel',
+    description: 'Hire verified security guards for events, residential buildings, or commercial spaces.',
+    longDescription: 'Ensure safety and peace of mind with our professional security services. We provide trained and verified security personnel for day and night shifts.',
+    category: 'Home Services', audiences: ['individual', 'corporate'],
+    icon: 'Users', image: '/images/cleaning-hero.webp', roles: ['security-guard'],
+    serviceType: 'shift', availability: 'active', status: 'active',
+    useCases: ['Event Security', 'Residential Guard', 'Commercial Guard'],
+    whoIsItFor: ['Homeowners', 'Event Organizers', 'Corporate Offices'],
+    whatThisCovers: ['Access control', 'Patrolling', 'Visitor logging'],
+    howItWorks: [{step:1,title:'Request',description:'Select shift and duration.'}, {step:2,title:'Assign',description:'Guards are assigned.'}, {step:3,title:'Deploy',description:'Guards report for duty.'}, {step:4,title:'Monitor',description:'Review attendance.'}],
+    faqs: [{question:'Are they background verified?',answer:'Yes, all guards undergo background verification.'}],
+    requirements: ['Guard post/shelter', 'Clear duties list'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-carpenter', slug: 'carpenter', name: 'Carpenter', shortName: 'Carpenter',
+    tagline: 'Woodwork, furniture repair & assembly',
+    description: 'Skilled carpenters for repairing furniture, making custom woodwork, and fixing doors.',
+    longDescription: 'From fixing a broken chair to building custom cabinets, our skilled carpenters provide quality woodwork and furniture assembly services for your home or office.',
+    category: 'Home Services', audiences: ['individual', 'corporate'],
+    icon: 'Wrench', image: '/images/plumbing-hero.webp', roles: ['carpenter'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Furniture Assembly', 'Door Repair', 'Custom Woodwork', 'Lock Replacement'],
+    whoIsItFor: ['Homeowners', 'Offices'],
+    whatThisCovers: ['Assembling flat-pack furniture', 'Fixing door hinges/locks', 'Minor woodwork repairs'],
+    howItWorks: [{step:1,title:'Book',description:'Describe the woodwork needed.'}, {step:2,title:'Match',description:'Carpenter is assigned.'}, {step:3,title:'Work',description:'Task is completed.'}, {step:4,title:'Review',description:'Approve the work.'}],
+    faqs: [{question:'Do you provide materials?',answer:'Wood and hardware costs are extra.'}],
+    requirements: ['Clear workspace'], indexabilityStatus: 'eligible'
+  },
+
+  // ---- LOGISTICS & LABOR (Individual & B2B) ----
+  {
+    id: 'srv-loading', slug: 'loading-unloading', name: 'Loading/Unloading', shortName: 'Loading',
+    tagline: 'Helpers for loading goods',
+    description: 'Physical labor for loading and unloading trucks, shifting materials, and heavy lifting.',
+    longDescription: 'Need extra hands to move heavy items? Hire strong, verified helpers for loading and unloading goods from trucks, shifting materials across floors, or general heavy lifting.',
+    category: 'Logistics & Labor', audiences: ['individual', 'contractor', 'corporate'],
+    icon: 'Package', image: '/images/warehouse-hero.webp', roles: ['loader'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Truck Loading', 'Material Shifting', 'Heavy Lifting'],
+    whoIsItFor: ['Homeowners Moving', 'Transporters', 'Warehouses'],
+    whatThisCovers: ['Loading goods into vehicles', 'Unloading and placing goods', 'Carrying items up stairs'],
+    howItWorks: [{step:1,title:'Book',description:'Specify number of helpers.'}, {step:2,title:'Arrive',description:'Helpers arrive at location.'}, {step:3,title:'Work',description:'Goods are moved.'}, {step:4,title:'Complete',description:'Task finished.'}],
+    faqs: [{question:'Can I hire them for a full day?',answer:'Yes, hourly and daily rates are available.'}],
+    requirements: ['Safe environment', 'Clear instructions'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-helper', slug: 'general-helper', name: 'General Helper', shortName: 'Helper',
+    tagline: 'Multi-purpose labour',
+    description: 'Versatile helpers for site work, event setup, arranging items, and generic labor tasks.',
+    longDescription: 'Hire reliable multi-purpose laborers to assist you with a variety of generic tasks. Whether you need an extra pair of hands for event setup, arranging a store, or basic site work, our general helpers are ready.',
+    category: 'Logistics & Labor', audiences: ['individual', 'contractor', 'corporate'],
+    icon: 'Users', image: '/images/delivery-hero.webp', roles: ['helper'],
+    serviceType: 'shift', availability: 'active', status: 'active',
+    useCases: ['Event Setup', 'Store Arrangement', 'Basic Site Labor'],
+    whoIsItFor: ['Event Organizers', 'Retailers', 'Contractors', 'Homeowners'],
+    whatThisCovers: ['Moving light items', 'Assisting skilled workers', 'General arrangement'],
+    howItWorks: [{step:1,title:'Book',description:'Detail your requirements.'}, {step:2,title:'Match',description:'Helpers are assigned.'}, {step:3,title:'Assist',description:'Helpers perform tasks.'}, {step:4,title:'Sign-off',description:'Approve completion.'}],
+    faqs: [{question:'Do they bring tools?',answer:'No, general helpers do not bring specialized tools.'}],
+    requirements: ['Supervision'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-furniture', slug: 'furniture-moving', name: 'Furniture Moving', shortName: 'Furniture',
+    tagline: 'Shifting and arranging furniture',
+    description: 'Specialized helpers for safely moving, shifting, and rearranging large furniture.',
+    longDescription: 'Moving house or rearranging your office? Our furniture moving specialists know how to safely lift, maneuver, and place heavy couches, beds, and cabinets without damaging them or the walls.',
+    category: 'Logistics & Labor', audiences: ['individual', 'corporate'],
+    icon: 'Truck', image: '/images/warehouse-hero.webp', roles: ['mover'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['Room Rearrangement', 'In-house shifting', 'Office Relocation'],
+    whoIsItFor: ['Homeowners', 'Offices'],
+    whatThisCovers: ['Lifting heavy furniture', 'Navigating stairs', 'Placing furniture'],
+    howItWorks: [{step:1,title:'Book',description:'List items to move.'}, {step:2,title:'Arrive',description:'Movers arrive.'}, {step:3,title:'Move',description:'Items are shifted.'}, {step:4,title:'Verify',description:'Check placement.'}],
+    faqs: [{question:'Do they disassemble furniture?',answer:'Basic disassembly is possible, but complex modular furniture requires a carpenter.'}],
+    requirements: ['Clear pathways'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-packer', slug: 'packer', name: 'Packer', shortName: 'Packer',
+    tagline: 'Packing boxes safely',
+    description: 'Experienced packers for boxing up household goods, office files, or commercial items securely.',
+    longDescription: 'Ensure your belongings survive the move. Our professional packers use the right techniques and materials to securely box up everything from fragile glassware to bulky files.',
+    category: 'Logistics & Labor', audiences: ['individual', 'corporate', 'contractor'],
+    icon: 'Package', image: '/images/warehouse-hero.webp', roles: ['packer'],
+    serviceType: 'task', availability: 'active', status: 'active',
+    useCases: ['House Relocation', 'Office Move', 'E-commerce Packaging'],
+    whoIsItFor: ['Homeowners', 'E-commerce Sellers', 'Offices'],
+    whatThisCovers: ['Wrapping fragile items', 'Boxing and taping', 'Labeling boxes'],
+    howItWorks: [{step:1,title:'Book',description:'Estimate volume.'}, {step:2,title:'Pack',description:'Packers secure items.'}, {step:3,title:'Organize',description:'Boxes are labeled.'}, {step:4,title:'Complete',description:'Ready for transport.'}],
+    faqs: [{question:'Do you provide packing materials?',answer:'Packing materials like bubble wrap and boxes are charged additionally.'}],
+    requirements: ['Provide or request packing materials'], indexabilityStatus: 'eligible'
+  },
+  {
+    id: 'srv-last-mile', slug: 'last-mile-delivery', name: 'Last-Mile Delivery', shortName: 'Delivery',
     tagline: 'Delivery associates for your local logistics needs',
     description: 'Hire delivery personnel for package, food, or grocery distribution.',
     longDescription: 'Scale your delivery operations with on-demand delivery associates. Perfect for e-commerce, local retail, and food businesses needing reliable last-mile fulfillment support.',
-    category: 'Logistics',
-    audiences: ['corporate', 'contractor'],
-    icon: 'Truck',
-    image: '/images/delivery-hero.webp',
-    roles: ['delivery-associate'],
-    serviceType: 'shift',
-    availability: 'active',
-    status: 'active',
-    useCases: ['E-commerce Delivery', 'Food Delivery', 'Grocery Fulfillment', 'Courier Services'],
-    whoIsItFor: ['E-commerce Companies', 'Restaurants', 'Local Retailers', 'Logistics Providers'],
-    whatThisCovers: [
-      'Route-based package delivery',
-      'Proof of delivery capture',
-      'Cash on delivery (COD) handling',
-      'Customer handover'
-    ],
-    howItWorks: [
-      { step: 1, title: 'Request Associates', description: 'Specify the number of associates and vehicle types required.' },
-      { step: 2, title: 'Deployment', description: 'Associates report to your hub for route assignment.' },
-      { step: 3, title: 'Execution', description: 'Deliveries are executed using your preferred routing app.' },
-      { step: 4, title: 'Reconciliation', description: 'End-of-day COD and undelivered package reconciliation.' }
-    ],
-    faqs: [
-      { question: 'Do associates provide their own vehicles?', answer: 'Yes, associates typically use their own two-wheelers or three-wheelers.' },
-      { question: 'Can they handle COD?', answer: 'Yes, associates are trained in basic COD handling and reconciliation processes.' }
-    ],
-    requirements: ['Ready delivery routes', 'Clear pickup hub location'],
-    indexabilityStatus: 'eligible'
+    category: 'Logistics & Labor', audiences: ['corporate', 'contractor'],
+    icon: 'Truck', image: '/images/delivery-hero.webp', roles: ['delivery-associate'],
+    serviceType: 'shift', availability: 'active', status: 'active',
+    useCases: ['E-commerce Delivery', 'Food Delivery', 'Grocery Fulfillment'],
+    whoIsItFor: ['E-commerce Companies', 'Restaurants', 'Retailers'],
+    whatThisCovers: ['Route-based package delivery', 'Proof of delivery capture', 'COD handling'],
+    howItWorks: [{step:1,title:'Request',description:'Specify associates needed.'}, {step:2,title:'Deploy',description:'Associates report to hub.'}, {step:3,title:'Execute',description:'Deliveries made.'}, {step:4,title:'Reconcile',description:'End-of-day COD settlement.'}],
+    faqs: [{question:'Do they bring vehicles?',answer:'Yes, typically two-wheelers.'}],
+    requirements: ['Ready delivery routes'], indexabilityStatus: 'eligible'
   }
 ];

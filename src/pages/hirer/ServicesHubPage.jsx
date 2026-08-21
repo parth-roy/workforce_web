@@ -7,7 +7,7 @@ import { Zap, Wrench, Package, Sparkles, Truck, Users, ChevronDown, ChevronUp, A
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
-const CATEGORIES = ['All', 'Home Services', 'Logistics'];
+const CATEGORIES = ['All', 'Home Services', 'Logistics & Labor'];
 
 export default function ServicesHubPage() {
   const [activeCategory, setActiveCategory] = useState('All');

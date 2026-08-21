@@ -13,6 +13,7 @@ export default function WorkerOnboardingPage() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     phone: '',
     jobType: '',
     city: '',
@@ -37,8 +38,12 @@ export default function WorkerOnboardingPage() {
   }, [location.search]);
 
   const handleInput = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData(prev => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const isDriverRole = ['delivery-associate', 'driver'].includes(formData.jobType);
@@ -47,10 +52,16 @@ export default function WorkerOnboardingPage() {
     e.preventDefault();
     try {
       // Live Submission
-      const response = await fetch('https://api.gomytruck.com/api/v1/form-gig-leads', {
+      const payload = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (formData[key] !== null && formData[key] !== undefined) {
+          payload.append(key, formData[key]);
+        }
+      });
+      const apiUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL + '/form-gig-leads' : 'https://api.gomytruck.com/api/v1/form-gig-leads';
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: payload
       });
       if (response.ok) {
         setSubmitted(true);
@@ -155,7 +166,11 @@ export default function WorkerOnboardingPage() {
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name (Required)</label>
                 <input required type="text" name="lastName" value={formData.lastName} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g. Sharma" />
               </div>
-              <div className="md:col-span-2">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                <input type="email" name="email" value={formData.email} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g. rahul@example.com" />
+              </div>
+              <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Mobile Number (Required)</label>
                 <input required type="tel" name="phone" value={formData.phone} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="+91 9876543210" />
               </div>
@@ -239,31 +254,37 @@ export default function WorkerOnboardingPage() {
                 <p className="text-sm text-slate-500">Identity and background checks</p>
               </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Aadhaar Number (Required)</label>
-                <input required type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="XXXX XXXX XXXX" />
+            <div className="grid md:grid-cols-2 gap-6 mb-4">
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-slate-700">Aadhaar Card (Required)</label>
+                <input required type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Aadhaar Number (XXXX XXXX XXXX)" />
+                <div className="flex gap-2">
+                  <input required type="file" name="aadharFront" onChange={handleInput} accept="image/*,.pdf" className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">PAN Number (Required)</label>
-                <input required type="text" name="panNumber" value={formData.panNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="XXXXX0000X" />
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-slate-700">PAN Card (Required)</label>
+                <input required type="text" name="panNumber" value={formData.panNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="PAN Number (XXXXX0000X)" />
+                <input required type="file" name="panFront" onChange={handleInput} accept="image/*,.pdf" className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
               </div>
             </div>
             
-            <div className="border-t border-slate-100 pt-4 mt-4 grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+            <div className="border-t border-slate-100 pt-6 mt-6 grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                   Driving License
                   {isDriverRole ? <span className="text-red-500">*</span> : <span className="text-slate-400 text-xs font-normal">(Optional)</span>}
                 </label>
                 <input required={isDriverRole} type="text" name="dlNumber" value={formData.dlNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="DL Number" />
+                <input required={isDriverRole} type="file" name="dlFront" onChange={handleInput} accept="image/*,.pdf" className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
               </div>
-              <div>
-                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+              <div className="space-y-3">
+                <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                   Vehicle RC
                   {isDriverRole ? <span className="text-red-500">*</span> : <span className="text-slate-400 text-xs font-normal">(Optional)</span>}
                 </label>
                 <input required={isDriverRole} type="text" name="rcNumber" value={formData.rcNumber} onChange={handleInput} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="RC Number" />
+                <input required={isDriverRole} type="file" name="rcBook" onChange={handleInput} accept="image/*,.pdf" className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
               </div>
             </div>
           </section>

@@ -193,8 +193,15 @@ export default function WorkerOnboardingPage() {
                 onLocationChange={(loc) => {
                   setFormData(prev => ({ 
                     ...prev, 
-                    city: loc.district || loc.state, 
-                    area: loc.address || loc.street || loc.pincode 
+                    city: loc.district || loc.state || '', 
+                    area: loc.address || loc.street || loc.pincode || '',
+                    givenAddress: loc.address || '',
+                    givenStreet: loc.street || '',
+                    givenDistrict: loc.district || '',
+                    givenState: loc.state || '',
+                    givenPincode: loc.pincode || '',
+                    givenLat: loc.lat || '',
+                    givenLng: loc.lng || ''
                   }));
                 }} 
               />

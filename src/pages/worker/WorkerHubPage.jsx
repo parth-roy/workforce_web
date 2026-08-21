@@ -12,7 +12,7 @@ import {
   Clock, Shield, Smartphone, ArrowRight
 } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Logistics', 'Home Services', 'Manufacturing'];
+const CATEGORIES = ['All', 'Home Services', 'Logistics & Labor'];
 
 export default function WorkerHubPage() {
   const { roles, locations } = useWorkforce();
@@ -47,9 +47,7 @@ export default function WorkerHubPage() {
               Metro Mitra connects workers with warehouse, logistics, and home service jobs across West Bengal. Browse roles, set your location preference, and get started.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
-                <Smartphone className="w-5 h-5" /> Download Worker App
-              </button>
+              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"><Smartphone className="w-5 h-5" /> Download Worker App</a>
               <Link to="#roles" className="bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
                 Browse Roles
               </Link>
@@ -209,3 +207,5 @@ export default function WorkerHubPage() {
     </>
   );
 }
+
+

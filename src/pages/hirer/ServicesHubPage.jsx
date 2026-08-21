@@ -44,9 +44,7 @@ export default function ServicesHubPage() {
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
             From electricians and plumbers to cleaning and moving help — Metro Mitra connects you with skilled workers for tasks around your home or office.
           </p>
-          <Link to="#services" className="inline-block bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors">
-            Browse Services
-          </Link>
+          
         </div>
       </section>
 
@@ -174,3 +172,4 @@ export default function ServicesHubPage() {
     </>
   );
 }
+

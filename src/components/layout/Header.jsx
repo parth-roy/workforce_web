@@ -25,11 +25,7 @@ const DESKTOP_NAV = [
   {
     label: 'Hire Workers',
     href: '/hire-workers',
-    dropdown: [
-      { label: 'Workforce Services', href: '/hire-workers' },
-      { label: 'Contractor', href: '/for-contractors' },
-      { label: 'Company', href: '/for-companies' },
-    ]
+    dropdown: [ { label: 'Workforce Services', href: '/hire-workers' }]
   },
   { label: 'About', href: '/about' },
   { label: 'Resources', href: '/guides' },
@@ -210,3 +206,4 @@ export default function Header() {
     </nav>
   );
 }
+

@@ -52,25 +52,40 @@
     <loc>https://metromitra.com/guides</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/warehouse-helper</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/cleaner</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/loader</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/packer</loc>
+    <loc>https://metromitra.com/jobs/painter</loc>
   </url>
   <url>
     <loc>https://metromitra.com/jobs/plumber</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/technician</loc>
+    <loc>https://metromitra.com/jobs/cleaner</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/ac-technician</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/appliance-technician</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/security-guard</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/carpenter</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/loader-unloader</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/general-helper</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/furniture-mover</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/packer</loc>
   </url>
   <url>
     <loc>https://metromitra.com/jobs/delivery-associate</loc>
@@ -88,18 +103,6 @@
     <loc>https://metromitra.com/jobs/location/hooghly</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/warehouse-helper/barrackpore</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/warehouse-helper/dankuni</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/warehouse-helper/kolkata</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/warehouse-helper/hooghly</loc>
-  </url>
-  <url>
     <loc>https://metromitra.com/jobs/electrician/barrackpore</loc>
   </url>
   <url>
@@ -112,40 +115,16 @@
     <loc>https://metromitra.com/jobs/electrician/hooghly</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/cleaner/barrackpore</loc>
+    <loc>https://metromitra.com/jobs/painter/barrackpore</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/cleaner/dankuni</loc>
+    <loc>https://metromitra.com/jobs/painter/dankuni</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/cleaner/kolkata</loc>
+    <loc>https://metromitra.com/jobs/painter/kolkata</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/cleaner/hooghly</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/loader/barrackpore</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/loader/dankuni</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/loader/kolkata</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/loader/hooghly</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/packer/barrackpore</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/packer/dankuni</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/packer/kolkata</loc>
-  </url>
-  <url>
-    <loc>https://metromitra.com/jobs/packer/hooghly</loc>
+    <loc>https://metromitra.com/jobs/painter/hooghly</loc>
   </url>
   <url>
     <loc>https://metromitra.com/jobs/plumber/barrackpore</loc>
@@ -160,16 +139,112 @@
     <loc>https://metromitra.com/jobs/plumber/hooghly</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/technician/barrackpore</loc>
+    <loc>https://metromitra.com/jobs/cleaner/barrackpore</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/technician/dankuni</loc>
+    <loc>https://metromitra.com/jobs/cleaner/dankuni</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/technician/kolkata</loc>
+    <loc>https://metromitra.com/jobs/cleaner/kolkata</loc>
   </url>
   <url>
-    <loc>https://metromitra.com/jobs/technician/hooghly</loc>
+    <loc>https://metromitra.com/jobs/cleaner/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/ac-technician/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/ac-technician/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/ac-technician/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/ac-technician/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/appliance-technician/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/appliance-technician/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/appliance-technician/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/appliance-technician/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/security-guard/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/security-guard/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/security-guard/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/security-guard/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/carpenter/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/carpenter/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/carpenter/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/carpenter/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/loader-unloader/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/loader-unloader/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/loader-unloader/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/loader-unloader/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/general-helper/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/general-helper/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/general-helper/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/general-helper/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/furniture-mover/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/furniture-mover/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/furniture-mover/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/furniture-mover/hooghly</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/packer/barrackpore</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/packer/dankuni</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/packer/kolkata</loc>
+  </url>
+  <url>
+    <loc>https://metromitra.com/jobs/packer/hooghly</loc>
   </url>
   <url>
     <loc>https://metromitra.com/jobs/delivery-associate/barrackpore</loc>

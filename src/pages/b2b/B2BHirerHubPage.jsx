@@ -3,137 +3,193 @@ import { Link } from 'react-router-dom';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import SEO from '../../components/ui/SEO';
 import { B2BHirerHubSEO } from '../../seo/pageMetadata';
+import { 
+  Users, ShieldCheck, Clock, FileText, 
+  Building2, HardHat, TrendingUp, CheckCircle2,
+  ArrowRight, PhoneCall, Zap
+} from 'lucide-react';
 
 export default function B2BHirerHubPage() {
-  const { services } = useWorkforce();
-  const b2bServices = services.filter(s => s.audiences?.includes('corporate') || s.audiences?.includes('contractor'));
+  const { roles } = useWorkforce();
+  
+  // Filter roles that make sense for bulk hiring
+  const b2bRoles = roles.filter(r => 
+    ['loader-unloader', 'general-helper', 'security-guard', 'delivery-associate', 'cleaner', 'packer'].includes(r.slug)
+  );
 
   return (
     <>
       <SEO {...B2BHirerHubSEO()} />
-      <div className="bg-slate-50 min-h-screen pb-20 font-sans">
+      <div className="bg-slate-50 min-h-screen font-sans">
         
-        {/* Enterprise Hero Section */}
-        <div className="bg-slate-900 text-white pt-24 pb-20 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-slate-900"></div>
+        {/* Brand-Aligned Hero Section */}
+        <section className="bg-slate-900 text-white pt-28 pb-24 px-4 relative overflow-hidden">
+          {/* Subtle background decoration */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
+          
           <div className="container mx-auto max-w-6xl relative z-10 text-center">
-            <span className="inline-block py-1 px-3 rounded-full bg-blue-900/50 border border-blue-700 text-blue-300 font-semibold tracking-wider uppercase text-xs mb-6 shadow-sm">
-              B2B Workforce Procurement Platform
+            <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-emerald-500/20 text-emerald-300 font-bold tracking-wider uppercase text-xs mb-6">
+              <Building2 className="w-4 h-4" /> B2B & Enterprise Solutions
             </span>
-            <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tight">
-              Scale your operations with <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">structural workforce solutions</span>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
+              Hire Reliable Teams <br className="hidden md:block" />
+              <span className="text-emerald-400">At Scale. On Demand.</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
-              Enterprise-grade manpower procurement for logistics hubs, manufacturing sites, and complex supply chain operations. Connect with verified workforce providers at scale.
+            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+              Whether you need 5 warehouse helpers for a week or 50 delivery associates for the festive season, Metro Mitra delivers verified, skilled blue-collar workers across West Bengal.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/for-companies" className="px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-blue-600/20">
-                Corporate Workspace
+              <Link to="/contact" className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 text-lg">
+                Talk to Sales <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link to="/for-contractors" className="px-8 py-4 bg-slate-800 text-white font-bold rounded-lg hover:bg-slate-700 border border-slate-700 transition-colors">
-                Contractor Hub
+              <Link to="/jobs" className="px-8 py-4 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors flex items-center justify-center gap-2 text-lg">
+                View Workforce Roster
               </Link>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Trust/Stats Banner */}
-        <div className="border-b bg-white">
-          <div className="container mx-auto max-w-6xl px-4 py-8">
+        {/* Stats Banner */}
+        <section className="border-b bg-white relative z-20 -mt-8 mx-4 md:mx-auto max-w-5xl rounded-2xl shadow-lg shadow-slate-200/50">
+          <div className="p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-100">
               <div className="flex flex-col items-center">
-                <div className="text-3xl font-black text-slate-900">Scale</div>
-                <div className="text-sm text-slate-500 mt-1 font-medium">Workforce Network</div>
+                <div className="text-4xl font-black text-slate-900 mb-1">500+</div>
+                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Verified Workers</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-3xl font-black text-slate-900">Speed</div>
-                <div className="text-sm text-slate-500 mt-1 font-medium">Deployment Focus</div>
+                <div className="text-4xl font-black text-slate-900 mb-1">24hr</div>
+                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Deployment</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-3xl font-black text-slate-900">Trust</div>
-                <div className="text-sm text-slate-500 mt-1 font-medium">Verified Profiles</div>
+                <div className="text-4xl font-black text-slate-900 mb-1">98%</div>
+                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Fulfillment Rate</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-3xl font-black text-slate-900">B2B</div>
-                <div className="text-sm text-slate-500 mt-1 font-medium">Enterprise Partners</div>
+                <div className="text-4xl font-black text-slate-900 mb-1">Zero</div>
+                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Compliance Hassle</div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <main className="container mx-auto px-4 py-16 max-w-6xl">
-          
-          {/* Path Selection */}
-          <div className="mb-20">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">Choose your operating model</h2>
-              <p className="text-slate-600 max-w-2xl mx-auto">We provide tailored procurement workflows based on your operational complexity and geographic scale.</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <Link to="/for-contractors" className="group block bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all">
-                <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-slate-900 group-hover:text-blue-700 transition-colors">Contractor & Proprietor</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed">Fast, single-location workforce requests. Ideal for site managers needing immediate multi-role deployments.</p>
-                <span className="inline-flex items-center text-sm font-bold text-blue-600">
-                  Explore Contractor Tools <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </span>
-              </Link>
-              
-              <Link to="/for-companies" className="group block bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:border-slate-600 transition-all relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-slate-800 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
-                <div className="relative z-10">
-                  <div className="w-12 h-12 bg-slate-800 text-white rounded-lg flex items-center justify-center mb-6">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 text-white">Corporate & Enterprise</h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">Centralized procurement for multi-location, multi-shift workforce demand. Build structured supply workflows.</p>
-                  <span className="inline-flex items-center text-sm font-bold text-white">
-                    Explore Corporate Workspace <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                  </span>
-                </div>
-              </Link>
-            </div>
-          </div>
+        </section>
 
-          {/* Capabilities Grid */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">Workforce Capabilities</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {b2bServices.map(service => (
-                <div key={service.slug} className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all flex flex-col group">
-                  <div className="p-6 flex-1">
-                    <div className="flex items-center gap-4 mb-5">
-                      <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                        {service.icon}
-                      </div>
-                      <h3 className="font-bold text-xl text-slate-900">{service.name}</h3>
+        {/* Value Proposition */}
+        <section className="py-24 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Why Choose Metro Mitra for Bulk Hiring?</h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">We handle the heavy lifting of recruitment, verification, and compliance so you can focus on your core business.</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { icon: ShieldCheck, title: '100% Background Verified', desc: 'Every worker undergoes strict identity and address verification before they can accept corporate jobs.' },
+                { icon: Clock, title: 'Quick Replacements', desc: 'Worker didn\'t show up? Our deep roster ensures we can deploy backup personnel within hours.' },
+                { icon: FileText, title: 'Consolidated Billing', desc: 'Stop managing dozens of individual daily wagers. Get one clean, GST-compliant invoice at the end of the month.' },
+                { icon: Zap, title: 'On-Demand Scaling', desc: 'Scale your workforce up during peak seasons and scale down when demand drops, without HR overhead.' },
+                { icon: Users, title: 'Dedicated Supervisor', desc: 'For large deployments, we provide an on-ground supervisor to manage attendance and coordination.' },
+                { icon: TrendingUp, title: 'High Retention', desc: 'We offer fair payouts and benefits to our workers, resulting in higher reliability and lower churn for your business.' },
+              ].map((feature, idx) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={idx} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all group">
+                    <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <Icon className="w-7 h-7" />
                     </div>
-                    <p className="text-slate-600 text-sm mb-6 line-clamp-3 leading-relaxed">{service.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {service.roles.slice(0, 3).map(roleSlug => (
-                        <span key={roleSlug} className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-md font-medium border border-slate-200">
-                          {roleSlug.replace('-', ' ')}
-                        </span>
-                      ))}
-                      {service.roles.length > 3 && <span className="text-xs text-slate-500 py-1.5 font-medium">+{service.roles.length - 3} more</span>}
-                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
                   </div>
-                  <div className="px-6 py-4 bg-slate-50/50 border-t flex justify-between items-center group-hover:bg-blue-50/50 transition-colors">
-                    <Link to={`/hire-workers/${service.slug}`} className="text-sm font-bold text-blue-600 group-hover:text-blue-700 flex items-center">
-                      View full catalog <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                    </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Most Requested Roles (Using dynamic data) */}
+        <section className="py-24 bg-slate-900 text-white px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl md:text-4xl font-black mb-4">Most Requested B2B Roles</h2>
+                <p className="text-slate-400 text-lg">Browse the types of workers we frequently deploy for enterprise and contractor clients.</p>
+              </div>
+              <Link to="/contact" className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold transition-colors inline-flex items-center gap-2 whitespace-nowrap">
+                Hire These Roles <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {b2bRoles.map(role => (
+                <div key={role.slug} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 hover:border-emerald-500 transition-colors">
+                  <h3 className="text-xl font-bold text-white mb-2">{role.name}</h3>
+                  <p className="text-slate-400 text-sm mb-4 line-clamp-2">{role.description}</p>
+                  <ul className="space-y-2 mb-6">
+                    {role.requirements.slice(0, 2).map((req, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="pt-4 border-t border-slate-700 text-emerald-400 font-semibold text-sm">
+                    Usually deployed in batches of 5-20
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          
-        </main>
+        </section>
+
+        {/* How It Works */}
+        <section className="py-24 px-4 bg-emerald-50">
+          <div className="container mx-auto max-w-5xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">How B2B Hiring Works</h2>
+              <p className="text-lg text-slate-600">A streamlined process designed for businesses moving at speed.</p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-8 relative">
+              <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-0.5 bg-emerald-200 z-0"></div>
+              
+              {[
+                { step: '1', title: 'Share Requirements', desc: 'Tell us the roles, headcount, location, and duration.' },
+                { step: '2', title: 'Get a Quote', desc: 'We provide a transparent, all-inclusive rate card.' },
+                { step: '3', title: 'Deployment', desc: 'Verified workers report to your site on the agreed date.' },
+                { step: '4', title: 'Consolidated Billing', desc: 'Pay once a month via standard corporate invoicing.' },
+              ].map((item, idx) => (
+                <div key={idx} className="relative z-10 text-center">
+                  <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-2xl mx-auto mb-6 shadow-lg shadow-emerald-900/20 border-4 border-emerald-50">
+                    {item.step}
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+                  <p className="text-slate-600 text-sm">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-24 px-4">
+          <div className="container mx-auto max-w-4xl bg-slate-900 rounded-3xl p-8 md:p-16 text-center shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10">
+              <HardHat className="w-48 h-48 text-white" />
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Ready to scale your workforce?</h2>
+              <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+                Stop worrying about manpower shortages and compliance. Partner with Metro Mitra today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/contact" className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-500 transition-colors shadow-lg flex items-center justify-center gap-2 text-lg">
+                  <PhoneCall className="w-5 h-5" /> Contact Sales Team
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </>
   );

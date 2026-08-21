@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { IndividualServiceSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
@@ -14,9 +14,9 @@ import {
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
 export default function IndividualServicePage() {
+  const navigate = useNavigate();
   const { service: serviceSlug } = useParams();
   const [openFaq, setOpenFaq] = useState(null);
-  const [showForm, setShowForm] = useState(false);
 
   const svc = mockServices.find(s => s.slug === serviceSlug);
 
@@ -48,15 +48,6 @@ export default function IndividualServicePage() {
     <>
       <SEO {...IndividualServiceSEO(svc)} />
 
-      {/* Request Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black/60 z-[110] flex items-end md:items-center justify-center md:p-4" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
-          <div className="w-full md:max-w-lg h-[95vh] md:h-auto animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:fade-in duration-300">
-            <ServiceBookingWizard service={svc} onClose={() => setShowForm(false)} />
-          </div>
-        </div>
-      )}
-
       {/* Hero */}
       <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-5xl">
@@ -71,7 +62,7 @@ export default function IndividualServicePage() {
               <p className="text-lg text-slate-300 max-w-2xl">{svc.tagline || svc.description}</p>
             </div>
             <button
-              onClick={() => setShowForm(true)}
+              onClick={() => navigate(`/services/${svc.slug}/hire`)}
               className="shrink-0 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"
             >
               Book This Service <ArrowRight className="w-5 h-5" />
@@ -181,7 +172,7 @@ export default function IndividualServicePage() {
             <p className="text-emerald-100">Complete the form in minutes. No account required for the prototype.</p>
           </div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => navigate(`/services/${svc.slug}/hire`)}
             className="shrink-0 bg-white text-emerald-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-50 transition-colors flex items-center gap-2"
           >
             Book Now <ArrowRight className="w-5 h-5" />
@@ -221,4 +212,7 @@ export default function IndividualServicePage() {
     </>
   );
 }
+
+
+
 

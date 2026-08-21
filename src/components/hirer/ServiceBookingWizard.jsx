@@ -99,7 +99,7 @@ export default function ServiceBookingWizard({ service, onClose }) {
   }
 
   return (
-    <div className="flex flex-col h-full md:h-[600px] rounded-t-2xl md:rounded-2xl bg-slate-50 relative rounded-2xl overflow-hidden shadow-2xl">
+    <div className="flex flex-col h-full md:h-[700px] bg-slate-50 relative overflow-hidden">
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center justify-between border-b sticky top-0 z-10 shadow-sm">
         {step > 1 ? (
@@ -114,7 +114,7 @@ export default function ServiceBookingWizard({ service, onClose }) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto pb-24">
+      <div key={step} className="flex-1 overflow-y-auto pb-28 animate-step">
         {step === 1 && (
           <div className="p-4 space-y-6">
             <div className="bg-emerald-50 text-emerald-800 p-4 rounded-xl flex items-start gap-3">
@@ -264,4 +264,5 @@ export default function ServiceBookingWizard({ service, onClose }) {
     </div>
   );
 }
+
 

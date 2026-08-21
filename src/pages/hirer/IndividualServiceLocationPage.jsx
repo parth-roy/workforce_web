@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { IndividualServiceLocationSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
@@ -11,8 +11,8 @@ import { MapPin, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
 
 export default function IndividualServiceLocationPage() {
+  const navigate = useNavigate();
   const { service: serviceSlug, location: locSlug } = useParams();
-  const [showForm, setShowForm] = useState(false);
 
   const svc = mockServices.find(s => s.slug === serviceSlug);
   const loc = mockLocations.find(l => l.slug === locSlug);
@@ -38,15 +38,6 @@ export default function IndividualServiceLocationPage() {
     <>
       <SEO {...IndividualServiceLocationSEO(svc, loc)} />
 
-      {/* Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black/60 z-[110] flex items-end md:items-center justify-center md:p-4" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
-          <div className="w-full md:max-w-lg h-[95vh] md:h-auto animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:fade-in duration-300">
-            <ServiceBookingWizard service={svc} onClose={() => setShowForm(false)} />
-          </div>
-        </div>
-      )}
-
       {/* Hero */}
       <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-5xl">
@@ -62,7 +53,7 @@ export default function IndividualServiceLocationPage() {
             {svc.description} Available in {loc.name}, {loc.state}.
           </p>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => navigate(`/services/${svc.slug}/hire`)}
             className="inline-flex items-center gap-2 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors"
           >
             Book in {loc.name} <ArrowRight className="w-5 h-5" />
@@ -106,7 +97,7 @@ export default function IndividualServiceLocationPage() {
             <p className="text-emerald-100 text-sm">Complete our simple form to describe your task.</p>
           </div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => navigate(`/services/${svc.slug}/hire`)}
             className="shrink-0 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors"
           >
             Book Now
@@ -126,5 +117,8 @@ export default function IndividualServiceLocationPage() {
     </>
   );
 }
+
+
+
 
 

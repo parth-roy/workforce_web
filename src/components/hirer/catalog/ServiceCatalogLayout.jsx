@@ -1,14 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Star, ChevronRight, CheckCircle2, Shield, Plus, Minus, X, 
-  Power, Fan, Lightbulb, Cable, Bell, Zap, Tv, Users, ShoppingCart
+  Power, Fan, Lightbulb, Cable, Bell, Zap, Tv, Users, ShoppingCart,
+  Droplets, CheckSquare, Droplet, Paperclip, Box, CircleSlash, Link2, Database,
+  Layout, Wrench, Layers, Grid, DoorOpen, Monitor, Hammer, Scissors, PenTool as Tool
 } from 'lucide-react';
-import { electricianCategories, electricianServices } from '../../../data/mock/electricianCatalog';
 
-const ICON_MAP = { Power, Fan, Lightbulb, Cable, Bell, Zap, Tv, Users };
+import { categories as electricianCategories, services as electricianServices } from '../../../data/mock/electricianCatalog';
+import { categories as plumberCategories, services as plumberServices } from '../../../data/mock/plumberCatalog';
+import { categories as carpenterCategories, services as carpenterServices } from '../../../data/mock/carpenterCatalog';
+
+const ICON_MAP = { 
+  Power, Fan, Lightbulb, Cable, Bell, Zap, Tv, Users,
+  Droplets, CheckSquare, Droplet, Paperclip, Box, CircleSlash, Link2, Database,
+  Layout, Wrench, Layers, Grid, DoorOpen, Monitor, Hammer, Scissors, Tool
+};
 
 export default function ServiceCatalogLayout({ service }) {
-  const [activeCategory, setActiveCategory] = useState('switch-socket');
+  let activeCategories = electricianCategories;
+  let activeServices = electricianServices;
+  
+  if (service?.slug === 'plumber') {
+    activeCategories = plumberCategories;
+    activeServices = plumberServices;
+  } else if (service?.slug === 'carpenter') {
+    activeCategories = carpenterCategories;
+    activeServices = carpenterServices;
+  }
+
+  const [activeCategory, setActiveCategory] = useState(activeCategories[0]?.id || 'switch-socket');
   const [cart, setCart] = useState([]);
   const [selectedService, setSelectedService] = useState(null); // For modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +60,7 @@ export default function ServiceCatalogLayout({ service }) {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 150; // offset
       
-      for (const category of electricianCategories) {
+      for (const category of activeCategories) {
         const element = sectionRefs.current[category.id];
         if (element) {
           const { top, bottom } = element.getBoundingClientRect();
@@ -57,7 +77,7 @@ export default function ServiceCatalogLayout({ service }) {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeCategories]);
 
   const handleAddClick = (item) => {
     if (item.optionsCount > 0) {

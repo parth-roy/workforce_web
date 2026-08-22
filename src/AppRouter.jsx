@@ -35,6 +35,16 @@ import AboutPage from './pages/shared/AboutPage';
 import ContactPage from './pages/shared/ContactPage';
 import FAQPage from './pages/shared/FAQPage';
 import GuidesPage from './pages/shared/GuidesPage';
+import UCServicePage from './pages/hirer/UCServicePage';
+import { useParams } from 'react-router-dom';
+
+function ServiceDispatcher() {
+  const { service } = useParams();
+  if (['electrician', 'plumber', 'carpenter'].includes(service)) {
+    return <UCServicePage />;
+  }
+  return <IndividualServicePage />;
+}
 
 export default function AppRouter() {
   return (
@@ -62,7 +72,7 @@ export default function AppRouter() {
       <Route path="/services/categories" element={<ServiceCategoryDirectoryPage />} />
       <Route path="/services/how-it-works" element={<ServiceHowItWorksPage />} />
       <Route path="/services/faq" element={<ServiceFAQPage />} />
-      <Route path="/services/:service" element={<IndividualServicePage />} />
+      <Route path="/services/:service" element={<ServiceDispatcher />} />
       <Route path="/services/:service/hire" element={<ServiceHiringFlowPage />} />
       <Route path="/services/:service/:location" element={<IndividualServiceLocationPage />} />
 

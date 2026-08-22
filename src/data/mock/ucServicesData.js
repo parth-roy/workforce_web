@@ -420,5 +420,373 @@ export const ucServicesData = {
         ]
       }
     ]
+    },
+painter: {
+    id: 'painter',
+    title: 'Painter',
+    rating: '4.85 (2.1M bookings)',
+    deliveryTime: 'In 2 hrs',
+    banner: {
+      type: 'warranty',
+      title: 'Flawless Finish Guarantee',
+      subtitle: 'On every painting job',
+    },
+    categories: [
+      {
+        id: 'interior_painting',
+        name: 'Interior Painting',
+        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=100&q=80',
+        items: [
+          { id: 'pt1', title: 'Single Room Painting', rating: '4.82 (15K reviews)', price: 'Starts at ₹2499', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80', options: [{ id: 'pt1-1', title: 'Basic Emulsion', price: 2499, time: '1 Day' }, { id: 'pt1-2', title: 'Premium Washable', price: 3499, time: '1 Day' }] },
+          { id: 'pt2', title: 'Full House Painting', rating: '4.86 (20K reviews)', price: 'Starts at ₹8999', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80', options: [{ id: 'pt2-1', title: '1 BHK', price: 8999, time: '3 Days' }, { id: 'pt2-2', title: '2 BHK', price: 13999, time: '4 Days' }, { id: 'pt2-3', title: '3 BHK', price: 18999, time: '5 Days' }] }
+        ]
+      },
+      {
+        id: 'exterior_painting',
+        name: 'Exterior Painting',
+        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=100&q=80',
+        items: [
+          { id: 'pt3', title: 'Exterior Wall Painting', rating: '4.79 (8K reviews)', price: 'Starts at ₹4999', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80', options: [{ id: 'pt3-1', title: 'Standard Weatherproof', price: 4999, time: '2 Days' }, { id: 'pt3-2', title: 'Advanced Protection', price: 7999, time: '3 Days' }] }
+        ]
+      },
+      {
+        id: 'waterproofing',
+        name: 'Waterproofing',
+        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=100&q=80',
+        items: [
+          { id: 'pt4', title: 'Dampness Treatment', rating: '4.88 (12K reviews)', price: 'Starts at ₹1499', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80', options: [{ id: 'pt4-1', title: 'Minor Patch', price: 1499, time: '4 Hrs' }, { id: 'pt4-2', title: 'Full Wall', price: 3499, time: '1 Day' }] }
+        ]
+      },
+      {
+        id: 'touchups',
+        name: 'Touch-ups & Repairs',
+        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=100&q=80',
+        items: [
+          { id: 'pt5', title: 'Wall Putty & Crack Repair', rating: '4.75 (5K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80', options: [{ id: 'pt5-1', title: 'Minor Cracks', price: 499, time: '2 Hrs' }, { id: 'pt5-2', title: 'Deep Cracks', price: 999, time: '4 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  cleaning: {
+    id: 'cleaning',
+    title: 'Cleaning',
+    rating: '4.81 (4.5M bookings)',
+    deliveryTime: 'In 60 mins',
+    banner: {
+      type: 'supersaver',
+      title: 'Sparkling Clean Homes',
+      subtitle: 'Starting at ₹299',
+    },
+    categories: [
+      {
+        id: 'full_home',
+        name: 'Full Home Cleaning',
+        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&q=80',
+        items: [
+          { id: 'cl1', title: 'Complete Deep Cleaning', rating: '4.86 (45K reviews)', price: 'Starts at ₹2499', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80', options: [{ id: 'cl1-1', title: '1 BHK', price: 2499, time: '5 Hrs' }, { id: 'cl1-2', title: '2 BHK', price: 3499, time: '7 Hrs' }, { id: 'cl1-3', title: '3 BHK', price: 4499, time: '9 Hrs' }] }
+        ]
+      },
+      {
+        id: 'bathroom_cleaning',
+        name: 'Bathroom Cleaning',
+        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&q=80',
+        items: [
+          { id: 'cl2', title: 'Bathroom Deep Clean', rating: '4.84 (60K reviews)', price: 'Starts at ₹399', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80', options: [{ id: 'cl2-1', title: '1 Bathroom', price: 399, time: '1 Hr' }, { id: 'cl2-2', title: '2 Bathrooms', price: 699, time: '2 Hrs' }] }
+        ]
+      },
+      {
+        id: 'kitchen_cleaning',
+        name: 'Kitchen Cleaning',
+        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&q=80',
+        items: [
+          { id: 'cl3', title: 'Kitchen Deep Clean', rating: '4.85 (50K reviews)', price: 'Starts at ₹999', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80', options: [{ id: 'cl3-1', title: 'Standard Kitchen', price: 999, time: '2 Hrs' }, { id: 'cl3-2', title: 'With Chimney Care', price: 1499, time: '3 Hrs' }] }
+        ]
+      },
+      {
+        id: 'sofa_carpet',
+        name: 'Sofa & Carpet Cleaning',
+        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&q=80',
+        items: [
+          { id: 'cl4', title: 'Sofa Shampooing', rating: '4.82 (30K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80', options: [{ id: 'cl4-1', title: '3 Seater', price: 499, time: '1 Hr' }, { id: 'cl4-2', title: '5 Seater', price: 799, time: '2 Hrs' }] },
+          { id: 'cl5', title: 'Carpet Cleaning', rating: '4.78 (15K reviews)', price: 'Starts at ₹399', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80', options: [{ id: 'cl5-1', title: 'Small Carpet', price: 399, time: '1 Hr' }, { id: 'cl5-2', title: 'Large Carpet', price: 699, time: '2 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  'ac-repair': {
+    id: 'ac-repair',
+    title: 'AC Repair',
+    rating: '4.89 (1.2M bookings)',
+    deliveryTime: 'In 45 mins',
+    banner: {
+      type: 'warranty',
+      title: 'Cooling Guaranteed',
+      subtitle: '30-day warranty on gas refill',
+    },
+    categories: [
+      {
+        id: 'ac_servicing',
+        name: 'AC Servicing',
+        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=100&q=80',
+        items: [
+          { id: 'ac1', title: 'Foam Jet Servicing', rating: '4.90 (120K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac1-1', title: 'Split AC', price: 499, time: '45 mins' }, { id: 'ac1-2', title: 'Window AC', price: 399, time: '30 mins' }] },
+          { id: 'ac2', title: 'Anti-rust Deep Clean', rating: '4.88 (45K reviews)', price: 'Starts at ₹799', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac2-1', title: 'Split AC', price: 799, time: '60 mins' }] }
+        ]
+      },
+      {
+        id: 'ac_repair_troubleshooting',
+        name: 'AC Repair & Fix',
+        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=100&q=80',
+        items: [
+          { id: 'ac3', title: 'Not Cooling Issue', rating: '4.85 (80K reviews)', price: 'Starts at ₹299', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac3-1', title: 'Inspection Fee', price: 299, time: '30 mins' }] },
+          { id: 'ac4', title: 'Water Leakage Fix', rating: '4.82 (35K reviews)', price: 'Starts at ₹299', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac4-1', title: 'Repair', price: 299, time: '30 mins' }] }
+        ]
+      },
+      {
+        id: 'ac_gas_refill',
+        name: 'AC Gas Refill',
+        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=100&q=80',
+        items: [
+          { id: 'ac5', title: 'Gas Refill with Leak Test', rating: '4.87 (65K reviews)', price: 'Starts at ₹2200', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac5-1', title: 'Top-up', price: 1200, time: '30 mins' }, { id: 'ac5-2', title: 'Complete Refill', price: 2200, time: '60 mins' }] }
+        ]
+      },
+      {
+        id: 'ac_install',
+        name: 'Installation/Uninstallation',
+        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=100&q=80',
+        items: [
+          { id: 'ac6', title: 'AC Installation', rating: '4.86 (25K reviews)', price: 'Starts at ₹999', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac6-1', title: 'Window AC', price: 599, time: '45 mins' }, { id: 'ac6-2', title: 'Split AC', price: 999, time: '90 mins' }] },
+          { id: 'ac7', title: 'AC Uninstallation', rating: '4.84 (18K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80', options: [{ id: 'ac7-1', title: 'Window AC', price: 299, time: '30 mins' }, { id: 'ac7-2', title: 'Split AC', price: 499, time: '45 mins' }] }
+        ]
+      }
+    ]
+  },
+  'appliance-repair': {
+    id: 'appliance-repair',
+    title: 'Appliance Repair',
+    rating: '4.80 (2.5M bookings)',
+    deliveryTime: 'In 90 mins',
+    banner: {
+      type: 'supersaver',
+      title: 'Expert Appliance Care',
+      subtitle: 'Diagnostics at ₹149',
+    },
+    categories: [
+      {
+        id: 'washing_machine',
+        name: 'Washing Machine',
+        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=100&q=80',
+        items: [
+          { id: 'ar1', title: 'Washing Machine Repair', rating: '4.82 (42K reviews)', price: 'Starts at ₹199', image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80', options: [{ id: 'ar1-1', title: 'Top Load', price: 199, time: '45 mins' }, { id: 'ar1-2', title: 'Front Load', price: 249, time: '60 mins' }] }
+        ]
+      },
+      {
+        id: 'refrigerator',
+        name: 'Refrigerator',
+        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=100&q=80',
+        items: [
+          { id: 'ar2', title: 'Fridge Repair', rating: '4.81 (38K reviews)', price: 'Starts at ₹199', image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80', options: [{ id: 'ar2-1', title: 'Single Door', price: 199, time: '45 mins' }, { id: 'ar2-2', title: 'Double Door', price: 249, time: '60 mins' }] }
+        ]
+      },
+      {
+        id: 'microwave',
+        name: 'Microwave',
+        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=100&q=80',
+        items: [
+          { id: 'ar3', title: 'Microwave Repair', rating: '4.79 (15K reviews)', price: 'Starts at ₹199', image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80', options: [{ id: 'ar3-1', title: 'Inspection', price: 199, time: '30 mins' }] }
+        ]
+      },
+      {
+        id: 'ro_purifier',
+        name: 'RO / Water Purifier',
+        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=100&q=80',
+        items: [
+          { id: 'ar4', title: 'RO Servicing/Repair', rating: '4.85 (50K reviews)', price: 'Starts at ₹299', image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80', options: [{ id: 'ar4-1', title: 'Basic Servicing', price: 299, time: '30 mins' }, { id: 'ar4-2', title: 'Filter Change', price: 899, time: '45 mins' }] }
+        ]
+      }
+    ]
+  },
+  security: {
+    id: 'security',
+    title: 'Security',
+    rating: '4.78 (500K bookings)',
+    deliveryTime: 'Starts next day',
+    banner: {
+      type: 'warranty',
+      title: 'Verified Personnel',
+      subtitle: 'Background checked & trained',
+    },
+    categories: [
+      {
+        id: 'residential_guards',
+        name: 'Residential Guards',
+        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=100&q=80',
+        items: [
+          { id: 'sec1', title: 'Apartment Security Guard', rating: '4.80 (12K reviews)', price: 'Starts at ₹800/shift', image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80', options: [{ id: 'sec1-1', title: 'Day Shift (12H)', price: 800, time: '12 Hrs' }, { id: 'sec1-2', title: 'Night Shift (12H)', price: 900, time: '12 Hrs' }] }
+        ]
+      },
+      {
+        id: 'corporate_guards',
+        name: 'Corporate Guards',
+        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=100&q=80',
+        items: [
+          { id: 'sec2', title: 'Office Security Guard', rating: '4.82 (8K reviews)', price: 'Starts at ₹900/shift', image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80', options: [{ id: 'sec2-1', title: 'Day Shift', price: 900, time: '12 Hrs' }, { id: 'sec2-2', title: 'Night Shift', price: 1000, time: '12 Hrs' }] }
+        ]
+      },
+      {
+        id: 'event_security',
+        name: 'Event Security & Bouncers',
+        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=100&q=80',
+        items: [
+          { id: 'sec3', title: 'Event Bouncer', rating: '4.85 (5K reviews)', price: 'Starts at ₹1500/shift', image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80', options: [{ id: 'sec3-1', title: 'Standard Event', price: 1500, time: '8 Hrs' }, { id: 'sec3-2', title: 'VIP Protection', price: 2500, time: '8 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  'loading-unloading': {
+    id: 'loading-unloading',
+    title: 'Loading & Unloading',
+    rating: '4.75 (1M bookings)',
+    deliveryTime: 'In 3 hrs',
+    banner: {
+      type: 'supersaver',
+      title: 'Strong hands on demand',
+      subtitle: 'Starting at ₹299/hr',
+    },
+    categories: [
+      {
+        id: 'truck_loading',
+        name: 'Truck Loading/Unloading',
+        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=100&q=80',
+        items: [
+          { id: 'lu1', title: 'Tempo/Truck Loading', rating: '4.78 (35K reviews)', price: 'Starts at ₹399', image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80', options: [{ id: 'lu1-1', title: 'Mini Truck', price: 399, time: '2 Hrs' }, { id: 'lu1-2', title: 'Large Truck', price: 799, time: '4 Hrs' }] }
+        ]
+      },
+      {
+        id: 'floor_shifting',
+        name: 'Floor-to-Floor Shifting',
+        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=100&q=80',
+        items: [
+          { id: 'lu2', title: 'Shifting within building', rating: '4.72 (20K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80', options: [{ id: 'lu2-1', title: 'With Elevator', price: 499, time: '2 Hrs' }, { id: 'lu2-2', title: 'Without Elevator', price: 699, time: '2 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  'general-helper': {
+    id: 'general-helper',
+    title: 'General Helper',
+    rating: '4.76 (800K bookings)',
+    deliveryTime: 'In 2 hrs',
+    banner: {
+      type: 'supersaver',
+      title: 'Versatile Assistance',
+      subtitle: 'For all your ad-hoc tasks',
+    },
+    categories: [
+      {
+        id: 'event_setup',
+        name: 'Event & Store Setup',
+        icon: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=100&q=80',
+        items: [
+          { id: 'gh1', title: 'Event Helper', rating: '4.80 (15K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80', options: [{ id: 'gh1-1', title: 'Half Day (4h)', price: 499, time: '4 Hrs' }, { id: 'gh1-2', title: 'Full Day (8h)', price: 899, time: '8 Hrs' }] }
+        ]
+      },
+      {
+        id: 'construction_helper',
+        name: 'Site Helpers',
+        icon: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=100&q=80',
+        items: [
+          { id: 'gh2', title: 'Construction/Site Helper', rating: '4.75 (25K reviews)', price: 'Starts at ₹699', image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80', options: [{ id: 'gh2-1', title: 'Full Day Shift', price: 699, time: '8 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  'furniture-moving': {
+    id: 'furniture-moving',
+    title: 'Furniture Moving',
+    rating: '4.82 (600K bookings)',
+    deliveryTime: 'In 4 hrs',
+    banner: {
+      type: 'warranty',
+      title: 'Safe Handling',
+      subtitle: 'Zero damage commitment',
+    },
+    categories: [
+      {
+        id: 'inhouse_shift',
+        name: 'In-House Rearrangement',
+        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=100&q=80',
+        items: [
+          { id: 'fm1', title: 'Move Heavy Furniture', rating: '4.85 (12K reviews)', price: 'Starts at ₹299', image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80', options: [{ id: 'fm1-1', title: '1-2 Items', price: 299, time: '1 Hr' }, { id: 'fm1-2', title: 'Full Room', price: 599, time: '2 Hrs' }] }
+        ]
+      },
+      {
+        id: 'relocation',
+        name: 'House/Office Relocation',
+        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=100&q=80',
+        items: [
+          { id: 'fm2', title: 'Complete Shifting', rating: '4.80 (28K reviews)', price: 'Starts at ₹1499', image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80', options: [{ id: 'fm2-1', title: '1 BHK', price: 1499, time: '4 Hrs' }, { id: 'fm2-2', title: '2 BHK', price: 2499, time: '6 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  packer: {
+    id: 'packer',
+    title: 'Packer',
+    rating: '4.79 (300K bookings)',
+    deliveryTime: 'Starts next day',
+    banner: {
+      type: 'supersaver',
+      title: 'Secure Packing',
+      subtitle: 'High quality materials used',
+    },
+    categories: [
+      {
+        id: 'fragile_packing',
+        name: 'Fragile Item Packing',
+        icon: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=100&q=80',
+        items: [
+          { id: 'pk1', title: 'Glassware & Electronics', rating: '4.83 (8K reviews)', price: 'Starts at ₹499', image: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80', options: [{ id: 'pk1-1', title: 'Standard Box', price: 499, time: '1 Hr' }, { id: 'pk1-2', title: 'Large Bubble Wrap', price: 899, time: '2 Hrs' }] }
+        ]
+      },
+      {
+        id: 'house_packing',
+        name: 'Complete House Packing',
+        icon: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=100&q=80',
+        items: [
+          { id: 'pk2', title: 'Pre-move Packing', rating: '4.78 (14K reviews)', price: 'Starts at ₹1999', image: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80', options: [{ id: 'pk2-1', title: '1 BHK', price: 1999, time: '4 Hrs' }, { id: 'pk2-2', title: '2 BHK', price: 2999, time: '6 Hrs' }] }
+        ]
+      }
+    ]
+  },
+  'last-mile-delivery': {
+    id: 'last-mile-delivery',
+    title: 'Last-Mile Delivery',
+    rating: '4.85 (900K bookings)',
+    deliveryTime: 'In 1 hr',
+    banner: {
+      type: 'warranty',
+      title: 'Fast & Reliable',
+      subtitle: 'Real-time tracking included',
+    },
+    categories: [
+      {
+        id: 'dedicated_rider',
+        name: 'Dedicated Rider',
+        icon: 'https://images.unsplash.com/photo-1558237956-6511a3d90f23?w=100&q=80',
+        items: [
+          { id: 'lmd1', title: 'Rider for Full/Half Day', rating: '4.86 (20K reviews)', price: 'Starts at ₹599', image: 'https://images.unsplash.com/photo-1558237956-6511a3d90f23?w=200&q=80', options: [{ id: 'lmd1-1', title: 'Half Day (4h)', price: 599, time: '4 Hrs' }, { id: 'lmd1-2', title: 'Full Day (8h)', price: 999, time: '8 Hrs' }] }
+        ]
+      },
+      {
+        id: 'per_package',
+        name: 'Per-Package Delivery',
+        icon: 'https://images.unsplash.com/photo-1558237956-6511a3d90f23?w=100&q=80',
+        items: [
+          { id: 'lmd2', title: 'Point-to-Point Drop', rating: '4.84 (40K reviews)', price: 'Starts at ₹99', image: 'https://images.unsplash.com/photo-1558237956-6511a3d90f23?w=200&q=80', options: [{ id: 'lmd2-1', title: 'Upto 5km', price: 99, time: '1 Hr' }, { id: 'lmd2-2', title: '5km - 15km', price: 199, time: '2 Hrs' }] }
+        ]
+      }
+    ]
   }
+
 };

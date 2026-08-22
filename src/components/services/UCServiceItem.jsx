@@ -38,14 +38,19 @@ export default function UCServiceItem({ item, onViewDetails, onAddClick }) {
             SUPER SAVER
           </div>
         )}
-        <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
+        <h3 
+          className="text-lg font-bold text-slate-900 mb-1 cursor-pointer hover:text-purple-700 transition-colors"
+          onClick={(e) => { e.stopPropagation(); onViewDetails(item); }}
+        >
+          {item.title}
+        </h3>
         
         <div className="flex items-center gap-2 text-sm text-slate-600 mb-2">
           <div className="flex items-center gap-1 text-black font-semibold">
             <Star className="w-4 h-4 fill-black text-black" />
             {item.rating.split(' ')[0]}
           </div>
-          <span>({item.rating.split(' ')[1]} {item.rating.split(' ')[2]})</span>
+          <span>{item.rating.split(' ').slice(1).join(' ')}</span>
         </div>
         
         <div className="flex items-center gap-2 mb-2">
@@ -55,7 +60,7 @@ export default function UCServiceItem({ item, onViewDetails, onAddClick }) {
         </div>
         
         <button 
-          onClick={() => onViewDetails(item)}
+          onClick={(e) => { e.stopPropagation(); onViewDetails(item); }}
           className="text-purple-700 font-semibold text-sm hover:underline"
         >
           View details
@@ -66,7 +71,8 @@ export default function UCServiceItem({ item, onViewDetails, onAddClick }) {
         <img 
           src={item.image} 
           alt={item.title} 
-          className="w-full h-full object-cover rounded-xl border border-slate-200"
+          className="w-full h-full object-cover rounded-xl border border-slate-200 cursor-pointer"
+          onClick={(e) => { e.stopPropagation(); onViewDetails(item); }}
         />
         
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-24">

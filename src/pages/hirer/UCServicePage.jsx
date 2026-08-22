@@ -45,6 +45,25 @@ function CartSidebar() {
   );
 }
 
+function MobileCartBottomBar() {
+  const { cart, getTotalPrice } = useUCCart();
+  const totalItems = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+
+  if (cart.length === 0) return null;
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 lg:hidden flex justify-between items-center animate-in slide-in-from-bottom-2">
+      <div>
+        <p className="text-sm font-bold text-slate-900">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
+        <p className="text-purple-700 font-bold">₹{getTotalPrice()}</p>
+      </div>
+      <button className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors">
+        Checkout
+      </button>
+    </div>
+  );
+}
+
 function UCServicePageContent() {
   const { service: id } = useParams();
   const navigate = useNavigate();
@@ -120,7 +139,7 @@ function UCServicePageContent() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 pb-24 lg:pb-8">
         {/* Top Title & Banner */}
         <div className="mb-10 flex flex-col md:flex-row gap-6">
           <div className="flex-1">
@@ -260,6 +279,8 @@ function UCServicePageContent() {
           setTimeout(() => setSelectedItem(null), 200);
         }} 
       />
+      
+      <MobileCartBottomBar />
     </div>
   );
 }

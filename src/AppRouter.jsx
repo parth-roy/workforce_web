@@ -39,10 +39,6 @@ import UCServicePage from './pages/hirer/UCServicePage';
 import { useParams } from 'react-router-dom';
 
 function ServiceDispatcher() {
-  const { service } = useParams();
-  if (['electrician', 'plumber', 'carpenter'].includes(service)) {
-    return <UCServicePage />;
-  }
   return <IndividualServicePage />;
 }
 
@@ -73,7 +69,7 @@ export default function AppRouter() {
       <Route path="/services/how-it-works" element={<ServiceHowItWorksPage />} />
       <Route path="/services/faq" element={<ServiceFAQPage />} />
       <Route path="/services/:service" element={<ServiceDispatcher />} />
-      <Route path="/services/:service/hire" element={<ServiceHiringFlowPage />} />
+      <Route path="/services/:service/hire" element={<UCServicePage />} />
       <Route path="/services/:service/:location" element={<IndividualServiceLocationPage />} />
 
       {/* B2B Hire Workers Routes */}

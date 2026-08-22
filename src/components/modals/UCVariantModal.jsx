@@ -8,27 +8,35 @@ export default function UCVariantModal({ item, isOpen, onClose }) {
   if (!isOpen || !item) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-end sm:items-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200">
-      <div className="bg-white w-full sm:w-[500px] max-h-[90vh] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col relative animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0">
+    <div 
+      className="fixed inset-0 z-50 flex justify-center items-end sm:items-start sm:pt-[10vh] bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white w-full sm:w-[450px] max-h-[85vh] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col relative animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header (Sticky) */}
-        <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-slate-900 pr-8">{item.title}</h2>
+        <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-slate-100 flex justify-between items-start gap-4">
+          <h2 className="text-xl font-bold text-slate-900 leading-tight">{item.title}</h2>
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors"
+            className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors shrink-0"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>
         </div>
 
         {/* Content (Scrollable) */}
-        <div className="p-6 overflow-y-auto">
-          <div className="flex items-center gap-2 mb-6">
-            <Star className="w-5 h-5 fill-black text-black" />
-            <span className="font-bold">{item.rating.split(' ')[0]}</span>
-            <span className="text-slate-500">({item.rating.split(' ')[1]} {item.rating.split(' ')[2]})</span>
-          </div>
+        <div className="p-6 overflow-y-auto flex-1 min-h-0">
+          {item.rating && (
+            <div className="flex items-center gap-2 mb-6">
+              <Star className="w-5 h-5 fill-black text-black" />
+              <span className="font-bold">{item.rating.split(' ')[0]}</span>
+              <span className="text-slate-500">{item.rating.split(' ').slice(1).join(' ')}</span>
+            </div>
+          )}
 
           <div className="space-y-4 mb-8">
             {item.options.map((variant) => {

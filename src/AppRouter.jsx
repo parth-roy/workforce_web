@@ -36,17 +36,22 @@ import ContactPage from './pages/shared/ContactPage';
 import FAQPage from './pages/shared/FAQPage';
 import GuidesPage from './pages/shared/GuidesPage';
 import UCServicePage from './pages/hirer/UCServicePage';
-import { useParams } from 'react-router-dom';
+import UCCheckoutPage from './pages/hirer/UCCheckoutPage';
+import UCOrdersPage from './pages/hirer/UCOrdersPage';
+import { useParams, useLocation } from 'react-router-dom';
 
 function ServiceDispatcher() {
   return <IndividualServicePage />;
 }
 
 export default function AppRouter() {
+  const location = useLocation();
+  const hideHeaderFooter = location.pathname === '/checkout' || location.pathname === '/user/orders';
+
   return (
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
-      <Header />
+      {!hideHeaderFooter && <Header />}
       <main className="flex-grow">
         <Routes>
       <Route path="/" element={<HomePage />} />
@@ -88,10 +93,12 @@ export default function AppRouter() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FAQPage />} />
       <Route path="/guides" element={<GuidesPage />} />
+      <Route path="/checkout" element={<UCCheckoutPage />} />
+      <Route path="/user/orders" element={<UCOrdersPage />} />
     </Routes>
       </main>
-      <Footer />
-      <FloatingContact />
+      {!hideHeaderFooter && <Footer />}
+      {!hideHeaderFooter && <FloatingContact />}
     </div>
   );
 }

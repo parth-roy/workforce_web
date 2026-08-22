@@ -4,6 +4,11 @@ const UCCartContext = createContext();
 
 export function UCCartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  const addOrder = (order) => {
+    setOrders((prev) => [{ ...order, id: Date.now().toString(), date: new Date().toISOString() }, ...prev]);
+  };
 
   const addToCart = (item, variant = null) => {
     setCart((prev) => {
@@ -51,7 +56,7 @@ export function UCCartProvider({ children }) {
   };
 
   return (
-    <UCCartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, getTotalPrice }}>
+    <UCCartContext.Provider value={{ cart, orders, addToCart, removeFromCart, clearCart, getTotalPrice, addOrder }}>
       {children}
     </UCCartContext.Provider>
   );

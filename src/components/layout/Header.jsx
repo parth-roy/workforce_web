@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, PhoneCall, LogIn } from 'lucide-react';
+import { Menu, X, ChevronDown, PhoneCall, LogIn, ShoppingCart, Package } from 'lucide-react';
+import { useUCCart } from '../../context/UCCartContext';
 
 const DESKTOP_NAV = [
   {
@@ -33,6 +34,7 @@ const DESKTOP_NAV = [
 ];
 
 export default function Header() {
+  const { cart, orders } = useUCCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -109,6 +111,22 @@ export default function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            <Link to="/user/orders" className="relative p-2 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
+              <Package size={22} />
+              {orders?.length > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {orders.length}
+                </span>
+              )}
+            </Link>
+            <Link to="/checkout" className="relative p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-2" title="My Cart">
+              <ShoppingCart size={22} />
+              {cart?.length > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 bg-purple-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
             <Link to="/join-as-worker" className="flex items-center gap-1.5 font-bold text-sm text-slate-600 hover:text-emerald-600 transition-colors px-2">
               <LogIn size={16} />
               Login
@@ -120,12 +138,25 @@ export default function Header() {
 
           {/* Mobile menu buttons */}
           <div className="lg:hidden flex items-center gap-2 z-[101]">
-            <a href="tel:+919331488999" className="p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="Call Support">
-              <PhoneCall size={20} className="text-emerald-600" />
-            </a>
+            <Link to="/user/orders" className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Bookings">
+              <Package size={20} className="text-slate-700" />
+              {orders?.length > 0 && (
+                <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-emerald-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {orders.length}
+                </span>
+              )}
+            </Link>
+            <Link to="/checkout" className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Cart">
+              <ShoppingCart size={20} className="text-slate-700" />
+              {cart?.length > 0 && (
+                <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-purple-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
             <button 
               onClick={() => setIsOpen(!isOpen)} 
-              className="p-2 rounded-lg transition-colors text-slate-800 hover:bg-slate-100" 
+              className="p-2 rounded-lg transition-colors text-slate-800 hover:bg-slate-100 ml-1" 
               aria-label="Toggle Menu"
             >
               {isOpen ? <X size={26} /> : <Menu size={26} />}

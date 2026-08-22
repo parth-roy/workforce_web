@@ -8,6 +8,7 @@ import { useUCCart, UCCartProvider } from '../../context/UCCartContext';
 
 function CartSidebar() {
   const { cart, getTotalPrice } = useUCCart();
+  const navigate = useNavigate();
   
   if (cart.length === 0) {
     return (
@@ -38,7 +39,10 @@ function CartSidebar() {
         <span>Total</span>
         <span>₹{getTotalPrice()}</span>
       </div>
-      <button className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition-colors">
+      <button 
+        onClick={() => navigate('/checkout')}
+        className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition-colors"
+      >
         Proceed to Checkout
       </button>
     </div>
@@ -47,6 +51,7 @@ function CartSidebar() {
 
 function MobileCartBottomBar() {
   const { cart, getTotalPrice } = useUCCart();
+  const navigate = useNavigate();
   const totalItems = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 
   if (cart.length === 0) return null;
@@ -57,7 +62,10 @@ function MobileCartBottomBar() {
         <p className="text-sm font-bold text-slate-900">{totalItems} item{totalItems > 1 ? 's' : ''}</p>
         <p className="text-purple-700 font-bold">₹{getTotalPrice()}</p>
       </div>
-      <button className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors">
+      <button 
+        onClick={() => navigate('/checkout')}
+        className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors"
+      >
         Checkout
       </button>
     </div>
@@ -286,9 +294,5 @@ function UCServicePageContent() {
 }
 
 export default function UCServicePage() {
-  return (
-    <UCCartProvider>
-      <UCServicePageContent />
-    </UCCartProvider>
-  );
+  return <UCServicePageContent />;
 }

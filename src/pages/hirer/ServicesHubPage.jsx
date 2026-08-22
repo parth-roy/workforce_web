@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServicesHubSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
-import { Zap, Wrench, Package, Sparkles, Truck, Users, ChevronDown, ChevronUp, ArrowRight, Search } from 'lucide-react';
+import { Zap, Wrench, Package, Sparkles, Truck, Users, ChevronDown, ChevronUp, ArrowRight, Search , Phone } from 'lucide-react';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -177,7 +177,7 @@ export default function ServicesHubPage() {
           <h2 className="text-3xl font-bold mb-4">Need something else?</h2>
           <p className="text-emerald-100 mb-6 max-w-lg mx-auto">If you don't see the service you need, contact us and we'll help match you with the right worker.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link to="/contact" className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors">Contact Us</Link>
+            <Link to="/contact" className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
             <Link to="/hire-workers" className="bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-800 transition-colors border border-emerald-500">
               Hire Multiple Workers
             </Link>
@@ -187,5 +187,6 @@ export default function ServicesHubPage() {
     </>
   );
 }
+
 
 

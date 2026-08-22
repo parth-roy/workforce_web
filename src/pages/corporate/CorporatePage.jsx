@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { CorporateSEO } from '../../seo/pageMetadata';
 import CorporateWorkforceRequirementBuilder from '../../components/corporate/CorporateWorkforceRequirementBuilder';
-import { CheckCircle, ChevronDown, ChevronUp, Building2, Package, Users, Clock, MapPin, AlertTriangle } from 'lucide-react';
+import {  CheckCircle, ChevronDown, ChevronUp, Building2, Package, Users, Clock, MapPin, AlertTriangle , Phone } from "lucide-react";
 
 const INDUSTRIES = [
   { icon: Package, title: 'Logistics & Warehousing', desc: 'Helpers, loaders, and packers for fulfillment centers and distribution hubs.' },
@@ -43,7 +43,7 @@ export default function CorporatePage() {
                 Explore Solutions
               </a>
               <Link to="/contact" className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
-                Talk to Us
+                <Phone size={18} className="inline-block mr-2" /> Talk to Us
               </Link>
             </div>
           </div>
@@ -194,9 +194,7 @@ export default function CorporatePage() {
           <h2 className="text-3xl font-bold mb-4">Ready to plan your enterprise workforce?</h2>
           <p className="text-blue-100 mb-6 max-w-xl mx-auto">Contact our team to discuss your requirements or use the Workforce Planner above to draft your initial requirement.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link to="/contact" className="bg-white text-blue-700 px-6 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">
-              Contact Us
-            </Link>
+            <Link to="/contact" className="bg-white text-blue-700 px-6 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
             <a href="#builder" className="bg-blue-700 text-white border border-blue-500 px-6 py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors">
               Open Planner
             </a>

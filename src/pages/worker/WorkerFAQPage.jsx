@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { WorkerFAQSEO } from '../../seo/pageMetadata';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import {  ChevronDown, ChevronUp , Phone } from "lucide-react";
 
 const FAQ_DATA = [
   {
@@ -83,9 +83,7 @@ export default function WorkerFAQPage() {
 
         <div className="mt-16 text-center">
           <p className="text-slate-600 mb-4">Still have questions?</p>
-          <Link to="/contact" className="inline-block bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors">
-            Contact Support
-          </Link>
+          <Link to="/contact" className="inline-block bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Support</Link>
         </div>
       </main>
     </>

@@ -4,7 +4,7 @@ import SEO from '../../components/ui/SEO';
 import { ContractorSEO } from '../../seo/pageMetadata';
 import ContractorHero from '../../components/contractor/ContractorHero';
 import ContractorRequirementBuilder from '../../components/contractor/ContractorRequirementBuilder';
-import { CheckCircle, ChevronDown, ChevronUp, Users, Clock, MapPin, Package, Zap, Wrench, Sparkles } from 'lucide-react';
+import {  CheckCircle, ChevronDown, ChevronUp, Users, Clock, MapPin, Package, Zap, Wrench, Sparkles , Phone } from "lucide-react";
 
 const WORKFORCE_TYPES = [
   { icon: Package, name: 'Loader / Helper', desc: 'General labour for loading, unloading, and manual handling.' },
@@ -192,9 +192,7 @@ export default function ContractorPage() {
             <a href="#builder" className="bg-white text-amber-700 px-6 py-3 rounded-xl font-bold hover:bg-amber-50 transition-colors">
               Open Builder
             </a>
-            <Link to="/contact" className="bg-amber-600 text-white border border-amber-400 px-6 py-3 rounded-xl font-bold hover:bg-amber-700 transition-colors">
-              Contact Us
-            </Link>
+            <Link to="/contact" className="bg-amber-600 text-white border border-amber-400 px-6 py-3 rounded-xl font-bold hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
           </div>
         </section>
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
-
+import { APP_DOWNLOAD_URL } from '../../config/constants.js';
+import PlayStoreIcon from '../ui/PlayStoreIcon.jsx';
 const Facebook = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>;
 const Twitter = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4.01c-1 .49-1.98.68-3 .99-1.12-1.27-2.74-2.06-4.5-2-3.26.11-5.83 2.72-5.96 5.96-.06.25-.09.52-.09.78C5.07 9.4 2.65 7.18 1 5c-.77 1.33-.29 3.09 1 4.01-1.07-.05-1.92-.37-2.5-.78v.1c0 2.21 1.5 4.14 3.75 4.64-.67.22-1.35.25-2.05.08.6 1.83 2.45 3.07 4.5 3.12-2.14 1.74-4.8 2.5-7.5 2.12 2.28 1.48 4.88 2.22 7.5 2.22 8.76 0 13.91-7.23 13.91-13.91 0-.25-.01-.49-.03-.73 1.05-.75 1.94-1.63 2.63-2.67z"></path></svg>;
 const Instagram = ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
@@ -52,8 +51,8 @@ export default function Footer() {
             <div className="bg-slate-800/50 rounded-2xl p-4 border border-slate-700/50 inline-block mb-6">
               <p className="text-sm font-bold text-white mb-2 text-center">Download App</p>
               <img src="/workforce-app.webp" alt="Download Metro Mitra App" className="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-xl bg-white p-2 mx-auto" />
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="block text-center mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-bold underline">
-                Get it on Google Play
+              <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer" className="flex justify-center items-center gap-2 mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-bold">
+                <PlayStoreIcon size={16} /> Get it on Google Play
               </a>
             </div>
 

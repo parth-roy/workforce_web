@@ -110,7 +110,7 @@ const TESTS = [
     assert: {
       title: 'Loader / Unloader Jobs in Dankuni | Direct Hiring | Metro Mitra',
       canonical: 'https://metromitra.com/jobs/loader-unloader/dankuni',
-      robots: 'noindex, nofollow',   // forced geo-stub policy
+      robots: 'index, follow',   // previously forced geo-stub policy
           schemaNodes: ["WebPage","BreadcrumbList"],
     },
   },
@@ -158,10 +158,8 @@ const TESTS = [
     route: '/services/electrician/barrackpore',
     label: 'Individual Service+Location (geo stub)',
     assert: {
-      robots: 'noindex, nofollow',
-      notIndexable: true,
-      schemaNodes: ["WebPage","BreadcrumbList"],
-      forbiddenSchema: ["Service"]
+      robots: 'index, follow',
+      schemaNodes: ["WebPage","BreadcrumbList","Service"],
     },
   },
 
@@ -197,10 +195,8 @@ const TESTS = [
     route: '/hire-workers/loading-unloading/dankuni',
     label: 'B2B Service+Location (geo stub)',
     assert: {
-      robots: 'noindex, nofollow',
-      notIndexable: true,
-      schemaNodes: ["WebPage","BreadcrumbList"],
-      forbiddenSchema: ["Service"]
+      robots: 'index, follow',
+      schemaNodes: ["WebPage","BreadcrumbList","Service"],
     },
   },
 

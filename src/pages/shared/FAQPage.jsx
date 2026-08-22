@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SEO from '../../components/ui/SEO';
-import { ChevronDown, ChevronUp, Search } from 'lucide-react';
+import {  ChevronDown, ChevronUp, Search , Phone } from "lucide-react";
 
 const FAQ_SECTIONS = [
   {
@@ -162,9 +162,7 @@ export default function FAQPage() {
         <div className="mt-16 bg-emerald-50 border border-emerald-100 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-3">Still have questions?</h2>
           <p className="text-slate-600 mb-6">Our team is here to help. Reach out via the contact form.</p>
-          <a href="/contact" className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors">
-            Contact Us
-          </a>
+          <a href="/contact" className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</a>
         </div>
       </main>
     </>

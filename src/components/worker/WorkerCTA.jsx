@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Smartphone, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { APP_DOWNLOAD_URL } from '../../config/constants.js';
+import PlayStoreIcon from '../ui/PlayStoreIcon.jsx';
 
 export default function WorkerCTA() {
   return (
@@ -13,7 +15,7 @@ export default function WorkerCTA() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-          <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors"><Smartphone className="w-5 h-5" /> Download App</a>
+          <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors"><PlayStoreIcon size={20} /> Download App</a>
           <Link to="/jobs" className="flex items-center gap-2 bg-emerald-700 text-white border border-emerald-500 px-6 py-3 rounded-xl font-bold hover:bg-emerald-800 transition-colors">
             Browse Jobs <ArrowRight className="w-4 h-4" />
           </Link>

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Download, ArrowRight, CheckCircle2, Star, Shield, MapPin, Package, PackageOpen, Sparkles, Handshake, X } from 'lucide-react'
 import BookingFormModal from '../modals/BookingFormModal'
+import { APP_DOWNLOAD_URL } from '../../config/constants.js'
+import PlayStoreIcon from '../ui/PlayStoreIcon.jsx'
 
 import { roles as WORKER_ROLES } from '../../data/roles';
 
@@ -69,13 +71,14 @@ function WorkerHero({ h1, subtitle, badge, cta, stats, heroImage }) {
             {/* CTA — only shown when there is no background image */}
             {!heroImage && (
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <Link
-                  to={cta?.href || '/gig-jobs-kolkata'}
-                  className="btn-primary-green text-base px-7 py-4"
+                <a
+                  href={APP_DOWNLOAD_URL}
+                  target="_blank" rel="noopener noreferrer"
+                  className="btn-primary-green text-base px-7 py-4 flex items-center gap-2"
                 >
-                  <Download size={18} />
+                  <PlayStoreIcon size={20} />
                   {cta?.label || 'Download App – Free'}
-                </Link>
+                </a>
               </div>
             )}
 
@@ -392,17 +395,17 @@ function DualHero({ h1, subtitle, workerCta, employerCta, stats, heroImage }) {
               {/* Interactive Circular CTA Buttons */}
               <div className="flex flex-col gap-4 items-start">
                 {/* Worker Button */}
-                <Link 
-                  to={workerCta?.href || '/gig-jobs-kolkata'} 
+                <a 
+                  href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer"
                   className="group flex items-center bg-action-green-600 hover:bg-action-green-500 rounded-full h-14 max-w-[56px] hover:max-w-[280px] transition-all duration-300 ease-in-out overflow-hidden shadow-2xl border border-action-green-400/30"
                 >
                   <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center">
-                    <Download size={22} className="text-white" />
+                    <PlayStoreIcon size={22} className="text-white" />
                   </div>
                   <span className="text-white font-bold whitespace-nowrap pr-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {workerCta?.label || 'For Workers - Download App'}
                   </span>
-                </Link>
+                </a>
 
                 {/* Employer Button */}
                 <Link 

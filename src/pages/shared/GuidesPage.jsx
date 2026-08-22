@@ -1,7 +1,7 @@
 import React from 'react';
 import SEO from '../../components/ui/SEO';
 import { Link } from 'react-router-dom';
-import { BookOpen, Briefcase, Building2, ArrowRight, Clock } from 'lucide-react';
+import {  BookOpen, Briefcase, Building2, ArrowRight, Clock , Phone } from "lucide-react";
 
 const GUIDE_CATEGORIES = [
   {
@@ -112,9 +112,7 @@ export default function GuidesPage() {
         <section className="bg-emerald-600 text-white rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold mb-3">Have a question not covered here?</h2>
           <p className="text-emerald-100 mb-6">Reach out to us directly and we'll help you get started.</p>
-          <Link to="/contact" className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors">
-            Contact Us
-          </Link>
+          <Link to="/contact" className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
         </section>
       </main>
     </>

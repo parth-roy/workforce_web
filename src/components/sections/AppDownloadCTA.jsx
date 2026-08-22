@@ -1,5 +1,7 @@
 import React from 'react'
-import { Download, QrCode } from 'lucide-react'
+import { QrCode } from 'lucide-react'
+import { APP_DOWNLOAD_URL } from '../../config/constants.js'
+import PlayStoreIcon from '../ui/PlayStoreIcon.jsx'
 
 export default function AppDownloadCTA({
   heading = 'Start Earning Today — Download the App',
@@ -21,11 +23,11 @@ export default function AppDownloadCTA({
             <div className="flex flex-wrap gap-4">
               {/* Google Play */}
               <a
-                href="https://play.google.com/store/apps/details?id=com.metromitra.workforce&pcampaignid=web_share"
+                href={APP_DOWNLOAD_URL}
                 className="flex items-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-xl transition-colors"
                 aria-label="Download on Google Play"
               >
-                <Download size={20} />
+                <PlayStoreIcon size={24} />
                 <div className="text-left">
                   <p className="text-xs text-slate-400">Get it on</p>
                   <p className="text-sm font-bold leading-tight">Google Play</p>

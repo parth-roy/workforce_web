@@ -1,4 +1,5 @@
 import React from 'react';
+import { Phone } from 'lucide-react';
 import { useParams, Link } from 'react-router-dom';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
@@ -178,7 +179,7 @@ export default function B2BServicePage() {
                 <div className="mt-8 pt-6 border-t border-slate-100">
                   <p className="text-xs text-slate-500 text-center">
                     Need custom API integration? <br/>
-                    <a href="#" className="text-blue-600 font-bold hover:underline">Contact Enterprise Sales</a>
+                    <a href="#" className="flex items-center gap-1 text-blue-600 font-bold hover:underline"><Phone size={18} /> Contact Enterprise Sales</a>
                   </p>
                 </div>
               </div>

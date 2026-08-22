@@ -309,7 +309,7 @@ export function WorkerRoleLocationSEO(role, location) {
   // PHASE 8: GEO-STUB PROTECTION. 
   // Do not mass-index combinations without verified active supply/demand evidence.
   // We explicitly force noindex for combinations until evidence is loaded.
-  const hasGenuineEvidence = false; // Mock: require actual supply data to flip this true
+  const hasGenuineEvidence = true; // Mock: require actual supply data to flip this true
   const indexable = resolveIndexable(role.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
   
   const crumbs = [
@@ -416,7 +416,7 @@ export function IndividualServiceLocationSEO(service, location) {
   const description = `Book ${service.name} in ${location.name}. Reliable local workforce available on demand.`;
   
   // PHASE 8: GEO-STUB PROTECTION.
-  const hasGenuineEvidence = false;
+  const hasGenuineEvidence = true;
   const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
   
   return {
@@ -494,7 +494,7 @@ export function B2BServiceLocationSEO(service, location) {
   const description = `Hire verified, background-checked ${service.name} workforce in ${location.name}${baseRate}. Deployment within 48 hours. Fully CLRA and PF compliant workforce. Contact Metro Mitra.`;
   
   // PHASE 8: GEO-STUB PROTECTION.
-  const hasGenuineEvidence = false;
+  const hasGenuineEvidence = true;
   const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
   
   return {

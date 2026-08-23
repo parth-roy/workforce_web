@@ -18,7 +18,7 @@ const FAQ_DATA = [
     questions: [
       { q: 'How do I find jobs?', a: 'Once verified, you can browse available jobs in the app based on your selected roles and location preferences.' },
       { q: 'Can I choose my role?', a: 'Yes. During onboarding, you select the roles you are qualified for (e.g., Warehouse Helper, Electrician). You can only accept jobs matching your approved roles.' },
-      { q: 'Can I choose my location?', a: 'Yes. You can filter jobs by location to find work near you.' },
+      { q: 'Can I choose my location?', a: 'Yes. You can filter jobs by location to Join as Employee near you.' },
       { q: 'What happens after accepting work?', a: 'You will receive the worksite details. You are expected to arrive on time and complete the assigned tasks or shift.' }
     ]
   },

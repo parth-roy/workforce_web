@@ -55,7 +55,7 @@ export default function WorkerHubPage() {
       <section className="bg-slate-900 text-white pt-24 pb-20 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="max-w-3xl">
-            <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">Find Work</span>
+            <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">Join as Employee</span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
               Find Flexible Gig Work<br />
               <span className="text-emerald-400">Near You</span>
@@ -86,7 +86,7 @@ export default function WorkerHubPage() {
         {/* Role Category Filter */}
         <section id="roles" className="mb-16 scroll-mt-24">
           <h2 className="text-3xl font-bold text-slate-900 mb-3 text-center">Browse Available Roles</h2>
-          <p className="text-slate-500 text-center mb-8">Find work that matches your skills and experience.</p>
+          <p className="text-slate-500 text-center mb-8">Join as Employee that matches your skills and experience.</p>
 
           {/* Category tabs */}
           <div className="flex flex-wrap gap-2 justify-center mb-8">
@@ -222,6 +222,7 @@ export default function WorkerHubPage() {
     </>
   );
 }
+
 
 
 

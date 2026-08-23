@@ -5,7 +5,7 @@ import { useUCCart } from '../../context/UCCartContext';
 
 const DESKTOP_NAV = [
   {
-    label: 'Find Work',
+    label: 'Join as Employee',
     href: '/jobs',
     dropdown: [
       { label: 'All Jobs', href: '/jobs' },
@@ -237,4 +237,5 @@ export default function Header() {
     </nav>
   );
 }
+
 

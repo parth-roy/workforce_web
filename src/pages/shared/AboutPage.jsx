@@ -105,7 +105,7 @@ export default function AboutPage() {
             <span className="flex items-center gap-2 font-semibold text-sm group-hover:gap-3 transition-all">Browse Services <ArrowRight className="w-4 h-4" /></span>
           </Link>
           <Link to="/jobs" className="group bg-slate-900 text-white rounded-2xl p-8 hover:bg-slate-800 transition-colors">
-            <h3 className="text-xl font-bold mb-2">Find Work</h3>
+            <h3 className="text-xl font-bold mb-2">Join as Employee</h3>
             <p className="text-slate-300 text-sm mb-4">Discover gig opportunities near you across West Bengal.</p>
             <span className="flex items-center gap-2 font-semibold text-sm group-hover:gap-3 transition-all">Browse Jobs <ArrowRight className="w-4 h-4" /></span>
           </Link>
@@ -114,3 +114,4 @@ export default function AboutPage() {
     </>
   );
 }
+

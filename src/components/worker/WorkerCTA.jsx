@@ -9,7 +9,7 @@ export default function WorkerCTA() {
     <div className="bg-emerald-600 text-white py-12 px-8 rounded-2xl my-12 max-w-4xl mx-auto">
       <div className="flex flex-col md:flex-row items-center justify-between gap-8">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">Find Work Near You</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Join as Employee Near You</h2>
           <p className="text-emerald-100 text-lg max-w-lg">
             Join the Metro Mitra worker network. Register through the app and receive job alerts for roles matching your skills and location.
           </p>
@@ -24,4 +24,5 @@ export default function WorkerCTA() {
     </div>
   );
 }
+
 

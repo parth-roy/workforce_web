@@ -123,7 +123,7 @@ export default function LocationPage() {
 
         {/* How It Works */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">How to Find Work in {loc.name}</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">How to Join as Employee in {loc.name}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { step: '01', title: 'Download the App', desc: 'Install Metro Mitra Worker App and register with your phone number.' },
@@ -172,4 +172,5 @@ export default function LocationPage() {
     </>
   );
 }
+
 

@@ -47,7 +47,7 @@ export default function HomePage() {
       cta: 'Browse Services', href: '/services?category=Home+Services',
     },
     {
-      icon: Briefcase, title: 'Find Work', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200',
+      icon: Briefcase, title: 'Join as Employee', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200',
       desc: 'Discover gig opportunities as a warehouse helper, electrician, cleaner, and more.',
       cta: 'Browse Jobs', href: '/jobs',
     },
@@ -86,7 +86,7 @@ export default function HomePage() {
                   Hire Services <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link to="/jobs" className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
-                  Find Work
+                  Join as Employee
                 </Link>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 5. FIND WORK CTA */}
+        {/* 5. Join as Employee CTA */}
         <section className="py-20 bg-emerald-600 text-white">
           <div className="max-w-6xl mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -332,14 +332,14 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-4xl font-black mb-4">Get started with Metro Mitra</h2>
             <p className="text-emerald-100 text-lg mb-10 max-w-xl mx-auto">
-              Whether you need to hire for your home or find work near you — Metro Mitra connects you to the right person.
+              Whether you need to hire for your home or Join as Employee near you — Metro Mitra connects you to the right person.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/services" className="bg-white text-emerald-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-50 transition-colors flex items-center gap-2">
                 Hire Services <ArrowRight className="w-5 h-5" />
               </Link>
               <Link to="/jobs" className="bg-emerald-700 text-white border border-emerald-500 px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-800 transition-colors">
-                Find Work
+                Join as Employee
               </Link>
             </div>
           </div>
@@ -349,6 +349,7 @@ export default function HomePage() {
     </>
   );
 }
+
 
 
 

@@ -6,7 +6,7 @@ import { Smartphone, Search, Briefcase, MapPin, CheckCircle, Clock } from 'lucid
 
 export default function WorkerHowItWorksPage() {
   const steps = [
-    { icon: Search, title: 'Find Work', desc: 'Browse available shifts and tasks matching your chosen roles and locations. Filter by duration, urgency, and category.' },
+    { icon: Search, title: 'Join as Employee', desc: 'Browse available shifts and tasks matching your chosen roles and locations. Filter by duration, urgency, and category.' },
     { icon: Briefcase, title: 'Review Opportunity', desc: 'Check the job details, including location, requirements, duration, and what the work involves before accepting.' },
     { icon: CheckCircle, title: 'Accept Assignment', desc: 'Confirm your availability and accept the job directly in the app. The hirer will be notified.' },
     { icon: MapPin, title: 'Arrive on Site', desc: 'Navigate to the worksite using the app and check in when you arrive.' },

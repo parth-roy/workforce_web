@@ -92,7 +92,7 @@ export default function Footer() {
           
           <div className="pt-4 border-t border-slate-800/50">
             <p className="mb-2">Parther Technologies Private Limited (Metro Mitra) | CIN: U62099WR2026PTC293183 | GSTIN: 19AAQCP8945A1ZY</p>
-            <p>Email: hello@parthertech.com</p>
+            <p>Email: admin@metromitra.com</p>
             <p className="mb-4">Phone: +91 9331488999</p>
             <p className="text-slate-500">Metro Mitra connects customers with independent workforce and logistics partners. Coverage, assignment, price and service scope are confirmed for each booking.</p>
           </div>

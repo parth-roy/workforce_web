@@ -77,7 +77,7 @@ function WorkerHero({ h1, subtitle, badge, cta, stats, heroImage }) {
                   className="btn-primary-green text-base px-7 py-4 flex items-center gap-2"
                 >
                   <PlayStoreIcon size={20} />
-                  {cta?.label || 'Download App – Free'}
+                  {cta?.label || 'Download App'}
                 </a>
               </div>
             )}
@@ -403,7 +403,7 @@ function DualHero({ h1, subtitle, workerCta, employerCta, stats, heroImage }) {
                     <PlayStoreIcon size={22} className="text-white" />
                   </div>
                   <span className="text-white font-bold whitespace-nowrap pr-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {workerCta?.label || 'For Workers - Download App'}
+                    {workerCta?.label || 'Download App'}
                   </span>
                 </a>
 

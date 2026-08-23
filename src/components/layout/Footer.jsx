@@ -52,7 +52,7 @@ export default function Footer() {
               <p className="text-sm font-bold text-white mb-2 text-center">Download App</p>
               <img src="/workforce-app.webp" alt="Download Metro Mitra App" className="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-xl bg-white p-2 mx-auto" />
               <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer" className="flex justify-center items-center gap-2 mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-bold">
-                <PlayStoreIcon size={16} /> Get it on Google Play
+                <PlayStoreIcon size={16} /> Download App
               </a>
             </div>
 

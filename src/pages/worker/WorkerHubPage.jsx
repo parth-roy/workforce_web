@@ -69,7 +69,7 @@ export default function WorkerHubPage() {
                 Onboard Here
               </Link>
               <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-slate-800 text-white border border-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-700 transition-colors flex items-center gap-2">
-                <PlayStoreIcon size={20} /> Download Now
+                <PlayStoreIcon size={20} /> Download App
               </a>
             </div>
           </div>

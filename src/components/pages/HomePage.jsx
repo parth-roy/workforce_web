@@ -69,26 +69,48 @@ export default function HomePage() {
       <div className="w-full min-h-screen bg-white font-sans">
 
         {/* 1. HERO */}
-        <section className="relative bg-slate-900 pt-28 pb-24 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 z-0" />
-          <div className="max-w-6xl mx-auto px-4 relative z-10">
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-500/20 text-emerald-300 text-sm font-semibold tracking-wide mb-6">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-pulse" />
-                Gig Workforce Platform — West Bengal
-              </span>
-              <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">Full-Stack Gig <br /><span className="text-emerald-400">Economy Platform</span></h1>
-              <p className="text-xl text-slate-300 mb-10 max-w-2xl">
-                Metro Mitra is a technology-driven, full-stack gig economy platform matching households and businesses with trained gig workers across West Bengal.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/services?category=Home+Services" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
-                  Hire Services <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link to="/jobs" className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-colors">
-                  Join as Employee
-                </Link>
+        <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden">
+          <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+              
+              {/* Left Column: Text & CTA */}
+              <div className="max-w-2xl lg:py-16 xl:pl-12">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                  Gig Workforce Platform — West Bengal
+                </span>
+                
+                <h1 className="text-5xl md:text-6xl lg:text-[72px] font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                  Building Work. <br />
+                  <span className="text-emerald-600">Empowering</span> <br />
+                  Communities.
+                </h1>
+                
+                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                  Metro Mitra connects households and businesses with verified gig workers across West Bengal. 
+                  <span className="block mt-1 text-slate-600">Trusted. Reliable. On-demand.</span>
+                </p>
+                
+                <div className="flex flex-wrap gap-4 mb-10">
+                  <Link to="/services?category=Home+Services" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                    Hire Services <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/jobs" className="bg-white border-2 border-slate-100 text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 hover:text-emerald-600 hover:shadow-[0_8px_24px_-8px_rgba(5,150,105,0.3)] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
+                    Join as Employee
+                  </Link>
+                </div>
               </div>
+
+              {/* Right Column: Hero Image */}
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0">
+                <img 
+                  src="/metro-mitra-hero.webp" 
+                  alt="Metro Mitra Professional Workers" 
+                  className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.15] xl:scale-[1.25] 2xl:scale-[1.3] lg:translate-x-[5%] xl:translate-x-[10%] xl:translate-y-[2%]"
+                  loading="eager"
+                />
+              </div>
+
             </div>
           </div>
         </section>

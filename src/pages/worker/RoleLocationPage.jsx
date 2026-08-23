@@ -4,6 +4,7 @@ import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import { routes } from '../../routes/registry';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import WorkerCTA from '../../components/worker/WorkerCTA';
+import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerRoleLocationSEO } from '../../seo/pageMetadata';
 import { RelatedRoles, RelatedLocations } from '../../components/seo/RelatedLinks';
@@ -119,8 +120,8 @@ export default function RoleLocationPage() {
           <p className="text-emerald-100 mb-6 max-w-2xl">
             Be the first to know when verified {role.name.toLowerCase()} opportunities open in {loc.name}. Download the Metro Mitra Worker App and set your location preference.
           </p>
-          <button className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors">
-            Download Worker App
+          <button className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2">
+            <PlayStoreIcon size={20} /> Download App
           </button>
         </section>
 

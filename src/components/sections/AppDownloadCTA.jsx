@@ -28,9 +28,8 @@ export default function AppDownloadCTA({
                 aria-label="Download on Google Play"
               >
                 <PlayStoreIcon size={24} />
-                <div className="text-left">
-                  <p className="text-xs text-slate-400">Get it on</p>
-                  <p className="text-sm font-bold leading-tight">Google Play</p>
+                <div className="text-left font-bold">
+                  Download App
                 </div>
               </a>
             </div>

@@ -4,6 +4,7 @@ import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import WorkerCTA from '../../components/worker/WorkerCTA';
 import RoleCard from '../../components/worker/RoleCard';
+import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerLocationSEO } from '../../seo/pageMetadata';
 import { RelatedLocations } from '../../components/seo/RelatedLinks';
@@ -112,8 +113,8 @@ export default function LocationPage() {
             Metro Mitra is growing its presence in {loc.name}. Register on the Worker App to be among the first to receive job alerts when new opportunities open in your area.
           </p>
           <div className="flex flex-wrap gap-3">
-            <button className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors">
-              Download Worker App
+            <button className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2">
+              <PlayStoreIcon size={20} /> Download App
             </button>
             <Link to="/jobs" className="bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-800 transition-colors border border-emerald-500">
               Browse Other Locations

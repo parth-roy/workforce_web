@@ -50,8 +50,7 @@ export default function WorkerHowItWorksPage() {
           
           <div className="bg-slate-100 rounded-3xl p-8 border border-slate-200">
             <div className="aspect-[9/16] bg-slate-800 rounded-2xl shadow-xl overflow-hidden relative max-w-sm mx-auto flex items-center justify-center">
-              <p className="text-slate-400 font-medium">App Interface Prototype</p>
-              {/* This represents the app screenshot mockup */}
+              <img src="/workforce-app.webp" alt="Workforce App Interface" className="w-full h-full object-cover" />
               <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-slate-900 to-transparent"></div>
             </div>
           </div>

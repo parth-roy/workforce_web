@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import WorkerHero from '../../components/worker/WorkerHero';
+import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import RoleCard from '../../components/worker/RoleCard';
 import LocationCard from '../../components/worker/LocationCard';
 import WorkerCTA from '../../components/worker/WorkerCTA';
@@ -64,8 +65,12 @@ export default function WorkerHubPage() {
               Metro Mitra connects workers with warehouse, logistics, and home service jobs across West Bengal. Browse roles, set your location preference, and get started.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"><Smartphone className="w-5 h-5" /> Download Worker App</a>
-              
+              <Link to="/join-as-worker" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
+                Onboard Here
+              </Link>
+              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-slate-800 text-white border border-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-700 transition-colors flex items-center gap-2">
+                <PlayStoreIcon size={20} /> Download Now
+              </a>
             </div>
           </div>
         </div>

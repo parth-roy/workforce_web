@@ -29,18 +29,8 @@ export default function ServiceHowItWorksPage() {
       <main className="container mx-auto max-w-5xl px-4 py-16">
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div className="order-2 md:order-1 bg-slate-100 rounded-3xl p-8 border border-slate-200">
-            <div className="aspect-square bg-slate-800 rounded-2xl shadow-xl overflow-hidden relative max-w-sm mx-auto flex items-center justify-center p-8 text-center">
-              <div>
-                <p className="text-slate-300 font-medium mb-4">Request Flow Prototype</p>
-                <div className="w-full bg-slate-700 h-2 rounded-full mb-8">
-                  <div className="w-2/3 bg-emerald-500 h-full rounded-full"></div>
-                </div>
-                <div className="space-y-4">
-                  <div className="h-8 bg-slate-700 rounded w-3/4 mx-auto"></div>
-                  <div className="h-8 bg-slate-700 rounded w-full"></div>
-                  <div className="h-8 bg-slate-700 rounded w-5/6 mx-auto"></div>
-                </div>
-              </div>
+            <div className="aspect-square bg-slate-800 rounded-2xl shadow-xl overflow-hidden relative max-w-sm mx-auto flex items-center justify-center p-0 text-center">
+              <img src="/workforce-app.webp" alt="Workforce App Request Flow" className="w-full h-full object-cover" />
             </div>
           </div>
 

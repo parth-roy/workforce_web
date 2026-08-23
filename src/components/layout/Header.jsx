@@ -20,13 +20,9 @@ const DESKTOP_NAV = [
     dropdown: [
       { label: 'All Services', href: '/services/categories' },
       { label: 'Popular Services', href: '/services' },
+      { label: 'Hire Workers (B2B)', href: '/hire-workers' },
       { label: 'How Hiring Works', href: '/services/how-it-works' },
     ]
-  },
-  {
-    label: 'Hire Workers',
-    href: '/hire-workers',
-    dropdown: [ { label: 'Workforce Services', href: '/hire-workers' }]
   },
   { label: 'About', href: '/about' },
   { label: 'Resources', href: '/guides' },
@@ -76,7 +72,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-6">
             {DESKTOP_NAV.map((item, idx) => (
               <div key={idx} className={item.dropdown ? "relative group" : ""}
                    onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
@@ -84,7 +80,7 @@ export default function Header() {
                 
                 <Link 
                   to={item.href} 
-                  className={`flex items-center gap-1 font-bold text-sm transition-colors py-2 ${isActive(item.href) ? 'text-emerald-600' : 'text-slate-700 hover:text-emerald-600'}`}
+                  className={`flex items-center gap-1 font-bold text-[13px] xl:text-sm transition-colors py-2 ${isActive(item.href) ? 'text-emerald-600' : 'text-slate-700 hover:text-emerald-600'}`}
                 >
                   {item.label}
                   {item.dropdown && <ChevronDown size={14} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />}
@@ -110,8 +106,8 @@ export default function Header() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Link to="/user/orders" className="relative p-2 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-3">
+            <Link to="/user/orders" className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
               <Package size={22} />
               {orders?.length > 0 && (
                 <span className="absolute top-0 right-0 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
@@ -119,7 +115,7 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to="/checkout" className="relative p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-2" title="My Cart">
+            <Link to="/checkout" className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-1 xl:mr-2" title="My Cart">
               <ShoppingCart size={22} />
               {cart?.length > 0 && (
                 <span className="absolute top-0 right-0 w-4 h-4 bg-purple-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
@@ -127,11 +123,11 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to="/join-as-worker" className="flex items-center gap-1.5 font-bold text-sm text-slate-600 hover:text-emerald-600 transition-colors px-2">
+            <Link to="/join-as-worker" className="flex items-center gap-1 font-bold text-[13px] xl:text-sm text-slate-600 hover:text-emerald-600 transition-colors px-1 xl:px-2">
               <LogIn size={16} />
               Login
             </Link>
-            <Link to="/services" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
+            <Link to="/services" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] xl:text-sm px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
               Get Started
             </Link>
           </div>

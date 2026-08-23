@@ -34,6 +34,9 @@ export default function WorkerOnboardingPage() {
     const roleParam = params.get('role');
     if (roleParam && mockRoles.some(r => r.slug === roleParam)) {
       setFormData(prev => ({ ...prev, jobType: roleParam }));
+      
+      // Clean up the URL so it looks independent and shareable
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [location.search]);
 

@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServiceHowItWorksSEO } from '../../seo/pageMetadata';
-import { Search, MapPin, Calendar, FileText, CheckCircle, Truck } from 'lucide-react';
+import { Search, MapPin, Calendar, FileText, CheckCircle, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ServiceHowItWorksPage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = 6;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }, 3000); // 3 seconds per slide
+    return () => clearInterval(timer);
+  }, [totalSlides]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  const prevSlide = () => setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+
   const steps = [
     { icon: Search, title: 'Choose Service', desc: 'Select the exact service or worker type you need from our directory.' },
     { icon: FileText, title: 'Tell Us What You Need', desc: 'Specify how many workers you need and briefly describe the task.' },
@@ -52,28 +65,57 @@ export default function ServiceHowItWorksPage() {
       
       <main className="container mx-auto max-w-7xl px-4 py-16">
         <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 items-center mb-16">
-          <div className="order-2 md:order-1 bg-slate-100 rounded-3xl p-8 border border-slate-200 lg:sticky lg:top-24">
-            <div className="aspect-[3/4] bg-white rounded-2xl shadow-xl overflow-hidden relative max-w-[320px] mx-auto border-4 border-slate-200 flex flex-col relative">
-              <div className="h-12 border-b border-slate-100 flex items-center px-4 justify-between bg-slate-50">
-                <div className="w-8 h-8 bg-slate-200 rounded-full"></div>
-                <div className="h-4 w-24 bg-slate-200 rounded"></div>
-                <div className="w-8 h-8 bg-slate-200 rounded-full"></div>
+          <div className="order-2 md:order-1 lg:sticky lg:top-24 h-full flex flex-col justify-center">
+            <div className="relative w-full mx-auto rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 bg-slate-50">
+              
+              {/* Images Container */}
+              <div 
+                className="flex w-full transition-transform duration-700 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {[1, 2, 3, 4, 5, 6].map((num) => (
+                  <div key={num} className="w-full shrink-0 relative">
+                    <img 
+                      src={`/how-it-works-screen-${num}.webp`} 
+                      alt={`Hiring Step ${num}`} 
+                      className="w-full h-auto object-cover" 
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="flex-1 p-5 bg-slate-50">
-                <div className="h-4 w-32 bg-slate-800 rounded mb-4"></div>
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="aspect-square bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm">
-                    <div className="w-8 h-8 bg-emerald-100 rounded-full"></div>
-                    <div className="h-2 w-16 bg-slate-300 rounded"></div>
-                  </div>
-                  <div className="aspect-square bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full"></div>
-                    <div className="h-2 w-16 bg-slate-300 rounded"></div>
-                  </div>
+
+              {/* Bottom Navigation Controls & Dots */}
+              <div className="absolute bottom-6 left-0 right-0 flex items-center justify-between px-6 z-10">
+                <button 
+                  onClick={prevSlide}
+                  className="bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95"
+                  aria-label="Previous step"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+
+                {/* Progress Dots */}
+                <div className="flex justify-center gap-2">
+                  {[...Array(totalSlides)].map((_, i) => (
+                    <button 
+                      key={i}
+                      onClick={() => setCurrentSlide(i)}
+                      className={`h-2.5 rounded-full transition-all duration-300 shadow-sm ${
+                        i === currentSlide ? 'bg-emerald-600 w-8' : 'bg-white/90 w-2.5 hover:bg-emerald-400'
+                      }`}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
                 </div>
-                <div className="h-3 w-40 bg-slate-400 rounded mb-3"></div>
-                <div className="h-24 bg-white border border-slate-200 rounded-xl shadow-sm mb-4"></div>
-                <div className="h-10 w-full bg-emerald-600 rounded-xl mt-auto"></div>
+
+                <button 
+                  onClick={nextSlide}
+                  className="bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95"
+                  aria-label="Next step"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
               </div>
             </div>
           </div>

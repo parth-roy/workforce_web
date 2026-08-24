@@ -138,7 +138,7 @@ export const mockServices = [
   // ---- LOGISTICS & LABOR (Individual & B2B) ----
   {
     id: 'srv-loading', slug: 'loading-unloading', name: 'Loading/Unloading', shortName: 'Loading',
-    heroImage: '/loading-unloading-hero.webp',
+    heroImage: '/loading-unloading-hero.webp', customIcon: '/loading-unloading-icon.webp',
     tagline: 'Helpers for loading goods',
     description: 'Physical labor for loading and unloading trucks, shifting materials, and heavy lifting.',
     longDescription: 'Need extra hands to move heavy items? Hire strong, verified helpers for loading and unloading goods from trucks, shifting materials across floors, or general heavy lifting.',

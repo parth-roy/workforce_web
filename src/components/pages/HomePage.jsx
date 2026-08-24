@@ -44,7 +44,7 @@ export default function HomePage() {
     {
       icon: User, title: 'Individual Hirer', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100',
       desc: 'Book a cleaner, electrician, plumber, or helper for your home or office.',
-      cta: 'Browse Services', href: '/services?category=Home+Services',
+      cta: 'Browse Services', href: '/services',
     },
     {
       icon: Briefcase, title: 'Join as Employee', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200',
@@ -92,7 +92,7 @@ export default function HomePage() {
                 </p>
                 
                 <div className="flex flex-wrap gap-4 mb-10">
-                  <Link to="/services?category=Home+Services" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                  <Link to="/services" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
                     Hire Services <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link to="/jobs" className="bg-white border-2 border-slate-100 text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 hover:text-emerald-600 hover:shadow-[0_8px_24px_-8px_rgba(5,150,105,0.3)] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">

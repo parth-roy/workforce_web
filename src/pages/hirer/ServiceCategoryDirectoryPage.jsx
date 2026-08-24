@@ -20,25 +20,37 @@ export default function ServiceCategoryDirectoryPage() {
   return (
     <>
       <SEO {...ServiceCategoryDirectorySEO()} />
-      <div className="bg-slate-950 text-white pt-24 pb-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-trust-blue-900 opacity-80 pointer-events-none"></div>
-        <div className="absolute inset-0 grid-pattern opacity-30 pointer-events-none"></div>
-        
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-6">
-              <span className="pulse-dot bg-action-green-400" />
-              <span className="text-sm font-semibold text-white">All Service Categories</span>
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+            <div className="max-w-2xl lg:py-16 xl:pl-12">
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                All Service Categories
+              </span>
+              
+              <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                Explore Our <br />
+                <span className="text-emerald-600">Workforce Services</span>
+              </h1>
+              
+              <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                From skilled daily wage workers to professional tradesmen, find the perfect match for your residential, commercial, or industrial needs.
+              </p>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
-              Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Workforce Services</span>
-            </h1>
-            <p className="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
-              From skilled daily wage workers to professional tradesmen, find the perfect match for your residential, commercial, or industrial needs.
-            </p>
+
+            <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+              <img 
+                src="/categories-hub-hero.webp" 
+                alt="Service Categories" 
+                className="w-full max-w-[650px] h-auto object-contain transform origin-bottom lg:scale-[0.95] xl:scale-[0.95] 2xl:scale-[1.0] xl:translate-x-[5%] xl:translate-y-[0%]"
+                loading="eager"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </section>
       
       <main className="container mx-auto max-w-6xl px-4 py-16">
         <div className="space-y-20">

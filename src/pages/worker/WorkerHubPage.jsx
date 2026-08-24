@@ -53,24 +53,41 @@ export default function WorkerHubPage() {
       <SEO {...WorkerHubSEO()} />
 
       {/* Hero */}
-      <section className="bg-slate-900 text-white pt-24 pb-20 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <div className="max-w-3xl">
-            <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">Join as Employee</span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
-              Find Flexible Gig Work<br />
-              <span className="text-emerald-400">Near You</span>
-            </h1>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl">
-              Metro Mitra connects workers with warehouse, logistics, and home service jobs across West Bengal. Browse roles, set your location preference, and get started.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/join-as-worker" className="bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2">
-                Onboard Here
-              </Link>
-              <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-slate-800 text-white border border-slate-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-700 transition-colors flex items-center gap-2">
-                <PlayStoreIcon size={20} /> Download App
-              </a>
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+            <div className="max-w-2xl lg:py-16 xl:pl-12">
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                Join as Employee
+              </span>
+              
+              <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                Find Flexible Gig Work<br />
+                <span className="text-emerald-600">Near You</span>
+              </h1>
+              
+              <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                Metro Mitra connects workers with warehouse, logistics, and home service jobs across West Bengal. Browse roles, set your location preference, and get started.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 mb-10">
+                <Link to="/join-as-worker" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                  Onboard Here <ArrowRight className="w-5 h-5" />
+                </Link>
+                <a href="https://play.google.com/store/apps/details?id=com.gomytruck.workforce" target="_blank" rel="noopener noreferrer" className="bg-white border-2 border-slate-100 text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 hover:text-emerald-600 hover:shadow-[0_8px_24px_-8px_rgba(5,150,105,0.3)] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] flex items-center gap-2">
+                  <PlayStoreIcon size={20} /> Download App
+                </a>
+              </div>
+            </div>
+
+            <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+              <img 
+                src="/jobs-hub-hero.webp" 
+                alt="Gig Work" 
+                className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.15] xl:scale-[1.25] 2xl:scale-[1.3] xl:translate-x-[10%] xl:translate-y-[2%]"
+                loading="eager"
+              />
             </div>
           </div>
         </div>

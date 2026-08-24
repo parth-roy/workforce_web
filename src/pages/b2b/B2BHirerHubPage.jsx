@@ -23,29 +23,42 @@ export default function B2BHirerHubPage() {
       <div className="bg-slate-50 min-h-screen font-sans">
         
         {/* Brand-Aligned Hero Section */}
-        <section className="bg-slate-900 text-white pt-28 pb-24 px-4 relative overflow-hidden">
-          {/* Subtle background decoration */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
-          
-          <div className="container mx-auto max-w-6xl relative z-10 text-center">
-            <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-emerald-500/20 text-emerald-300 font-bold tracking-wider uppercase text-xs mb-6">
-              <Building2 className="w-4 h-4" /> B2B & Enterprise Solutions
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
-              Hire Reliable Teams <br className="hidden md:block" />
-              <span className="text-emerald-400">At Scale. On Demand.</span>
-            </h1>
-            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
-              Whether you need 5 warehouse helpers for a week or 50 delivery associates for the festive season, Metro Mitra delivers verified, skilled blue-collar workers across West Bengal.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact" className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 text-lg">
-                Talk to Sales <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link to="/jobs" className="px-8 py-4 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors flex items-center justify-center gap-2 text-lg">
-                View Workforce Roster
-              </Link>
+        <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+          <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+              <div className="max-w-2xl lg:py-16 xl:pl-12">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                  B2B & Enterprise Solutions
+                </span>
+                
+                <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                  Hire Reliable Teams<br />
+                  <span className="text-emerald-600">At Scale. On Demand.</span>
+                </h1>
+                
+                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                  Whether you need 5 warehouse helpers for a week or 50 delivery associates for the festive season, Metro Mitra delivers verified, skilled blue-collar workers across West Bengal.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 mb-10">
+                  <Link to="/contact" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                    Talk to Sales <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/jobs" className="bg-white border-2 border-slate-100 text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 hover:text-emerald-600 hover:shadow-[0_8px_24px_-8px_rgba(5,150,105,0.3)] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
+                    View Workforce Roster
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+                <img 
+                  src="/hire-hub-hero.webp" 
+                  alt="Hire Workforce" 
+                  className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.15] xl:scale-[1.25] 2xl:scale-[1.3] xl:translate-x-[10%] xl:translate-y-[2%]"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -53,22 +66,18 @@ export default function B2BHirerHubPage() {
         {/* Stats Banner */}
         <section className="border-b bg-white relative z-20 -mt-8 mx-4 md:mx-auto max-w-5xl rounded-2xl shadow-lg shadow-slate-200/50">
           <div className="p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-100">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 text-center divide-x divide-slate-100">
               <div className="flex flex-col items-center">
-                <div className="text-4xl font-black text-slate-900 mb-1">500+</div>
-                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Verified Workers</div>
+                <div className="text-2xl md:text-4xl font-black text-slate-900 mb-1">24hr</div>
+                <div className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-wider">Deployment</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-4xl font-black text-slate-900 mb-1">24hr</div>
-                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Deployment</div>
+                <div className="text-2xl md:text-4xl font-black text-slate-900 mb-1">98%</div>
+                <div className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-wider">Fulfillment Rate</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-4xl font-black text-slate-900 mb-1">98%</div>
-                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Fulfillment Rate</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-4xl font-black text-slate-900 mb-1">Zero</div>
-                <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Compliance Hassle</div>
+                <div className="text-2xl md:text-4xl font-black text-slate-900 mb-1">Zero</div>
+                <div className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-wider">Compliance</div>
               </div>
             </div>
           </div>

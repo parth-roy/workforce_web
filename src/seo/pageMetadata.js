@@ -73,9 +73,9 @@ export function resolveIndexable(status, forceNoindex = false) {
  */
 export function HomePageSEO() {
   const path = '/';
-  const title = 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform';
-  const description = 'Metro Mitra is a technology-driven, full-stack gig economy platform connecting job seekers with daily shift work and businesses with on-demand staffing across India.';
-  const keywords = 'full-stack gig economy platform, technology-driven gig platform, Metro Mitra, on-demand workforce';
+  const title = 'Metro Mitra - Best Job Portal & Full-Stack Gig Economy Platform';
+  const description = 'Metro Mitra is the best online job site and gig economy platform connecting job seekers with daily shift work and businesses with on-demand staffing across India.';
+  const keywords = 'gig economy platforms, best job portals, employment portals, online job portal website, best online job sites, portal career, all job portal, gig economy, the gig economy, gig economy platforms, online job portal, job portal website';
   return {
     title,
     description,
@@ -101,11 +101,13 @@ export function HomePageSEO() {
  */
 export function WorkerHubSEO() {
   const path = '/jobs';
-  const title = 'Daily Gig Jobs & Shift Work | Metro Mitra';
-  const description = 'Find daily gig jobs, shift work, and part-time opportunities across roles including warehouse, loading, delivery, and more. Daily payouts, flexible hours.';
+  const title = 'Gig Economy Jobs & Shift Work | Best Job Search Sites | Metro Mitra';
+  const description = 'Find gig work, shift gigs, and daily gig economy jobs. Metro Mitra is the best job portal for gig workers looking for flexible hours and daily payouts.';
+  const keywords = 'gig workers, gig work, gig economy jobs, gig jobs, gig apps, find gig workers, gig app jobs, gig sites, get employees, shift gig, find workers app, it gig work, gig work sites, gig platform, gig workers jobs, app for gig workers, gig jobs from home, gig economy jobs from home, gig economy workers, work from home gig, it gig jobs, gig worker, best job search sites, best job posting sites, popular job search sites, job search portals, job posting portals, job vacancy portal';
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: true,
     audience: 'Worker',
@@ -124,11 +126,13 @@ export function WorkerHubSEO() {
  */
 export function ServicesHubSEO() {
   const path = '/services';
-  const title = 'Local Workforce Services | Metro Mitra';
-  const description = 'Book skilled workforce for local services including plumbing, electrical work, loading, and maintenance.';
+  const title = 'Hire a Worker | Find Gig Workers App | Metro Mitra';
+  const description = 'Book skilled workforce for local services including plumbing, electrical work, loading, and maintenance. The best gig worker platform to find gig workers.';
+  const keywords = 'hire a worker, finding an employee, where to find workers, how to find workers, how to find employee, gig worker platform';
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: true,
     audience: 'Individual',
@@ -148,11 +152,13 @@ export function ServicesHubSEO() {
  */
 export function B2BHirerHubSEO() {
   const path = '/hire-workers';
-  const title = 'Workforce Procurement for Businesses | Metro Mitra';
-  const description = 'Structured workforce procurement for contractors and enterprises. Request staffing across logistics, warehousing, construction, and operations roles.';
+  const title = 'Hire Gig Workers & Workforce Solutions | Metro Mitra B2B';
+  const description = 'The best place to hire construction workers and logistics staff. Our online recruitment portal connects you with verified workforce solutions for businesses.';
+  const keywords = 'hire gig workers, work force, best place to hire construction workers, need workers, work solutions, need construction workers, hiring gig workers, best job recruitment sites, job portals for recruiters, best job hiring sites, online recruitment portal, hiring portals, job hiring portal, get employees';
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: true,
     audience: 'Business',

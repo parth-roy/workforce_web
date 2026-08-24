@@ -102,6 +102,7 @@ export default function SEO({
       {/* ── Primary Meta ── */}
       <title>{finalTitle}</title>
       <meta name="description" content={finalDesc} />
+      {keywords && <meta name="keywords" content={keywords} />}
 
       {/* ── Canonical ── */}
       <link rel="canonical" href={canonicalUrl} />

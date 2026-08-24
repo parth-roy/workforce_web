@@ -33,12 +33,12 @@ export default function B2BHirerHubPage() {
                 </span>
                 
                 <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
-                  Hire Reliable Teams<br />
+                  Hire Gig Workers & Teams<br />
                   <span className="text-emerald-600">At Scale. On Demand.</span>
                 </h1>
                 
                 <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
-                  Whether you need 5 warehouse helpers for a week or 50 delivery associates for the festive season, Metro Mitra delivers verified, skilled blue-collar workers across West Bengal.
+                  The best place to hire construction workers, logistics staff, and warehouse helpers. Our workforce solutions deliver verified gig workers across West Bengal.
                 </p>
                 
                 <div className="flex flex-wrap gap-4 mb-10">

@@ -77,7 +77,7 @@ export default function HomePage() {
               <div className="max-w-2xl lg:py-16 xl:pl-12">
                 <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100">
                   <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
-                  Gig Workforce Platform — West Bengal
+                  Gig Economy Platforms & Job Portals
                 </span>
                 
                 <h1 className="text-5xl md:text-6xl lg:text-[72px] font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
@@ -307,8 +307,8 @@ export default function HomePage() {
         {/* 8. WHY METRO MITRA */}
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Why Metro Mitra? <span className="block text-xl text-emerald-600 mt-2">A Technology-Driven, Full-Stack Gig Economy Platform</span></h2>
-            <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">A platform built around transparency and reliability.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Why Metro Mitra? <span className="block text-xl text-emerald-600 mt-2">The Best Job Portal & Gig Economy Platform</span></h2>
+            <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">A platform built around transparency, reliability, and connecting you with the best online job sites.</p>
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { icon: Shield, title: 'OTP-Verified Completion', desc: 'No payment is released until you confirm task completion with your OTP. Your control, your confirmation.' },
@@ -360,7 +360,7 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-4xl font-black mb-4">Get started with Metro Mitra</h2>
             <p className="text-emerald-100 text-lg mb-10 max-w-xl mx-auto">
-              Whether you need to hire for your home or Join as Employee near you — Metro Mitra connects you to the right person.
+              Whether you need to hire gig workers, get employees for your business, or find gig economy jobs from home — Metro Mitra connects you to the right person.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/services" className="bg-white text-emerald-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-50 transition-colors flex items-center gap-2">

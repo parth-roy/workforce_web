@@ -63,12 +63,12 @@ export default function WorkerHubPage() {
               </span>
               
               <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
-                Find Flexible Gig Work<br />
+                Find Flexible Gig Economy Jobs<br />
                 <span className="text-emerald-600">Near You</span>
               </h1>
               
               <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
-                Metro Mitra connects workers with warehouse, logistics, and home service jobs across West Bengal. Browse roles, set your location preference, and get started.
+                Metro Mitra is the best job portal for gig workers. Find warehouse, logistics, and home service gig economy jobs across West Bengal.
               </p>
               
               <div className="flex flex-wrap gap-4 mb-10">

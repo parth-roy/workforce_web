@@ -8,6 +8,7 @@ export const mockServices = [
   // ---- HOME SERVICES (Individual) ----
   {
     id: 'srv-elec', slug: 'electrician', name: 'Electrician', shortName: 'Electrician',
+    heroImage: '/electrician-hero.webp',
     tagline: 'Wiring, repairs & installations',
     description: 'Professional electricians for wiring, switch repairs, appliance installation, and troubleshooting.',
     longDescription: 'Hire certified electricians for all your home and office needs. From minor repairs like fixing switches and replacing lights to major installations and wiring troubleshooting, our professionals ensure safety and quality.',
@@ -23,6 +24,7 @@ export const mockServices = [
   },
   {
     id: 'srv-paint', slug: 'painter', name: 'Painter', shortName: 'Painter',
+    heroImage: '/painter-hero.webp',
     tagline: 'Professional painting for home & office',
     description: 'Skilled painters for interior, exterior, and touch-up painting jobs.',
     longDescription: 'Refresh your space with our professional painting services. Whether you need a single room touched up or a full house exterior painted, our skilled painters deliver a flawless finish.',
@@ -38,6 +40,7 @@ export const mockServices = [
   },
   {
     id: 'srv-plumb', slug: 'plumber', name: 'Plumber', shortName: 'Plumber',
+    heroImage: '/plumber-hero.webp',
     tagline: 'Pipes, leaks & fittings',
     description: 'Expert plumbers for fixing leaks, installing fixtures, and unblocking drains.',
     longDescription: 'Resolve water and drainage issues quickly with our plumbing services. Our network includes experienced plumbers capable of handling everything from minor leaks to major pipe installations.',
@@ -53,6 +56,7 @@ export const mockServices = [
   },
   {
     id: 'srv-clean', slug: 'cleaning', name: 'Cleaning', shortName: 'Cleaning',
+    heroImage: '/cleaning-hero.webp',
     tagline: 'Deep cleaning & sweeping',
     description: 'Professional cleaning staff for routine maintenance, deep cleaning, or post-construction clearing.',
     longDescription: 'Maintain a pristine environment with our cleaning and sanitation services. We provide trained cleaners for residential deep cleaning, daily office upkeep, and heavy-duty post-construction site clearing.',
@@ -68,6 +72,7 @@ export const mockServices = [
   },
   {
     id: 'srv-ac', slug: 'ac-repair', name: 'AC Repair', shortName: 'AC Repair',
+    heroImage: '/ac-repair-hero.webp',
     tagline: 'AC servicing, installation & repair',
     description: 'Expert technicians for split and window AC servicing and gas refilling.',
     longDescription: 'Stay cool with our comprehensive AC repair and servicing. Whether you need a standard foam-jet cleaning, gas refill, or fixing a cooling issue, our experts handle all major brands.',
@@ -83,6 +88,7 @@ export const mockServices = [
   },
   {
     id: 'srv-appliance', slug: 'appliance-repair', name: 'Appliance Repair', shortName: 'Appliance',
+    heroImage: '/appliance-repair-hero.webp',
     tagline: 'Fast repair for household appliances',
     description: 'Diagnose and fix issues with washing machines, refrigerators, microwaves, and more.',
     longDescription: 'Get your essential appliances back in working order. Our technicians specialize in diagnosing and repairing major white goods, ensuring your home runs smoothly.',
@@ -98,6 +104,7 @@ export const mockServices = [
   },
   {
     id: 'srv-security', slug: 'security', name: 'Security', shortName: 'Security',
+    heroImage: '/security-hero.webp',
     tagline: 'Trusted security personnel',
     description: 'Hire verified security guards for events, residential buildings, or commercial spaces.',
     longDescription: 'Ensure safety and peace of mind with our professional security services. We provide trained and verified security personnel for day and night shifts.',
@@ -113,6 +120,7 @@ export const mockServices = [
   },
   {
     id: 'srv-carpenter', slug: 'carpenter', name: 'Carpenter', shortName: 'Carpenter',
+    heroImage: '/carpenter-hero.webp',
     tagline: 'Woodwork, furniture repair & assembly',
     description: 'Skilled carpenters for repairing furniture, making custom woodwork, and fixing doors.',
     longDescription: 'From fixing a broken chair to building custom cabinets, our skilled carpenters provide quality woodwork and furniture assembly services for your home or office.',
@@ -130,6 +138,7 @@ export const mockServices = [
   // ---- LOGISTICS & LABOR (Individual & B2B) ----
   {
     id: 'srv-loading', slug: 'loading-unloading', name: 'Loading/Unloading', shortName: 'Loading',
+    heroImage: '/loading-unloading-hero.webp',
     tagline: 'Helpers for loading goods',
     description: 'Physical labor for loading and unloading trucks, shifting materials, and heavy lifting.',
     longDescription: 'Need extra hands to move heavy items? Hire strong, verified helpers for loading and unloading goods from trucks, shifting materials across floors, or general heavy lifting.',

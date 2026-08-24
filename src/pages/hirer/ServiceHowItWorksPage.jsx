@@ -18,7 +18,7 @@ export default function ServiceHowItWorksPage() {
     <>
       <SEO {...ServiceHowItWorksSEO()} />
       <div className="bg-slate-900 text-white py-16 px-4">
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-7xl">
           <h1 className="text-4xl font-black mb-4">How Hiring Works</h1>
           <p className="text-xl text-slate-300 max-w-2xl">
             A simple, transparent process to request services and hire verified workers on Metro Mitra.
@@ -26,16 +26,39 @@ export default function ServiceHowItWorksPage() {
         </div>
       </div>
       
-      <main className="container mx-auto max-w-5xl px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          <div className="order-2 md:order-1 bg-slate-100 rounded-3xl p-8 border border-slate-200">
-            <div className="aspect-square bg-slate-800 rounded-2xl shadow-xl overflow-hidden relative max-w-sm mx-auto flex items-center justify-center p-0 text-center">
-              <img src="/workforce-app.webp" alt="Workforce App Request Flow" className="w-full h-full object-cover" />
+      <main className="container mx-auto max-w-7xl px-4 py-16">
+        <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 items-center mb-16">
+          <div className="order-2 md:order-1 bg-slate-100 rounded-3xl p-8 border border-slate-200 lg:sticky lg:top-24">
+            <div className="aspect-[3/4] bg-white rounded-2xl shadow-xl overflow-hidden relative max-w-[320px] mx-auto border-4 border-slate-200 flex flex-col relative">
+              <div className="h-12 border-b border-slate-100 flex items-center px-4 justify-between bg-slate-50">
+                <div className="w-8 h-8 bg-slate-200 rounded-full"></div>
+                <div className="h-4 w-24 bg-slate-200 rounded"></div>
+                <div className="w-8 h-8 bg-slate-200 rounded-full"></div>
+              </div>
+              <div className="flex-1 p-5 bg-slate-50">
+                <div className="h-4 w-32 bg-slate-800 rounded mb-4"></div>
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="aspect-square bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm">
+                    <div className="w-8 h-8 bg-emerald-100 rounded-full"></div>
+                    <div className="h-2 w-16 bg-slate-300 rounded"></div>
+                  </div>
+                  <div className="aspect-square bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-2 shadow-sm">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full"></div>
+                    <div className="h-2 w-16 bg-slate-300 rounded"></div>
+                  </div>
+                </div>
+                <div className="h-3 w-40 bg-slate-400 rounded mb-3"></div>
+                <div className="h-24 bg-white border border-slate-200 rounded-xl shadow-sm mb-4"></div>
+                <div className="h-10 w-full bg-emerald-600 rounded-xl mt-auto"></div>
+              </div>
             </div>
           </div>
 
           <div className="order-1 md:order-2">
             <h2 className="text-3xl font-bold text-slate-900 mb-6">The Hiring Process</h2>
+            <p className="text-slate-600 mb-6 text-lg max-w-2xl">
+              From requesting a service to final payment, our platform ensures a smooth and transparent experience for all hirers.
+            </p>
             <div className="space-y-8">
               {steps.map((s, i) => (
                 <div key={i} className="flex gap-4">

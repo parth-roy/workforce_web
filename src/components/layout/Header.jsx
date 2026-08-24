@@ -9,7 +9,7 @@ const DESKTOP_NAV = [
     href: '/jobs',
     dropdown: [
       { label: 'All Jobs', href: '/jobs' },
-      { label: 'Locations', href: '/jobs' },
+      { label: 'Locations', href: '/jobs#locations' },
       { label: 'How It Works', href: '/workers/how-it-works' },
       { label: 'Join as Worker', href: '/join-as-worker' },
     ]

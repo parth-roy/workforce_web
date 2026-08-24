@@ -40,16 +40,16 @@ export default function ServiceFAQPage() {
     <>
       <SEO {...ServiceFAQSEO()} />
       <div className="bg-slate-900 text-white py-16 px-4">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-black mb-4">Hiring FAQ & Help</h1>
-          <p className="text-xl text-slate-300">
-            Find answers to common questions about hiring services and workers on Metro Mitra.
+        <div className="container mx-auto max-w-7xl">
+          <h1 className="text-4xl font-black mb-4">Hirer FAQ & Help</h1>
+          <p className="text-xl text-slate-300 max-w-2xl">
+            Find answers to common questions about hiring services through Metro Mitra.
           </p>
         </div>
       </div>
       
-      <main className="container mx-auto max-w-3xl px-4 py-16">
-        <div className="space-y-12">
+      <main className="container mx-auto max-w-7xl px-4 py-16">
+        <div className="space-y-12 max-w-4xl">
           {FAQ_DATA.map((section, sIdx) => (
             <div key={sIdx}>
               <h2 className="text-2xl font-bold text-slate-900 mb-6">{section.category}</h2>

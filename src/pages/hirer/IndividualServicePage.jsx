@@ -49,27 +49,71 @@ export default function IndividualServicePage() {
       <SEO {...IndividualServiceSEO(svc)} />
 
       {/* Hero */}
-      <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <Breadcrumbs items={breadcrumbs} light />
-          <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-4">
-                <Icon className="w-7 h-7 text-emerald-400" />
-              </div>
-              <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">{svc.category}</span>
-              <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">{svc.name}</h1>
-              <p className="text-lg text-slate-300 max-w-2xl">{svc.tagline || svc.description}</p>
+      {svc.heroImage ? (
+        <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+          <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+            <div className="mb-6">
+              <Breadcrumbs items={breadcrumbs} />
             </div>
-            <button
-              onClick={() => navigate(`/services/${svc.slug}/hire`)}
-              className="shrink-0 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"
-            >
-              Book This Service <ArrowRight className="w-5 h-5" />
-            </button>
+            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+              <div className="max-w-2xl lg:py-16 xl:pl-12">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                  {svc.category}
+                </span>
+                
+                <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                  {svc.name}
+                </h1>
+                
+                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                  {svc.tagline || svc.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-4 mb-10">
+                  <button
+                    onClick={() => navigate(`/services/${svc.slug}/hire`)}
+                    className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2"
+                  >
+                    Book This Service <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+                <img 
+                  src={svc.heroImage} 
+                  alt={svc.name} 
+                  className="w-full max-w-[700px] h-auto object-contain transform origin-bottom lg:scale-[1.1] xl:translate-x-[5%] xl:translate-y-[2%]"
+                  loading="eager"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <Breadcrumbs items={breadcrumbs} light />
+            <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div>
+                <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-4">
+                  <Icon className="w-7 h-7 text-emerald-400" />
+                </div>
+                <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">{svc.category}</span>
+                <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">{svc.name}</h1>
+                <p className="text-lg text-slate-300 max-w-2xl">{svc.tagline || svc.description}</p>
+              </div>
+              <button
+                onClick={() => navigate(`/services/${svc.slug}/hire`)}
+                className="shrink-0 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-emerald-400 transition-colors flex items-center gap-2"
+              >
+                Book This Service <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
 

@@ -18,8 +18,8 @@ const DESKTOP_NAV = [
     label: 'Hire Services',
     href: '/services',
     dropdown: [
-      { label: 'All Services', href: '/services/categories' },
-      { label: 'Popular Services', href: '/services' },
+      { label: 'All Services', href: '/services' },
+      { label: 'Service Categories', href: '/services/categories' },
       { label: 'Hire Workers (B2B)', href: '/hire-workers' },
       { label: 'How Hiring Works', href: '/services/how-it-works' },
     ]

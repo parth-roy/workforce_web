@@ -97,9 +97,15 @@ export default function IndividualServicePage() {
             <Breadcrumbs items={breadcrumbs} light />
             <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div>
-                <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-4">
-                  <Icon className="w-7 h-7 text-emerald-400" />
-                </div>
+                {svc.customIcon ? (
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                    <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
+                  </div>
+                ) : (
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-4">
+                    <Icon className="w-7 h-7 text-emerald-400" />
+                  </div>
+                )}
                 <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">{svc.category}</span>
                 <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">{svc.name}</h1>
                 <p className="text-lg text-slate-300 max-w-2xl">{svc.tagline || svc.description}</p>

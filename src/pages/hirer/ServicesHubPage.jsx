@@ -49,17 +49,43 @@ export default function ServicesHubPage() {
       <SEO {...ServicesHubSEO()} />
 
       {/* Hero */}
-      <section className="bg-slate-900 text-white pt-24 pb-20 px-4">
-        <div className="container mx-auto max-w-5xl text-center">
-          <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">Individual Services</span>
-          <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
-            Book Trusted Local &<br />
-            <span className="text-emerald-400">Home Services</span>
-          </h1>
-          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            From electricians and plumbers to cleaning and moving help — Metro Mitra connects you with skilled workers for tasks around your home or office.
-          </p>
-          
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+            <div className="max-w-2xl lg:py-16 xl:pl-12">
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                Individual Services
+              </span>
+              
+              <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                Book Trusted Local &<br />
+                <span className="text-emerald-600">Home Services</span>
+              </h1>
+              
+              <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                From electricians and plumbers to cleaning and moving help - Metro Mitra connects you with skilled workers for tasks around your home or office.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 mb-10">
+                <a
+                  href="#services"
+                  className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2"
+                >
+                  Browse Services <ArrowRight className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+              <img 
+                src="/all-services-hero.webp" 
+                alt="All Services" 
+                className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.15] xl:scale-[1.25] 2xl:scale-[1.3] xl:translate-x-[10%] xl:translate-y-[2%]"
+                loading="eager"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -102,9 +128,15 @@ export default function ServicesHubPage() {
                     to={`/services/${svc.slug}`}
                     className="group bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all"
                   >
-                    <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                      <Icon className="w-6 h-6" />
-                    </div>
+                    {svc.customIcon ? (
+                      <div className="w-14 h-14 mb-4 flex items-center justify-center overflow-hidden rounded-xl">
+                        <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                    )}
                     <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{svc.category}</div>
                     <h3 className="font-bold text-slate-900 text-lg mb-2">{svc.name}</h3>
                     <p className="text-slate-600 text-sm line-clamp-2 mb-4">{svc.description}</p>

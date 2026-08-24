@@ -147,9 +147,15 @@ export default function HomePage() {
                 const Icon = ICON_MAP[svc.icon] || Users;
                 return (
                   <Link key={svc.slug} to={`/services/${svc.slug}`} className="group bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all text-center">
-                    <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                      <Icon className="w-5 h-5" />
-                    </div>
+                    {svc.customIcon ? (
+                      <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center overflow-hidden rounded-xl">
+                        <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
+                      </div>
+                    ) : (
+                      <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                    )}
                     <p className="font-semibold text-slate-900 text-sm leading-snug">{svc.shortName || svc.name}</p>
                   </Link>
                 );

@@ -14,29 +14,31 @@ export default function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-32 pb-16 lg:pt-32 lg:pb-0 overflow-x-clip border-b border-slate-200">
         <div className="max-w-[1400px] mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
-            <div className="max-w-2xl lg:py-16 xl:pl-12">
-              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
-                About Us
-              </span>
-              
-              <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
-                About Metro Mitra
-              </h1>
-              
-              <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
-                A gig workforce platform connecting skilled workers with individuals and businesses across West Bengal.
-              </p>
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-stretch">
+            <div className="max-w-2xl lg:pt-16 lg:pb-56 xl:pl-12 flex flex-col justify-start">
+              <div>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                  About Us
+                </span>
+                
+                <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                  About Metro Mitra
+                </h1>
+                
+                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                  A gig workforce platform connecting skilled workers with individuals and businesses across West Bengal.
+                </p>
+              </div>
             </div>
 
             <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
               <img 
                 src="/about-hero.webp" 
                 alt="About Metro Mitra" 
-                className="w-full max-w-[650px] h-auto object-contain transform origin-bottom lg:scale-[0.95] xl:scale-[0.95] 2xl:scale-[1.0] xl:translate-x-[5%] xl:translate-y-[0%]"
+                className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.1] xl:scale-[1.2] 2xl:scale-[1.25] xl:translate-x-[5%] xl:translate-y-[0%]"
                 loading="eager"
               />
             </div>

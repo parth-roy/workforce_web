@@ -17,14 +17,38 @@ export default function ServiceHowItWorksPage() {
   return (
     <>
       <SEO {...ServiceHowItWorksSEO()} />
-      <div className="bg-slate-900 text-white py-16 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <h1 className="text-4xl font-black mb-4">How Hiring Works</h1>
-          <p className="text-xl text-slate-300 max-w-2xl">
-            A simple, transparent process to request services and hire verified workers on Metro Mitra.
-          </p>
+      {/* Hero */}
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-32 pb-16 lg:pt-32 lg:pb-0 overflow-x-clip border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-stretch">
+            <div className="max-w-2xl lg:pt-16 lg:pb-64 xl:pl-12 flex flex-col justify-start">
+              <div>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                  How It Works
+                </span>
+                
+                <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+                  How Hiring Works
+                </h1>
+                
+                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
+                  A simple, transparent process to request services and hire verified workers on Metro Mitra.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0" style={{ animationFillMode: 'forwards' }}>
+              <img 
+                src="/service-how-it-works-hero.webp" 
+                alt="How Hiring Works on Metro Mitra" 
+                className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.1] xl:scale-[1.2] 2xl:scale-[1.25] xl:translate-x-[5%] xl:translate-y-[0%]"
+                loading="eager"
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
       
       <main className="container mx-auto max-w-7xl px-4 py-16">
         <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 items-center mb-16">

@@ -129,8 +129,8 @@ export default function ServicesHubPage() {
                     className="group bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all"
                   >
                     {svc.customIcon ? (
-                      <div className="w-14 h-14 mb-4 flex items-center justify-center overflow-hidden rounded-xl">
-                        <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
+                      <div className="w-14 h-14 mb-4 flex items-center justify-center rounded-xl">
+                        <img src={svc.customIcon} alt={svc.name} className={`w-full h-full object-contain ${svc.slug === 'loading-unloading' ? 'scale-[2] origin-left' : ''}`} />
                       </div>
                     ) : (
                       <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">

@@ -45,17 +45,29 @@ export default function UCVariantModal({ item, isOpen, onClose }) {
 
               return (
                 <div key={variant.id} className="flex justify-between items-center p-4 border border-slate-200 rounded-xl hover:border-purple-300 transition-colors">
-                  <div className="pr-4">
-                    <h4 className="font-bold text-slate-900 mb-1">{variant.title}</h4>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="font-bold">₹{variant.price}</span>
-                      <span className="text-slate-500">• {variant.time}</span>
-                    </div>
-                    {variant.rating && (
-                      <div className="flex items-center gap-1 text-xs text-slate-600 mt-1">
-                        <Star className="w-3 h-3 fill-black text-black" /> {variant.rating}
+                  <div className="flex items-center gap-4 flex-1 pr-4">
+                    {variant.image && (
+                      <div className="w-16 h-16 shrink-0 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                        <img 
+                          src={variant.image} 
+                          alt={variant.title} 
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
                       </div>
                     )}
+                    <div>
+                      <h4 className="font-bold text-slate-900 mb-1 leading-tight">{variant.title}</h4>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-bold">₹{variant.price}</span>
+                        <span className="text-slate-500">• {variant.time}</span>
+                      </div>
+                      {variant.rating && (
+                        <div className="flex items-center gap-1 text-xs text-slate-600 mt-1">
+                          <Star className="w-3 h-3 fill-black text-black" /> {variant.rating}
+                        </div>
+                      )}
+                    </div>
                   </div>
                   
                   <div className="w-24 h-10 flex-shrink-0">

@@ -100,8 +100,7 @@ function UCServicePageContent() {
     setActiveCategory(catId);
     const el = document.getElementById(`category-${catId}`);
     if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -113,7 +112,8 @@ function UCServicePageContent() {
       for (const el of categories) {
         if (!el) continue;
         const rect = el.getBoundingClientRect();
-        if (rect.top <= 120 && rect.bottom >= 120) {
+        // Check if the top of the section is near the bottom of the sticky header (approx 160px on mobile, 64px on desktop)
+        if (rect.top <= 180 && rect.bottom >= 180) {
           currentActive = el.id.replace('category-', '');
           break;
         }
@@ -123,8 +123,20 @@ function UCServicePageContent() {
       }
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Add simple throttle to prevent jank
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, [activeCategory, service]);
 
   return (
@@ -189,6 +201,24 @@ function UCServicePageContent() {
           </div>
         </div>
 
+        {/* Mobile Categories Navigation */}
+        <div className="md:hidden flex overflow-x-auto gap-3 mb-6 pb-2 custom-scrollbar snap-x sticky top-[64px] z-30 bg-white pt-2 border-b border-slate-100">
+          {service.categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => scrollToCategory(cat.id)}
+              className="flex flex-col items-center justify-start shrink-0 snap-start w-[72px]"
+            >
+              <div className={`w-14 h-14 rounded-[14px] overflow-hidden mb-1.5 border-[2px] transition-colors ${activeCategory === cat.id ? 'border-purple-600' : 'border-slate-100'} bg-slate-50 flex items-center justify-center shadow-sm`}>
+                <img src={cat.icon} alt={cat.name} className="w-full h-full object-cover" />
+              </div>
+              <span className={`text-[10px] leading-tight text-center px-1 line-clamp-2 w-full ${activeCategory === cat.id ? 'font-bold text-slate-900' : 'font-medium text-slate-500'}`}>
+                {cat.name}
+              </span>
+            </button>
+          ))}
+        </div>
+
         {/* 3-Column Layout */}
         <div className="flex gap-8 relative">
           
@@ -217,7 +247,7 @@ function UCServicePageContent() {
           {/* Middle Content (Items) */}
           <div className="flex-1 max-w-3xl" ref={contentRef}>
             {service.categories.map((cat) => (
-              <section key={cat.id} id={`category-${cat.id}`} className="mb-12 scroll-mt-24">
+              <section key={cat.id} id={`category-${cat.id}`} className="mb-12 scroll-mt-48 md:scroll-mt-24">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">{cat.name}</h2>
                 <div className="flex flex-col border-t border-slate-100">
                   {cat.items.map((item) => (

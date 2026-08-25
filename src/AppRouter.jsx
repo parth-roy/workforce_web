@@ -38,6 +38,7 @@ import GuidesPage from './pages/shared/GuidesPage';
 import UCServicePage from './pages/hirer/UCServicePage';
 import UCCheckoutPage from './pages/hirer/UCCheckoutPage';
 import UCOrdersPage from './pages/hirer/UCOrdersPage';
+import UserProfilePage from './pages/user/UserProfilePage';
 import { useParams, useLocation } from 'react-router-dom';
 
 function ServiceDispatcher() {
@@ -95,6 +96,7 @@ export default function AppRouter() {
       <Route path="/guides" element={<GuidesPage />} />
       <Route path="/checkout" element={<UCCheckoutPage />} />
       <Route path="/user/orders" element={<UCOrdersPage />} />
+      <Route path="/user/profile" element={<UserProfilePage />} />
     </Routes>
       </main>
       {!hideHeaderFooter && <Footer />}

@@ -1,10 +1,40 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const UCCartContext = createContext();
 
 export function UCCartProvider({ children }) {
-  const [cart, setCart] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [cart, setCart] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = window.localStorage.getItem('uc_cart');
+        if (saved) return JSON.parse(saved);
+      } catch(e) {}
+    }
+    return [];
+  });
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [orders, setOrders] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = window.localStorage.getItem('uc_orders');
+        if (saved) return JSON.parse(saved);
+      } catch(e) {}
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('uc_cart', JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('uc_orders', JSON.stringify(orders));
+    }
+  }, [orders]);
 
   const addOrder = (order) => {
     setOrders((prev) => [{ ...order, id: Date.now().toString(), date: new Date().toISOString() }, ...prev]);
@@ -18,7 +48,10 @@ export function UCCartProvider({ children }) {
 
       if (existingItemIndex > -1) {
         const newCart = [...prev];
-        newCart[existingItemIndex].quantity += 1;
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + 1
+        };
         return newCart;
       }
 
@@ -35,7 +68,10 @@ export function UCCartProvider({ children }) {
       if (existingItemIndex > -1) {
         const newCart = [...prev];
         if (newCart[existingItemIndex].quantity > 1) {
-          newCart[existingItemIndex].quantity -= 1;
+          newCart[existingItemIndex] = {
+            ...newCart[existingItemIndex],
+            quantity: newCart[existingItemIndex].quantity - 1
+          };
           return newCart;
         } else {
           newCart.splice(existingItemIndex, 1);
@@ -56,7 +92,7 @@ export function UCCartProvider({ children }) {
   };
 
   return (
-    <UCCartContext.Provider value={{ cart, orders, addToCart, removeFromCart, clearCart, getTotalPrice, addOrder }}>
+    <UCCartContext.Provider value={{ cart, orders, addToCart, removeFromCart, clearCart, getTotalPrice, addOrder, isCartOpen, setIsCartOpen }}>
       {children}
     </UCCartContext.Provider>
   );

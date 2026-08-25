@@ -4,6 +4,7 @@ import { UCCartProvider } from './context/UCCartContext'
 import { AuthProvider } from './context/AuthContext'
 import AppRouter from './AppRouter'
 import AuthModal from './components/auth/AuthModal'
+import CartDrawer from './components/shared/CartDrawer'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <WorkforceProvider>
         <UCCartProvider>
           <AuthModal />
+          <CartDrawer />
           <AppRouter />
         </UCCartProvider>
       </WorkforceProvider>

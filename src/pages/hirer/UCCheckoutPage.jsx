@@ -3,17 +3,47 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
 import { useAuth } from '../../context/AuthContext';
+import LocationPicker from '../../components/shared/LocationPicker';
 
 export default function UCCheckoutPage() {
   const navigate = useNavigate();
+  const { user, token, openAuthModal } = useAuth();
   const { cart, getTotalPrice, addToCart, removeFromCart, clearCart, addOrder } = useUCCart();
   const [tipAmount, setTipAmount] = useState(75);
   const [avoidCalling, setAvoidCalling] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(() => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('uc_selectedSlot');
+        if (saved) return saved;
+      }
+      return null;
+    });
+    
+    // Save to localStorage when it changes
+    React.useEffect(() => {
+      if (typeof window !== 'undefined' && selectedSlot) {
+        localStorage.setItem('uc_selectedSlot', selectedSlot);
+      }
+    }, [selectedSlot]);
   const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
   
   // Payment Processing State
-  const [paymentState, setPaymentState] = useState('idle'); // 'idle' | 'processing' | 'success'
+  const [paymentState, setPaymentState] = useState('idle');
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('uc_selectedLocation');
+        if (saved) return JSON.parse(saved);
+      }
+      return null;
+    });
+    
+    // Save to localStorage when it changes
+    React.useEffect(() => {
+      if (typeof window !== 'undefined' && selectedLocation) {
+        localStorage.setItem('uc_selectedLocation', JSON.stringify(selectedLocation));
+      }
+    }, [selectedLocation]); // 'idle' | 'processing' | 'success'
 
   // Custom Alert Modal State
   const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '' });
@@ -73,22 +103,24 @@ export default function UCCheckoutPage() {
             </div>
 
             {/* Address */}
-            <div className="p-5 border-b border-slate-100 flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4 text-slate-600" />
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900 mb-0.5">Address</p>
-                    <p className="text-sm text-slate-500 line-clamp-1">Home - 1st floor, Ghosh Para Rd, Barrackpore...</p>
+              <div className="p-5 border-b border-slate-100 flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4 text-slate-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900 mb-0.5">Address</p>
+                      <p className="text-sm text-slate-500 line-clamp-1">
+                        {selectedLocation?.address || user?.address || 'No location selected'}
+                      </p>
+                    </div>
+                    <button onClick={() => setShowAddressModal(true)} className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+                      {selectedLocation?.address || user?.address ? 'Edit' : 'Add'}
+                    </button>
                   </div>
-                  <button onClick={() => showAlert('Edit Address', 'Address editing functionality will be available soon.')} className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
-                    Edit
-                  </button>
                 </div>
               </div>
-            </div>
 
             {/* Slot */}
             <div className="p-5 border-b border-slate-100 flex items-start gap-4">
@@ -170,10 +202,45 @@ export default function UCCheckoutPage() {
                         </button>
                       </div>
                       <span className="text-sm font-bold w-12 text-right">₹{price * item.quantity}</span>
-                    </div>
-                  </div>
-                );
-              })}
+                          </div>
+
+
+      {/* Address Picker Modal */}
+      {showAddressModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[80vh] max-h-[700px] animate-in zoom-in-95 duration-300">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
+              <h3 className="font-bold text-xl text-slate-900">Select Location</h3>
+              <button onClick={() => setShowAddressModal(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 relative overflow-y-auto p-4 bg-slate-50">
+                <LocationPicker 
+                  onLocationChange={(loc) => {
+                    setSelectedLocation(loc);
+                  }} 
+                />
+              </div>
+              <div className="p-4 bg-white border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <button 
+                  onClick={() => setShowAddressModal(false)}
+                  disabled={!selectedLocation?.address}
+                  className={`w-full font-bold py-3.5 rounded-xl transition-all ${
+                    selectedLocation?.address 
+                      ? 'bg-[#6B46C1] text-white hover:bg-[#553C9A] shadow-lg' 
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                  }`}
+                >
+                  Confirm Address
+                </button>
+              </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+})}
             </div>
 
             <label className="flex items-start gap-3 cursor-pointer pt-4 border-t border-slate-100">
@@ -287,9 +354,9 @@ export default function UCCheckoutPage() {
                   },
                   body: JSON.stringify({
                     gigCategory: cart[0]?.category?.toUpperCase().replace(/[^A-Z]/g, '_') || 'HELPER', 
-                    locationLat: 22.57, // Using default coordinates for now
-                    locationLng: 88.36, 
-                    locationAddress: user.address || 'Home - 1st floor, Ghosh Para Rd, Barrackpore...',
+                    locationLat: selectedLocation?.lat || 22.57,
+                    locationLng: selectedLocation?.lng || 88.36, 
+                    locationAddress: selectedLocation?.address || user?.address || 'No location provided',
                     workersNeeded: 1,
                     durationHours: 2,
                     urgency: 'SCHEDULED',
@@ -393,30 +460,47 @@ export default function UCCheckoutPage() {
       )}
 
       {/* Slot Modal */}
-      {isSlotModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200" onClick={() => setIsSlotModalOpen(false)}>
-          <div className="bg-white w-full sm:w-[400px] rounded-t-2xl sm:rounded-2xl p-6 flex flex-col gap-4 animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0" onClick={e => e.stopPropagation()}>
-            <h3 className="font-bold text-xl text-slate-900 mb-2">Select Date & Time</h3>
-            <div className="space-y-3">
-              {['Tomorrow, 09:00 AM - 11:00 AM', 'Tomorrow, 12:00 PM - 02:00 PM', 'Tomorrow, 04:00 PM - 06:00 PM'].map(slot => (
-                <button 
-                  key={slot}
-                  onClick={() => { setSelectedSlot(slot); setIsSlotModalOpen(false); }}
-                  className="w-full text-left p-4 border border-slate-200 rounded-xl hover:border-purple-600 hover:bg-purple-50 transition-colors font-semibold text-slate-700"
-                >
-                  {slot}
-                </button>
-              ))}
+        {isSlotModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200" onClick={() => setIsSlotModalOpen(false)}>
+            <div className="bg-white w-full sm:w-[450px] rounded-t-2xl sm:rounded-2xl p-6 flex flex-col gap-4 animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0" onClick={e => e.stopPropagation()}>
+              <h3 className="font-bold text-xl text-slate-900 mb-2">Select Date & Time</h3>
+              
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 snap-x">
+                {['Today', 'Tomorrow', 'Day After'].map((day, idx) => {
+                  const date = new Date();
+                  date.setDate(date.getDate() + idx);
+                  const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+                  return (
+                    <div key={day} className="snap-start min-w-[120px] p-3 border rounded-xl cursor-pointer text-center hover:border-purple-600 transition-colors border-slate-200">
+                      <p className="font-bold text-slate-900">{day}</p>
+                      <p className="text-xs text-slate-500">{dateStr}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <p className="font-semibold text-slate-900 mt-2">Select Start Time</p>
+              <div className="grid grid-cols-3 gap-3">
+                {['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '02:00 PM', '04:00 PM', '06:00 PM'].map(time => (
+                  <button 
+                    key={time}
+                    onClick={() => { setSelectedSlot(`Tomorrow, ${time}`); setIsSlotModalOpen(false); }}
+                    className="py-2.5 px-2 text-sm border border-slate-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors font-semibold text-slate-700 text-center"
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+              
+              <button 
+                onClick={() => setIsSlotModalOpen(false)}
+                className="mt-4 py-3 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+              >
+                Cancel
+              </button>
             </div>
-            <button 
-              onClick={() => setIsSlotModalOpen(false)}
-              className="mt-4 py-3 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
-            >
-              Cancel
-            </button>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Custom Alert Modal */}
       {alertModal.isOpen && (

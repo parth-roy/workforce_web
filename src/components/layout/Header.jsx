@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, PhoneCall, LogIn, ShoppingCart, Package } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const DESKTOP_NAV = [
   {
@@ -30,12 +32,19 @@ const DESKTOP_NAV = [
 ];
 
 export default function Header() {
-  const { cart, orders } = useUCCart();
+  const { cart, orders, setIsCartOpen } = useUCCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileAcc, setMobileAcc] = useState({});
   const location = useLocation();
+  const { user, openAuthModal, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCheckoutClick = (e) => {
+    e.preventDefault();
+    setIsCartOpen(true);
+  };
 
   useEffect(() => {
     setIsOpen(false);
@@ -115,18 +124,36 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to="/checkout" className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-1 xl:mr-2" title="My Cart">
+            <button onClick={handleCheckoutClick} className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-1 xl:mr-2" title="My Cart">
               <ShoppingCart size={22} />
               {cart?.length > 0 && (
                 <span className="absolute top-0 right-0 w-4 h-4 bg-purple-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {cart.length}
                 </span>
               )}
-            </Link>
-            <Link to="/join-as-worker" className="flex items-center gap-1 font-bold text-[13px] xl:text-sm text-slate-600 hover:text-emerald-600 transition-colors px-1 xl:px-2">
-              <LogIn size={16} />
-              Login
-            </Link>
+            </button>
+            {user ? (
+              <div className="relative group px-1 xl:px-2">
+                <button className="flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-emerald-600 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    {user.firstName?.[0] || user.name?.[0] || 'U'}
+                  </div>
+                </button>
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                  <Link to="/user/profile" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 font-medium border-b border-slate-50">My Profile</Link>
+                  <Link to="/user/orders" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 font-medium border-b border-slate-50">My Bookings</Link>
+                  <button onClick={logout} className="w-full text-left block px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-medium rounded-b-xl">Log out</button>
+                </div>
+              </div>
+            ) : (
+              <button 
+                onClick={() => openAuthModal('CUSTOMER')} 
+                className="flex items-center gap-1 font-bold text-[13px] xl:text-sm text-slate-600 hover:text-emerald-600 transition-colors px-1 xl:px-2"
+              >
+                <LogIn size={16} />
+                Login
+              </button>
+            )}
             <Link to="/services" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] xl:text-sm px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
               Get Started
             </Link>
@@ -142,14 +169,14 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to="/checkout" className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Cart">
+            <button onClick={handleCheckoutClick} className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Cart">
               <ShoppingCart size={20} className="text-slate-700" />
               {cart?.length > 0 && (
                 <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-purple-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                   {cart.length}
                 </span>
               )}
-            </Link>
+            </button>
             <button 
               onClick={() => setIsOpen(!isOpen)} 
               className="p-2 rounded-lg transition-colors text-slate-800 hover:bg-slate-100 ml-1" 

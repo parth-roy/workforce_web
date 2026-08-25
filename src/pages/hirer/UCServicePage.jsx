@@ -7,7 +7,7 @@ import UCVariantModal from '../../components/modals/UCVariantModal';
 import { useUCCart, UCCartProvider } from '../../context/UCCartContext';
 
 function CartSidebar() {
-  const { cart, getTotalPrice } = useUCCart();
+  const { cart, getTotalPrice, setIsCartOpen } = useUCCart();
   const navigate = useNavigate();
   
   if (cart.length === 0) {
@@ -40,7 +40,7 @@ function CartSidebar() {
         <span>₹{getTotalPrice()}</span>
       </div>
       <button 
-        onClick={() => navigate('/checkout')}
+        onClick={() => setIsCartOpen(true)}
         className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition-colors"
       >
         Proceed to Checkout
@@ -63,7 +63,7 @@ function MobileCartBottomBar() {
         <p className="text-purple-700 font-bold">₹{getTotalPrice()}</p>
       </div>
       <button 
-        onClick={() => navigate('/checkout')}
+        onClick={() => setIsCartOpen(true)}
         className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors"
       >
         Checkout

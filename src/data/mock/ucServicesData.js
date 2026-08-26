@@ -857,7 +857,7 @@ export const ucServicesData = {
       {
         id: 'consultation',
         name: 'Book a consultation',
-        icon: 'https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=200&q=80',
+        icon: '/uc-images/items/p35.jpeg',
         items: [
           {
             id: 'e35',
@@ -885,32 +885,14 @@ export const ucServicesData = {
       {
         id: 'tap_mixer',
         name: 'Tap & mixer',
-        icon: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+        icon: '/uc-images/items/p2.webp',
         items: [
           {
             id: 'p1',
             title: 'Combo for tap & mixer',
-            rating: '4.80 (27K reviews)',
-            price: 'Starts at ₹129',
-            isSuperSaver: true,
-            discount: '10% OFF',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
-            options: [
-              {
-                id: 'p1-1',
-                title: 'Standard Combo',
-                price: 129,
-                time: '30 mins',
-                rating: '4.80 (27K reviews)'
-              }
-            ]
-          },
-          {
-            id: 'p2',
-            title: 'Tap repair',
-            rating: '4.80 (245K reviews)',
-            price: 'Starts at ₹129',
-            image: '/uc-images/items/p2.webp',
+            rating: '4.82 (10K reviews)',
+            price: 'Starts at ₹199',
+            image: '/uc-images/items/p3.webp',
             options: [
               {
                 id: 'p2-1',
@@ -1033,31 +1015,14 @@ export const ucServicesData = {
       {
         id: 'toilet',
         name: 'Toilet',
-        icon: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=200&q=80',
+        icon: '/uc-images/items/p8.webp',
         items: [
           {
             id: 'p5',
             title: 'Combo for toilet',
-            rating: '4.78 (15K reviews)',
-            price: 'Starts at ₹199',
-            discount: '10% OFF',
-            image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=200&q=80',
-            options: [
-              {
-                id: 'p5-1',
-                title: 'Standard Combo',
-                price: 199,
-                time: '45 mins',
-                rating: '4.78 (15K reviews)'
-              }
-            ]
-          },
-          {
-            id: 'p6',
-            title: 'Jet spray repair/replacement',
-            rating: '4.79 (72K reviews)',
-            price: 'Starts at ₹199',
-            image: '/uc-images/items/p6.webp',
+            rating: '4.80 (8K reviews)',
+            price: 'Starts at ₹249',
+            image: '/uc-images/items/p8.webp',
             options: [
               {
                 id: 'p6-1',
@@ -1230,7 +1195,7 @@ export const ucServicesData = {
       {
         id: 'bath_shower',
         name: 'Bath & shower',
-        icon: '/uc-images/items/p13.webp',
+        icon: '/uc-images/items/p14.webp',
         items: [
           {
             id: 'p13',
@@ -1309,31 +1274,14 @@ export const ucServicesData = {
       {
         id: 'bath_accessories',
         name: 'Bath accessories',
-        icon: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+        icon: '/uc-images/items/p18.webp',
         items: [
           {
             id: 'p17',
             title: 'Combo for bath accessories',
-            rating: '4.75 (12K reviews)',
-            price: 'Starts at ₹99',
-            discount: '10% OFF',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
-            options: [
-              {
-                id: 'p17-1',
-                title: 'Standard Combo',
-                price: 99,
-                time: '30 mins',
-                rating: '4.75 (12K reviews)'
-              }
-            ]
-          },
-          {
-            id: 'p18',
-            title: 'Soap holder installation',
-            rating: '4.74 (8K reviews)',
-            price: '₹99',
-            image: '/uc-images/items/p18.webp',
+            rating: '4.75 (5K reviews)',
+            price: 'Starts at ₹149',
+            image: '/uc-images/items/p19.webp',
             options: []
           },
           {
@@ -1477,10 +1425,11 @@ export const ucServicesData = {
             title: 'Waste coupling installation',
             rating: '4.76 (12K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p24.jpeg',
             options: [
               {
                 id: 'p24-1',
+                image: '/uc-images/options/p24-1.jpeg',
                 title: 'Standard',
                 price: 149,
                 time: '30 mins',
@@ -1488,6 +1437,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p24-2',
+                image: '/uc-images/options/p24-2.jpeg',
                 title: 'Pop-up',
                 price: 199,
                 time: '40 mins',
@@ -1500,17 +1450,18 @@ export const ucServicesData = {
       {
         id: 'drainage_blockage',
         name: 'Drainage & blockage',
-        icon: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+        icon: '/uc-images/items/p26.jpeg',
         items: [
           {
             id: 'p25',
             title: 'Drain cover installation',
             rating: '4.79 (11K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p25.jpeg',
             options: [
               {
                 id: 'p25-1',
+                image: '/uc-images/options/p25-1.jpeg',
                 title: 'PVC cover',
                 price: 99,
                 time: '15 mins',
@@ -1518,6 +1469,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p25-2',
+                image: '/uc-images/options/p25-2.jpeg',
                 title: 'Steel cover',
                 price: 149,
                 time: '20 mins',
@@ -1530,10 +1482,11 @@ export const ucServicesData = {
             title: 'Drain blockage removal',
             rating: '4.77 (55K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p26.jpeg',
             options: [
               {
                 id: 'p26-1',
+                image: '/uc-images/options/p26-1.jpeg',
                 title: 'Floor drain',
                 price: 199,
                 time: '30 mins',
@@ -1541,6 +1494,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p26-2',
+                image: '/uc-images/options/p26-2.jpeg',
                 title: 'Main line (minor)',
                 price: 499,
                 time: '60 mins',
@@ -1548,6 +1502,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p26-3',
+                image: '/uc-images/options/p26-3.jpeg',
                 title: 'Main line (major)',
                 price: 999,
                 time: '120 mins',
@@ -1555,6 +1510,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p26-4',
+                image: '/uc-images/options/p26-4.jpeg',
                 title: 'Machine clearing',
                 price: 1499,
                 time: '120 mins',
@@ -1567,14 +1523,14 @@ export const ucServicesData = {
       {
         id: 'appliance_connections',
         name: 'Appliance connections',
-        icon: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+        icon: '/uc-images/items/p28.jpeg',
         items: [
           {
             id: 'p27',
             title: 'Connection hose installation',
             rating: '4.78 (20K reviews)',
             price: '₹129',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p27.jpeg',
             options: []
           },
           {
@@ -1582,7 +1538,7 @@ export const ucServicesData = {
             title: 'Washing machine inlet installation',
             rating: '4.81 (36K reviews)',
             price: '₹199',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p28.jpeg',
             options: []
           },
           {
@@ -1590,10 +1546,11 @@ export const ucServicesData = {
             title: 'RO water connection installation',
             rating: '4.76 (14K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p29.jpeg',
             options: [
               {
                 id: 'p29-1',
+                image: '/uc-images/options/p29-1.jpeg',
                 title: 'Standard',
                 price: 199,
                 time: '40 mins',
@@ -1601,6 +1558,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p29-2',
+                image: '/uc-images/options/p29-2.jpeg',
                 title: 'With drilling',
                 price: 299,
                 time: '60 mins',
@@ -1613,34 +1571,18 @@ export const ucServicesData = {
       {
         id: 'water_tank_motor',
         name: 'Water tank & motor',
-        icon: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+        icon: '/uc-images/items/p31.jpeg',
         items: [
           {
             id: 'p30',
             title: 'Combo for water tank & motor',
-            rating: '4.79 (9K reviews)',
+            rating: '4.77 (6K reviews)',
             price: 'Starts at ₹499',
-            discount: '10% OFF',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
-            options: [
-              {
-                id: 'p30-1',
-                title: 'Standard Combo',
-                price: 499,
-                time: '90 mins',
-                rating: '4.79 (9K reviews)'
-              }
-            ]
-          },
-          {
-            id: 'p31',
-            title: 'Water tank repair',
-            rating: '4.81 (12K reviews)',
-            price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p31.jpeg',
             options: [
               {
                 id: 'p31-1',
+                image: '/uc-images/options/p31-1.jpeg',
                 title: 'Leak repair',
                 price: 299,
                 time: '60 mins',
@@ -1648,6 +1590,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p31-2',
+                image: '/uc-images/options/p31-2.jpeg',
                 title: 'Overflow fix',
                 price: 199,
                 time: '45 mins',
@@ -1660,10 +1603,11 @@ export const ucServicesData = {
             title: 'Motor installation',
             rating: '4.83 (8K reviews)',
             price: 'Starts at ₹449',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p32.jpeg',
             options: [
               {
                 id: 'p32-1',
+                image: '/uc-images/options/p32-1.jpeg',
                 title: 'Upto 1 HP',
                 price: 449,
                 time: '90 mins',
@@ -1671,6 +1615,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p32-2',
+                image: '/uc-images/options/p32-2.jpeg',
                 title: 'Above 1 HP',
                 price: 649,
                 time: '120 mins',
@@ -1683,7 +1628,7 @@ export const ucServicesData = {
             title: 'Motor air cavity removal',
             rating: '4.78 (5K reviews)',
             price: '₹199',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p33.jpeg',
             options: []
           },
           {
@@ -1691,10 +1636,11 @@ export const ucServicesData = {
             title: 'Overhead water tank installation',
             rating: '4.76 (4K reviews)',
             price: 'Starts at ₹799',
-            image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80',
+            image: '/uc-images/items/p34.jpeg',
             options: [
               {
                 id: 'p34-1',
+                image: '/uc-images/options/p34-1.jpeg',
                 title: 'Upto 500L',
                 price: 799,
                 time: '120 mins',
@@ -1702,6 +1648,7 @@ export const ucServicesData = {
               },
               {
                 id: 'p34-2',
+                image: '/uc-images/options/p34-2.jpeg',
                 title: '500L - 1000L',
                 price: 1199,
                 time: '180 mins',
@@ -1714,14 +1661,14 @@ export const ucServicesData = {
       {
         id: 'consultation',
         name: 'At home consultation',
-        icon: 'https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=200&q=80',
+        icon: '/uc-images/items/p35.jpeg',
         items: [
           {
             id: 'p35',
             title: 'Plumber consultation',
             rating: '4.79 (110K reviews)',
             price: '₹89',
-            image: 'https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=200&q=80',
+            image: '/uc-images/items/p35.jpeg',
             options: []
           }
         ]
@@ -1742,17 +1689,18 @@ export const ucServicesData = {
       {
         id: 'cupboard_drawer',
         name: 'Cupboard & drawer',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c1.jpeg',
         items: [
           {
             id: 'c1',
             title: 'Cupboard repair',
             rating: '4.81 (12K reviews)',
             price: 'Starts at ₹89',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c1.jpeg',
             options: [
               {
                 id: 'c1-1',
+                image: '/uc-images/options/c1-1.jpeg',
                 title: 'Cupboard hinge repair/replacement',
                 price: 89,
                 time: '30 mins',
@@ -1760,6 +1708,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c1-2',
+                image: '/uc-images/options/c1-2.jpeg',
                 title: 'Regular channel repair',
                 price: 129,
                 time: '30 mins',
@@ -1767,6 +1716,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c1-3',
+                image: '/uc-images/options/c1-3.jpeg',
                 title: 'Handle repair',
                 price: 89,
                 time: '20 mins',
@@ -1774,6 +1724,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c1-4',
+                image: '/uc-images/options/c1-4.jpeg',
                 title: 'Cupboard rod installation',
                 price: 149,
                 time: '40 mins',
@@ -1781,6 +1732,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c1-5',
+                image: '/uc-images/options/c1-5.jpeg',
                 title: 'Cupboard sliding door repair',
                 price: 249,
                 time: '60 mins',
@@ -1793,10 +1745,11 @@ export const ucServicesData = {
             title: 'Cupboard lock & latches',
             rating: '4.79 (9K reviews)',
             price: 'Starts at ₹179',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c2.jpeg',
             options: [
               {
                 id: 'c2-1',
+                image: '/uc-images/options/c2-1.jpeg',
                 title: 'Lock repair',
                 price: 179,
                 time: '30 mins',
@@ -1804,6 +1757,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c2-2',
+                image: '/uc-images/options/c2-2.jpeg',
                 title: 'Lock installation',
                 price: 249,
                 time: '45 mins',
@@ -1811,6 +1765,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c2-3',
+                image: '/uc-images/options/c2-3.jpeg',
                 title: 'Latch replacement',
                 price: 129,
                 time: '30 mins',
@@ -1823,10 +1778,11 @@ export const ucServicesData = {
             title: 'Drawer repair & installation',
             rating: '4.76 (5K reviews)',
             price: 'Starts at ₹89',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c3.jpeg',
             options: [
               {
                 id: 'c3-1',
+                image: '/uc-images/options/c3-1.jpeg',
                 title: 'Channel repair',
                 price: 149,
                 time: '30 mins',
@@ -1834,6 +1790,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c3-2',
+                image: '/uc-images/options/c3-2.jpeg',
                 title: 'Handle replacement',
                 price: 89,
                 time: '20 mins',
@@ -1841,6 +1798,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c3-3',
+                image: '/uc-images/options/c3-3.jpeg',
                 title: 'Lock repair',
                 price: 179,
                 time: '30 mins',
@@ -1848,6 +1806,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c3-4',
+                image: '/uc-images/options/c3-4.jpeg',
                 title: 'New drawer installation',
                 price: 499,
                 time: '90 mins',
@@ -1860,14 +1819,14 @@ export const ucServicesData = {
       {
         id: 'kitchen_fittings',
         name: 'Kitchen fittings',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c5.jpeg',
         items: [
           {
             id: 'c4',
             title: 'Pull out drawer repair/replacement',
             rating: '4.76 (7K reviews)',
             price: '₹129',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c4.jpeg',
             options: []
           },
           {
@@ -1875,10 +1834,11 @@ export const ucServicesData = {
             title: 'Cabinet hinges',
             rating: '4.80 (8K reviews)',
             price: 'Starts at ₹89',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c5.jpeg',
             options: [
               {
                 id: 'c5-1',
+                image: '/uc-images/options/c5-1.jpeg',
                 title: 'Repair',
                 price: 89,
                 time: '20 mins',
@@ -1886,6 +1846,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c5-2',
+                image: '/uc-images/options/c5-2.jpeg',
                 title: 'Replacement',
                 price: 129,
                 time: '30 mins',
@@ -1898,10 +1859,11 @@ export const ucServicesData = {
             title: 'Cabinet hydraulic repair',
             rating: '4.74 (5K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c6.jpeg',
             options: [
               {
                 id: 'c6-1',
+                image: '/uc-images/options/c6-1.jpeg',
                 title: 'Adjustment',
                 price: 149,
                 time: '30 mins',
@@ -1909,6 +1871,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c6-2',
+                image: '/uc-images/options/c6-2.jpeg',
                 title: 'Replacement',
                 price: 299,
                 time: '45 mins',
@@ -1921,10 +1884,11 @@ export const ucServicesData = {
             title: 'Utensil rack installation',
             rating: '4.82 (6K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c7.jpeg',
             options: [
               {
                 id: 'c7-1',
+                image: '/uc-images/options/c7-1.jpeg',
                 title: 'Small rack',
                 price: 199,
                 time: '40 mins',
@@ -1932,6 +1896,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c7-2',
+                image: '/uc-images/options/c7-2.jpeg',
                 title: 'Large rack',
                 price: 299,
                 time: '60 mins',
@@ -1944,17 +1909,18 @@ export const ucServicesData = {
       {
         id: 'shelves_decor',
         name: 'Shelves & decor',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c10.jpeg',
         items: [
           {
             id: 'c8',
             title: 'Decor installation',
             rating: '4.84 (18K reviews)',
             price: 'Starts at ₹79',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c8.jpeg',
             options: [
               {
                 id: 'c8-1',
+                image: '/uc-images/options/c8-1.jpeg',
                 title: 'Painting/Photo frame',
                 price: 79,
                 time: '15 mins',
@@ -1962,6 +1928,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c8-2',
+                image: '/uc-images/options/c8-2.jpeg',
                 title: 'Wall hanging',
                 price: 99,
                 time: '20 mins',
@@ -1974,10 +1941,11 @@ export const ucServicesData = {
             title: 'Mirror installation',
             rating: '4.80 (25K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c9.jpeg',
             options: [
               {
                 id: 'c9-1',
+                image: '/uc-images/options/c9-1.jpeg',
                 title: 'Small mirror',
                 price: 99,
                 time: '20 mins',
@@ -1985,6 +1953,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c9-2',
+                image: '/uc-images/options/c9-2.jpeg',
                 title: 'Large mirror',
                 price: 199,
                 time: '40 mins',
@@ -1997,10 +1966,11 @@ export const ucServicesData = {
             title: 'Shelf installation',
             rating: '4.83 (35K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c10.jpeg',
             options: [
               {
                 id: 'c10-1',
+                image: '/uc-images/options/c10-1.jpeg',
                 title: 'Floating shelf',
                 price: 149,
                 time: '30 mins',
@@ -2008,6 +1978,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c10-2',
+                image: '/uc-images/options/c10-2.jpeg',
                 title: 'Bracket shelf',
                 price: 99,
                 time: '20 mins',
@@ -2015,6 +1986,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c10-3',
+                image: '/uc-images/options/c10-3.jpeg',
                 title: 'Corner shelf',
                 price: 129,
                 time: '30 mins',
@@ -2027,10 +1999,11 @@ export const ucServicesData = {
             title: 'Wall cabinet assembly & installation',
             rating: '4.75 (15K reviews)',
             price: 'Starts at ₹299',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c11.jpeg',
             options: [
               {
                 id: 'c11-1',
+                image: '/uc-images/options/c11-1.jpeg',
                 title: 'Small cabinet',
                 price: 299,
                 time: '60 mins',
@@ -2038,6 +2011,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c11-2',
+                image: '/uc-images/options/c11-2.jpeg',
                 title: 'Medium cabinet',
                 price: 499,
                 time: '90 mins',
@@ -2045,6 +2019,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c11-3',
+                image: '/uc-images/options/c11-3.jpeg',
                 title: 'Large cabinet',
                 price: 799,
                 time: '120 mins',
@@ -2057,17 +2032,18 @@ export const ucServicesData = {
       {
         id: 'bath_fittings',
         name: 'Bath fittings & mirrors',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c13.jpeg',
         items: [
           {
             id: 'c12',
             title: 'Mirror installation',
             rating: '4.80 (25K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c12.jpeg',
             options: [
               {
                 id: 'c12-1',
+                image: '/uc-images/options/c12-1.jpeg',
                 title: 'Small mirror',
                 price: 99,
                 time: '20 mins',
@@ -2075,6 +2051,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c12-2',
+                image: '/uc-images/options/c12-2.jpeg',
                 title: 'Large mirror',
                 price: 199,
                 time: '40 mins',
@@ -2087,7 +2064,7 @@ export const ucServicesData = {
             title: 'Soap holder installation',
             rating: '4.74 (8K reviews)',
             price: '₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c13.jpeg',
             options: []
           },
           {
@@ -2095,10 +2072,11 @@ export const ucServicesData = {
             title: 'Towel holder installation',
             rating: '4.72 (15K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c14.jpeg',
             options: [
               {
                 id: 'c14-1',
+                image: '/uc-images/options/c14-1.jpeg',
                 title: 'Ring',
                 price: 99,
                 time: '20 mins',
@@ -2106,6 +2084,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c14-2',
+                image: '/uc-images/options/c14-2.jpeg',
                 title: 'Rod',
                 price: 149,
                 time: '30 mins',
@@ -2113,6 +2092,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c14-3',
+                image: '/uc-images/options/c14-3.jpeg',
                 title: 'Rack',
                 price: 199,
                 time: '40 mins',
@@ -2125,10 +2105,11 @@ export const ucServicesData = {
             title: 'Shelf installation',
             rating: '4.83 (35K reviews)',
             price: 'Starts at ₹99',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c15.jpeg',
             options: [
               {
                 id: 'c15-1',
+                image: '/uc-images/options/c15-1.jpeg',
                 title: 'Glass shelf',
                 price: 149,
                 time: '30 mins',
@@ -2136,6 +2117,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c15-2',
+                image: '/uc-images/options/c15-2.jpeg',
                 title: 'Corner shelf',
                 price: 99,
                 time: '20 mins',
@@ -2143,6 +2125,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c15-3',
+                image: '/uc-images/options/c15-3.jpeg',
                 title: 'Multi-tier shelf',
                 price: 199,
                 time: '45 mins',
@@ -2155,10 +2138,11 @@ export const ucServicesData = {
             title: 'Drill (per hole)',
             rating: '4.81 (12K reviews)',
             price: 'Starts at ₹49',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c16.jpeg',
             options: [
               {
                 id: 'c16-1',
+                image: '/uc-images/options/c16-1.jpeg',
                 title: 'Normal wall',
                 price: 49,
                 time: '10 mins',
@@ -2166,6 +2150,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c16-2',
+                image: '/uc-images/options/c16-2.jpeg',
                 title: 'Tile wall',
                 price: 69,
                 time: '15 mins',
@@ -2173,6 +2158,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c16-3',
+                image: '/uc-images/options/c16-3.jpeg',
                 title: 'Concrete wall',
                 price: 89,
                 time: '20 mins',
@@ -2185,17 +2171,18 @@ export const ucServicesData = {
       {
         id: 'wooden_door',
         name: 'Wooden door',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c17.jpeg',
         items: [
           {
             id: 'c17',
             title: 'Door installation',
             rating: '4.78 (21K reviews)',
             price: 'Starts at ₹419',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c17.jpeg',
             options: [
               {
                 id: 'c17-1',
+                image: '/uc-images/options/c17-1.jpeg',
                 title: 'Flush door',
                 price: 419,
                 time: '90 mins',
@@ -2203,6 +2190,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c17-2',
+                image: '/uc-images/options/c17-2.jpeg',
                 title: 'Panel door',
                 price: 549,
                 time: '120 mins',
@@ -2210,6 +2198,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c17-3',
+                image: '/uc-images/options/c17-3.jpeg',
                 title: 'Double door',
                 price: 899,
                 time: '180 mins',
@@ -2222,10 +2211,11 @@ export const ucServicesData = {
             title: 'Door lock repair & installation',
             rating: '4.79 (31K reviews)',
             price: 'Starts at ₹129',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c18.jpeg',
             options: [
               {
                 id: 'c18-1',
+                image: '/uc-images/options/c18-1.jpeg',
                 title: 'Cylindrical lock installation',
                 price: 199,
                 time: '45 mins',
@@ -2233,6 +2223,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c18-2',
+                image: '/uc-images/options/c18-2.jpeg',
                 title: 'Mortise lock installation',
                 price: 349,
                 time: '60 mins',
@@ -2240,6 +2231,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c18-3',
+                image: '/uc-images/options/c18-3.jpeg',
                 title: 'Lock repair',
                 price: 129,
                 time: '30 mins',
@@ -2247,6 +2239,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c18-4',
+                image: '/uc-images/options/c18-4.jpeg',
                 title: 'Smart lock installation',
                 price: 499,
                 time: '90 mins',
@@ -2259,10 +2252,11 @@ export const ucServicesData = {
             title: 'Door accessories & mesh',
             rating: '4.76 (14K reviews)',
             price: 'Starts at ₹89',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c19.jpeg',
             options: [
               {
                 id: 'c19-1',
+                image: '/uc-images/options/c19-1.jpeg',
                 title: 'Door closer installation',
                 price: 149,
                 time: '30 mins',
@@ -2270,6 +2264,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c19-2',
+                image: '/uc-images/options/c19-2.jpeg',
                 title: 'Stopper/Chain',
                 price: 89,
                 time: '15 mins',
@@ -2282,10 +2277,11 @@ export const ucServicesData = {
             title: 'Door repair',
             rating: '4.77 (18K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c20.jpeg',
             options: [
               {
                 id: 'c20-1',
+                image: '/uc-images/options/c20-1.jpeg',
                 title: 'Hinge repair',
                 price: 149,
                 time: '30 mins',
@@ -2293,6 +2289,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c20-2',
+                image: '/uc-images/options/c20-2.jpeg',
                 title: 'Planing (bottom trim)',
                 price: 199,
                 time: '45 mins',
@@ -2300,6 +2297,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c20-3',
+                image: '/uc-images/options/c20-3.jpeg',
                 title: 'Alignment fix',
                 price: 249,
                 time: '60 mins',
@@ -2312,17 +2310,18 @@ export const ucServicesData = {
       {
         id: 'window_curtain',
         name: 'Window & curtain',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c27.jpeg',
         items: [
           {
             id: 'c21',
             title: 'Window AC frame installation',
             rating: '4.81 (12K reviews)',
             price: 'Starts at ₹249',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c21.jpeg',
             options: [
               {
                 id: 'c21-1',
+                image: '/uc-images/options/c21-1.jpeg',
                 title: 'Wooden frame',
                 price: 249,
                 time: '45 mins',
@@ -2330,6 +2329,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c21-2',
+                image: '/uc-images/options/c21-2.jpeg',
                 title: 'Metal frame fitting',
                 price: 349,
                 time: '60 mins',
@@ -2342,10 +2342,11 @@ export const ucServicesData = {
             title: 'Mosquito net installation',
             rating: '4.80 (22K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c22.jpeg',
             options: [
               {
                 id: 'c22-1',
+                image: '/uc-images/options/c22-1.jpeg',
                 title: 'Velcro net',
                 price: 149,
                 time: '30 mins',
@@ -2353,6 +2354,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c22-2',
+                image: '/uc-images/options/c22-2.jpeg',
                 title: 'Magnetic net',
                 price: 249,
                 time: '45 mins',
@@ -2360,6 +2362,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c22-3',
+                image: '/uc-images/options/c22-3.jpeg',
                 title: 'Pleated net',
                 price: 399,
                 time: '60 mins',
@@ -2372,10 +2375,11 @@ export const ucServicesData = {
             title: 'Blinds inspection & measurement (upto 5 ft)',
             rating: '4.75 (8K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c23.jpeg',
             options: [
               {
                 id: 'c23-1',
+                image: '/uc-images/options/c23-1.jpeg',
                 title: 'Measurement only',
                 price: 149,
                 time: '30 mins',
@@ -2383,6 +2387,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c23-2',
+                image: '/uc-images/options/c23-2.jpeg',
                 title: 'Roller blinds install',
                 price: 199,
                 time: '45 mins',
@@ -2390,6 +2395,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c23-3',
+                image: '/uc-images/options/c23-3.jpeg',
                 title: 'Vertical blinds install',
                 price: 249,
                 time: '60 mins',
@@ -2402,10 +2408,11 @@ export const ucServicesData = {
             title: 'Window accessories',
             rating: '4.77 (9K reviews)',
             price: 'Starts at ₹89',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c24.jpeg',
             options: [
               {
                 id: 'c24-1',
+                image: '/uc-images/options/c24-1.jpeg',
                 title: 'Handle replacement',
                 price: 89,
                 time: '20 mins',
@@ -2413,6 +2420,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c24-2',
+                image: '/uc-images/options/c24-2.jpeg',
                 title: 'Latch repair',
                 price: 99,
                 time: '20 mins',
@@ -2420,6 +2428,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c24-3',
+                image: '/uc-images/options/c24-3.jpeg',
                 title: 'Glass pane fixing',
                 price: 299,
                 time: '60 mins',
@@ -2432,10 +2441,11 @@ export const ucServicesData = {
             title: 'Window AC frame uninstallation',
             rating: '4.82 (5K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c25.jpeg',
             options: [
               {
                 id: 'c25-1',
+                image: '/uc-images/options/c25-1.jpeg',
                 title: 'Wooden frame',
                 price: 149,
                 time: '30 mins',
@@ -2443,6 +2453,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c25-2',
+                image: '/uc-images/options/c25-2.jpeg',
                 title: 'Metal frame',
                 price: 199,
                 time: '45 mins',
@@ -2455,10 +2466,11 @@ export const ucServicesData = {
             title: 'Window misalignment/jam repair',
             rating: '4.78 (11K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c26.jpeg',
             options: [
               {
                 id: 'c26-1',
+                image: '/uc-images/options/c26-1.jpeg',
                 title: 'Minor jam',
                 price: 199,
                 time: '30 mins',
@@ -2466,6 +2478,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c26-2',
+                image: '/uc-images/options/c26-2.jpeg',
                 title: 'Major realignment',
                 price: 349,
                 time: '60 mins',
@@ -2478,10 +2491,11 @@ export const ucServicesData = {
             title: 'Curtain rod installation',
             rating: '4.83 (42K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c27.jpeg',
             options: [
               {
                 id: 'c27-1',
+                image: '/uc-images/options/c27-1.jpeg',
                 title: 'Single rod',
                 price: 149,
                 time: '30 mins',
@@ -2489,6 +2503,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c27-2',
+                image: '/uc-images/options/c27-2.jpeg',
                 title: 'Double rod',
                 price: 199,
                 time: '45 mins',
@@ -2501,17 +2516,18 @@ export const ucServicesData = {
       {
         id: 'furniture_repair',
         name: 'Furniture repair',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c28.jpeg',
         items: [
           {
             id: 'c28',
             title: 'Bed support repair',
             rating: '4.81 (14K reviews)',
             price: 'Starts at ₹249',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c28.jpeg',
             options: [
               {
                 id: 'c28-1',
+                image: '/uc-images/options/c28-1.jpeg',
                 title: 'Slat replacement',
                 price: 249,
                 time: '45 mins',
@@ -2519,6 +2535,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c28-2',
+                image: '/uc-images/options/c28-2.jpeg',
                 title: 'Frame tightening',
                 price: 199,
                 time: '30 mins',
@@ -2531,10 +2548,11 @@ export const ucServicesData = {
             title: 'Headboard repair',
             rating: '4.78 (6K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c29.jpeg',
             options: [
               {
                 id: 'c29-1',
+                image: '/uc-images/options/c29-1.jpeg',
                 title: 'Re-attachment',
                 price: 199,
                 time: '30 mins',
@@ -2542,6 +2560,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c29-2',
+                image: '/uc-images/options/c29-2.jpeg',
                 title: 'Structural repair',
                 price: 349,
                 time: '60 mins',
@@ -2554,10 +2573,11 @@ export const ucServicesData = {
             title: 'Wooden chair repair',
             rating: '4.77 (11K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c30.jpeg',
             options: [
               {
                 id: 'c30-1',
+                image: '/uc-images/options/c30-1.jpeg',
                 title: 'Leg fixing',
                 price: 149,
                 time: '30 mins',
@@ -2565,6 +2585,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c30-2',
+                image: '/uc-images/options/c30-2.jpeg',
                 title: 'Backrest repair',
                 price: 199,
                 time: '45 mins',
@@ -2577,10 +2598,11 @@ export const ucServicesData = {
             title: 'Wooden table repair',
             rating: '4.79 (15K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c31.jpeg',
             options: [
               {
                 id: 'c31-1',
+                image: '/uc-images/options/c31-1.jpeg',
                 title: 'Leg fixing',
                 price: 199,
                 time: '30 mins',
@@ -2588,6 +2610,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c31-2',
+                image: '/uc-images/options/c31-2.jpeg',
                 title: 'Surface leveling',
                 price: 299,
                 time: '60 mins',
@@ -2600,17 +2623,18 @@ export const ucServicesData = {
       {
         id: 'clothes_hanger',
         name: 'Clothes hanger',
-        icon: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+        icon: '/uc-images/items/c32.jpeg',
         items: [
           {
             id: 'c32',
             title: 'Ceiling-mounted hanger installation',
             rating: '4.82 (31K reviews)',
             price: 'Starts at ₹449',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c32.jpeg',
             options: [
               {
                 id: 'c32-1',
+                image: '/uc-images/options/c32-1.jpeg',
                 title: 'Standard pulley',
                 price: 449,
                 time: '60 mins',
@@ -2618,6 +2642,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c32-2',
+                image: '/uc-images/options/c32-2.jpeg',
                 title: 'Heavy duty pulley',
                 price: 599,
                 time: '90 mins',
@@ -2630,10 +2655,11 @@ export const ucServicesData = {
             title: 'Wall hanger installation',
             rating: '4.80 (19K reviews)',
             price: 'Starts at ₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c33.jpeg',
             options: [
               {
                 id: 'c33-1',
+                image: '/uc-images/options/c33-1.jpeg',
                 title: 'Collapsible rack',
                 price: 199,
                 time: '40 mins',
@@ -2641,6 +2667,7 @@ export const ucServicesData = {
               },
               {
                 id: 'c33-2',
+                image: '/uc-images/options/c33-2.jpeg',
                 title: 'Standard hook rack',
                 price: 149,
                 time: '30 mins',
@@ -2653,7 +2680,7 @@ export const ucServicesData = {
             title: 'Cloth drying rope installation',
             rating: '4.77 (12K reviews)',
             price: '₹149',
-            image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&q=80',
+            image: '/uc-images/items/c34.jpeg',
             options: []
           }
         ]
@@ -2668,7 +2695,7 @@ export const ucServicesData = {
             title: 'Carpenters consultation',
             rating: '4.80 (77K reviews)',
             price: '₹89',
-            image: 'https://images.unsplash.com/photo-1581141849291-1125c7b692b5?w=200&q=80',
+            image: '/uc-images/items/c35.jpeg',
             options: []
           }
         ]

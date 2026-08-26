@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, MapPin, Package, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Package, CheckCircle2, Phone } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
 
 export default function UCOrdersPage() {
@@ -75,21 +75,30 @@ export default function UCOrdersPage() {
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
-                    <div className="flex-1 flex items-start gap-3">
-                      <Clock className="w-4 h-4 text-slate-400 mt-0.5" />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100">
+                    <div className="flex items-start gap-3">
+                      <Clock className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-xs text-slate-500 font-semibold mb-0.5">Scheduled for</p>
                         <p className="text-sm text-slate-900">{order.slot}</p>
                       </div>
                     </div>
-                    <div className="flex-1 flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
+                    <div className="flex items-start gap-3">
+                      <MapPin className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-xs text-slate-500 font-semibold mb-0.5">Service Address</p>
                         <p className="text-sm text-slate-900 line-clamp-1">{order.address}</p>
                       </div>
                     </div>
+                    {order.contactPhone && (
+                      <div className="flex items-start gap-3">
+                        <Phone className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-slate-500 font-semibold mb-0.5">Contact</p>
+                          <p className="text-sm text-slate-900">{order.contactPhone}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 

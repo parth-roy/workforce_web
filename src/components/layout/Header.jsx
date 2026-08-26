@@ -64,10 +64,10 @@ export default function Header() {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-[100] h-16 transition-shadow duration-200 flex flex-col justify-center ${
       isScrolled 
-        ? "bg-white/95 backdrop-blur-md shadow-md py-1 border-b border-slate-200/50" 
-        : "bg-white py-2 border-b border-slate-100"
+        ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200/50" 
+        : "bg-white border-b border-slate-100"
     }`}>
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex justify-between items-center py-1">

@@ -1,64 +1,96 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info } from 'lucide-react';
-import { useUCCart } from '../../context/UCCartContext';
-import { useAuth } from '../../context/AuthContext';
-import LocationPicker from '../../components/shared/LocationPicker';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2 } from "lucide-react";
+import { useUCCart } from "../../context/UCCartContext";
+import { useAuth } from "../../context/AuthContext";
+import LocationPicker from "../../components/shared/LocationPicker";
 
 export default function UCCheckoutPage() {
   const navigate = useNavigate();
   const { user, token, openAuthModal } = useAuth();
   const { cart, getTotalPrice, addToCart, removeFromCart, clearCart, addOrder } = useUCCart();
+  
   const [tipAmount, setTipAmount] = useState(75);
   const [avoidCalling, setAvoidCalling] = useState(false);
+  
+  // Custom contact phone state (falls back to user.phone or localStorage)
+  const [customPhone, setCustomPhone] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("uc_contactPhone") || "";
+    }
+    return "";
+  });
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [tempPhone, setTempPhone] = useState("");
+
+  // Sync custom phone if user logs in and no custom phone was set
+  useEffect(() => {
+    if (user?.phone && !customPhone) {
+      setCustomPhone(user.phone);
+    }
+  }, [user?.phone]);
+
+  const rawPhone = customPhone || user?.phone || "";
+  const formatPhone = (p) => {
+    if (!p) return "";
+    const digits = p.toString().replace(/\D/g, "").slice(-10);
+    if (digits.length === 10) {
+      return `+91 ${digits.slice(0, 5)} ${digits.slice(5)}`;
+    }
+    return p.startsWith("+") ? p : `+91 ${p}`;
+  };
+  const displayPhone = formatPhone(rawPhone);
+
+  // Slot state
   const [selectedSlot, setSelectedSlot] = useState(() => {
-      if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('uc_selectedSlot');
-        if (saved) return saved;
-      }
-      return null;
-    });
-    
-    // Save to localStorage when it changes
-    React.useEffect(() => {
-      if (typeof window !== 'undefined' && selectedSlot) {
-        localStorage.setItem('uc_selectedSlot', selectedSlot);
-      }
-    }, [selectedSlot]);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("uc_selectedSlot");
+      if (saved) return saved;
+    }
+    return null;
+  });
+  
+  useEffect(() => {
+    if (typeof window !== "undefined" && selectedSlot) {
+      localStorage.setItem("uc_selectedSlot", selectedSlot);
+    }
+  }, [selectedSlot]);
+  
   const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
   
   // Payment Processing State
-  const [paymentState, setPaymentState] = useState('idle');
+  const [paymentState, setPaymentState] = useState("idle"); // "idle" | "processing" | "success"
   const [showAddressModal, setShowAddressModal] = useState(false);
+  
+  // Location state
   const [selectedLocation, setSelectedLocation] = useState(() => {
-      if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('uc_selectedLocation');
-        if (saved) return JSON.parse(saved);
-      }
-      return null;
-    });
-    
-    // Save to localStorage when it changes
-    React.useEffect(() => {
-      if (typeof window !== 'undefined' && selectedLocation) {
-        localStorage.setItem('uc_selectedLocation', JSON.stringify(selectedLocation));
-      }
-    }, [selectedLocation]); // 'idle' | 'processing' | 'success'
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("uc_selectedLocation");
+      if (saved) return JSON.parse(saved);
+    }
+    return null;
+  });
+  
+  useEffect(() => {
+    if (typeof window !== "undefined" && selectedLocation) {
+      localStorage.setItem("uc_selectedLocation", JSON.stringify(selectedLocation));
+    }
+  }, [selectedLocation]);
 
   // Custom Alert Modal State
-  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '' });
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: "", message: "" });
 
   const showAlert = (title, message) => {
     setAlertModal({ isOpen: true, title, message });
   };
 
   // If cart is empty, redirect back or show message
-  if (cart.length === 0 && paymentState === 'idle') {
+  if (cart.length === 0 && paymentState === "idle") {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
         <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
         <button 
-          onClick={() => navigate('/services')}
+          onClick={() => navigate("/services")}
           className="text-[#6B46C1] font-bold underline"
         >
           Go back to services
@@ -94,33 +126,54 @@ export default function UCCheckoutPage() {
             {/* Contact */}
             <div className="p-5 border-b border-slate-100 flex items-start gap-4">
               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <div className="w-3 h-3 bg-slate-400 rounded-full" />
+                <Phone className="w-4 h-4 text-slate-600" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-900 mb-0.5">Send booking details to</p>
-                <p className="text-sm text-slate-500">+91 9876543210</p>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 mb-0.5">Send booking details to</p>
+                    {displayPhone ? (
+                      <p className="text-sm text-slate-700 font-medium">{displayPhone}</p>
+                    ) : (
+                      <p className="text-sm text-slate-400">Add mobile number to receive updates</p>
+                    )}
+                  </div>
+                  <button 
+                    onClick={() => {
+                      if (!rawPhone && !user) {
+                        openAuthModal("CUSTOMER");
+                      } else {
+                        setTempPhone(rawPhone.toString().replace(/\D/g, "").slice(-10));
+                        setShowPhoneModal(true);
+                      }
+                    }} 
+                    className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
+                  >
+                    {displayPhone ? "Edit" : "Add"}
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Address */}
-              <div className="p-5 border-b border-slate-100 flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <MapPin className="w-4 h-4 text-slate-600" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900 mb-0.5">Address</p>
-                      <p className="text-sm text-slate-500 line-clamp-1">
-                        {selectedLocation?.address || user?.address || 'No location selected'}
-                      </p>
-                    </div>
-                    <button onClick={() => setShowAddressModal(true)} className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
-                      {selectedLocation?.address || user?.address ? 'Edit' : 'Add'}
-                    </button>
+            <div className="p-5 border-b border-slate-100 flex items-start gap-4">
+              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <MapPin className="w-4 h-4 text-slate-600" />
+              </div>
+              <div className="flex-1">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 mb-0.5">Address</p>
+                    <p className="text-sm text-slate-500 line-clamp-1">
+                      {selectedLocation?.address || user?.address || "No location selected"}
+                    </p>
                   </div>
+                  <button onClick={() => setShowAddressModal(true)} className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+                    {selectedLocation?.address || user?.address ? "Edit" : "Add"}
+                  </button>
                 </div>
               </div>
+            </div>
 
             {/* Slot */}
             <div className="p-5 border-b border-slate-100 flex items-start gap-4">
@@ -147,7 +200,7 @@ export default function UCCheckoutPage() {
             </div>
 
             {/* Payment Method */}
-            <div className={`p-5 flex items-start gap-4 ${!selectedSlot ? 'opacity-50 grayscale' : 'transition-all duration-300'}`}>
+            <div className={`p-5 flex items-start gap-4 ${!selectedSlot ? "opacity-50 grayscale" : "transition-all duration-300"}`}>
               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <div className="w-4 h-3 border-2 border-slate-400 rounded-sm" />
               </div>
@@ -162,7 +215,7 @@ export default function UCCheckoutPage() {
           <div className="px-1">
             <h3 className="font-bold text-slate-900 mb-1">Cancellation policy</h3>
             <p className="text-xs text-slate-500 mb-2">Free cancellations if done more than 12 hrs before the service. A fee will be charged otherwise.</p>
-            <button onClick={() => showAlert('Cancellation Policy', 'Free cancellations are allowed up to 12 hours prior to the scheduled time. Late cancellations may incur a nominal fee to compensate the professional.')} className="text-xs font-bold text-slate-900 hover:underline">Read full policy</button>
+            <button onClick={() => showAlert("Cancellation Policy", "Free cancellations are allowed up to 12 hours prior to the scheduled time. Late cancellations may incur a nominal fee to compensate the professional.")} className="text-xs font-bold text-slate-900 hover:underline">Read full policy</button>
           </div>
         </div>
 
@@ -171,12 +224,12 @@ export default function UCCheckoutPage() {
           
           {/* Items Card */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
-            <h3 className="font-bold text-lg text-slate-900 mb-4">{cart[0]?.category || 'Your Service'}</h3>
+            <h3 className="font-bold text-lg text-slate-900 mb-4">{cart[0]?.category || "Your Service"}</h3>
             
             <div className="space-y-4 mb-6">
               {cart.map((item, idx) => {
                 const title = item.variant ? item.variant.title : item.title;
-                const price = item.variant ? item.variant.price : parseInt(item.price.replace(/[^0-9]/g, ''));
+                const price = item.variant ? item.variant.price : parseInt(item.price.replace(/[^0-9]/g, ""));
                 
                 return (
                   <div key={idx} className="flex justify-between items-start">
@@ -202,45 +255,10 @@ export default function UCCheckoutPage() {
                         </button>
                       </div>
                       <span className="text-sm font-bold w-12 text-right">₹{price * item.quantity}</span>
-                          </div>
-
-
-      {/* Address Picker Modal */}
-      {showAddressModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[80vh] max-h-[700px] animate-in zoom-in-95 duration-300">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
-              <h3 className="font-bold text-xl text-slate-900">Select Location</h3>
-              <button onClick={() => setShowAddressModal(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="flex-1 relative overflow-y-auto p-4 bg-slate-50">
-                <LocationPicker 
-                  onLocationChange={(loc) => {
-                    setSelectedLocation(loc);
-                  }} 
-                />
-              </div>
-              <div className="p-4 bg-white border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-                <button 
-                  onClick={() => setShowAddressModal(false)}
-                  disabled={!selectedLocation?.address}
-                  className={`w-full font-bold py-3.5 rounded-xl transition-all ${
-                    selectedLocation?.address 
-                      ? 'bg-[#6B46C1] text-white hover:bg-[#553C9A] shadow-lg' 
-                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                  }`}
-                >
-                  Confirm Address
-                </button>
-              </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-})}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <label className="flex items-start gap-3 cursor-pointer pt-4 border-t border-slate-100">
@@ -255,7 +273,7 @@ export default function UCCheckoutPage() {
           </div>
 
           {/* Offers */}
-          <div onClick={() => showAlert('Coupons & Offers', 'No active coupons are currently available for this service. Please check back later.')} className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors">
+          <div onClick={() => showAlert("Coupons & Offers", "No active coupons are currently available for this service. Please check back later.")} className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                 <Percent className="w-4 h-4 text-green-700" />
@@ -291,7 +309,7 @@ export default function UCCheckoutPage() {
                     key={amt}
                     onClick={() => setTipAmount(amt === tipAmount ? 0 : amt)}
                     className={`flex-1 relative py-2 rounded-lg border text-sm font-semibold transition-colors
-                      ${tipAmount === amt ? 'bg-[#F3F0FF] border-[#6B46C1] text-[#6B46C1]' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'}`}
+                      ${tipAmount === amt ? "bg-[#F3F0FF] border-[#6B46C1] text-[#6B46C1]" : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"}`}
                   >
                     ₹{amt}
                     {amt === 75 && (
@@ -303,13 +321,13 @@ export default function UCCheckoutPage() {
                 ))}
                 <button 
                   onClick={() => {
-                    const customTip = prompt('Enter custom tip amount (₹):');
+                    const customTip = prompt("Enter custom tip amount (₹):");
                     if (customTip && !isNaN(customTip) && Number(customTip) >= 0) {
                       setTipAmount(Number(customTip));
                     }
                   }}
                   className={`flex-1 py-2 rounded-lg border text-sm font-semibold transition-colors ${
-                    ![0, 50, 75, 100].includes(tipAmount) ? 'bg-[#F3F0FF] border-[#6B46C1] text-[#6B46C1]' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+                    ![0, 50, 75, 100].includes(tipAmount) ? "bg-[#F3F0FF] border-[#6B46C1] text-[#6B46C1]" : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
                   }`}
                 >
                   Custom
@@ -330,70 +348,75 @@ export default function UCCheckoutPage() {
             <p className="text-sm font-semibold text-slate-500 mb-0.5">Amount to pay</p>
             <div className="flex items-end gap-2">
               <span className="text-xl font-bold text-slate-900">₹{grandTotal}</span>
-              <button onClick={() => showAlert('Bill Breakup', `Service Total: ₹${baseTotal}\nTip Amount: ₹${tipAmount}\nGrand Total: ₹${grandTotal}`)} className="text-xs font-bold text-slate-900 underline mb-1">View breakup</button>
+              <button onClick={() => showAlert("Bill Breakup", `Service Total: ₹${baseTotal}\nTip Amount: ₹${tipAmount}\nGrand Total: ₹${grandTotal}`)} className="text-xs font-bold text-slate-900 underline mb-1">View breakup</button>
             </div>
           </div>
           <button 
             onClick={async () => {
-              if (!selectedSlot) return showAlert('Action Required', 'Please select a preferred time slot before proceeding to checkout.');
+              if (!selectedSlot) return showAlert("Action Required", "Please select a preferred time slot before proceeding to checkout.");
               
               if (!user || !token) {
-                openAuthModal('CUSTOMER');
+                openAuthModal("CUSTOMER");
                 return;
               }
               
-              setPaymentState('processing');
+              setPaymentState("processing");
+              
+              const phoneToSend = rawPhone.toString().replace(/\D/g, "").slice(-10) || user.phone || "";
+              const chosenAddress = selectedLocation?.address || user?.address || "Service Location Provided";
               
               try {
-                const apiUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL + '/gig/customer' : 'https://api.gomytruck.com/api/v1/gig/customer';
+                const apiUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL + "/gig/customer" : "https://api.gomytruck.com/api/v1/gig/customer";
                 const res = await fetch(apiUrl, {
-                  method: 'POST',
+                  method: "POST",
                   headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                   body: JSON.stringify({
-                    gigCategory: cart[0]?.category?.toUpperCase().replace(/[^A-Z]/g, '_') || 'HELPER', 
+                    gigCategory: cart[0]?.category?.toUpperCase().replace(/[^A-Z]/g, "_") || "HELPER", 
                     locationLat: selectedLocation?.lat || 22.57,
                     locationLng: selectedLocation?.lng || 88.36, 
-                    locationAddress: selectedLocation?.address || user?.address || 'No location provided',
+                    locationAddress: chosenAddress,
+                    contactPhone: phoneToSend,
                     workersNeeded: 1,
                     durationHours: 2,
-                    urgency: 'SCHEDULED',
+                    urgency: "SCHEDULED",
                     scheduledSlot: selectedSlot,
                     isTaskBased: true,
                     tipAmount: tipAmount,
                     tasks: cart.map(item => ({
                       title: item.title,
-                      category: item.category || 'Service',
+                      category: item.category || "Service",
                       quantity: item.quantity,
                       price: item.price,
-                      variant: item.variant || 'Standard'
+                      variant: item.variant || "Standard"
                     }))
                   })
                 });
 
                 if (!res.ok) {
                   const errData = await res.json().catch(() => ({}));
-                  throw new Error(errData.message || 'Failed to place booking with server.');
+                  throw new Error(errData.message || "Failed to place booking with server.");
                 }
 
-                setPaymentState('success');
+                setPaymentState("success");
                 addOrder({
                   items: [...cart],
                   total: grandTotal,
                   slot: selectedSlot,
-                  address: user.address || 'Home - 1st floor, Ghosh Para Rd, Barrackpore...',
-                  status: 'Scheduled',
-                  category: cart[0]?.category || 'Service'
+                  address: chosenAddress,
+                  contactPhone: displayPhone,
+                  status: "Scheduled",
+                  category: cart[0]?.category || "Service"
                 });
                 
                 setTimeout(() => clearCart(), 500); 
                 
                 setTimeout(() => {
-                  setPaymentState('idle');
+                  setPaymentState("idle");
                   window.scrollTo(0,0);
-                  navigate('/user/orders');
+                  navigate("/user/orders");
                 }, 3000);
                 
               } catch (err) {
@@ -401,35 +424,122 @@ export default function UCCheckoutPage() {
                 
                 // MOCK FALLBACK IF BACKEND FAILS DURING DEVELOPMENT
                 console.warn("Falling back to local mock booking due to API failure");
-                setPaymentState('success');
+                setPaymentState("success");
                 addOrder({
                   items: [...cart],
                   total: grandTotal,
                   slot: selectedSlot,
-                  address: user.address || 'Home - 1st floor, Ghosh Para Rd, Barrackpore...',
-                  status: 'Scheduled',
-                  category: cart[0]?.category || 'Service'
+                  address: chosenAddress,
+                  contactPhone: displayPhone,
+                  status: "Scheduled",
+                  category: cart[0]?.category || "Service"
                 });
                 setTimeout(() => clearCart(), 500);
                 setTimeout(() => {
-                  setPaymentState('idle');
+                  setPaymentState("idle");
                   window.scrollTo(0,0);
-                  navigate('/user/orders');
+                  navigate("/user/orders");
                 }, 3000);
               }
             }}
-            className={`${selectedSlot ? 'bg-slate-900 text-white cursor-pointer hover:bg-slate-800' : 'bg-slate-300 text-slate-500 cursor-not-allowed'} font-bold py-3 px-8 rounded-lg transition-colors`}
+            className={`${selectedSlot ? "bg-slate-900 text-white cursor-pointer hover:bg-slate-800" : "bg-slate-300 text-slate-500 cursor-not-allowed"} font-bold py-3 px-8 rounded-lg transition-colors`}
           >
             Proceed to Payment
           </button>
         </div>
       </div>
 
+      {/* Edit Phone Modal */}
+      {showPhoneModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl animate-in zoom-in-95 duration-300">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-lg text-slate-900">Change Contact Number</h3>
+              <button onClick={() => setShowPhoneModal(false)} className="p-1.5 text-slate-400 hover:bg-slate-100 rounded-full transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">Booking confirmation and updates will be sent to this mobile number.</p>
+            <div className="flex mb-5">
+              <span className="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-600 text-sm font-medium">
+                +91
+              </span>
+              <input
+                type="tel"
+                value={tempPhone}
+                onChange={(e) => setTempPhone(e.target.value.replace(/\D/g, ""))}
+                maxLength={10}
+                autoFocus
+                className="flex-1 block w-full px-3 py-2.5 rounded-none rounded-r-xl border border-slate-200 focus:ring-[#6B46C1] focus:border-[#6B46C1] text-sm focus:outline-none"
+                placeholder="9876543210"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowPhoneModal(false)}
+                className="flex-1 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (tempPhone.length === 10) {
+                    setCustomPhone(tempPhone);
+                    localStorage.setItem("uc_contactPhone", tempPhone);
+                    setShowPhoneModal(false);
+                  } else {
+                    showAlert("Invalid Number", "Please enter a valid 10-digit mobile number.");
+                  }
+                }}
+                disabled={tempPhone.length !== 10}
+                className="flex-1 py-2.5 bg-[#6B46C1] text-white rounded-xl text-sm font-semibold hover:bg-[#553C9A] disabled:opacity-50 transition-colors"
+              >
+                Save Number
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Address Picker Modal */}
+      {showAddressModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[80vh] max-h-[700px] animate-in zoom-in-95 duration-300">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
+              <h3 className="font-bold text-xl text-slate-900">Select Location</h3>
+              <button onClick={() => setShowAddressModal(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 relative overflow-y-auto p-4 bg-slate-50">
+              <LocationPicker 
+                onLocationChange={(loc) => {
+                  setSelectedLocation(loc);
+                }} 
+              />
+            </div>
+            <div className="p-4 bg-white border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+              <button 
+                onClick={() => setShowAddressModal(false)}
+                disabled={!selectedLocation?.address}
+                className={`w-full font-bold py-3.5 rounded-xl transition-all ${
+                  selectedLocation?.address 
+                    ? "bg-[#6B46C1] text-white hover:bg-[#553C9A] shadow-lg" 
+                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                }`}
+              >
+                Confirm Address
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Payment Processing/Success Modal */}
-      {paymentState !== 'idle' && (
+      {paymentState !== "idle" && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-sm rounded-2xl p-8 shadow-2xl flex flex-col items-center text-center animate-in zoom-in-95 duration-300">
-            {paymentState === 'processing' ? (
+            {paymentState === "processing" ? (
               <>
                 <div className="w-16 h-16 border-4 border-slate-100 border-t-[#6B46C1] rounded-full animate-spin mb-6" />
                 <h3 className="font-bold text-xl text-slate-900 mb-2">Processing Payment...</h3>
@@ -446,8 +556,8 @@ export default function UCCheckoutPage() {
                 <p className="text-slate-500 text-sm mb-8 leading-relaxed">Your service has been successfully booked. Our professional will arrive at the scheduled time.</p>
                 <button 
                   onClick={() => {
-                    setPaymentState('idle');
-                    navigate('/user/orders');
+                    setPaymentState("idle");
+                    navigate("/user/orders");
                   }}
                   className="w-full py-3.5 bg-[#6B46C1] text-white font-bold rounded-xl hover:bg-[#553C9A] transition-colors"
                 >
@@ -460,47 +570,47 @@ export default function UCCheckoutPage() {
       )}
 
       {/* Slot Modal */}
-        {isSlotModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200" onClick={() => setIsSlotModalOpen(false)}>
-            <div className="bg-white w-full sm:w-[450px] rounded-t-2xl sm:rounded-2xl p-6 flex flex-col gap-4 animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0" onClick={e => e.stopPropagation()}>
-              <h3 className="font-bold text-xl text-slate-900 mb-2">Select Date & Time</h3>
-              
-              <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 snap-x">
-                {['Today', 'Tomorrow', 'Day After'].map((day, idx) => {
-                  const date = new Date();
-                  date.setDate(date.getDate() + idx);
-                  const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
-                  return (
-                    <div key={day} className="snap-start min-w-[120px] p-3 border rounded-xl cursor-pointer text-center hover:border-purple-600 transition-colors border-slate-200">
-                      <p className="font-bold text-slate-900">{day}</p>
-                      <p className="text-xs text-slate-500">{dateStr}</p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <p className="font-semibold text-slate-900 mt-2">Select Start Time</p>
-              <div className="grid grid-cols-3 gap-3">
-                {['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '02:00 PM', '04:00 PM', '06:00 PM'].map(time => (
-                  <button 
-                    key={time}
-                    onClick={() => { setSelectedSlot(`Tomorrow, ${time}`); setIsSlotModalOpen(false); }}
-                    className="py-2.5 px-2 text-sm border border-slate-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors font-semibold text-slate-700 text-center"
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-              
-              <button 
-                onClick={() => setIsSlotModalOpen(false)}
-                className="mt-4 py-3 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
-              >
-                Cancel
-              </button>
+      {isSlotModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200" onClick={() => setIsSlotModalOpen(false)}>
+          <div className="bg-white w-full sm:w-[450px] rounded-t-2xl sm:rounded-2xl p-6 flex flex-col gap-4 animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-xl text-slate-900 mb-2">Select Date & Time</h3>
+            
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 snap-x">
+              {["Today", "Tomorrow", "Day After"].map((day, idx) => {
+                const date = new Date();
+                date.setDate(date.getDate() + idx);
+                const dateStr = date.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
+                return (
+                  <div key={day} className="snap-start min-w-[120px] p-3 border rounded-xl cursor-pointer text-center hover:border-purple-600 transition-colors border-slate-200">
+                    <p className="font-bold text-slate-900">{day}</p>
+                    <p className="text-xs text-slate-500">{dateStr}</p>
+                  </div>
+                );
+              })}
             </div>
+
+            <p className="font-semibold text-slate-900 mt-2">Select Start Time</p>
+            <div className="grid grid-cols-3 gap-3">
+              {["09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM"].map(time => (
+                <button 
+                  key={time}
+                  onClick={() => { setSelectedSlot(`Tomorrow, ${time}`); setIsSlotModalOpen(false); }}
+                  className="py-2.5 px-2 text-sm border border-slate-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors font-semibold text-slate-700 text-center"
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+            
+            <button 
+              onClick={() => setIsSlotModalOpen(false)}
+              className="mt-4 py-3 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+            >
+              Cancel
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
       {/* Custom Alert Modal */}
       {alertModal.isOpen && (

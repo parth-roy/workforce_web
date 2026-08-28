@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, Briefcase, User, Building2, HardHat,
   CheckCircle, Clock, Shield, Zap, ChevronDown, ChevronUp,
-  MapPin, Wrench, Package, Sparkles, Truck, Users, Smartphone
+  MapPin, Wrench, Package, Sparkles, Truck, Users, Smartphone, Star
 } from 'lucide-react';
 import SEO from '../ui/SEO';
 import { HomePageSEO } from '../../seo/pageMetadata';
@@ -14,6 +14,24 @@ const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
+
+  const coreHomeServices = [
+    { name: "Electrician", slug: "electrician", icon: "/electrician-icon.webp" },
+    { name: "Plumber", slug: "plumber", icon: "/plumber-icon.webp" },
+    { name: "Carpenter", slug: "carpenter", icon: "/carpenter-icon.webp" },
+    { name: "Cleaning", slug: "cleaning", icon: "/cleaning-icon.webp" },
+    { name: "AC Repair", slug: "ac-repair", icon: "/ac-repair-icon.webp", badge: "45 mins" },
+    { name: "Painter", slug: "painter", icon: "/painter-icon.webp" },
+    { name: "Appliance", slug: "appliance-repair", icon: "/appliance-repair-icon.webp", badge: "⚡ Quick" },
+    { name: "Security", slug: "security", icon: "/security-icon.webp" },
+  ];
+
+  const labourServices = [
+    { name: "Loading", slug: "loading-unloading", icon: "/loading-unloading-icon.webp", badge: "Popular" },
+    { name: "General Helper", slug: "general-helper", icon: "/general-helper-icon.webp" },
+    { name: "Furniture Moving", slug: "furniture-moving", icon: "/furniture-moving-icon.webp" },
+    { name: "Packer", slug: "packer", icon: "/packer-icon.webp" },
+  ];
 
   const individualServices = mockServices.filter(s => s.audiences.includes('individual')).slice(0, 6);
 
@@ -69,44 +87,85 @@ export default function HomePage() {
       <div className="w-full min-h-screen bg-white font-sans">
 
         {/* 1. HERO */}
-        <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden">
-          <div className="max-w-[1400px] mx-auto px-4 relative z-10">
-            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+        <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-24 md:pt-28 pb-16 lg:pb-10 overflow-hidden">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+            <div className="grid lg:grid-cols-[1.1fr_1fr] xl:grid-cols-[1.15fr_0.95fr] gap-8 xl:gap-12 items-center">
               
-              {/* Left Column: Text & CTA */}
-              <div className="max-w-2xl lg:py-16 xl:pl-12">
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100">
-                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
-                  Gig Economy Platforms & Job Portals
-                </span>
-                
-                <h1 className="text-5xl md:text-6xl lg:text-[72px] font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
-                  Building Work. <br />
-                  <span className="text-emerald-600">Empowering</span> <br />
-                  Communities.
+              {/* Left Column: Home services at your doorstep + Services Card Box */}
+              <div className="max-w-2xl lg:py-6 xl:pl-4 z-10">
+                <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.12] mb-6 tracking-tight">
+                  Home services at your doorstep
                 </h1>
-                
-                <p className="text-lg text-slate-500 mb-8 max-w-lg leading-relaxed font-medium">
-                  Metro Mitra connects households and businesses with verified gig workers across West Bengal. 
-                  <span className="block mt-1 text-slate-600">Trusted. Reliable. On-demand.</span>
-                </p>
-                
-                <div className="flex flex-wrap gap-4 mb-10">
-                  <Link to="/services" className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2">
-                    Hire Services <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link to="/jobs" className="bg-white border-2 border-slate-100 text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 hover:text-emerald-600 hover:shadow-[0_8px_24px_-8px_rgba(5,150,105,0.3)] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
-                    Join as Employee
-                  </Link>
+
+                {/* Services Card Box matching Reference */}
+                <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-[0_12px_36px_-12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-7">
+                  {/* Primary Home Services Grid (4 cols) */}
+                  <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5 md:gap-4 mb-6">
+                    {coreHomeServices.map((svc) => (
+                      <Link
+                        key={svc.slug}
+                        to={`/services/${svc.slug}/hire`}
+                        className="group flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-1"
+                      >
+                        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#f8fafc] border border-slate-100 flex items-center justify-center p-2.5 group-hover:bg-emerald-50/70 group-hover:border-emerald-200 group-hover:shadow-sm transition-all">
+                          {svc.badge && (
+                            <span className="absolute -top-2 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-xs whitespace-nowrap">
+                              {svc.badge}
+                            </span>
+                          )}
+                          <img
+                            src={svc.icon}
+                            alt={svc.name}
+                            className="w-full h-full object-contain transition-transform group-hover:scale-110 duration-200"
+                          />
+                        </div>
+                        <span className="mt-2 text-[11px] sm:text-xs font-semibold text-slate-700 group-hover:text-emerald-700 leading-tight">
+                          {svc.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Secondary Specialized Services */}
+                  <div className="pt-4 border-t border-slate-100">
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3.5">
+                      Labour & Shifting Services
+                    </h3>
+                    <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5 md:gap-4">
+                      {labourServices.map((svc) => (
+                        <Link
+                          key={svc.slug}
+                          to={`/services/${svc.slug}/hire`}
+                          className="group flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-1"
+                        >
+                          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#f8fafc] border border-slate-100 flex items-center justify-center p-2.5 group-hover:bg-emerald-50/70 group-hover:border-emerald-200 group-hover:shadow-sm transition-all">
+                            {svc.badge && (
+                              <span className="absolute -top-2 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-xs whitespace-nowrap">
+                                {svc.badge}
+                              </span>
+                            )}
+                            <img
+                              src={svc.icon}
+                              alt={svc.name}
+                              className="w-full h-full object-contain transition-transform group-hover:scale-110 duration-200"
+                            />
+                          </div>
+                          <span className="mt-2 text-[11px] sm:text-xs font-semibold text-slate-700 group-hover:text-emerald-700 leading-tight">
+                            {svc.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Right Column: Hero Image */}
-              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade opacity-0">
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-8 lg:mt-0 animate-slide-up-fade">
                 <img 
                   src="/metro-mitra-hero.webp" 
                   alt="Metro Mitra Professional Workers" 
-                  className="w-full max-w-[900px] h-auto object-contain transform origin-bottom lg:scale-[1.15] xl:scale-[1.25] 2xl:scale-[1.3] lg:translate-x-[5%] xl:translate-x-[10%] xl:translate-y-[2%]"
+                  className="w-full max-w-[850px] h-auto object-contain transform origin-bottom lg:scale-[1.12] xl:scale-[1.22] 2xl:scale-[1.28] lg:translate-x-[5%] xl:translate-x-[8%] xl:translate-y-[2%]"
                   loading="eager"
                 />
               </div>
@@ -146,7 +205,7 @@ export default function HomePage() {
               {individualServices.map(svc => {
                 const Icon = ICON_MAP[svc.icon] || Users;
                 return (
-                  <Link key={svc.slug} to={`/services/${svc.slug}`} className="group bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all text-center">
+                  <Link key={svc.slug} to={`/services/${svc.slug}/hire`} className="group bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all text-center">
                     {svc.customIcon ? (
                       <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center overflow-hidden rounded-xl">
                         <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />

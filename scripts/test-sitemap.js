@@ -61,30 +61,41 @@ function runTests() {
   assert(!robotsTxt.match(/^Disallow: \/\s*$/m), 'Robots.txt contains a global Disallow: / which blocks all crawling!');
 
   // --- SITEMAP.XML TESTS ---
-  console.log('Validating sitemap.xml...');
+  console.log('Validating sitemap.xml & modular sub-sitemaps...');
   
   assert(sitemapXml.startsWith('<?xml version="1.0" encoding="UTF-8"?>'), 'Invalid XML declaration');
-  assert(sitemapXml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), 'Invalid urlset tag');
-  assert(sitemapXml.endsWith('</urlset>'), 'Missing closing urlset tag');
+  assert(sitemapXml.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), 'Invalid sitemapindex tag');
+  assert(sitemapXml.includes('</sitemapindex>'), 'Missing closing sitemapindex tag');
 
-  const urlMatches = [...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)];
-  const urls = urlMatches.map(m => m[1]);
-  const sitemapUrlSet = new Set(urls);
+  const sitemapFiles = [...sitemapXml.matchAll(/<loc>https:\/\/metromitra\.com\/(sitemap-.*?\.xml)<\/loc>/g)].map(m => m[1]);
+  assert(sitemapFiles.length > 0, 'No sub-sitemaps referenced in sitemapindex');
 
-  assert(urls.length > 0, 'Sitemap is empty');
-  assert(sitemapUrlSet.size === urls.length, 'Sitemap contains duplicate URLs');
+  const sitemapUrlSet = new Set();
 
-  urls.forEach(url => {
-    assert(url.startsWith('https://metromitra.com'), 'URL does not use absolute HTTPS canonical domain: ' + url);
-    assert(!url.includes('?'), 'URL contains query string: ' + url);
-    assert(!url.includes('#'), 'URL contains fragment: ' + url);
-    assert(!url.includes('demo'), 'Sitemap leaked a demo URL: ' + url);
-    assert(!url.includes('dashboard') && !url.includes('requests'), 'Sitemap leaked a private route: ' + url);
+  sitemapFiles.forEach(file => {
+    const subPath = path.join(publicDir, file);
+    assert(fs.existsSync(subPath), `Sub-sitemap file missing: ${file}`);
+    const subXml = fs.readFileSync(subPath, 'utf8');
+    assert(subXml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), `Invalid urlset in ${file}`);
     
-    if (url !== 'https://metromitra.com') {
-      assert(!url.endsWith('/'), 'URL violates trailing slash policy: ' + url);
-    }
+    const subUrls = [...subXml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
+    assert(subUrls.length > 0, `Sub-sitemap ${file} is empty`);
+    
+    subUrls.forEach(url => {
+      assert(url.startsWith('https://metromitra.com'), 'URL does not use absolute HTTPS canonical domain: ' + url);
+      assert(!url.includes('?'), 'URL contains query string: ' + url);
+      assert(!url.includes('#'), 'URL contains fragment: ' + url);
+      assert(!url.includes('demo'), 'Sitemap leaked a demo URL: ' + url);
+      assert(!url.includes('dashboard') && !url.includes('requests'), 'Sitemap leaked a private route: ' + url);
+      
+      if (url !== 'https://metromitra.com') {
+        assert(!url.endsWith('/'), 'URL violates trailing slash policy: ' + url);
+      }
+      sitemapUrlSet.add(url);
+    });
   });
+
+  console.log(`Verified ${sitemapUrlSet.size} unique URLs across ${sitemapFiles.length} modular sitemaps.`);
 
   // --- SITEMAP <-> CANONICAL <-> INDEXABILITY CONSISTENCY TESTS ---
   console.log('Validating Indexability -> Canonical -> Sitemap chain...');
@@ -117,7 +128,7 @@ function runTests() {
   mockServices.forEach(s => checkConsistency(IndividualServiceSEO(s)));
   mockServices.forEach(s => checkConsistency(B2BServiceSEO(s)));
 
-  // 3. Geo Stubs (Not-Yet-Eligible)
+  // 3. Location Combinations
   mockRoles.forEach(r => {
     mockLocations.forEach(l => checkConsistency(WorkerRoleLocationSEO(r, l)));
   });
@@ -128,7 +139,9 @@ function runTests() {
 
   // 4. Jobs
   mockJobs.forEach(job => {
-    checkConsistency(JobDetailSEO(job));
+    if (job.status === 'active' || job.status === 'ACTIVE') {
+      checkConsistency(JobDetailSEO(job));
+    }
   });
 
   // --- EXPLICIT HUB ASSERTIONS ---

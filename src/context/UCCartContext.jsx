@@ -36,6 +36,20 @@ export function UCCartProvider({ children }) {
     }
   }, [orders]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleStorageChange = () => {
+      try {
+        const savedCart = window.localStorage.getItem('uc_cart');
+        const savedOrders = window.localStorage.getItem('uc_orders');
+        setCart(savedCart ? JSON.parse(savedCart) : []);
+        setOrders(savedOrders ? JSON.parse(savedOrders) : []);
+      } catch(e) {}
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const addOrder = (order) => {
     setOrders((prev) => [{ ...order, id: Date.now().toString(), date: new Date().toISOString() }, ...prev]);
   };
@@ -82,17 +96,50 @@ export function UCCartProvider({ children }) {
     });
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('uc_cart');
+    }
+  };
+
+  const clearOrders = () => {
+    setOrders([]);
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('uc_orders');
+    }
+  };
+
+  const clearAllData = () => {
+    setCart([]);
+    setOrders([]);
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('uc_cart');
+      window.localStorage.removeItem('uc_orders');
+    }
+  };
 
   const getTotalPrice = () => {
     return cart.reduce((total, item) => {
-      const price = item.variant ? item.variant.price : parseInt(item.price.replace(/[^0-9]/g, ''));
+      const price = item.variant ? item.variant.price : parseInt((item.price || '0').replace(/[^0-9]/g, ''));
       return total + (price * item.quantity);
     }, 0);
   };
 
   return (
-    <UCCartContext.Provider value={{ cart, orders, addToCart, removeFromCart, clearCart, getTotalPrice, addOrder, isCartOpen, setIsCartOpen }}>
+    <UCCartContext.Provider value={{ 
+      cart, 
+      orders, 
+      addToCart, 
+      removeFromCart, 
+      clearCart, 
+      clearOrders, 
+      clearAllData, 
+      getTotalPrice, 
+      addOrder, 
+      isCartOpen, 
+      setIsCartOpen 
+    }}>
       {children}
     </UCCartContext.Provider>
   );

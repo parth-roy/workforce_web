@@ -45,19 +45,53 @@ export default function RoleLocationPage() {
       <SEO {...WorkerRoleLocationSEO(role, loc)} />
 
       {/* Hero */}
-      <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <Breadcrumbs items={breadcrumbs} light />
-          <div className="mt-6 flex items-center gap-2 text-emerald-400 mb-3">
-            <MapPin className="w-5 h-5" />
-            <span className="font-semibold">{loc.name}, {loc.state}</span>
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+          <div className="mb-6">
+            <Breadcrumbs items={breadcrumbs} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
-            {role.name} Jobs<br />in {loc.name}
-          </h1>
-          <p className="text-lg text-slate-300 max-w-2xl">
-            Metro Mitra is establishing its {role.name.toLowerCase()} workforce network in {loc.name}. Register to be among the first to receive job alerts.
-          </p>
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+            <div className="max-w-2xl lg:py-16 xl:pl-8">
+              <div className="inline-flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{loc.name}, {loc.state}</span>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.08] mb-5 tracking-tight">
+                {role.name} Jobs<br />in {loc.name}
+              </h1>
+              
+              <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-lg leading-relaxed font-medium">
+                Metro Mitra is establishing its {role.name.toLowerCase()} workforce network in {loc.name}. Register to be among the first to receive job alerts.
+              </p>
+              
+              <div className="flex flex-wrap items-center gap-4 mb-8">
+                <Link
+                  to={`/join-as-worker?role=${role.slug}&location=${loc.slug}`}
+                  className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2 text-sm sm:text-base active:scale-95"
+                >
+                  Apply in {loc.name} <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  to="/jobs"
+                  className="bg-white text-slate-700 border border-slate-300 px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-colors text-sm sm:text-base"
+                >
+                  View All Roles
+                </Link>
+              </div>
+            </div>
+
+            {role.heroImage && (
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-4 lg:mt-0">
+                <img 
+                  src={role.heroImage} 
+                  alt={`${role.name} jobs in ${loc.name}`} 
+                  className="w-full max-w-[650px] h-auto object-contain transform origin-bottom lg:scale-[1.08] xl:translate-x-[4%] xl:translate-y-[2%]"
+                  loading="eager"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

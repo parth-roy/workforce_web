@@ -1,15 +1,8 @@
 /**
  * scripts/generate-sitemap.js
  * ─────────────────────────────────────────────────────────────────────────────
- * METRO MITRA — Sitemap & Robots Generator
- * Phase F6.3 — Sitemap, Robots & Indexability Infrastructure
- *
- * Rules:
- * 1. ONLY include URLs where `indexable` evaluates to true via pageMetadata.
- * 2. Exclude geo stubs (not-yet-eligible) and demo jobs (noindex).
- * 3. NO fake lastmod, priority, or changefreq.
- * 4. URLs must be absolute, canonical, HTTPS, trailing-slash consistent.
- * 5. Job lifecycle enforcement (ACTIVE + ELIGIBLE).
+ * METRO MITRA — Modular Sitemap & Robots Generator
+ * Complete Multi-Category Sitemap Index Architecture (Aligned with Vahan)
  */
 
 import fs from 'fs';
@@ -37,168 +30,203 @@ import {
   B2BServiceSEO,
   B2BServiceLocationSEO,
   ContractorSEO,
-  CorporateSEO, WorkerRolesDirectorySEO, WorkerOnboardingSEO, WorkerHowItWorksSEO, WorkerFAQSEO, ServiceCategoryDirectorySEO, ServiceHowItWorksSEO, ServiceFAQSEO, ServiceHiringFlowSEO,
+  CorporateSEO,
+  WorkerRolesDirectorySEO,
+  WorkerOnboardingSEO,
+  WorkerHowItWorksSEO,
+  WorkerFAQSEO,
+  ServiceCategoryDirectorySEO,
+  ServiceHowItWorksSEO,
+  ServiceFAQSEO,
+  ServiceHiringFlowSEO,
 } from '../src/seo/pageMetadata.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const BASE_URL = 'https://metromitra.com';
 
-function isSitemapEligible(seoMetadata) {
-  // 1. Must be indexable via the centralized three-state model
-  if (!seoMetadata.indexable) return false;
-  // 2. Must have a canonical path
-  if (!seoMetadata.canonicalPath) return false;
-  // (In a real system, we'd also check isPublic, isNotRedirect, etc.)
-  return true;
+function cleanCanonical(pathOrObj) {
+  if (typeof pathOrObj === 'object' && pathOrObj !== null) {
+    if (pathOrObj.indexable === false) return null;
+    const p = pathOrObj.canonicalPath || '';
+    if (!p || p.includes('demo')) return null;
+    const cleanPath = p === '/' ? '' : p.replace(/\/$/, '');
+    return `${BASE_URL}${cleanPath}`;
+  }
+  const p = typeof pathOrObj === 'string' ? pathOrObj : '';
+  if (!p || p.includes('demo')) return null;
+  const cleanPath = p === '/' ? '' : p.replace(/\/$/, '');
+  return `${BASE_URL}${cleanPath}`;
 }
 
-function generateSitemap() {
-  const urls = [];
-
-  const addUrl = (seoMetadata) => {
-    if (isSitemapEligible(seoMetadata)) {
-      // Normalize canonical: Use BASE_URL + path
-      let cleanPath = seoMetadata.canonicalPath === '/' ? '' : seoMetadata.canonicalPath.replace(/\/$/, '');
-      urls.push(`${BASE_URL}${cleanPath}`);
-    }
-  };
-
-  // 1. Core Evergreen Pages
-  addUrl(HomePageSEO());
-  addUrl(WorkerHubSEO());
-  addUrl(ServicesHubSEO());
-  addUrl(B2BHirerHubSEO());
-  addUrl(ContractorSEO());
-  addUrl(CorporateSEO());
-  addUrl(WorkerRolesDirectorySEO());
-  addUrl(WorkerOnboardingSEO());
-  addUrl(WorkerHowItWorksSEO());
-  addUrl(WorkerFAQSEO());
-  addUrl(ServiceCategoryDirectorySEO());
-  addUrl(ServiceHowItWorksSEO());
-  addUrl(ServiceFAQSEO());
-  addUrl({ canonicalPath: '/about', indexable: true });
-  addUrl({ canonicalPath: '/contact', indexable: true });
-  addUrl({ canonicalPath: '/faq', indexable: true });
-  addUrl({ canonicalPath: '/guides', indexable: true });
-
-
-  // 2. Worker Role Hubs
-  mockRoles.forEach(r => addUrl(WorkerRoleSEO(r)));
-
-  // 3. Worker Location Hubs
-  mockLocations.forEach(l => addUrl(WorkerLocationSEO(l)));
-
-  // 4. Worker Role + Location (Geo Stubs)
-  mockRoles.forEach(r => {
-    mockLocations.forEach(l => {
-      addUrl(WorkerRoleLocationSEO(r, l));
-    });
-  });
-
-  // 5. Job Details (Lifecycle enforced in JobDetailSEO and data status)
-  mockJobs.forEach(job => {
-    // Only ACTIVE jobs are allowed
-    if (job.status === 'active' || job.status === 'ACTIVE') {
-      addUrl(JobDetailSEO(job));
-    }
-  });
-
-  // 6. Individual Services (B2C)
-  mockServices.forEach(s => addUrl(IndividualServiceSEO(s)));
-  mockServices.forEach(s => addUrl(ServiceHiringFlowSEO(s)));
-
-  // 7. Individual Service + Location (Geo Stubs B2C)
-  mockServices.forEach(s => {
-    mockLocations.forEach(l => addUrl(IndividualServiceLocationSEO(s, l)));
-  });
-
-  // 8. B2B Services
-  mockServices.forEach(s => addUrl(B2BServiceSEO(s)));
-
-  // 9. B2B Service + Location (Geo Stubs B2B)
-  mockServices.forEach(s => {
-    mockLocations.forEach(l => addUrl(B2BServiceLocationSEO(s, l)));
-  });
-
-  // Deduplicate just in case
-  const uniqueUrls = [...new Set(urls)];
-
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-`;
-
-  uniqueUrls.forEach(url => {
-    xml += `  <url>\n    <loc>${url}</loc>\n  </url>\n`;
-  });
-
-  xml += `</urlset>`;
-
+function generateSitemaps() {
   const publicDir = path.join(__dirname, '../public');
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true });
   }
 
-  const sitemapPath = path.join(publicDir, 'sitemap.xml');
-  fs.writeFileSync(sitemapPath, xml);
-  console.log(`✅ Generated sitemap.xml with ${uniqueUrls.length} eligible URLs.`);
+  const categories = {
+    core: [],
+    jobs: [],
+    services: [],
+    b2b: [],
+    locations: [],
+    'role-locations': [],
+    'service-locations': [],
+  };
+
+  // 1. Core Evergreen Pages
+  const coreMetas = [
+    HomePageSEO(),
+    WorkerHubSEO(),
+    ServicesHubSEO(),
+    B2BHirerHubSEO(),
+    ContractorSEO(),
+    CorporateSEO(),
+    WorkerRolesDirectorySEO(),
+    WorkerOnboardingSEO(),
+    WorkerHowItWorksSEO(),
+    WorkerFAQSEO(),
+    ServiceCategoryDirectorySEO(),
+    ServiceHowItWorksSEO(),
+    ServiceFAQSEO(),
+    { canonicalPath: '/about' },
+    { canonicalPath: '/contact' },
+    { canonicalPath: '/faq' },
+    { canonicalPath: '/guides' },
+  ];
+  coreMetas.forEach(meta => {
+    const url = cleanCanonical(meta);
+    if (url) categories.core.push(url);
+  });
+
+  // 2. Worker Roles & Jobs
+  mockRoles.forEach(r => {
+    const url = cleanCanonical(WorkerRoleSEO(r));
+    if (url) categories.jobs.push(url);
+  });
+  mockJobs.forEach(job => {
+    if (job.status === 'active' || job.status === 'ACTIVE') {
+      const url = cleanCanonical(JobDetailSEO(job));
+      if (url) categories.jobs.push(url);
+    }
+  });
+
+  // 3. Individual Services (B2C)
+  mockServices.forEach(s => {
+    const sUrl = cleanCanonical(IndividualServiceSEO(s));
+    if (sUrl) categories.services.push(sUrl);
+    const flowUrl = cleanCanonical(ServiceHiringFlowSEO(s));
+    if (flowUrl) categories.services.push(flowUrl);
+  });
+
+  // 4. B2B Services
+  mockServices.forEach(s => {
+    const b2bUrl = cleanCanonical(B2BServiceSEO(s));
+    if (b2bUrl) categories.b2b.push(b2bUrl);
+  });
+
+  // 5. Locations Hubs
+  mockLocations.forEach(l => {
+    const locUrl = cleanCanonical(WorkerLocationSEO(l));
+    if (locUrl) categories.locations.push(locUrl);
+  });
+
+  // 6. Worker Role + Location Combinations
+  mockRoles.forEach(r => {
+    mockLocations.forEach(l => {
+      const rlUrl = cleanCanonical(WorkerRoleLocationSEO(r, l));
+      if (rlUrl) categories['role-locations'].push(rlUrl);
+    });
+  });
+
+  // 7. Service + Location Combinations (B2C & B2B)
+  mockServices.forEach(s => {
+    mockLocations.forEach(l => {
+      const slUrl = cleanCanonical(IndividualServiceLocationSEO(s, l));
+      if (slUrl) categories['service-locations'].push(slUrl);
+      const b2blUrl = cleanCanonical(B2BServiceLocationSEO(s, l));
+      if (b2blUrl) categories['service-locations'].push(b2blUrl);
+    });
+  });
+
+  const sitemapFiles = [];
+  let totalUrls = 0;
+
+  // Build each category sitemap
+  for (const [category, urls] of Object.entries(categories)) {
+    const uniqueUrls = [...new Set(urls)];
+    if (uniqueUrls.length === 0) continue;
+
+    const filename = `sitemap-${category}.xml`;
+    const sitemapPath = path.join(publicDir, filename);
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    uniqueUrls.forEach(url => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${url}</loc>\n`;
+      xml += `  </url>\n`;
+    });
+
+    xml += `</urlset>`;
+
+    fs.writeFileSync(sitemapPath, xml);
+    console.log(`✅ ${filename} generated with ${uniqueUrls.length} URLs`);
+    sitemapFiles.push(filename);
+    totalUrls += uniqueUrls.length;
+  }
+
+  // Generate canonical sitemap.xml index
+  const indexPath = path.join(publicDir, 'sitemap.xml');
+  let indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  indexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+  sitemapFiles.forEach(file => {
+    indexXml += `  <sitemap>\n`;
+    indexXml += `    <loc>${BASE_URL}/${file}</loc>\n`;
+    indexXml += `  </sitemap>\n`;
+  });
+
+  indexXml += `</sitemapindex>`;
+
+  fs.writeFileSync(indexPath, indexXml);
+  console.log(`✅ sitemap.xml (index) successfully generated referencing ${sitemapFiles.length} sitemaps and ${totalUrls} total URLs.`);
 
   // Generate robots.txt
   const robotsTxt = `# METRO MITRA — Crawler Policy
-# Phase F6.3 Architecture
+# Complete AEO & Search Engine Indexing Policy
 
-# 1. Standard Search Engines & AI Retrieval (AEO)
-# Allowed to index public directories, roles, locations, and services.
 User-agent: *
 Allow: /
-# Prevent uncontrolled crawl/indexation of internal search/filter traps
 Disallow: /*?q=
 Disallow: /*?filter=
 Disallow: /*?sort=
 Disallow: /company/dashboard/
 Disallow: /company/requests/
 Disallow: /contractor/dashboard/
+Disallow: /user/orders
+Disallow: /checkout
 
-# 2. AI Search & Answer Engines (Explicit Allow for AEO)
+# AI Search & Answer Engines (Explicitly Allowed for Geo/AI Discovery)
 User-agent: OAI-SearchBot
 Allow: /
 User-agent: PerplexityBot
 Allow: /
 User-agent: Applebot
 Allow: /
-
-# 3. AI Model Training & Scraping (Explicit Disallow)
-User-agent: GPTBot
-Disallow: /
 User-agent: Google-Extended
-Disallow: /
-User-agent: Applebot-Extended
-Disallow: /
-User-agent: ClaudeBot
-Disallow: /
-User-agent: anthropic-ai
-Disallow: /
-User-agent: CCBot
-Disallow: /
-User-agent: Bytespider
-Disallow: /
-User-agent: cohere-ai
-Disallow: /
-User-agent: Omgilibot
-Disallow: /
-User-agent: Omgili
-Disallow: /
-User-agent: Diffbot
-Disallow: /
+Allow: /
 
-# Expose Canonical Sitemap
+# Canonical Sitemap Index
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
-  
+
   const robotsPath = path.join(publicDir, 'robots.txt');
   fs.writeFileSync(robotsPath, robotsTxt);
-  console.log(`✅ Generated robots.txt with explicit AI crawler policy`);
+  console.log(`✅ robots.txt generated with AI answer engine policies and sitemap index.`);
 }
 
-generateSitemap();
+generateSitemaps();
+

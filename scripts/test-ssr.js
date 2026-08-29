@@ -53,13 +53,13 @@ const TESTS = [
     route: '/',
     label: 'Homepage',
     assert: {
-      title: 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform',
+      title: 'Metro Mitra - Best Job Portal & Full-Stack Gig Economy Platform',
       descContains: 'gig economy platform connecting job seekers',
       canonical: 'https://metromitra.com',
       robots: 'index, follow',
-      ogTitle: 'Metro Mitra - Technology-Driven, Full-Stack Gig Economy Platform',
+      ogTitle: 'Metro Mitra - Best Job Portal & Full-Stack Gig Economy Platform',
       audience: 'General',
-          schemaNodes: ["Organization","WebSite","WebPage"],
+      schemaNodes: ["Organization","WebSite","WebPage"],
       forbiddenSchema: ["JobPosting","Service"],
     },
   },
@@ -69,7 +69,7 @@ const TESTS = [
     route: '/jobs',
     label: 'Worker Hub',
     assert: {
-      title: 'Daily Gig Jobs & Shift Work | Metro Mitra',
+      title: 'Gig Economy Jobs & Shift Work | Best Job Search Sites | Metro Mitra',
       canonical: 'https://metromitra.com/jobs',
       robots: 'index, follow',
       audience: 'Worker',
@@ -132,11 +132,11 @@ const TESTS = [
     route: '/services',
     label: 'Services Hub',
     assert: {
-      title: 'Local Workforce Services | Metro Mitra',
+      title: 'Hire a Worker | Find Gig Workers App | Metro Mitra',
       canonical: 'https://metromitra.com/services',
       robots: 'index, follow',
       audience: 'Individual',
-          schemaNodes: ["CollectionPage","BreadcrumbList"],
+      schemaNodes: ["CollectionPage","BreadcrumbList"],
     },
   },
 
@@ -145,7 +145,7 @@ const TESTS = [
     route: '/services/electrician',
     label: 'Individual Service (electrician)',
     assert: {
-      title: 'Electrician Services | Metro Mitra',
+      title: 'Electrician Services | Book Online | Metro Mitra',
       canonical: 'https://metromitra.com/services/electrician',
       robots: 'index, follow',
       audience: 'Individual',
@@ -168,7 +168,7 @@ const TESTS = [
     route: '/hire-workers',
     label: 'B2B Hirer Hub',
     assert: {
-      title: 'Workforce Procurement for Businesses | Metro Mitra',
+      title: 'Hire Gig Workers & Workforce Solutions | Metro Mitra B2B',
       canonical: 'https://metromitra.com/hire-workers',
       robots: 'index, follow',
       audience: 'Business',

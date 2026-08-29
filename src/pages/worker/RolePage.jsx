@@ -40,21 +40,52 @@ export default function RolePage() {
       <SEO {...WorkerRoleSEO(role)} />
 
       {/* Hero */}
-      <section className="bg-slate-900 text-white pt-24 pb-16 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <Breadcrumbs items={breadcrumbs} light />
-          <div className="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">{role.category || 'Gig Work'}</span>
-              <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">{role.name}</h1>
-              <p className="text-lg text-slate-300 max-w-2xl">{role.tagline || role.description}</p>
+      <section className="relative bg-gradient-to-br from-[#f8fbfe] via-white to-[#eef7fb] pt-28 pb-16 lg:pb-0 overflow-hidden border-b border-slate-200">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+          <div className="mb-6">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+            <div className="max-w-2xl lg:py-16 xl:pl-8">
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-bold tracking-wide mb-6 border border-emerald-100 uppercase">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
+                {role.category || 'Gig Work'}
+              </span>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.08] mb-5 tracking-tight">
+                {role.name}
+              </h1>
+              
+              <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-lg leading-relaxed font-medium">
+                {role.tagline || role.description}
+              </p>
+              
+              <div className="flex flex-wrap items-center gap-4 mb-8">
+                <Link
+                  to={`/join-as-worker?role=${role.slug}`}
+                  className="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20 flex items-center gap-2 text-sm sm:text-base active:scale-95"
+                >
+                  Join as {role.name} <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  to="/jobs"
+                  className="bg-white text-slate-700 border border-slate-300 px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-colors text-sm sm:text-base"
+                >
+                  View All Roles
+                </Link>
+              </div>
             </div>
-            <Link
-              to={`/join-as-worker?role=${role.slug}`}
-                className="inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-400 transition-colors whitespace-nowrap shrink-0"
-              >
-                Onboard <ArrowRight className="w-4 h-4" />
-            </Link>
+
+            {role.heroImage && (
+              <div className="relative w-full h-full flex items-end justify-center lg:justify-end mt-4 lg:mt-0">
+                <img 
+                  src={role.heroImage} 
+                  alt={`${role.name} on Metro Mitra`} 
+                  className="w-full max-w-[650px] h-auto object-contain transform origin-bottom lg:scale-[1.08] xl:translate-x-[4%] xl:translate-y-[2%]"
+                  loading="eager"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

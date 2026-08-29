@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import SEO from '../../components/ui/SEO';
 import { WorkerRolesDirectorySEO } from '../../seo/pageMetadata';
-import { Briefcase, ArrowRight } from 'lucide-react';
+import { Briefcase, ArrowRight, Zap, Wrench, Package, Sparkles, Truck, Users, Shield } from 'lucide-react';
+
+const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users, Shield, Briefcase };
 
 export default function WorkerRolesDirectoryPage() {
   const { roles } = useWorkforce();
@@ -22,18 +24,32 @@ export default function WorkerRolesDirectoryPage() {
       
       <main className="container mx-auto max-w-5xl px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {roles.map((role) => (
-            <Link key={role.id} to={`/jobs/${role.slug}`} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all group">
-              <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
-                <Briefcase className="w-6 h-6" />
-              </div>
-              <h2 className="text-xl font-bold text-slate-900 mb-2">{role.name}</h2>
-              <p className="text-slate-600 text-sm mb-4 line-clamp-3">{role.description}</p>
-              <span className="text-emerald-600 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                View Role Details <ArrowRight className="w-4 h-4" />
-              </span>
-            </Link>
-          ))}
+          {roles.map((role) => {
+            const Icon = ICON_MAP[role.icon] || Briefcase;
+            return (
+              <Link key={role.id} to={`/jobs/${role.slug}`} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all group">
+                {role.customIcon ? (
+                  <div className="w-14 h-14 mb-4 flex items-center justify-center rounded-xl">
+                    <img 
+                      src={role.customIcon} 
+                      alt={role.name} 
+                      className={`w-full h-full object-contain ${(role.slug === 'loader-unloader' || role.slug === 'delivery-associate') ? 'scale-[2.4] origin-left' : ''}`} 
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                )}
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{role.category}</div>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">{role.name}</h2>
+                <p className="text-slate-600 text-sm mb-4 line-clamp-3">{role.description}</p>
+                <span className="text-emerald-600 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                  View Role Details <ArrowRight className="w-4 h-4 ml-1" />
+                </span>
+              </Link>
+            );
+          })}
         </div>
         
         <div className="mt-16 bg-emerald-50 rounded-2xl p-8 text-center border border-emerald-100">

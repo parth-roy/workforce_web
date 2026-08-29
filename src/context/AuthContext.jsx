@@ -41,6 +41,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('uc_cart');
+    localStorage.removeItem('uc_orders');
+    try {
+      window.dispatchEvent(new Event('storage'));
+    } catch(e) {}
   };
 
   const openAuthModal = (intent = 'CUSTOMER') => {

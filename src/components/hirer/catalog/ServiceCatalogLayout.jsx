@@ -173,21 +173,6 @@ export default function ServiceCatalogLayout({ service }) {
         {/* MAIN CONTENT */}
         <div className="space-y-8">
           
-          {/* Banner */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between p-6 md:p-8">
-            <div className="flex-1 pr-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-2">
-                30-day warranty <br/>included
-              </h2>
-              <p className="text-lg text-slate-600">On every Electrician service</p>
-            </div>
-            <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 mt-6 sm:mt-0 relative">
-              <div className="absolute inset-0 bg-teal-600 rounded-bl-[40px] rounded-tr-[40px] flex items-center justify-center transform rotate-3">
-                <CheckCircle2 className="w-16 h-16 text-white" />
-              </div>
-            </div>
-          </div>
-
           {/* Categories & Services List */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
             {electricianCategories.map((category) => {
@@ -274,39 +259,7 @@ export default function ServiceCatalogLayout({ service }) {
 
         {/* RIGHT SIDEBAR */}
         <div className="hidden lg:block space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 sticky top-24">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-900">Get visitation fee off</p>
-                <p className="text-xs text-slate-500">On orders above ₹499</p>
-              </div>
-            </div>
-            
-            <div className="border border-slate-100 rounded-xl p-5 bg-slate-50 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-100 to-purple-100 rounded-bl-full opacity-50"></div>
-              
-              <h3 className="font-bold text-slate-900 text-lg mb-4 relative z-10">UC Promise</h3>
-              
-              <ul className="space-y-3 relative z-10">
-                {['Verified Professionals', 'Hassle Free Booking', 'Transparent Pricing'].map((promise, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-slate-700 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-slate-900" /> {promise}
-                  </li>
-                ))}
-              </ul>
-              
-              <div className="absolute top-4 right-4 z-10">
-                <div className="w-12 h-12 bg-white rounded-full shadow-sm border border-slate-100 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-purple-600" />
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[200px] sticky top-[380px]">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[200px] sticky top-24">
             {cart.length === 0 ? (
               <>
                 <ShoppingCart className="w-12 h-12 text-slate-300 mb-3" />

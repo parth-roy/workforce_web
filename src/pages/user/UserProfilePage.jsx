@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useUCCart } from '../../context/UCCartContext';
 import { User, Phone, Mail, MapPin, Package, LogOut, FileText } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 export default function UserProfilePage() {
   const { user, role, logout } = useAuth();
+  const { clearAllData } = useUCCart();
   const [activeTab, setActiveTab] = useState('profile');
+
+  const handleLogout = () => {
+    if (clearAllData) clearAllData();
+    logout();
+  };
 
   // If not logged in, redirect to home
   if (!user) {
@@ -44,7 +51,7 @@ export default function UserProfilePage() {
               </button>
             )}
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-white text-red-600 hover:bg-red-50 transition-colors mt-4"
             >
               <LogOut size={18} />

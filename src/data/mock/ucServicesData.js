@@ -2716,26 +2716,28 @@ export const ucServicesData = {
       {
         id: 'interior_painting',
         name: 'Interior Painting',
-        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+        icon: '/uc-images/items/single-room-painting.webp',
         items: [
           {
             id: 'pt1',
             title: 'Single Room Painting',
             rating: '4.82 (15K reviews)',
             price: 'Starts at ₹2499',
-            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+            image: '/uc-images/items/single-room-painting.webp',
             options: [
               {
                 id: 'pt1-1',
                 title: 'Basic Emulsion',
                 price: 2499,
-                time: '1 Day'
+                time: '1 Day',
+                image: '/uc-images/options/basic-emulsion.webp'
               },
               {
                 id: 'pt1-2',
                 title: 'Premium Washable',
                 price: 3499,
-                time: '1 Day'
+                time: '1 Day',
+                image: '/uc-images/options/premium-washable.webp'
               }
             ]
           },
@@ -2744,25 +2746,28 @@ export const ucServicesData = {
             title: 'Full House Painting',
             rating: '4.86 (20K reviews)',
             price: 'Starts at ₹8999',
-            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+            image: '/uc-images/items/full-house-painting.webp',
             options: [
               {
                 id: 'pt2-1',
                 title: '1 BHK',
                 price: 8999,
-                time: '3 Days'
+                time: '3 Days',
+                image: '/uc-images/options/1-bhk.webp'
               },
               {
                 id: 'pt2-2',
                 title: '2 BHK',
                 price: 13999,
-                time: '4 Days'
+                time: '4 Days',
+                image: '/uc-images/options/2-bhk.webp'
               },
               {
                 id: 'pt2-3',
                 title: '3 BHK',
                 price: 18999,
-                time: '5 Days'
+                time: '5 Days',
+                image: '/uc-images/options/3-bhk.webp'
               }
             ]
           }
@@ -2771,26 +2776,28 @@ export const ucServicesData = {
       {
         id: 'exterior_painting',
         name: 'Exterior Painting',
-        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+        icon: '/uc-images/items/exterior-wall-painting.webp',
         items: [
           {
             id: 'pt3',
             title: 'Exterior Wall Painting',
             rating: '4.79 (8K reviews)',
             price: 'Starts at ₹4999',
-            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+            image: '/uc-images/items/exterior-wall-painting.webp',
             options: [
               {
                 id: 'pt3-1',
                 title: 'Standard Weatherproof',
                 price: 4999,
-                time: '2 Days'
+                time: '2 Days',
+                image: '/uc-images/options/standard-waterproof.webp'
               },
               {
                 id: 'pt3-2',
                 title: 'Advanced Protection',
                 price: 7999,
-                time: '3 Days'
+                time: '3 Days',
+                image: '/uc-images/options/advanced-waterproof.webp'
               }
             ]
           }
@@ -2799,26 +2806,28 @@ export const ucServicesData = {
       {
         id: 'waterproofing',
         name: 'Waterproofing',
-        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+        icon: '/uc-images/items/dampness-treatment.webp',
         items: [
           {
             id: 'pt4',
             title: 'Dampness Treatment',
             rating: '4.88 (12K reviews)',
             price: 'Starts at ₹1499',
-            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+            image: '/uc-images/items/dampness-treatment.webp',
             options: [
               {
                 id: 'pt4-1',
                 title: 'Minor Patch',
                 price: 1499,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/minor-patch.webp'
               },
               {
                 id: 'pt4-2',
                 title: 'Full Wall',
                 price: 3499,
-                time: '1 Day'
+                time: '1 Day',
+                image: '/uc-images/options/full-wall.webp'
               }
             ]
           }
@@ -2827,26 +2836,28 @@ export const ucServicesData = {
       {
         id: 'touchups',
         name: 'Touch-ups & Repairs',
-        icon: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+        icon: '/uc-images/items/wall-putty.webp',
         items: [
           {
             id: 'pt5',
             title: 'Wall Putty & Crack Repair',
             rating: '4.75 (5K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80',
+            image: '/uc-images/items/wall-putty.webp',
             options: [
               {
                 id: 'pt5-1',
                 title: 'Minor Cracks',
                 price: 499,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/minor-cracks.webp'
               },
               {
                 id: 'pt5-2',
                 title: 'Deep Cracks',
                 price: 999,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/deep-cracks.webp'
               }
             ]
           }

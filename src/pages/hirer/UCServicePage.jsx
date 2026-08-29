@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Shield, ArrowLeft, Percent, CheckCircle2 } from 'lucide-react';
+import { Star, ArrowLeft } from 'lucide-react';
 import { ucServicesData } from '../../data/mock/ucServicesData';
 import UCServiceItem from '../../components/services/UCServiceItem';
 import UCVariantModal from '../../components/modals/UCVariantModal';
@@ -217,41 +217,17 @@ function UCServicePageContent() {
         </div>
 
         {/* Hero Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
-          <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{service.title}</h1>
-            <div className="flex items-center gap-2 text-sm mb-3">
-              <div className="flex items-center gap-1 font-bold">
-                <Star className="w-4 h-4 fill-black text-black" />
-                {service.rating}
-              </div>
-            </div>
-            <div className="inline-flex items-center bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              {service.deliveryTime}
+        <div className="pb-6 border-b border-slate-100">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{service.title}</h1>
+          <div className="flex items-center gap-2 text-sm mb-3">
+            <div className="flex items-center gap-1 font-bold">
+              <Star className="w-4 h-4 fill-black text-black" />
+              {service.rating}
             </div>
           </div>
-          
-          <div className="flex-1 flex justify-start md:justify-end">
-            {service.banner?.type === 'warranty' ? (
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex items-center justify-between min-w-[280px] w-full max-w-md">
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 mb-1 leading-tight">{service.banner.title}</h3>
-                  <p className="text-slate-500 text-xs sm:text-sm">{service.banner.subtitle}</p>
-                </div>
-                <div className="w-14 h-14 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden ml-3">
-                   <Shield className="w-7 h-7 text-teal-600 z-10" />
-                </div>
-              </div>
-            ) : (
-              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 flex items-center justify-between min-w-[280px] w-full max-w-md">
-                <div>
-                  <span className="inline-block bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm mb-1 uppercase tracking-wide">Super Saver</span>
-                  <h3 className="font-bold text-lg text-slate-900 mb-1 leading-tight">{service.banner?.title}</h3>
-                  <p className="text-slate-600 text-xs sm:text-sm">{service.banner?.subtitle}</p>
-                </div>
-              </div>
-            )}
+          <div className="inline-flex items-center bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            {service.deliveryTime}
           </div>
         </div>
 
@@ -342,46 +318,9 @@ function UCServicePageContent() {
             ))}
           </div>
 
-          {/* Right Sidebar (Cart & Promise) */}
+          {/* Right Sidebar (Cart) */}
           <aside className="w-[320px] hidden lg:block shrink-0">
-            <div className="sticky top-20 space-y-6">
-              
-              {/* Promo Banner */}
-              <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between shadow-sm cursor-pointer hover:bg-slate-50 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="bg-green-100 p-2 rounded-full">
-                    <Percent className="w-4 h-4 text-green-700" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900">Get visitation fee off</h4>
-                    <p className="text-xs text-slate-500">On orders above ₹499</p>
-                  </div>
-                </div>
-                <div className="text-slate-400">&rsaquo;</div>
-              </div>
-
-              {/* UC Promise */}
-              <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-bold text-lg">UC Promise</h3>
-                  <div className="bg-blue-50 p-1.5 rounded-full">
-                    <Shield className="w-5 h-5 text-blue-600" />
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center gap-2 text-sm text-slate-600 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-black" /> Verified Professionals
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-black" /> Hassle Free Booking
-                  </li>
-                  <li className="flex items-center gap-2 text-sm text-slate-600 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-black" /> Transparent Pricing
-                  </li>
-                </ul>
-              </div>
-
-              {/* Cart */}
+            <div className="sticky top-20">
               <CartSidebar />
             </div>
           </aside>

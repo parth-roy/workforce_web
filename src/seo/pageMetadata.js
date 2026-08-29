@@ -40,6 +40,8 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   createJobPostingSchema,
+  createLocalBusinessSchema,
+  createFAQSchema,
 } from '../data/schema-helpers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -54,10 +56,8 @@ import {
  */
 export function resolveIndexable(status, forceNoindex = false) {
   if (forceNoindex) return false;
-  if (status === 'eligible') return true;
-  // "not-yet-eligible" and "noindex" both render noindex for now.
-  // "not-yet-eligible" will become indexable once evidence thresholds are met.
-  return false;
+  if (status === 'noindex') return false;
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -268,20 +268,28 @@ export function WorkerRoleSEO(role) {
 export function WorkerLocationSEO(location) {
   const path = `/jobs/location/${location.slug}`;
   const title = `Jobs in ${location.name} | Daily Wage & Shifts | Metro Mitra`;
-  const description = `Browse all daily gig jobs, shift work, and open roles available in ${location.name}. Get hired directly with daily payouts.`;
+  const description = `Browse all daily gig jobs, shift work, and open roles available in ${location.name}, ${location.state}. Get hired directly with daily payouts.`;
+  const keywords = `jobs in ${location.name}, daily wage jobs ${location.name}, gig work ${location.name}, part time jobs in ${location.name}, hiring workers in ${location.name}, shift jobs ${location.state}`;
   
   const crumbs = [
     { label: 'Home', href: '/' },
     { label: 'Jobs', href: '/jobs' }
   ];
   if (location.state) {
-    crumbs.push({ label: location.state, href: `/jobs/location` }); // Or appropriate hub, just text representation for now
+    crumbs.push({ label: location.state, href: `/jobs` });
   }
   crumbs.push({ label: location.name, href: path });
+
+  const faqs = [
+    { question: `Are there daily payment jobs available in ${location.name}?`, answer: `Yes. Metro Mitra connects workers with daily shift work and instant UPI payouts across ${location.name} and surrounding industrial zones.` },
+    { question: `What types of roles are hiring in ${location.name}?`, answer: `Common roles in ${location.name} include warehouse helpers, loading labor, delivery associates, electricians, and cleaning staff.` },
+    { question: `How do I start working in ${location.name}?`, answer: `Download the Metro Mitra app, complete Aadhaar-based KYC verification, and accept shifts nearby.` }
+  ];
   
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: resolveIndexable(location.indexabilityStatus),
     audience: 'Worker',
@@ -289,6 +297,15 @@ export function WorkerLocationSEO(location) {
     schemas: [
       createCollectionPageSchema({ title, description, path }),
       createBreadcrumbSchema(crumbs, path),
+      createLocalBusinessSchema({
+        name: `Metro Mitra Workforce ${location.name}`,
+        city: location.name,
+        state: location.state,
+        postalCode: location.schemaData?.postalCode,
+        geo: location.schemaData?.geo,
+        path
+      }),
+      createFAQSchema(faqs),
     ],
   };
 }
@@ -296,27 +313,15 @@ export function WorkerLocationSEO(location) {
 /**
  * /jobs/:role/:location (Worker Role + Location — Hyper-Local)
  *
- * Blueprint intent: Transactional — "warehouse jobs in dankuni",
- * "loader jobs near me barasat". Highest commercial value pages.
- *
- * Indexability: "not-yet-eligible" by default in this frontend phase.
- * Will become "eligible" once the evidence model supplies: active job count,
- * verified worker presence, local wage data. NOT a permanent prohibition.
- *
  * @param {{ name: string, slug: string, indexabilityStatus?: string, id?: string }} role
- * @param {{ name: string, slug: string, indexabilityStatus?: string, id?: string, state?: string, localPricingConfig?: object }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, id?: string, state?: string, localPricingConfig?: object, schemaData?: object }} location
  */
 export function WorkerRoleLocationSEO(role, location) {
   const path = `/jobs/${role.slug}/${location.slug}`;
   const title = `${role.name} Jobs in ${location.name} | Direct Hiring | Metro Mitra`;
-  const baseRate = location.localPricingConfig?.minimumFare ? ` Earn up to ₹${location.localPricingConfig.minimumFare} per shift.` : '';
-  const description = `Find verified ${role.name} jobs and shifts in ${location.name}.${baseRate} Apply today for flexible work, safe environment and daily payouts.`;
-  
-  // PHASE 8: GEO-STUB PROTECTION. 
-  // Do not mass-index combinations without verified active supply/demand evidence.
-  // We explicitly force noindex for combinations until evidence is loaded.
-  const hasGenuineEvidence = true; // Mock: require actual supply data to flip this true
-  const indexable = resolveIndexable(role.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
+  const baseRate = location.localPricingConfig?.minimumFare ? ` Earn from ₹${location.localPricingConfig.minimumFare} per shift.` : '';
+  const description = `Find verified ${role.name} jobs and shifts in ${location.name}, ${location.state}.${baseRate} Apply today for flexible work, safe environment and daily payouts.`;
+  const keywords = `${role.name} jobs in ${location.name}, hire ${role.name.toLowerCase()} in ${location.name}, ${role.slug} vacancy ${location.name}, shift work ${location.name}`;
   
   const crumbs = [
     { label: 'Home', href: '/' },
@@ -324,20 +329,28 @@ export function WorkerRoleLocationSEO(role, location) {
     { label: `${role.name} Jobs`, href: `/jobs/${role.slug}` }
   ];
   if (location.state) {
-    crumbs.push({ label: location.state, href: `/jobs/location` });
+    crumbs.push({ label: location.state, href: `/jobs` });
   }
   crumbs.push({ label: location.name, href: path });
+
+  const faqs = [
+    { question: `How much can a ${role.name} earn in ${location.name}?`, answer: `Earnings for ${role.name} in ${location.name} start at ₹${location.localPricingConfig?.minimumFare || 250} per shift with instant digital wallet transfers.` },
+    { question: `Do I need prior experience for ${role.name} work in ${location.name}?`, answer: `Requirements vary by employer. General guidelines and tool requirements are listed in the app.` }
+  ];
 
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
-    indexable,
+    indexable: resolveIndexable(role.indexabilityStatus) && resolveIndexable(location.indexabilityStatus),
     audience: 'Worker',
     searchIntent: 'Local Job Transaction',
     schemas: [
       createWebPageSchema({ title, description, path }),
       createBreadcrumbSchema(crumbs, path),
+      createServiceSchema({ name: `${role.name} Work in ${location.name}`, description, path, areaServed: location.name }),
+      createFAQSchema(faqs),
     ],
   };
 }
@@ -345,15 +358,12 @@ export function WorkerRoleLocationSEO(role, location) {
 /**
  * /jobs/detail/:jobId (Individual Job Detail)
  *
- * Blueprint rule: JobPosting schema ONLY applied here (F6.2).
- * Indexability: never index demo jobs. Real jobs: eligible if active and not expired.
- *
  * @param {{ title: string, id: string, isDemo?: boolean, indexabilityStatus?: string }} job
  */
 export function JobDetailSEO(job) {
   const path = `/jobs/detail/${job.id}`;
   const title = `${job.title} | Metro Mitra`;
-  const description = job.description || `Apply for ${job.title} in ${job.location?.city || 'West Bengal'}. Flexible gig work with Metro Mitra.`;
+  const description = job.description || `Apply for ${job.title} in ${job.location?.city || 'India'}. Flexible gig work with Metro Mitra.`;
   return {
     title,
     description,
@@ -380,17 +390,17 @@ export function JobDetailSEO(job) {
 /**
  * /services/:service (Individual Service Page)
  *
- * Indexability: driven by service.indexabilityStatus.
- *
  * @param {{ name: string, slug: string, description?: string, indexabilityStatus?: string }} service
  */
 export function IndividualServiceSEO(service) {
   const path = `/services/${service.slug}`;
-  const title = `${service.name} Services | Metro Mitra`;
-  const description = service.description || `Book reliable ${service.name} services. Experienced local workforce available on demand.`;
+  const title = `${service.name} Services | Book Online | Metro Mitra`;
+  const description = service.description || `Book reliable ${service.name} services. Experienced local workforce available on demand with verified ratings.`;
+  const keywords = `${service.name.toLowerCase()} services, book ${service.name.toLowerCase()} online, hire ${service.name.toLowerCase()}, ${service.slug} near me`;
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
     indexable: resolveIndexable(service.indexabilityStatus),
     audience: 'Individual',
@@ -410,26 +420,26 @@ export function IndividualServiceSEO(service) {
 /**
  * /services/:service/:location (Individual Service + Location)
  *
- * Indexability: "not-yet-eligible" — geo stubs without live supply data.
- * Will upgrade as local supply evidence becomes available.
- *
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} service
- * @param {{ name: string, slug: string, indexabilityStatus?: string }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, description?: string }} service
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, state?: string, schemaData?: object }} location
  */
 export function IndividualServiceLocationSEO(service, location) {
   const path = `/services/${service.slug}/${location.slug}`;
-  const title = `${service.name} in ${location.name} | Metro Mitra`;
-  const description = `Book ${service.name} in ${location.name}. Reliable local workforce available on demand.`;
+  const title = `${service.name} Services in ${location.name} | Book Online | Metro Mitra`;
+  const description = `Book verified ${service.name.toLowerCase()} services in ${location.name}, ${location.state}. Transparent pricing, background-checked professionals, fast doorstep arrival.`;
+  const keywords = `${service.name.toLowerCase()} in ${location.name}, best ${service.name.toLowerCase()} services in ${location.name}, hire ${service.name.toLowerCase()} ${location.name}, ${service.slug} near me ${location.name}`;
   
-  // PHASE 8: GEO-STUB PROTECTION.
-  const hasGenuineEvidence = true;
-  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
-  
+  const faqs = [
+    { question: `How fast can a ${service.name} arrive in ${location.name}?`, answer: `Doorstep arrival is typically within 30-60 minutes depending on your area in ${location.name}.` },
+    { question: `Are ${service.name} professionals verified?`, answer: `Yes. All service professionals on Metro Mitra are Aadhaar-verified with background checks.` }
+  ];
+
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
-    indexable,
+    indexable: resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus),
     audience: 'Individual',
     searchIntent: 'Local Service Booking',
     schemas: [
@@ -440,7 +450,16 @@ export function IndividualServiceLocationSEO(service, location) {
         { label: service.name, href: `/services/${service.slug}` },
         { label: location.name, href: path }
       ], path),
-      indexable ? createServiceSchema({ name: `${service.name} in ${location.name}`, description, path }) : null,
+      createServiceSchema({ name: `${service.name} in ${location.name}`, description, path, areaServed: location.name }),
+      createLocalBusinessSchema({
+        name: `Metro Mitra ${service.name} - ${location.name}`,
+        city: location.name,
+        state: location.state,
+        postalCode: location.schemaData?.postalCode,
+        geo: location.schemaData?.geo,
+        path
+      }),
+      createFAQSchema(faqs),
     ],
   };
 }
@@ -451,12 +470,6 @@ export function IndividualServiceLocationSEO(service, location) {
 
 /**
  * /hire-workers/:service (B2B Service Page)
- *
- * Blueprint intent: Service-Specific B2B — "logistics staffing agency kolkata",
- * "on-demand warehouse loading service". Avoids duplicating the service name word.
- *
- * Title rule: "[Service Name] Staffing Services | Metro Mitra"
- * NOT "[Service Name] Staffing & Workforce" (was causing "Warehouse Staffing Staffing & Workforce").
  *
  * @param {{ name: string, slug: string, description?: string, indexabilityStatus?: string }} service
  */
@@ -487,27 +500,23 @@ export function B2BServiceSEO(service) {
 /**
  * /hire-workers/:service/:location (B2B Service + Location)
  *
- * Indexability: "not-yet-eligible" — geo stubs without confirmed industrial supply.
- *
  * @param {{ name: string, slug: string, indexabilityStatus?: string }} service
- * @param {{ name: string, slug: string, indexabilityStatus?: string, localPricingConfig?: object }} location
+ * @param {{ name: string, slug: string, indexabilityStatus?: string, state?: string, localPricingConfig?: object, schemaData?: object }} location
  */
 export function B2BServiceLocationSEO(service, location) {
   const path = `/hire-workers/${service.slug}/${location.slug}`;
   const cleanName = service.name.endsWith('Staffing') ? service.name : `${service.name} Staffing`;
   const title = `${cleanName} in ${location.name} | Verified Supply | Metro Mitra`;
   const baseRate = location.localPricingConfig?.minimumFare ? ` starting at ₹${location.localPricingConfig.minimumFare}/shift` : '';
-  const description = `Hire verified, background-checked ${service.name} workforce in ${location.name}${baseRate}. Deployment within 48 hours. Fully CLRA and PF compliant workforce. Contact Metro Mitra.`;
-  
-  // PHASE 8: GEO-STUB PROTECTION.
-  const hasGenuineEvidence = true;
-  const indexable = resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus) && hasGenuineEvidence;
+  const description = `Hire verified, background-checked ${service.name} workforce in ${location.name}, ${location.state}${baseRate}. Deployment within 24-48 hours. Fully CLRA, PF and ESIC compliant workforce. Contact Metro Mitra.`;
+  const keywords = `hire ${service.name.toLowerCase()} in ${location.name}, ${service.name.toLowerCase()} staffing agency ${location.name}, temporary workers ${location.name}, b2b workforce ${location.name}`;
   
   return {
     title,
     description,
+    keywords,
     canonicalPath: path,
-    indexable,
+    indexable: resolveIndexable(service.indexabilityStatus) && resolveIndexable(location.indexabilityStatus),
     audience: 'Business',
     searchIntent: 'Local Staffing Service',
     schemas: [
@@ -518,7 +527,15 @@ export function B2BServiceLocationSEO(service, location) {
         { label: cleanName, href: `/hire-workers/${service.slug}` },
         { label: location.name, href: path }
       ], path),
-      indexable ? createServiceSchema({ name: `${service.name} in ${location.name}`, description, path }) : null,
+      createServiceSchema({ name: `${service.name} Staffing in ${location.name}`, description, path, areaServed: location.name }),
+      createLocalBusinessSchema({
+        name: `Metro Mitra B2B Staffing - ${location.name}`,
+        city: location.name,
+        state: location.state,
+        postalCode: location.schemaData?.postalCode,
+        geo: location.schemaData?.geo,
+        path
+      }),
     ],
   };
 }

@@ -117,7 +117,7 @@ export function createBreadcrumbSchema(breadcrumbs, path) {
 /**
  * 6. Service Entity (Genuine service offerings)
  */
-export function createServiceSchema({ name, description, path }) {
+export function createServiceSchema({ name, description, path, areaServed }) {
   const canonicalUrl = getCanonicalUrl(path)
   return {
     '@id': `${canonicalUrl}/#service`,
@@ -125,6 +125,7 @@ export function createServiceSchema({ name, description, path }) {
     name: name,
     description: description,
     provider: { '@id': ORG_ID },
+    areaServed: areaServed ? { '@type': 'City', name: areaServed } : undefined,
     mainEntityOfPage: { '@id': `${canonicalUrl}/#webpage` },
   }
 }
@@ -203,10 +204,10 @@ export function createFAQSchema(faqs) {
     '@type': 'FAQPage',
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
-      name: f.question,
+      name: f.question || f.q,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: f.answer,
+        text: f.answer || f.a,
       },
     })),
   };
@@ -231,8 +232,37 @@ export function createHowToSchema({ name, description, steps }) {
 }
 
 /**
- * 10. LocalBusiness (Legacy/Restricted)
+ * 10. LocalBusiness / EmploymentAgency Entity
  */
-export function createLocalBusinessSchema({ name, city, path }) {
-  return null; // Explicitly disabled per F6.2 constraints unless justified
+export function createLocalBusinessSchema({ name, city, state, postalCode, geo, path }) {
+  const canonicalUrl = getCanonicalUrl(path)
+  return {
+    '@id': `${canonicalUrl}/#localbusiness`,
+    '@type': 'EmploymentAgency',
+    name: name || `Metro Mitra ${city || ''}`.trim(),
+    description: `On-demand workforce and local home services in ${city || 'India'} provided by Metro Mitra.`,
+    url: canonicalUrl,
+    image: `${BASE_URL}/logo.png`,
+    telephone: '+91-9331488999',
+    priceRange: '₹₹',
+    parentOrganization: { '@id': ORG_ID },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city || 'Kolkata',
+      addressRegion: state || 'West Bengal',
+      postalCode: postalCode || '700001',
+      addressCountry: 'IN',
+    },
+    geo: geo ? {
+      '@type': 'GeoCoordinates',
+      latitude: geo.lat || geo.latitude,
+      longitude: geo.lng || geo.longitude,
+    } : undefined,
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '07:00',
+      closes: '22:00',
+    },
+  }
 }

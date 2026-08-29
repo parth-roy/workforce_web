@@ -2879,32 +2879,38 @@ export const ucServicesData = {
       {
         id: 'full_home',
         name: 'Full Home Cleaning',
-        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+        icon: '/uc-images/items/complete-deep-cleaning.webp',
         items: [
           {
             id: 'cl1',
             title: 'Complete Deep Cleaning',
             rating: '4.86 (45K reviews)',
             price: 'Starts at ₹2499',
-            image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+            image: '/uc-images/items/complete-deep-cleaning.webp',
             options: [
               {
                 id: 'cl1-1',
                 title: '1 BHK',
                 price: 2499,
-                time: '5 Hrs'
+                time: '5 Hrs',
+                rating: '4.85 (15K reviews)',
+                image: '/uc-images/options/complete-deep-cleaning-1bhk.webp'
               },
               {
                 id: 'cl1-2',
                 title: '2 BHK',
                 price: 3499,
-                time: '7 Hrs'
+                time: '7 Hrs',
+                rating: '4.87 (20K reviews)',
+                image: '/uc-images/options/complete-deep-cleaning-2bhk.webp'
               },
               {
                 id: 'cl1-3',
                 title: '3 BHK',
                 price: 4499,
-                time: '9 Hrs'
+                time: '9 Hrs',
+                rating: '4.86 (10K reviews)',
+                image: '/uc-images/options/complete-deep-cleaning-3bhk.webp'
               }
             ]
           }
@@ -2913,26 +2919,30 @@ export const ucServicesData = {
       {
         id: 'bathroom_cleaning',
         name: 'Bathroom Cleaning',
-        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+        icon: '/uc-images/items/bathroom-deep-clean.webp',
         items: [
           {
             id: 'cl2',
             title: 'Bathroom Deep Clean',
             rating: '4.84 (60K reviews)',
             price: 'Starts at ₹399',
-            image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+            image: '/uc-images/items/bathroom-deep-clean.webp',
             options: [
               {
                 id: 'cl2-1',
                 title: '1 Bathroom',
                 price: 399,
-                time: '1 Hr'
+                time: '1 Hr',
+                rating: '4.84 (35K reviews)',
+                image: '/uc-images/options/1bathroom.webp'
               },
               {
                 id: 'cl2-2',
                 title: '2 Bathrooms',
                 price: 699,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                rating: '4.85 (25K reviews)',
+                image: '/uc-images/options/2bathroom-cleaning.webp'
               }
             ]
           }
@@ -2941,26 +2951,30 @@ export const ucServicesData = {
       {
         id: 'kitchen_cleaning',
         name: 'Kitchen Cleaning',
-        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+        icon: '/uc-images/items/kitchen-deep-cleaning.webp',
         items: [
           {
             id: 'cl3',
             title: 'Kitchen Deep Clean',
             rating: '4.85 (50K reviews)',
             price: 'Starts at ₹999',
-            image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+            image: '/uc-images/items/kitchen-deep-cleaning.webp',
             options: [
               {
                 id: 'cl3-1',
                 title: 'Standard Kitchen',
                 price: 999,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                rating: '4.85 (30K reviews)',
+                image: '/uc-images/options/standard-kitchen.webp'
               },
               {
                 id: 'cl3-2',
                 title: 'With Chimney Care',
                 price: 1499,
-                time: '3 Hrs'
+                time: '3 Hrs',
+                rating: '4.86 (20K reviews)',
+                image: '/uc-images/options/with-chimney-care.webp'
               }
             ]
           }
@@ -2969,26 +2983,30 @@ export const ucServicesData = {
       {
         id: 'sofa_carpet',
         name: 'Sofa & Carpet Cleaning',
-        icon: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+        icon: '/uc-images/items/sofa-cleaning.webp',
         items: [
           {
             id: 'cl4',
             title: 'Sofa Shampooing',
             rating: '4.82 (30K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+            image: '/uc-images/items/sofa-cleaning.webp',
             options: [
               {
                 id: 'cl4-1',
                 title: '3 Seater',
                 price: 499,
-                time: '1 Hr'
+                time: '1 Hr',
+                rating: '4.82 (18K reviews)',
+                image: '/uc-images/options/3-seater-sofa.webp'
               },
               {
                 id: 'cl4-2',
                 title: '5 Seater',
                 price: 799,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                rating: '4.83 (12K reviews)',
+                image: '/uc-images/options/5-seater-sofa.webp'
               }
             ]
           },
@@ -2997,19 +3015,23 @@ export const ucServicesData = {
             title: 'Carpet Cleaning',
             rating: '4.78 (15K reviews)',
             price: 'Starts at ₹399',
-            image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80',
+            image: '/uc-images/items/carpet-cleaning.webp',
             options: [
               {
                 id: 'cl5-1',
                 title: 'Small Carpet',
                 price: 399,
-                time: '1 Hr'
+                time: '1 Hr',
+                rating: '4.78 (8K reviews)',
+                image: '/uc-images/options/small-carpet.webp'
               },
               {
                 id: 'cl5-2',
                 title: 'Large Carpet',
                 price: 699,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                rating: '4.79 (7K reviews)',
+                image: '/uc-images/options/large-carpet.webp'
               }
             ]
           }
@@ -3031,26 +3053,30 @@ export const ucServicesData = {
       {
         id: 'ac_servicing',
         name: 'AC Servicing',
-        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+        icon: '/uc-images/items/foam-jet-ac-service.webp',
         items: [
           {
             id: 'ac1',
             title: 'Foam Jet Servicing',
             rating: '4.90 (120K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            image: '/uc-images/items/foam-jet-ac-service.webp',
             options: [
               {
                 id: 'ac1-1',
                 title: 'Split AC',
                 price: 499,
-                time: '45 mins'
+                time: '45 mins',
+                rating: '4.90 (85K reviews)',
+                image: '/uc-images/options/split-ac.webp'
               },
               {
                 id: 'ac1-2',
                 title: 'Window AC',
                 price: 399,
-                time: '30 mins'
+                time: '30 mins',
+                rating: '4.88 (35K reviews)',
+                image: '/uc-images/options/window-ac.webp'
               }
             ]
           },
@@ -3059,13 +3085,15 @@ export const ucServicesData = {
             title: 'Anti-rust Deep Clean',
             rating: '4.88 (45K reviews)',
             price: 'Starts at ₹799',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            image: '/uc-images/items/antirust-deep-clean.webp',
             options: [
               {
                 id: 'ac2-1',
                 title: 'Split AC',
                 price: 799,
-                time: '60 mins'
+                time: '60 mins',
+                rating: '4.88 (45K reviews)',
+                image: '/uc-images/options/antirust-deep-clean-split-ac.webp'
               }
             ]
           }
@@ -3074,20 +3102,22 @@ export const ucServicesData = {
       {
         id: 'ac_repair_troubleshooting',
         name: 'AC Repair & Fix',
-        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+        icon: '/uc-images/items/ac-water-leakage.webp',
         items: [
           {
             id: 'ac3',
             title: 'Not Cooling Issue',
             rating: '4.85 (80K reviews)',
             price: 'Starts at ₹299',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            image: '/uc-images/items/not-cooling-issue.webp',
             options: [
               {
                 id: 'ac3-1',
-                title: 'Inspection Fee',
+                title: 'Inspection & Repair',
                 price: 299,
-                time: '30 mins'
+                time: '30 mins',
+                rating: '4.85 (80K reviews)',
+                image: '/uc-images/options/not-cooling-issue.webp'
               }
             ]
           },
@@ -3096,13 +3126,15 @@ export const ucServicesData = {
             title: 'Water Leakage Fix',
             rating: '4.82 (35K reviews)',
             price: 'Starts at ₹299',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            image: '/uc-images/items/ac-water-leakage.webp',
             options: [
               {
                 id: 'ac4-1',
-                title: 'Repair',
+                title: 'Leakage Inspection & Fix',
                 price: 299,
-                time: '30 mins'
+                time: '30 mins',
+                rating: '4.82 (35K reviews)',
+                image: '/uc-images/options/ac-water-leakage.webp'
               }
             ]
           }
@@ -3111,26 +3143,30 @@ export const ucServicesData = {
       {
         id: 'ac_gas_refill',
         name: 'AC Gas Refill',
-        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+        icon: '/uc-images/items/ac-gas-refill.webp',
         items: [
           {
             id: 'ac5',
             title: 'Gas Refill with Leak Test',
             rating: '4.87 (65K reviews)',
-            price: 'Starts at ₹2200',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            price: 'Starts at ₹1,200',
+            image: '/uc-images/items/ac-gas-refill.webp',
             options: [
               {
                 id: 'ac5-1',
-                title: 'Top-up',
+                title: 'Top-up / Half Refill',
                 price: 1200,
-                time: '30 mins'
+                time: '30 mins',
+                rating: '4.86 (25K reviews)',
+                image: '/uc-images/options/ac-gas-refill-half.webp'
               },
               {
                 id: 'ac5-2',
-                title: 'Complete Refill',
+                title: 'Complete Full Refill',
                 price: 2200,
-                time: '60 mins'
+                time: '60 mins',
+                rating: '4.88 (40K reviews)',
+                image: '/uc-images/options/ac-gas-refill-full.webp'
               }
             ]
           }
@@ -3139,26 +3175,30 @@ export const ucServicesData = {
       {
         id: 'ac_install',
         name: 'Installation/Uninstallation',
-        icon: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+        icon: '/uc-images/items/split-ac-installation.webp',
         items: [
           {
             id: 'ac6',
             title: 'AC Installation',
             rating: '4.86 (25K reviews)',
-            price: 'Starts at ₹999',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            price: 'Starts at ₹599',
+            image: '/uc-images/items/split-ac-installation.webp',
             options: [
               {
                 id: 'ac6-1',
-                title: 'Window AC',
+                title: 'Window AC Installation',
                 price: 599,
-                time: '45 mins'
+                time: '45 mins',
+                rating: '4.85 (10K reviews)',
+                image: '/uc-images/options/window-ac-installation.webp'
               },
               {
                 id: 'ac6-2',
-                title: 'Split AC',
+                title: 'Split AC Installation',
                 price: 999,
-                time: '90 mins'
+                time: '90 mins',
+                rating: '4.87 (15K reviews)',
+                image: '/uc-images/options/split-ac-installation.webp'
               }
             ]
           },
@@ -3166,20 +3206,24 @@ export const ucServicesData = {
             id: 'ac7',
             title: 'AC Uninstallation',
             rating: '4.84 (18K reviews)',
-            price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1617511679901-bb984d79c6d3?w=200&q=80',
+            price: 'Starts at ₹299',
+            image: '/uc-images/items/split-ac-uninstallation.webp',
             options: [
               {
                 id: 'ac7-1',
-                title: 'Window AC',
+                title: 'Window AC Uninstallation',
                 price: 299,
-                time: '30 mins'
+                time: '30 mins',
+                rating: '4.83 (8K reviews)',
+                image: '/uc-images/options/window-ac-uninstallation.webp'
               },
               {
                 id: 'ac7-2',
-                title: 'Split AC',
+                title: 'Split AC Uninstallation',
                 price: 499,
-                time: '45 mins'
+                time: '45 mins',
+                rating: '4.85 (10K reviews)',
+                image: '/uc-images/options/split-ac-uninstallation.webp'
               }
             ]
           }
@@ -3201,26 +3245,28 @@ export const ucServicesData = {
       {
         id: 'washing_machine',
         name: 'Washing Machine',
-        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+        icon: '/uc-images/items/washing-machine-repair.webp',
         items: [
           {
             id: 'ar1',
             title: 'Washing Machine Repair',
             rating: '4.82 (42K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+            image: '/uc-images/items/washing-machine-repair.webp',
             options: [
               {
                 id: 'ar1-1',
                 title: 'Top Load',
                 price: 199,
-                time: '45 mins'
+                time: '45 mins',
+                image: '/uc-images/options/top-load.webp'
               },
               {
                 id: 'ar1-2',
                 title: 'Front Load',
                 price: 249,
-                time: '60 mins'
+                time: '60 mins',
+                image: '/uc-images/options/front-load.webp'
               }
             ]
           }
@@ -3229,26 +3275,28 @@ export const ucServicesData = {
       {
         id: 'refrigerator',
         name: 'Refrigerator',
-        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+        icon: '/uc-images/items/refrigerator-repair.webp',
         items: [
           {
             id: 'ar2',
             title: 'Fridge Repair',
             rating: '4.81 (38K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+            image: '/uc-images/items/refrigerator-repair.webp',
             options: [
               {
                 id: 'ar2-1',
                 title: 'Single Door',
                 price: 199,
-                time: '45 mins'
+                time: '45 mins',
+                image: '/uc-images/options/single-door.webp'
               },
               {
                 id: 'ar2-2',
                 title: 'Double Door',
                 price: 249,
-                time: '60 mins'
+                time: '60 mins',
+                image: '/uc-images/options/double-door.webp'
               }
             ]
           }
@@ -3257,20 +3305,21 @@ export const ucServicesData = {
       {
         id: 'microwave',
         name: 'Microwave',
-        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+        icon: '/uc-images/items/microwave-repair.webp',
         items: [
           {
             id: 'ar3',
             title: 'Microwave Repair',
             rating: '4.79 (15K reviews)',
             price: 'Starts at ₹199',
-            image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+            image: '/uc-images/items/microwave-repair.webp',
             options: [
               {
                 id: 'ar3-1',
-                title: 'Inspection',
+                title: 'Inspection & Repair',
                 price: 199,
-                time: '30 mins'
+                time: '30 mins',
+                image: '/uc-images/options/microwave-repair-inspection.webp'
               }
             ]
           }
@@ -3279,26 +3328,28 @@ export const ucServicesData = {
       {
         id: 'ro_purifier',
         name: 'RO / Water Purifier',
-        icon: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+        icon: '/uc-images/items/ro-servicing.webp',
         items: [
           {
             id: 'ar4',
             title: 'RO Servicing/Repair',
             rating: '4.85 (50K reviews)',
             price: 'Starts at ₹299',
-            image: 'https://images.unsplash.com/photo-1626806787426-591fc64ca4b3?w=200&q=80',
+            image: '/uc-images/items/ro-servicing.webp',
             options: [
               {
                 id: 'ar4-1',
                 title: 'Basic Servicing',
                 price: 299,
-                time: '30 mins'
+                time: '30 mins',
+                image: '/uc-images/options/ro-servicing-basic.webp'
               },
               {
                 id: 'ar4-2',
                 title: 'Filter Change',
                 price: 899,
-                time: '45 mins'
+                time: '45 mins',
+                image: '/uc-images/options/filter-change.webp'
               }
             ]
           }
@@ -3320,26 +3371,28 @@ export const ucServicesData = {
       {
         id: 'residential_guards',
         name: 'Residential Guards',
-        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+        icon: '/uc-images/items/apartment-security-guard.webp',
         items: [
           {
             id: 'sec1',
             title: 'Apartment Security Guard',
             rating: '4.80 (12K reviews)',
             price: 'Starts at ₹800/shift',
-            image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+            image: '/uc-images/items/apartment-security-guard.webp',
             options: [
               {
                 id: 'sec1-1',
                 title: 'Day Shift (12H)',
                 price: 800,
-                time: '12 Hrs'
+                time: '12 Hrs',
+                image: '/uc-images/options/security-service-for-apartment.webp'
               },
               {
                 id: 'sec1-2',
                 title: 'Night Shift (12H)',
                 price: 900,
-                time: '12 Hrs'
+                time: '12 Hrs',
+                image: '/uc-images/options/night-shift.webp'
               }
             ]
           }
@@ -3348,26 +3401,28 @@ export const ucServicesData = {
       {
         id: 'corporate_guards',
         name: 'Corporate Guards',
-        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+        icon: '/uc-images/items/security-service-for-apartment.webp',
         items: [
           {
             id: 'sec2',
             title: 'Office Security Guard',
             rating: '4.82 (8K reviews)',
             price: 'Starts at ₹900/shift',
-            image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+            image: '/uc-images/items/security-service-for-apartment.webp',
             options: [
               {
                 id: 'sec2-1',
                 title: 'Day Shift',
                 price: 900,
-                time: '12 Hrs'
+                time: '12 Hrs',
+                image: '/uc-images/options/apartment-security-guard.webp'
               },
               {
                 id: 'sec2-2',
                 title: 'Night Shift',
                 price: 1000,
-                time: '12 Hrs'
+                time: '12 Hrs',
+                image: '/uc-images/options/night-shift.webp'
               }
             ]
           }
@@ -3376,26 +3431,28 @@ export const ucServicesData = {
       {
         id: 'event_security',
         name: 'Event Security & Bouncers',
-        icon: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+        icon: '/uc-images/items/event-security.webp',
         items: [
           {
             id: 'sec3',
             title: 'Event Bouncer',
             rating: '4.85 (5K reviews)',
             price: 'Starts at ₹1500/shift',
-            image: 'https://images.unsplash.com/photo-1622329432029-79a613393275?w=200&q=80',
+            image: '/uc-images/items/event-security.webp',
             options: [
               {
                 id: 'sec3-1',
                 title: 'Standard Event',
                 price: 1500,
-                time: '8 Hrs'
+                time: '8 Hrs',
+                image: '/uc-images/options/event-security.webp'
               },
               {
                 id: 'sec3-2',
                 title: 'VIP Protection',
                 price: 2500,
-                time: '8 Hrs'
+                time: '8 Hrs',
+                image: '/uc-images/options/vip-event-security-guard.webp'
               }
             ]
           }
@@ -3417,26 +3474,28 @@ export const ucServicesData = {
       {
         id: 'truck_loading',
         name: 'Truck Loading/Unloading',
-        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+        icon: '/uc-images/items/mini-truck-loading.webp',
         items: [
           {
             id: 'lu1',
             title: 'Tempo/Truck Loading',
             rating: '4.78 (35K reviews)',
             price: 'Starts at ₹399',
-            image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+            image: '/uc-images/items/mini-truck-loading.webp',
             options: [
               {
                 id: 'lu1-1',
                 title: 'Mini Truck',
                 price: 399,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/mini-truck-loading.webp'
               },
               {
                 id: 'lu1-2',
                 title: 'Large Truck',
                 price: 799,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/large-truck.webp'
               }
             ]
           }
@@ -3445,26 +3504,28 @@ export const ucServicesData = {
       {
         id: 'floor_shifting',
         name: 'Floor-to-Floor Shifting',
-        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+        icon: '/uc-images/items/shifting-within-building.webp',
         items: [
           {
             id: 'lu2',
             title: 'Shifting within building',
             rating: '4.72 (20K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+            image: '/uc-images/items/shifting-within-building.webp',
             options: [
               {
                 id: 'lu2-1',
                 title: 'With Elevator',
                 price: 499,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/with-elevator.webp'
               },
               {
                 id: 'lu2-2',
                 title: 'Without Elevator',
                 price: 699,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/without-elevator.webp'
               }
             ]
           }
@@ -3486,26 +3547,28 @@ export const ucServicesData = {
       {
         id: 'event_setup',
         name: 'Event & Store Setup',
-        icon: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80',
+        icon: '/uc-images/items/mini-truck-loading.webp',
         items: [
           {
             id: 'gh1',
             title: 'Event Helper',
             rating: '4.80 (15K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80',
+            image: '/uc-images/items/mini-truck-loading.webp',
             options: [
               {
                 id: 'gh1-1',
                 title: 'Half Day (4h)',
                 price: 499,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/shifting-within-building.webp'
               },
               {
                 id: 'gh1-2',
                 title: 'Full Day (8h)',
                 price: 899,
-                time: '8 Hrs'
+                time: '8 Hrs',
+                image: '/uc-images/options/large-truck.webp'
               }
             ]
           }
@@ -3514,20 +3577,21 @@ export const ucServicesData = {
       {
         id: 'construction_helper',
         name: 'Site Helpers',
-        icon: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80',
+        icon: '/uc-images/items/shifting-within-building.webp',
         items: [
           {
             id: 'gh2',
             title: 'Construction/Site Helper',
             rating: '4.75 (25K reviews)',
             price: 'Starts at ₹699',
-            image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80',
+            image: '/uc-images/items/shifting-within-building.webp',
             options: [
               {
                 id: 'gh2-1',
                 title: 'Full Day Shift',
                 price: 699,
-                time: '8 Hrs'
+                time: '8 Hrs',
+                image: '/uc-images/options/shifting-within-building.webp'
               }
             ]
           }
@@ -3549,26 +3613,28 @@ export const ucServicesData = {
       {
         id: 'inhouse_shift',
         name: 'In-House Rearrangement',
-        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+        icon: '/uc-images/items/shifting-within-building.webp',
         items: [
           {
             id: 'fm1',
             title: 'Move Heavy Furniture',
             rating: '4.85 (12K reviews)',
             price: 'Starts at ₹299',
-            image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+            image: '/uc-images/items/shifting-within-building.webp',
             options: [
               {
                 id: 'fm1-1',
                 title: '1-2 Items',
                 price: 299,
-                time: '1 Hr'
+                time: '1 Hr',
+                image: '/uc-images/options/shifting-within-building.webp'
               },
               {
                 id: 'fm1-2',
                 title: 'Full Room',
                 price: 599,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/1bhk-moving.webp'
               }
             ]
           }
@@ -3577,26 +3643,28 @@ export const ucServicesData = {
       {
         id: 'relocation',
         name: 'House/Office Relocation',
-        icon: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+        icon: '/uc-images/items/complete-shifting.webp',
         items: [
           {
             id: 'fm2',
             title: 'Complete Shifting',
             rating: '4.80 (28K reviews)',
             price: 'Starts at ₹1499',
-            image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=200&q=80',
+            image: '/uc-images/items/complete-shifting.webp',
             options: [
               {
                 id: 'fm2-1',
                 title: '1 BHK',
                 price: 1499,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/1bhk-moving.webp'
               },
               {
                 id: 'fm2-2',
                 title: '2 BHK',
                 price: 2499,
-                time: '6 Hrs'
+                time: '6 Hrs',
+                image: '/uc-images/options/2bhk-moving.webp'
               }
             ]
           }
@@ -3618,26 +3686,28 @@ export const ucServicesData = {
       {
         id: 'fragile_packing',
         name: 'Fragile Item Packing',
-        icon: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80',
+        icon: '/uc-images/items/glassware-packing.webp',
         items: [
           {
             id: 'pk1',
             title: 'Glassware & Electronics',
             rating: '4.83 (8K reviews)',
             price: 'Starts at ₹499',
-            image: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80',
+            image: '/uc-images/items/glassware-packing.webp',
             options: [
               {
                 id: 'pk1-1',
                 title: 'Standard Box',
                 price: 499,
-                time: '1 Hr'
+                time: '1 Hr',
+                image: '/uc-images/options/glassware-packing.webp'
               },
               {
                 id: 'pk1-2',
                 title: 'Large Bubble Wrap',
                 price: 899,
-                time: '2 Hrs'
+                time: '2 Hrs',
+                image: '/uc-images/options/bubble-wrap.webp'
               }
             ]
           }
@@ -3646,26 +3716,28 @@ export const ucServicesData = {
       {
         id: 'house_packing',
         name: 'Complete House Packing',
-        icon: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80',
+        icon: '/uc-images/items/house-packing.webp',
         items: [
           {
             id: 'pk2',
             title: 'Pre-move Packing',
             rating: '4.78 (14K reviews)',
             price: 'Starts at ₹1999',
-            image: 'https://images.unsplash.com/photo-1560064733-3d078fb8f29c?w=200&q=80',
+            image: '/uc-images/items/house-packing.webp',
             options: [
               {
                 id: 'pk2-1',
                 title: '1 BHK',
                 price: 1999,
-                time: '4 Hrs'
+                time: '4 Hrs',
+                image: '/uc-images/options/1bhk-packing.webp'
               },
               {
                 id: 'pk2-2',
                 title: '2 BHK',
                 price: 2999,
-                time: '6 Hrs'
+                time: '6 Hrs',
+                image: '/uc-images/options/2bhk-packing.webp'
               }
             ]
           }

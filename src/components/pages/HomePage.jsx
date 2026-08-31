@@ -351,34 +351,41 @@ export default function HomePage() {
         </section>
 
         {/* 3. INDIVIDUAL SERVICES */}
-        <section className="py-20 bg-slate-50">
+        <section className="py-20 bg-slate-50 overflow-hidden">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Popular Home & Local Services</h2>
             <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">Book skilled workers for tasks around your home or office.</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
-              {individualServices.map(svc => {
+          </div>
+
+          <div className="relative flex overflow-hidden group pb-10 w-full">
+            {/* The wrapper that animates -50% */}
+            <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+              {[...mockServices.filter(s => s.audiences.includes('individual')), ...mockServices.filter(s => s.audiences.includes('individual'))].map((svc, idx) => {
                 const Icon = ICON_MAP[svc.icon] || Users;
                 return (
-                  <Link key={svc.slug} to={`/services/${svc.slug}/hire`} className="group bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all text-center">
-                    {svc.customIcon ? (
-                      <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center overflow-hidden rounded-xl">
-                        <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                    )}
-                    <p className="font-semibold text-slate-900 text-sm leading-snug">{svc.shortName || svc.name}</p>
-                  </Link>
+                  <div key={`${svc.slug}-${idx}`} className="px-2">
+                    <Link to={`/services/${svc.slug}/hire`} className="block w-[180px] sm:w-[200px] bg-white rounded-2xl p-5 border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all text-center">
+                      {svc.customIcon ? (
+                        <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center overflow-hidden rounded-xl">
+                          <img src={svc.customIcon} alt={svc.name} className="w-full h-full object-contain" />
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                      )}
+                      <p className="font-semibold text-slate-900 text-sm leading-snug">{svc.shortName || svc.name}</p>
+                    </Link>
+                  </div>
                 );
               })}
             </div>
-            <div className="text-center">
-              <Link to="/services" className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors">
-                View all services <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto px-4 text-center">
+            <Link to="/services" className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors">
+              View all services <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </section>
 

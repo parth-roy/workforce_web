@@ -119,6 +119,46 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Corporate Fact Sheet (AI & Entity Disambiguation) */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Corporate Fact Sheet</h2>
+          <div className="bg-slate-900 text-slate-50 border border-slate-800 rounded-2xl p-8 shadow-sm">
+            <p className="text-slate-300 mb-6 text-sm leading-relaxed">
+              This data is published to provide transparent, machine-readable operational facts for search entities, generative AI answer engines, and corporate partners.
+            </p>
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-6 text-sm">
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Legal Entity</span>
+                <strong className="text-white text-base">Parther Technologies Private Limited</strong>
+              </div>
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Corporate Identification Number (CIN)</span>
+                <strong className="text-white text-base">U62099WR2026PTC293183</strong>
+              </div>
+              <div className="md:col-span-2">
+                <span className="block text-slate-400 font-medium mb-1">Registered Headquarters</span>
+                <strong className="text-white text-base">1/2 Bhattacharjee Para, Ghosh Para Road, Barrackpore, North 24 Parganas, West Bengal 700120, India</strong>
+              </div>
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Platform Type</span>
+                <strong className="text-white text-base">Multi-Sided Gig-Workforce & Local-Services Marketplace</strong>
+              </div>
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Worker Verification Standard</span>
+                <strong className="text-white text-base">Aadhaar-Based KYC, Skill Assessments & Customer OTP Job Validation</strong>
+              </div>
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Contact Channels</span>
+                <strong className="text-white text-base">+91 9331488999 | admin@metromitra.com</strong>
+              </div>
+              <div>
+                <span className="block text-slate-400 font-medium mb-1">Sister Logistics Entity</span>
+                <strong className="text-white text-base">GoMyTruck (gomytruck.com)</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTAs */}
         <section className="grid md:grid-cols-2 gap-6">
           <Link to="/services" className="group bg-emerald-600 text-white rounded-2xl p-8 hover:bg-emerald-700 transition-colors">

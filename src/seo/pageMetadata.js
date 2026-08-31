@@ -148,13 +148,14 @@ export function ServicesHubSEO() {
  * /hire-workers (B2B Hirer Hub)
  *
  * Blueprint intent: Employer (B2B Commercial) — operations managers, HR directors,
- * 3PL executives. Queries: "hire temporary workers", "warehouse staffing solutions".
+ * 3PL executives. Queries: "enterprise workforce deployment", "warehouse manpower".
+ * Targeting industrial corridors: Dankuni, Uluberia, Howrah, Barrackpore.
  */
 export function B2BHirerHubSEO() {
   const path = '/hire-workers';
-  const title = 'Hire Gig Workers & Workforce Solutions | Metro Mitra B2B';
-  const description = 'The best place to hire construction workers and logistics staff. Our online recruitment portal connects you with verified workforce solutions for businesses.';
-  const keywords = 'hire gig workers, work force, best place to hire construction workers, need workers, work solutions, need construction workers, hiring gig workers, best job recruitment sites, job portals for recruiters, best job hiring sites, online recruitment portal, hiring portals, job hiring portal, get employees';
+  const title = 'Enterprise Workforce Deployment & Industrial Labour | Metro Mitra B2B';
+  const description = 'Deploy verified warehouse manpower, industrial labour, and contract workers across West Bengal (Dankuni, Uluberia, Howrah). 100% compliant workforce solutions with SLA guarantees.';
+  const keywords = 'enterprise workforce deployment, industrial labour supplier, warehouse manpower Dankuni, contract workers Uluberia, B2B workforce solutions West Bengal, hire warehouse staff Howrah, logistics labour Barrackpore';
   return {
     title,
     description,

@@ -365,6 +365,55 @@ export default function UCCheckoutPage() {
               const phoneToSend = rawPhone.toString().replace(/\D/g, "").slice(-10) || user.phone || "";
               const chosenAddress = selectedLocation?.address || user?.address || "Service Location Provided";
               
+              // Intelligent Service Category and Title resolution
+              const resolveServiceInfo = (items) => {
+                if (!items || items.length === 0) return { categoryCode: 'HELPER', serviceTitle: 'General Service' };
+                const first = items[0];
+                const str = `${first.serviceId || ''} ${first.category || ''} ${first.title || ''} ${first.id || ''}`.toLowerCase();
+                
+                if (str.includes('electric') || str.includes('switch') || str.includes('socket') || str.includes('wiring') || str.includes('fan') || str.startsWith('e')) {
+                  return { categoryCode: 'ELECTRICIAN', serviceTitle: 'Electrician' };
+                }
+                if (str.includes('plumb') || str.includes('tap') || str.includes('pipe') || str.includes('leak') || str.includes('mixer') || str.includes('bath') || str.startsWith('p')) {
+                  return { categoryCode: 'PLUMBER', serviceTitle: 'Plumber' };
+                }
+                if (str.includes('carpent') || str.includes('furniture') || str.includes('door') || str.includes('bed') || str.startsWith('c')) {
+                  return { categoryCode: 'CARPENTER', serviceTitle: 'Carpenter' };
+                }
+                if (str.includes('ac') || str.includes('foam-jet') || str.includes('cooling') || str.includes('air condition')) {
+                  return { categoryCode: 'AC_REPAIR', serviceTitle: 'AC Repair' };
+                }
+                if (str.includes('appliance') || str.includes('washing') || str.includes('refrigerator') || str.includes('geyser') || str.includes('microwave') || str.includes('ro_water') || str.includes('purifier')) {
+                  return { categoryCode: 'APPLIANCE_REPAIR', serviceTitle: 'Appliance Repair' };
+                }
+                if (str.includes('paint')) {
+                  return { categoryCode: 'PAINTER', serviceTitle: 'Painter' };
+                }
+                if (str.includes('clean') || str.includes('pest') || str.includes('housekeep')) {
+                  return { categoryCode: 'CLEANER', serviceTitle: 'Cleaning & Pest' };
+                }
+                if (str.includes('secur') || str.includes('guard')) {
+                  return { categoryCode: 'SECURITY_GUARD', serviceTitle: 'Security Guard' };
+                }
+                if (str.includes('load') || str.includes('unload')) {
+                  return { categoryCode: 'LOADER', serviceTitle: 'Loading & Unloading' };
+                }
+                if (str.includes('mover') || str.includes('moving') || str.includes('shift')) {
+                  return { categoryCode: 'FURNITURE_MOVER', serviceTitle: 'Furniture Moving' };
+                }
+                if (str.includes('pack')) {
+                  return { categoryCode: 'PACKER', serviceTitle: 'Packer' };
+                }
+                if (str.includes('deliver') || str.includes('courier')) {
+                  return { categoryCode: 'LAST_MILE_DELIVERY', serviceTitle: 'Last-Mile Delivery' };
+                }
+                return { categoryCode: 'HELPER', serviceTitle: 'General Helper' };
+              };
+
+              const { categoryCode, serviceTitle } = resolveServiceInfo(cart);
+              const taskSummary = cart.map(item => `${item.category || item.title}: ${item.title}${item.variant ? ` (${typeof item.variant === 'object' ? item.variant?.title : item.variant})` : ''} x${item.quantity}`).join(', ');
+              const displayDescription = `${serviceTitle} — ${taskSummary}`;
+
               try {
                 const apiUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL + "/gig/customer" : "https://api.gomytruck.com/api/v1/gig/customer";
                 const res = await fetch(apiUrl, {
@@ -374,7 +423,8 @@ export default function UCCheckoutPage() {
                     "Authorization": `Bearer ${token}`
                   },
                   body: JSON.stringify({
-                    gigCategory: cart[0]?.category?.toUpperCase().replace(/[^A-Z]/g, "_") || "HELPER", 
+                    gigCategory: categoryCode, 
+                    description: displayDescription,
                     locationLat: selectedLocation?.lat || 22.57,
                     locationLng: selectedLocation?.lng || 88.36, 
                     locationAddress: chosenAddress,
@@ -387,10 +437,10 @@ export default function UCCheckoutPage() {
                     tipAmount: tipAmount,
                     tasks: cart.map(item => ({
                       title: item.title,
-                      category: item.category || "Service",
+                      category: item.category || serviceTitle,
                       quantity: item.quantity,
                       price: item.price,
-                      variant: item.variant || "Standard"
+                      variant: typeof item.variant === 'object' ? item.variant?.title : (item.variant || "Standard")
                     }))
                   })
                 });
@@ -408,7 +458,7 @@ export default function UCCheckoutPage() {
                   address: chosenAddress,
                   contactPhone: displayPhone,
                   status: "Scheduled",
-                  category: cart[0]?.category || "Service"
+                  category: serviceTitle
                 });
                 
                 setTimeout(() => clearCart(), 500); 

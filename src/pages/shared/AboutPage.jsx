@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { CheckCircle, Users, Home, Building2, Shield, Eye, ArrowRight } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function AboutPage() {
   return (
@@ -46,7 +47,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-4xl py-16">
+      <main className="container mx-auto px-4 max-w-4xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Mission */}
         <section className="mb-16">

@@ -9,6 +9,7 @@ import SEO from '../../components/ui/SEO';
 import { WorkerLocationSEO } from '../../seo/pageMetadata';
 import { RelatedLocations } from '../../components/seo/RelatedLinks';
 import { MapPin, Building2, Briefcase, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function LocationPage() {
   const { location: locSlug } = useParams();
@@ -59,6 +60,9 @@ export default function LocationPage() {
       </section>
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner cityName={loc.name} variant="default" />
 
         {/* Local Context */}
         {loc.context && (
@@ -173,5 +177,3 @@ export default function LocationPage() {
     </>
   );
 }
-
-

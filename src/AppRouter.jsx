@@ -23,6 +23,7 @@ import ServiceCategoryDirectoryPage from './pages/hirer/ServiceCategoryDirectory
 import ServiceHowItWorksPage from './pages/hirer/ServiceHowItWorksPage';
 import ServiceFAQPage from './pages/hirer/ServiceFAQPage';
 import ServiceHiringFlowPage from './pages/hirer/ServiceHiringFlowPage';
+import DirectContactPage from './pages/hirer/DirectContactPage';
 
 import B2BHirerHubPage from './pages/b2b/B2BHirerHubPage';
 import B2BServicePage from './pages/b2b/B2BServicePage';
@@ -37,6 +38,7 @@ import FAQPage from './pages/shared/FAQPage';
 import GuidesPage from './pages/shared/GuidesPage';
 import UCServicePage from './pages/hirer/UCServicePage';
 import UCCheckoutPage from './pages/hirer/UCCheckoutPage';
+import UCUnlockedWorkersPage from './pages/hirer/UCUnlockedWorkersPage';
 import UCOrdersPage from './pages/hirer/UCOrdersPage';
 import UserProfilePage from './pages/user/UserProfilePage';
 import { useParams, useLocation } from 'react-router-dom';
@@ -74,6 +76,7 @@ export default function AppRouter() {
       <Route path="/services/categories" element={<ServiceCategoryDirectoryPage />} />
       <Route path="/services/how-it-works" element={<ServiceHowItWorksPage />} />
       <Route path="/services/faq" element={<ServiceFAQPage />} />
+      <Route path="/direct-contact" element={<DirectContactPage />} />
       <Route path="/services/:service" element={<ServiceDispatcher />} />
       <Route path="/services/:service/hire" element={<UCServicePage />} />
       <Route path="/services/:service/:location" element={<IndividualServiceLocationPage />} />
@@ -95,6 +98,7 @@ export default function AppRouter() {
       <Route path="/faq" element={<FAQPage />} />
       <Route path="/guides" element={<GuidesPage />} />
       <Route path="/checkout" element={<UCCheckoutPage />} />
+      <Route path="/unlocked-experts" element={<UCUnlockedWorkersPage />} />
       <Route path="/user/orders" element={<UCOrdersPage />} />
       <Route path="/user/profile" element={<UserProfilePage />} />
     </Routes>

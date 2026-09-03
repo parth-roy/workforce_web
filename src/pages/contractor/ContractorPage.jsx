@@ -4,7 +4,8 @@ import SEO from '../../components/ui/SEO';
 import { ContractorSEO } from '../../seo/pageMetadata';
 import ContractorHero from '../../components/contractor/ContractorHero';
 import ContractorRequirementBuilder from '../../components/contractor/ContractorRequirementBuilder';
-import {  CheckCircle, ChevronDown, ChevronUp, Users, Clock, MapPin, Package, Zap, Wrench, Sparkles , Phone } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp, Users, Clock, MapPin, Package, Zap, Wrench, Sparkles, Phone } from "lucide-react";
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const WORKFORCE_TYPES = [
   { icon: Package, name: 'Loader / Helper', desc: 'General labour for loading, unloading, and manual handling.' },
@@ -54,7 +55,10 @@ export default function ContractorPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-5xl py-16">
+      <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Who This Is For */}
         <section className="mb-16">
@@ -77,64 +81,30 @@ export default function ContractorPage() {
         {/* Workforce Types */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-slate-900 mb-3 text-center">Workforce Types</h2>
-          <p className="text-slate-500 text-center mb-10">Select from a range of skill categories for your worksite.</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <p className="text-slate-500 text-center mb-10">Available roles for contractor workforce deployments.</p>
+          <div className="grid md:grid-cols-3 gap-4">
             {WORKFORCE_TYPES.map(({ icon: Icon, name, desc }) => (
-              <div key={name} className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:border-amber-300 hover:shadow-md transition-all">
-                <div className="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Icon className="w-5 h-5" />
+              <div key={name} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3">
+                  <Icon className="w-5 h-5 text-amber-600" />
                 </div>
-                <p className="font-semibold text-slate-900 text-sm">{name}</p>
+                <h3 className="font-bold text-slate-900 mb-1">{name}</h3>
+                <p className="text-slate-600 text-xs">{desc}</p>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* Multi-Worker Hiring */}
-        <section className="mb-16 bg-slate-50 rounded-3xl p-8 md:p-12">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">Hire 1 to 50+ Workers for a Single Worksite</h2>
-              <p className="text-slate-600 mb-6">
-                Specify multiple roles, quantities, and shift preferences in a single requirement submission. Metro Mitra reviews availability and confirms your team.
-              </p>
-              <ul className="space-y-3">
-                {['Multi-role team specification', 'Shift-based scheduling (day/night/rotating)', 'Temporary, weekly, monthly, or project-based', 'Single location or multi-site requirements'].map(f => (
-                  <li key={f} className="flex items-center gap-3 text-slate-700">
-                    <CheckCircle className="w-5 h-5 text-amber-500 shrink-0" /> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { shift: 'Day Shift', time: '6am – 2pm' },
-                { shift: 'Afternoon', time: '2pm – 10pm' },
-                { shift: 'Night Shift', time: '10pm – 6am' },
-                { shift: 'Rotating', time: 'As specified' },
-              ].map(({ shift, time }) => (
-                <div key={shift} className="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
-                  <div className="flex items-center justify-center mb-2 text-amber-500">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <p className="font-bold text-slate-900 text-sm">{shift}</p>
-                  <p className="text-xs text-slate-500">{time}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
         {/* How It Works */}
         <section id="how-it-works" className="mb-16 scroll-mt-24">
           <h2 className="text-3xl font-bold text-slate-900 mb-3 text-center">How It Works</h2>
-          <p className="text-slate-500 text-center mb-10">From requirement to deployed team in a structured process.</p>
+          <p className="text-slate-500 text-center mb-10">Four simple steps from requirement to deployed team.</p>
           <div className="grid md:grid-cols-4 gap-4">
             {[
-              { step: '01', title: 'Post Requirement', desc: 'Use the builder below to specify your roles, quantities, location, and shift preferences.' },
-              { step: '02', title: 'Metro Mitra Reviews', desc: 'Our team reviews your requirement and checks worker availability in your area.' },
-              { step: '03', title: 'Workers Matched', desc: 'Eligible workers are notified and confirmed for your worksite.' },
-              { step: '04', title: 'Team Deployed', desc: 'Workers arrive on the agreed date and shift. Task completion tracked via app.' },
+              { step: '01', title: 'Define Roles', desc: 'Select the trades and headcount you need using the builder below.' },
+              { step: '02', title: 'Set Schedule', desc: 'Choose shift timings, duration, and worksite location.' },
+              { step: '03', title: 'Get Confirmed', desc: 'Metro Mitra reviews worker availability in your area and confirms.' },
+              { step: '04', title: 'Workers Arrive', desc: 'Workers report to your site as scheduled, coordinated via platform.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-center">
                 <div className="w-10 h-10 bg-amber-500 text-white rounded-full flex items-center justify-center font-black mx-auto mb-3">{step}</div>
@@ -151,9 +121,9 @@ export default function ContractorPage() {
             <div className="bg-amber-50 border-b border-amber-200 px-8 py-5 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-slate-900">Workforce Requirement Builder</h2>
-                <p className="text-slate-500 text-sm">Beta — frontend prototype. No live submission yet.</p>
+                <p className="text-slate-500 text-sm">Configure your worksite team requirement</p>
               </div>
-              <span className="text-xs font-bold bg-amber-100 text-amber-700 px-3 py-1 rounded-full border border-amber-300">Prototype</span>
+              <span className="text-xs font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">Active Form</span>
             </div>
             <div className="p-6">
               <ContractorRequirementBuilder />
@@ -184,13 +154,13 @@ export default function ContractorPage() {
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="bg-amber-500 text-white rounded-3xl p-8 md:p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to build your team?</h2>
-          <p className="text-amber-100 mb-6 max-w-xl mx-auto">Use the Requirement Builder above to describe your workforce need, or contact us for a discussion.</p>
+        {/* CTA */}
+        <section className="bg-slate-900 text-white rounded-3xl p-8 md:p-12 text-center">
+          <h2 className="text-3xl font-bold mb-4">Have a custom requirement?</h2>
+          <p className="text-slate-300 mb-6 max-w-xl mx-auto">If your requirement involves specialised trades or non-standard shift schedules, talk directly to our operations team.</p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <a href="#builder" className="bg-white text-amber-700 px-6 py-3 rounded-xl font-bold hover:bg-amber-50 transition-colors">
-              Open Builder
+            <a href="#builder" className="bg-amber-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-amber-400 transition-colors">
+              Use Builder
             </a>
             <Link to="/contact" className="bg-amber-600 text-white border border-amber-400 px-6 py-3 rounded-xl font-bold hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
           </div>

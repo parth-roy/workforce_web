@@ -8,6 +8,7 @@ import {
   Building2, HardHat, TrendingUp, CheckCircle2,
   ArrowRight, PhoneCall, Zap
 } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function B2BHirerHubPage() {
   const { roles } = useWorkforce();
@@ -80,6 +81,13 @@ export default function B2BHirerHubPage() {
                 <div className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-wider">Compliance</div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Direct Worker Contact Banner — Right After Hero & Stats */}
+        <section className="pt-8 pb-4 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <DirectContactBanner variant="default" />
           </div>
         </section>
 

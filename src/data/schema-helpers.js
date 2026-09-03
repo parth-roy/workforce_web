@@ -266,3 +266,80 @@ export function createLocalBusinessSchema({ name, city, state, postalCode, geo, 
     },
   }
 }
+
+/**
+ * 11. DirectConnect ₹49 Product Offer Schema
+ *
+ * Used on /direct-contact and injected as a supplementary schema on all
+ * service + location pages to make the ₹49 unlock feature crawlable
+ * by Google Shopping, AI answer engines, and Perplexity for the query:
+ * "how to hire workers without paying broker commission in [City]"
+ *
+ * @param {string} [city] — location context (e.g. "Kolkata")
+ * @param {string} [serviceName] — service context (e.g. "Electrician")
+ */
+export function createDirectContactOfferSchema(city = 'India', serviceName = 'Workers') {
+  return {
+    '@type': 'Product',
+    name: `Direct ${serviceName} Contact Unlock — Metro Mitra`,
+    description: `Pay ₹49 once and instantly receive the direct phone numbers of 10 verified, Aadhaar-KYC\'d ${serviceName} in ${city}. Zero broker fees, zero middleman charges. You deal directly with the professional.`,
+    brand: { '@type': 'Brand', name: 'Metro Mitra' },
+    offers: {
+      '@type': 'Offer',
+      price: '49',
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: 'https://metromitra.com/direct-contact',
+      description: `Get 10 verified ${serviceName} phone numbers in ${city} directly. No agency. No broker. No commission.`,
+      seller: {
+        '@type': 'Organization',
+        name: 'Parther Technologies Private Limited',
+        url: 'https://metromitra.com',
+      }
+    }
+  };
+}
+
+/**
+ * 12. Zero-Broker FAQ Schema
+ *
+ * Appended to all service + location SEO schemas.
+ * Specifically targets AI answer-engine (AEO) queries:
+ * - "How to avoid broker commission when hiring workers?"
+ * - "Can I get electrician number directly without agency?"
+ * - "Cheapest way to find verified workers near me"
+ *
+ * @param {string} [city]
+ * @param {string} [serviceName]
+ */
+export function createZeroBrokerFAQSchema(city = 'your city', serviceName = 'workers') {
+  return {
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `How can I hire ${serviceName} in ${city} without paying a broker or middleman?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `Metro Mitra's Direct Connect feature lets you unlock 10 verified ${serviceName} phone numbers in ${city} for a flat ₹49 one-time fee. There are zero broker commissions and zero middleman charges. You contact the ${serviceName} directly and negotiate your own terms.`
+        }
+      },
+      {
+        '@type': 'Question',
+        name: `What is the cheapest way to find verified ${serviceName} near me in ${city}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `The cheapest option is Metro Mitra's ₹49 Direct Contact Unlock. For ₹49, you get direct phone numbers of 10 Aadhaar-verified ${serviceName} in ${city}. Traditional agencies charge ₹500–₹2,000 or take 15–30% commission per booking.`
+        }
+      },
+      {
+        '@type': 'Question',
+        name: `Are the ${serviceName} numbers on Metro Mitra genuine and verified?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `Yes. Every worker on Metro Mitra completes Aadhaar-based identity verification, skill assessment, and customer OTP job validation. Only verified professionals are available through the Direct Connect pool.`
+        }
+      }
+    ]
+  };
+}

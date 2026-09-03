@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const DESKTOP_NAV = [
   {
-    label: 'Join as Employee',
+    label: 'Find Work',
     href: '/jobs',
     dropdown: [
       { label: 'All Jobs', href: '/jobs' },
@@ -17,7 +17,7 @@ const DESKTOP_NAV = [
     ]
   },
   {
-    label: 'Hire Services',
+    label: 'Services',
     href: '/services',
     dropdown: [
       { label: 'All Services', href: '/services' },
@@ -80,7 +80,7 @@ export default function Header() {
         </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-6">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-7">
             {DESKTOP_NAV.map((item, idx) => (
               <div key={idx} className={item.dropdown ? "relative group" : ""}
                    onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
@@ -88,7 +88,7 @@ export default function Header() {
                 
                 <Link 
                   to={item.href} 
-                  className={`flex items-center gap-1 font-bold text-[13px] xl:text-sm transition-colors py-2 ${isActive(item.href) ? 'text-emerald-600' : 'text-slate-700 hover:text-emerald-600'}`}
+                  className={`flex items-center gap-1 font-bold text-[13px] xl:text-sm whitespace-nowrap transition-colors py-2 ${isActive(item.href) ? 'text-emerald-600' : 'text-slate-700 hover:text-emerald-600'}`}
                 >
                   {item.label}
                   {item.dropdown && <ChevronDown size={14} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />}
@@ -101,7 +101,7 @@ export default function Header() {
                         <Link 
                           key={sIdx} 
                           to={sub.href}
-                          className="block px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                          className="block px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors whitespace-nowrap"
                         >
                           {sub.label}
                         </Link>
@@ -114,10 +114,40 @@ export default function Header() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-3">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+            {/* Direct Numbers ₹49 — Star Feature Badge */}
+            <Link
+              to="/direct-contact"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black text-amber-900 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 hover:text-white shadow-xs transition-all whitespace-nowrap active:scale-95"
+              aria-label="Unlock 10 direct worker phone numbers for Rs.49"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-900"></span>
+              </span>
+              <span>Direct Numbers · ₹49</span>
+            </Link>
+
+            {/* Compact Segmented Role Links */}
+            <div className="hidden xl:flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
+              <Link
+                to="/join-as-worker"
+                className="px-2.5 py-1 rounded-lg text-emerald-800 hover:bg-white hover:shadow-2xs transition-all whitespace-nowrap"
+              >
+                Work
+              </Link>
+              <div className="w-px h-3 bg-slate-300" />
+              <Link
+                to="/hire-workers"
+                className="px-2.5 py-1 rounded-lg text-blue-800 hover:bg-white hover:shadow-2xs transition-all whitespace-nowrap"
+              >
+                Hire
+              </Link>
+            </div>
+
             {user && (
-              <Link to="/user/orders" className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
-                <Package size={22} />
+              <Link to="/user/orders" className="relative p-1.5 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
+                <Package size={20} />
                 {orders?.length > 0 && (
                   <span className="absolute top-0 right-0 w-4 h-4 bg-emerald-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                     {orders.length}
@@ -125,16 +155,18 @@ export default function Header() {
                 )}
               </Link>
             )}
-            <button onClick={handleCheckoutClick} className="relative p-1.5 xl:p-2 text-slate-600 hover:text-emerald-600 transition-colors mr-1 xl:mr-2" title="My Cart">
-              <ShoppingCart size={22} />
+            
+            <button onClick={handleCheckoutClick} className="relative p-1.5 text-slate-600 hover:text-emerald-600 transition-colors" title="My Cart">
+              <ShoppingCart size={20} />
               {cart?.length > 0 && (
                 <span className="absolute top-0 right-0 w-4 h-4 bg-purple-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {cart.length}
                 </span>
               )}
             </button>
+
             {user ? (
-              <div className="relative group px-1 xl:px-2">
+              <div className="relative group px-1">
                 <button className="flex items-center gap-2 text-sm font-bold text-slate-800 hover:text-emerald-600 transition-colors">
                   <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
                     {user.firstName?.[0] || user.name?.[0] || 'U'}
@@ -149,34 +181,12 @@ export default function Header() {
             ) : (
               <button 
                 onClick={() => openAuthModal('CUSTOMER')} 
-                className="flex items-center gap-1 font-bold text-[13px] xl:text-sm text-slate-600 hover:text-emerald-600 transition-colors px-1 xl:px-2"
+                className="flex items-center gap-1 font-bold text-[13px] text-slate-700 hover:text-emerald-600 transition-colors px-2 py-1.5 rounded-lg hover:bg-slate-50 whitespace-nowrap"
               >
-                <LogIn size={16} />
+                <LogIn size={15} />
                 Login
               </button>
             )}
-            <Link 
-              to="/join-as-worker" 
-              className="relative group inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-1.5 xl:py-2 rounded-xl text-[12px] xl:text-[13px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 hover:border-emerald-400 transition-colors shadow-2xs active:scale-95"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>I'm a Job Seeker</span>
-              <ArrowRight className="w-3.5 h-3.5 text-emerald-600 transform group-hover:translate-x-0.5 transition-transform duration-200" />
-            </Link>
-            <Link 
-              to="/hire-workers" 
-              className="relative group inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-1.5 xl:py-2 rounded-xl text-[12px] xl:text-[13px] font-bold text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-300 hover:border-blue-400 transition-colors shadow-2xs active:scale-95"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-              </span>
-              <span>I'm an Employer</span>
-              <ArrowRight className="w-3.5 h-3.5 text-blue-600 transform group-hover:translate-x-0.5 transition-transform duration-200" />
-            </Link>
           </div>
 
           {/* Mobile menu buttons */}
@@ -258,10 +268,26 @@ export default function Header() {
           ))}
 
           <div className="h-px bg-slate-200 my-4 mx-2" />
-          
+
+          {/* ₹49 Direct Contact — mobile drawer CTA */}
+          <div className="px-2 mb-2">
+            <Link
+              to="/direct-contact"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full border border-amber-400 text-amber-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 active:scale-98 transition-all"
+              aria-label="Get direct worker phone numbers for Rs.49 without broker or middleman"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              </span>
+              <span>Direct Worker Numbers · ₹49 — No Broker</span>
+            </Link>
+          </div>
+
           <div className="grid grid-cols-2 gap-2.5 px-2 mb-3">
-            <Link 
-              to="/join-as-worker" 
+            <Link
+              to="/join-as-worker"
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center gap-1.5 border border-emerald-300 text-emerald-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-98 transition-all"
             >
@@ -271,8 +297,8 @@ export default function Header() {
               </span>
               <span>I'm a Job Seeker</span>
             </Link>
-            <Link 
-              to="/hire-workers" 
+            <Link
+              to="/hire-workers"
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center gap-1.5 border border-blue-300 text-blue-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 active:scale-98 transition-all"
             >

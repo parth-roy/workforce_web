@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2 } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2, Sparkles, Lock, ShieldCheck, Zap } from "lucide-react";
 import { useUCCart } from "../../context/UCCartContext";
 import { useAuth } from "../../context/AuthContext";
 import LocationPicker from "../../components/shared/LocationPicker";
@@ -10,6 +10,7 @@ export default function UCCheckoutPage() {
   const { user, token, openAuthModal } = useAuth();
   const { cart, getTotalPrice, addToCart, removeFromCart, clearCart, addOrder } = useUCCart();
   
+  const [isSmartUnlock, setIsSmartUnlock] = useState(true);
   const [tipAmount, setTipAmount] = useState(75);
   const [avoidCalling, setAvoidCalling] = useState(false);
   
@@ -199,6 +200,86 @@ export default function UCCheckoutPage() {
               </div>
             </div>
 
+            {/* Choose Booking Method */}
+            <div className="p-5 border-t border-slate-100">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <Zap className="w-4 h-4 text-emerald-600" />
+                  <span>Choose Booking Method</span>
+                </p>
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                  🔥 SAVE ~₹950 TODAY
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {/* Option 1: Smart Lead Unlock */}
+                <div 
+                  onClick={() => setIsSmartUnlock(true)}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    isSmartUnlock 
+                      ? "border-emerald-600 bg-emerald-50/40 shadow-sm" 
+                      : "border-slate-200 hover:border-slate-300 bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${
+                        isSmartUnlock ? "border-emerald-600" : "border-slate-300"
+                      }`}>
+                        {isSmartUnlock && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600" />}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-sm text-slate-900">Direct Connect (Top 5-10 Verified Experts)</span>
+                          <span className="bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded">
+                            PAY ONLY 1% • ₹49
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                          Unlock direct Phone & WhatsApp contacts. Call, negotiate live quotes, and hire directly on your own terms. 0% middlemen platform commission!
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-xs">
+                          <span className="font-bold text-emerald-700 text-sm">Pay: ₹49 Only</span>
+                          <span className="text-slate-400 line-through">₹{grandTotal}</span>
+                          <span className="text-emerald-600 font-semibold">• Instant Access</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Option 2: Traditional Doorstep Service */}
+                <div 
+                  onClick={() => setIsSmartUnlock(false)}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    !isSmartUnlock 
+                      ? "border-slate-900 bg-slate-50/60 shadow-sm" 
+                      : "border-slate-200 hover:border-slate-300 bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${
+                        !isSmartUnlock ? "border-slate-900" : "border-slate-300"
+                      }`}>
+                        {!isSmartUnlock && <div className="w-2.5 h-2.5 rounded-full bg-slate-900" />}
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm text-slate-900">Traditional Doorstep Service</span>
+                        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                          Let Metro Mitra automatically assign a verified technician to your doorstep at standard platform rates.
+                        </p>
+                        <div className="mt-2 text-xs font-bold text-slate-900">
+                          Standard Bill: ₹{grandTotal}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Payment Method */}
             <div className={`p-5 flex items-start gap-4 ${!selectedSlot ? "opacity-50 grayscale" : "transition-all duration-300"}`}>
               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -206,7 +287,7 @@ export default function UCCheckoutPage() {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-900">Payment Method</p>
-                {selectedSlot && <p className="text-xs text-slate-500 mt-1">Pay on service completion</p>}
+                {selectedSlot && <p className="text-xs text-slate-500 mt-1">{isSmartUnlock ? "Online UPI / Card (Razorpay)" : "Pay on service completion"}</p>}
               </div>
             </div>
             
@@ -345,14 +426,58 @@ export default function UCCheckoutPage() {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <div>
-            <p className="text-sm font-semibold text-slate-500 mb-0.5">Amount to pay</p>
+            <p className="text-sm font-semibold text-slate-500 mb-0.5">{isSmartUnlock ? "Unlock Fee (1%)" : "Amount to pay"}</p>
             <div className="flex items-end gap-2">
-              <span className="text-xl font-bold text-slate-900">₹{grandTotal}</span>
-              <button onClick={() => showAlert("Bill Breakup", `Service Total: ₹${baseTotal}\nTip Amount: ₹${tipAmount}\nGrand Total: ₹${grandTotal}`)} className="text-xs font-bold text-slate-900 underline mb-1">View breakup</button>
+              <span className={`text-xl font-bold ${isSmartUnlock ? "text-emerald-700" : "text-slate-900"}`}>
+                ₹{isSmartUnlock ? 49 : grandTotal}
+              </span>
+              {isSmartUnlock ? (
+                <span className="text-xs text-slate-400 line-through mb-1">₹{grandTotal}</span>
+              ) : (
+                <button onClick={() => showAlert("Bill Breakup", `Service Total: ₹${baseTotal}\nTip Amount: ₹${tipAmount}\nGrand Total: ₹${grandTotal}`)} className="text-xs font-bold text-slate-900 underline mb-1">View breakup</button>
+              )}
             </div>
           </div>
           <button 
             onClick={async () => {
+              if (isSmartUnlock) {
+                const categoryTitle = cart[0]?.category || "Carpenter";
+                const searchAddr = selectedLocation?.address || user?.address || "Local Area";
+                const lat = selectedLocation?.lat || 22.5726;
+                const lng = selectedLocation?.lng || 88.3639;
+
+                try {
+                  const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || "https://api.gomytruck.com/api/v1";
+                  const initRes = await fetch(`${API_BASE}/lead-unlock/initiate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      latitude: lat,
+                      longitude: lng,
+                      serviceCategory: categoryTitle,
+                      searchAddress: searchAddr,
+                      amount: 49.0
+                    })
+                  });
+                  const initData = await initRes.json();
+                  const txId = initData?.data?.transactionId || "tx-" + Date.now();
+                  
+                  await fetch(`${API_BASE}/lead-unlock/verify`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      transactionId: txId,
+                      isMock: true
+                    })
+                  });
+
+                  navigate(`/unlocked-experts?txId=${txId}&category=${encodeURIComponent(categoryTitle)}`);
+                } catch (err) {
+                  navigate(`/unlocked-experts?category=${encodeURIComponent(categoryTitle)}`);
+                }
+                return;
+              }
+
               if (!selectedSlot) return showAlert("Action Required", "Please select a preferred time slot before proceeding to checkout.");
               
               if (!user || !token) {
@@ -492,9 +617,22 @@ export default function UCCheckoutPage() {
                 }, 3000);
               }
             }}
-            className={`${selectedSlot ? "bg-slate-900 text-white cursor-pointer hover:bg-slate-800" : "bg-slate-300 text-slate-500 cursor-not-allowed"} font-bold py-3 px-8 rounded-lg transition-colors`}
+            className={`font-bold py-3 px-8 rounded-xl transition-all shadow-md active:scale-95 flex items-center gap-2 ${
+              isSmartUnlock 
+                ? "bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+                : selectedSlot 
+                  ? "bg-slate-900 text-white cursor-pointer hover:bg-slate-800" 
+                  : "bg-slate-300 text-slate-500 cursor-not-allowed"
+            }`}
           >
-            Proceed to Payment
+            {isSmartUnlock ? (
+              <>
+                <Lock className="w-4 h-4 text-emerald-200" />
+                <span>Unlock 5-10 Experts • ₹49</span>
+              </>
+            ) : (
+              <span>Proceed to Payment</span>
+            )}
           </button>
         </div>
       </div>

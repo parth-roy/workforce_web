@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SEO from '../../components/ui/SEO';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertTriangle, MessageSquare } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const SERVICE_OPTIONS = [
   'General Enquiry',
@@ -84,7 +85,10 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-5xl py-16">
+      <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Contact cards */}
         <section className="mb-16">
@@ -119,7 +123,6 @@ export default function ContactPage() {
                 <CheckCircle className="w-14 h-14 text-emerald-500 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Message Received!</h3>
                 <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 text-center">
-                  
                   <p className="text-emerald-800 text-sm">
                     We have received your message and will get back to you shortly.
                   </p>
@@ -192,7 +195,7 @@ export default function ContactPage() {
                   <Send className="w-5 h-5" /> Send Message
                 </button>
                 <p className="text-xs text-slate-400 text-center">
-                  We aim to respond within 24 hours .
+                  We aim to respond within 24 hours.
                 </p>
               </form>
             )}
@@ -200,7 +203,7 @@ export default function ContactPage() {
         </section>
 
         {/* Quick FAQ */}
-        <section>
+        <section className="mb-12">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Common Questions</h2>
           <div className="grid md:grid-cols-3 gap-4">
             {[
@@ -215,9 +218,8 @@ export default function ContactPage() {
             ))}
           </div>
         </section>
+
       </main>
     </>
   );
 }
-
-

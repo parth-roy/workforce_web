@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SEO from '../../components/ui/SEO';
-import {  ChevronDown, ChevronUp, Search , Phone } from "lucide-react";
+import { ChevronDown, ChevronUp, Search, Phone } from "lucide-react";
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const FAQ_SECTIONS = [
   {
@@ -51,6 +52,17 @@ const FAQ_SECTIONS = [
       { q: 'Can I manage workforce across multiple sites?', a: 'The Corporate pathway at /for-companies is designed for multi-location teams. Dashboard features are part of the backend integration roadmap.' },
       { q: 'Are compliance documents available?', a: 'Worker profile verification is built into the platform. Compliance documentation features are part of the enterprise integration scope.' },
       { q: 'How do I start as a corporate client?', a: 'Contact us via the form at /contact with your organization name, workforce requirement, and location. Our team will follow up.' },
+    ],
+  },
+  {
+    id: 'direct-contact',
+    title: 'Direct Worker Numbers (Rs.49)',
+    faqs: [
+      { q: 'Can I get direct phone numbers of workers without paying a broker?', a: "Yes. Metro Mitra's Direct Connect feature lets you pay a flat Rs.49 one-time fee to instantly unlock 10 verified worker phone numbers in your city. Zero broker commission. Zero middleman charges. You contact the professional directly and negotiate your own terms." },
+      { q: 'What is the Rs.49 worker contact unlock feature?', a: "For just Rs.49 — a one-time flat fee — you receive the direct mobile numbers of 10 Aadhaar-KYC-verified professionals in your chosen service category and city. This replaces traditional agencies that charge Rs.500–Rs.2,000 as a finder fee or take 15–30% commission." },
+      { q: 'How does Metro Mitra prevent broker and middleman charges?', a: "Metro Mitra operates on a zero-broker model. Hirers can either book transparent doorstep services through the platform, or use the Direct Connect feature to unlock 10 verified worker numbers for just Rs.49 — no percentage commission, no hidden fees." },
+      { q: 'Are the worker numbers verified and safe?', a: "Every worker completes Aadhaar-based KYC verification, skill assessment, and customer OTP job validation before their contact details appear in the Direct Connect pool. Your transaction is also secured by Razorpay." },
+      { q: 'Which service categories are available for Direct Contact?', a: "Electricians, Plumbers, Carpenters, Painters, Cleaners, AC Repair, Appliance Repair, Security Guards, Loading & Unloading helpers, General Helpers, Furniture Movers, Packers, and Delivery workers." },
     ],
   },
 ];
@@ -106,7 +118,11 @@ export default function FAQPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-3xl py-16">
+      <main className="container mx-auto px-4 max-w-3xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero & Search */}
+        <DirectContactBanner variant="default" />
+
         {filteredSections.length === 0 && (
           <div className="text-center py-16">
             <p className="text-slate-500 text-lg mb-3">No results found for "{searchQuery}"</p>
@@ -159,10 +175,10 @@ export default function FAQPage() {
         </div>
 
         {/* Still have questions */}
-        <div className="mt-16 bg-emerald-50 border border-emerald-100 rounded-2xl p-8 text-center">
+        <div className="mt-12 bg-emerald-50 border border-emerald-100 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-3">Still have questions?</h2>
           <p className="text-slate-600 mb-6">Our team is here to help. Reach out via the contact form.</p>
-          <a href="/contact" className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</a>
+          <a href="/contact" className="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors"><Phone size={18} /> Contact Us</a>
         </div>
       </main>
     </>

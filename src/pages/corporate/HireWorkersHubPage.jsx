@@ -2,6 +2,7 @@ import React from 'react';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import { Link } from 'react-router-dom';
 import { routes } from '../../routes/registry';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function HireWorkersHubPage() {
   const { services, loading } = useWorkforce();
@@ -14,6 +15,11 @@ export default function HireWorkersHubPage() {
       <h1 className="text-3xl font-bold mb-6">B2B Workforce Staffing</h1>
       <p className="text-xl text-slate-600 mb-8">Deploy reliable workforce for your business operations.</p>
       
+      {/* Direct Worker Contact Banner — Right After Header */}
+      <div className="mb-8">
+        <DirectContactBanner variant="default" />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {b2bServices.map(service => (
           <Link key={service.slug} to={routes.b2bService.builder(service.slug)} className="p-6 border rounded-lg shadow hover:border-blue-500 transition-colors">

@@ -6,6 +6,7 @@ import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import SEO from '../../components/ui/SEO';
 import { B2BServiceSEO } from '../../seo/pageMetadata';
 import { RelatedServices, RelatedLocations, RelatedRoles } from '../../components/seo/RelatedLinks';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function B2BServicePage() {
   const { service: serviceSlug } = useParams();
@@ -76,7 +77,12 @@ export default function B2BServicePage() {
           </div>
         </div>
       
-        <main className="container mx-auto px-4 -mt-12 max-w-6xl relative z-20">
+        <main className="container mx-auto px-4 -mt-8 max-w-6xl relative z-20">
+          {/* Direct Worker Contact Banner — Right After Hero */}
+          <div className="mb-8">
+            <DirectContactBanner serviceName={service.name} variant="default" />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             <div className="lg:col-span-2 space-y-8">

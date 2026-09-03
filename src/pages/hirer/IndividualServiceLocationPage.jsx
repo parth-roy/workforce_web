@@ -9,6 +9,7 @@ import ServiceBookingWizard from '../../components/hirer/ServiceBookingWizard';
 import { RelatedServices } from '../../components/seo/RelatedLinks';
 import { MapPin, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function IndividualServiceLocationPage() {
   const navigate = useNavigate();
@@ -62,6 +63,11 @@ export default function IndividualServiceLocationPage() {
       </section>
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* ₹49 Direct Contact Banner — Zero Broker / Hire Direct */}
+        <div className="mb-10">
+          <DirectContactBanner serviceName={svc.name} cityName={loc.name} variant="default" />
+        </div>
 
         {/* Local Context */}
         {loc.context && (

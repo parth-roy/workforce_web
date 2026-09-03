@@ -5,6 +5,7 @@ import { ucServicesData } from '../../data/mock/ucServicesData';
 import UCServiceItem from '../../components/services/UCServiceItem';
 import UCVariantModal from '../../components/modals/UCVariantModal';
 import { useUCCart } from '../../context/UCCartContext';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 function CartSidebar() {
   const { cart, getTotalPrice, setIsCartOpen } = useUCCart();
@@ -229,6 +230,11 @@ function UCServicePageContent() {
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
             {service.deliveryTime}
           </div>
+        </div>
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <div className="my-6">
+          <DirectContactBanner serviceName={service.title} variant="default" />
         </div>
 
         {/* Mobile Categories Floating Bar */}

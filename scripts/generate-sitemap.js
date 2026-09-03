@@ -39,6 +39,7 @@ import {
   ServiceHowItWorksSEO,
   ServiceFAQSEO,
   ServiceHiringFlowSEO,
+  DirectContactSEO,
 } from '../src/seo/pageMetadata.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -90,6 +91,7 @@ function generateSitemaps() {
     ServiceCategoryDirectorySEO(),
     ServiceHowItWorksSEO(),
     ServiceFAQSEO(),
+    DirectContactSEO(),
     { canonicalPath: '/about' },
     { canonicalPath: '/contact' },
     { canonicalPath: '/faq' },

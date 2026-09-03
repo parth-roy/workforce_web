@@ -65,7 +65,8 @@ let urls = [
   '/about',
   '/contact',
   '/faq',
-  '/guides'
+  '/guides',
+  '/direct-contact'
 ];
 
 mockRoles.forEach(r => urls.push(`/jobs/${r.slug}`));

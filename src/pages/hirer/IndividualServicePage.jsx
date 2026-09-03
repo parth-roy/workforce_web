@@ -10,6 +10,7 @@ import {
   Zap, Wrench, Package, Sparkles, Truck, Users, CheckCircle,
   ChevronDown, ChevronUp, X, ArrowRight
 } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -122,6 +123,9 @@ export default function IndividualServicePage() {
       )}
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner serviceName={svc.name} variant="default" />
 
         {/* Overview */}
         <section className="mb-12">

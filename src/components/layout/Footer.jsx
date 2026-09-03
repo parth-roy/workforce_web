@@ -36,6 +36,7 @@ const FOOTER_COLUMNS = [
       { label: 'Service Categories', href: '/services/categories' },
       { label: 'How Hiring Works', href: '/services/how-it-works' },
       { label: 'Hirer FAQ', href: '/services/faq' },
+      { label: 'Direct Worker Numbers · ₹49', href: '/direct-contact' },
       { label: 'Hire Bulk Workforce (B2B)', href: '/hire-workers' },
       { label: 'For Contractors', href: '/for-contractors' },
       { label: 'For Companies', href: '/for-companies' },

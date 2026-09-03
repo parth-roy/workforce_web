@@ -8,7 +8,8 @@ import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerRoleLocationSEO } from '../../seo/pageMetadata';
 import { RelatedRoles, RelatedLocations } from '../../components/seo/RelatedLinks';
-import { MapPin, CheckCircle, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { MapPin, CheckCircle, ChevronDown, ChevronUp, Info, ArrowRight } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function RoleLocationPage() {
   const { role: roleSlug, location: locSlug } = useParams();
@@ -97,6 +98,9 @@ export default function RoleLocationPage() {
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
 
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner serviceName={role.name} cityName={loc.name} variant="default" />
+
         {/* Status Notice */}
         <section className="mb-10">
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start gap-4">
@@ -108,77 +112,49 @@ export default function RoleLocationPage() {
           </div>
         </section>
 
-        {/* Role Definition */}
+        {/* About role in location */}
         <section className="mb-12">
           <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">About the {role.name} Role</h2>
-            <p className="text-slate-600 leading-relaxed">{role.longDescription || role.description}</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">{role.name} Work in {loc.name}</h2>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              {role.description} In {loc.name}, opportunities are available across commercial, residential, and industrial environments depending on local demand.
+            </p>
+            {role.responsibilities && (
+              <div>
+                <h3 className="font-bold text-slate-800 mb-3">Key Responsibilities:</h3>
+                <ul className="space-y-2">
+                  {role.responsibilities.map((r, i) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{r}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Local Context */}
-        {loc.context && (
-          <section className="mb-12">
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">About {loc.name}</h2>
-              <p className="text-slate-600 leading-relaxed">{loc.context}</p>
-              {loc.industries && (
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {loc.industries.map(ind => (
-                    <span key={ind} className="bg-white border border-slate-300 text-slate-700 text-sm font-medium px-3 py-1 rounded-full">{ind}</span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* Requirements */}
-        {role.requirements && (
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Requirements for {role.name}</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {role.requirements.map((req, i) => (
-                <div key={i} className="flex items-start gap-3 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-slate-700">{req}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Opportunity Section */}
-        <section className="mb-16 bg-emerald-600 text-white rounded-2xl p-8 md:p-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Register for {role.name} Openings in {loc.name}</h2>
-          <p className="text-emerald-100 mb-6 max-w-2xl">
-            Be the first to know when verified {role.name.toLowerCase()} opportunities open in {loc.name}. Download the Metro Mitra Worker App and set your location preference.
-          </p>
-          <button className="bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2">
-            <PlayStoreIcon size={20} /> Download App
-          </button>
-        </section>
-
-        {/* How It Works */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">How It Works</h2>
+        {/* How to Apply */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">How to Apply</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { step: '01', title: 'Register', desc: 'Download the Metro Mitra Worker App and create your profile.' },
-              { step: '02', title: 'Set Preferences', desc: `Add ${loc.name} as your preferred work area and select ${role.name} as your skill category.` },
-              { step: '03', title: 'Get Notified', desc: 'Receive job alerts as new openings become available in your area.' },
-            ].map((item) => (
-              <div key={item.step} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm text-center">
-                <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-lg mx-auto mb-4">{item.step}</div>
-                <h3 className="font-bold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600 text-sm">{item.desc}</p>
+              { step: '01', title: 'Download the App', desc: 'Get the Metro Mitra Worker App on Google Play.' },
+              { step: '02', title: 'Set Location', desc: `Select ${loc.name} as your primary work zone.` },
+              { step: '03', title: 'Start Earning', desc: 'Accept assignments and receive transparent daily payouts.' },
+            ].map(item => (
+              <div key={item.step} className="bg-white border border-slate-200 rounded-2xl p-6 text-center shadow-sm">
+                <div className="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black mx-auto mb-3">{item.step}</div>
+                <h3 className="font-bold text-slate-900 mb-1">{item.title}</h3>
+                <p className="text-slate-500 text-xs">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* FAQ */}
-        <section className="mb-16">
+        <section className="mb-12">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
           <div className="space-y-3">
             {faqs.map((faq, i) => (
@@ -211,4 +187,3 @@ export default function RoleLocationPage() {
     </>
   );
 }
-

@@ -51,6 +51,7 @@ export default {
         'slide-up': 'slideUp 0.4s ease-out',
         'float': 'float 6s ease-in-out infinite',
         'marquee': 'marquee 25s linear infinite',
+        'gradientShift': 'gradientShift 2.5s linear infinite',
       },
       keyframes: {
         countUp: {
@@ -72,7 +73,11 @@ export default {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
-        }
+        },
+        gradientShift: {
+          '0%': { backgroundPosition: '0% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
       },
       boxShadow: {
         'card': '0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04)',

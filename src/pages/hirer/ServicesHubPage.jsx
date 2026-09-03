@@ -5,6 +5,7 @@ import SEO from '../../components/ui/SEO';
 import { ServicesHubSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
 import { Zap, Wrench, Package, Sparkles, Truck, Users, ChevronDown, ChevronUp, ArrowRight, Search , Phone } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -90,6 +91,9 @@ export default function ServicesHubPage() {
       </section>
 
       <main className="container mx-auto px-4 max-w-5xl py-16">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Search + Filter */}
         <section id="services" className="mb-10 scroll-mt-24">
@@ -185,7 +189,10 @@ export default function ServicesHubPage() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
+            {[...faqs,
+              { q: 'Can I get direct phone numbers of workers without booking through the platform?', a: "Yes. Metro Mitra's Direct Connect lets you pay a flat Rs.49 one-time fee to instantly unlock 10 verified worker phone numbers in your area. You contact them directly — zero broker commission, zero middleman charges." },
+              { q: 'How does Metro Mitra prevent broker and middleman charges?', a: "Unlike traditional placement agencies that charge Rs.500–Rs.2,000 or take 15–30% cuts on worker wages, Metro Mitra's Direct Connect costs a flat Rs.49 to unlock 10 Aadhaar-KYC verified worker numbers. No recurring fees, no percentage commission." },
+            ].map((faq, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <button
                   className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50 transition-colors"

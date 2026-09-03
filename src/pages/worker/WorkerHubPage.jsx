@@ -13,6 +13,7 @@ import {
   Briefcase, MapPin, CheckCircle, ChevronDown, ChevronUp,
   Clock, Shield, Smartphone, ArrowRight
 } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const CATEGORIES = ['All', 'Home Services', 'Logistics & Labor'];
 
@@ -103,7 +104,10 @@ export default function WorkerHubPage() {
         </div>
       </div>
 
-      <main className="container mx-auto px-4 py-16 max-w-5xl">
+      <main className="container mx-auto px-4 py-12 max-w-5xl">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Role Category Filter */}
         <section id="roles" className="mb-16 scroll-mt-24">

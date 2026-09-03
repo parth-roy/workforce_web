@@ -7,6 +7,7 @@ import SEO from '../../components/ui/SEO';
 import { WorkerRoleSEO } from '../../seo/pageMetadata';
 import { RelatedRoles, RelatedLocations } from '../../components/seo/RelatedLinks';
 import { CheckCircle, MapPin, Briefcase, Users, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function RolePage() {
   const { role: roleSlug } = useParams();
@@ -91,6 +92,9 @@ export default function RolePage() {
       </section>
 
       <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner serviceName={role.name} variant="default" />
 
         {/* Role Definition */}
         <section className="mb-16">

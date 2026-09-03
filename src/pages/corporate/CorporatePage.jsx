@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { CorporateSEO } from '../../seo/pageMetadata';
 import CorporateWorkforceRequirementBuilder from '../../components/corporate/CorporateWorkforceRequirementBuilder';
-import {  CheckCircle, ChevronDown, ChevronUp, Building2, Package, Users, Clock, MapPin, AlertTriangle , Phone } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp, Building2, Package, Users, Clock, AlertTriangle, Phone } from "lucide-react";
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const INDUSTRIES = [
   { icon: Package, title: 'Logistics & Warehousing', desc: 'Helpers, loaders, and packers for fulfillment centers and distribution hubs.' },
@@ -50,7 +51,10 @@ export default function CorporatePage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-5xl py-16">
+      <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Executive Summary */}
         <section className="mb-16">

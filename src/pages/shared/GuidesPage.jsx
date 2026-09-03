@@ -1,7 +1,8 @@
 import React from 'react';
 import SEO from '../../components/ui/SEO';
 import { Link } from 'react-router-dom';
-import {  BookOpen, Briefcase, Building2, ArrowRight, Clock , Phone } from "lucide-react";
+import { BookOpen, Briefcase, Building2, ArrowRight, Clock, Phone } from "lucide-react";
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const GUIDE_CATEGORIES = [
   {
@@ -67,7 +68,10 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 max-w-5xl py-16">
+      <main className="container mx-auto px-4 max-w-5xl py-12">
+
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
 
         {/* Coming Soon Banner */}
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-12 flex items-start gap-4">
@@ -109,11 +113,12 @@ export default function GuidesPage() {
         ))}
 
         {/* CTA */}
-        <section className="bg-emerald-600 text-white rounded-2xl p-8 text-center">
+        <section className="bg-emerald-600 text-white rounded-2xl p-8 text-center mb-8">
           <h2 className="text-2xl font-bold mb-3">Have a question not covered here?</h2>
           <p className="text-emerald-100 mb-6">Reach out to us directly and we'll help you get started.</p>
-          <Link to="/contact" className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"><Phone size={18} /> Contact Us</Link>
+          <Link to="/contact" className="inline-flex items-center justify-center gap-2 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors"><Phone size={18} /> Contact Us</Link>
         </section>
+
       </main>
     </>
   );

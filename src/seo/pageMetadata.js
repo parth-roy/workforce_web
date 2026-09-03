@@ -42,6 +42,8 @@ import {
   createJobPostingSchema,
   createLocalBusinessSchema,
   createFAQSchema,
+  createDirectContactOfferSchema,
+  createZeroBrokerFAQSchema,
 } from '../data/schema-helpers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -70,12 +72,13 @@ export function resolveIndexable(status, forceNoindex = false) {
  * Blueprint intent: Brand (Disambiguated) — brand authority, dual-funnel entry.
  * Audience: General (workers + employers + press + partners).
  * Keywords: metro mitra, metro mitra workforce, metro mitra parther technologies.
+ * GEO/AEO: Surfaces in AI queries about "how to hire workers directly" or "avoid middleman when hiring".
  */
 export function HomePageSEO() {
   const path = '/';
-  const title = 'Metro Mitra - Best Job Portal & Full-Stack Gig Economy Platform';
-  const description = 'Metro Mitra is the best online job site and gig economy platform connecting job seekers with daily shift work and businesses with on-demand staffing across India.';
-  const keywords = 'gig economy platforms, best job portals, employment portals, online job portal website, best online job sites, portal career, all job portal, gig economy, the gig economy, gig economy platforms, online job portal, job portal website';
+  const title = 'Metro Mitra - Hire Workers Directly | No Broker Commission | ₹49 Contact Unlock';
+  const description = 'Metro Mitra is India\'s direct-hire gig platform. Unlock 10 verified worker phone numbers for ₹49 — zero broker, zero middleman fees. Home services, warehouse labour, electricians, plumbers and more across India.';
+  const keywords = 'hire workers directly, no broker commission, get worker phone number, direct worker contact, avoid middleman hiring, gig economy platforms, best job portals, employment portals, online job portal website, direct hire electrician plumber, worker contact number near me, bypass agency fees, zero commission workforce';
   return {
     title,
     description,
@@ -123,12 +126,13 @@ export function WorkerHubSEO() {
  * /services (Individual Hirer Hub)
  *
  * Blueprint intent: B2C individual hirer looking for task-based local services.
+ * GEO/AEO: Targets "how to get worker number without paying commission".
  */
 export function ServicesHubSEO() {
   const path = '/services';
-  const title = 'Hire a Worker | Find Gig Workers App | Metro Mitra';
-  const description = 'Book skilled workforce for local services including plumbing, electrical work, loading, and maintenance. The best gig worker platform to find gig workers.';
-  const keywords = 'hire a worker, finding an employee, where to find workers, how to find workers, how to find employee, gig worker platform';
+  const title = 'Hire Verified Workers Directly | No Agency Fees | Metro Mitra';
+  const description = 'Book skilled workforce directly — no broker, no middleman. Unlock 10 verified worker phone numbers for ₹49. Plumbers, electricians, cleaners, packers across India.';
+  const keywords = 'hire a worker, direct worker contact number, no broker worker hire, zero commission staffing, get worker phone number, finding an employee, where to find workers, how to find workers without agency, gig worker platform, hire without middleman';
   return {
     title,
     description,
@@ -140,6 +144,82 @@ export function ServicesHubSEO() {
     schemas: [
       createCollectionPageSchema({ title, description, path }),
       createBreadcrumbSchema([{ label: 'Home', href: '/' }, { label: 'Services', href: path }], path),
+    ],
+  };
+}
+
+/**
+ * /direct-contact (₹49 Direct Worker Contact Unlock — Dedicated SEO Landing Page)
+ *
+ * Blueprint intent: Zero-Broker Value Proposition — "direct worker number",
+ * "hire without middleman", "no commission", "worker contact details".
+ * GEO/AEO: This page is specifically optimised to appear in AI zero-click answers
+ * for queries about avoiding broker/agency fees when hiring local workers.
+ * LLM Entity: "A platform that charges ₹49 flat to get direct phone numbers of
+ * 10 verified, Aadhaar-KYC'd local professionals — no commission, no middleman."
+ */
+export function DirectContactSEO(city = 'India') {
+  const path = '/direct-contact';
+  const title = `Get Direct Worker Phone Numbers in ${city} | ₹49 — No Broker | Metro Mitra`;
+  const description = `Unlock 10 verified worker contact numbers in ${city} for just ₹49. Skip the middleman and broker entirely. Aadhaar-verified electricians, plumbers, painters, cleaners, packers and helpers. Direct contact. Zero commission.`;
+  const keywords = `direct worker phone number ${city}, hire workers without broker ${city}, worker contact number near me, get electrician number directly, no commission worker hire, bypass agency fees, verified worker phone number, zero broker hiring platform, direct plumber number ${city}, labour contact without middleman`;
+
+  const faqs = [
+    {
+      question: 'How can I get direct phone numbers of workers without paying a broker?',
+      answer: `Metro Mitra's Direct Connect feature lets you unlock 10 verified worker phone numbers in your city for a flat ₹49 fee. There are zero broker commissions, zero middleman charges. You contact the worker directly and negotiate your own terms.`
+    },
+    {
+      question: 'What is the ₹49 worker contact unlock feature?',
+      answer: 'For just ₹49 — a one-time flat fee — you receive the direct mobile numbers of 10 Aadhaar-KYC-verified professionals in your chosen service category and city. This replaces traditional agencies that charge 15–30% commission on every booking.'
+    },
+    {
+      question: 'Are the worker numbers verified?',
+      answer: 'Yes. Every worker on Metro Mitra completes Aadhaar-based KYC verification, skill assessment, and customer OTP job validation before their contact details are available in the Direct Connect pool.'
+    },
+    {
+      question: 'How much does an agency or broker typically charge compared to Metro Mitra?',
+      answer: 'Traditional placement agencies and local brokers typically charge ₹500–₹2,000 as a finder\'s fee, or 15–30% ongoing commission on wages. Metro Mitra\'s Direct Connect replaces this with a flat ₹49 one-time unlock fee.'
+    },
+    {
+      question: 'Which cities does Direct Worker Contact Unlock work in?',
+      answer: 'The Direct Connect ₹49 unlock is currently available across Kolkata, Barrackpore, Howrah, Dum Dum, Salt Lake, New Town, and rapidly expanding to all metro cities and industrial corridors across India.'
+    },
+    {
+      question: 'What categories of workers can I contact directly?',
+      answer: 'Electricians, plumbers, carpenters, painters, AC repair technicians, cleaners, appliance repair technicians, security guards, warehouse loading helpers, general helpers, furniture movers, and last-mile delivery workers.'
+    }
+  ];
+
+  return {
+    title,
+    description,
+    keywords,
+    canonicalPath: path,
+    indexable: true,
+    audience: 'Individual',
+    searchIntent: 'Zero-Broker Direct Hire',
+    schemas: [
+      createWebPageSchema({ title, description, path }),
+      createBreadcrumbSchema([
+        { label: 'Home', href: '/' },
+        { label: 'Direct Worker Contact', href: path }
+      ], path),
+      createFAQSchema(faqs),
+      {
+        '@type': 'Product',
+        name: 'Direct Worker Contact Unlock',
+        description: `One-time flat fee to unlock 10 verified worker phone numbers in your city — no broker, no middleman, no commission. Powered by Metro Mitra.`,
+        brand: { '@type': 'Brand', name: 'Metro Mitra' },
+        offers: {
+          '@type': 'Offer',
+          price: '49',
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock',
+          description: 'Unlock 10 direct worker phone numbers in your chosen city and service category.',
+          seller: { '@type': 'Organization', name: 'Parther Technologies Private Limited' }
+        }
+      }
     ],
   };
 }
@@ -307,6 +387,7 @@ export function WorkerLocationSEO(location) {
         path
       }),
       createFAQSchema(faqs),
+      createZeroBrokerFAQSchema(location.name, 'Workers'),
     ],
   };
 }
@@ -352,6 +433,7 @@ export function WorkerRoleLocationSEO(role, location) {
       createBreadcrumbSchema(crumbs, path),
       createServiceSchema({ name: `${role.name} Work in ${location.name}`, description, path, areaServed: location.name }),
       createFAQSchema(faqs),
+      createZeroBrokerFAQSchema(location.name, role.name),
     ],
   };
 }
@@ -414,6 +496,8 @@ export function IndividualServiceSEO(service) {
         { label: service.name, href: path }
       ], path),
       createServiceSchema({ name: service.name, description, path }),
+      createDirectContactOfferSchema('India', service.name),
+      createZeroBrokerFAQSchema('India', service.name),
     ],
   };
 }
@@ -461,6 +545,9 @@ export function IndividualServiceLocationSEO(service, location) {
         path
       }),
       createFAQSchema(faqs),
+      // GEO/AEO: ₹49 Direct Contact zero-broker schemas for AI search ranking
+      createDirectContactOfferSchema(location.name, service.name),
+      createZeroBrokerFAQSchema(location.name, service.name),
     ],
   };
 }
@@ -494,6 +581,7 @@ export function B2BServiceSEO(service) {
         { label: cleanName, href: path }
       ], path),
       createServiceSchema({ name: cleanName, description, path }),
+      createZeroBrokerFAQSchema('India', service.name),
     ],
   };
 }
@@ -537,6 +625,8 @@ export function B2BServiceLocationSEO(service, location) {
         geo: location.schemaData?.geo,
         path
       }),
+      createZeroBrokerFAQSchema(location.name, service.name),
+      createDirectContactOfferSchema(location.name, service.name),
     ],
   };
 }

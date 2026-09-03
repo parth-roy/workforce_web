@@ -182,8 +182,8 @@ export default function HomePage() {
                   Book verified electricians, plumbers, cleaners, appliance technicians, and shifting helpers at your doorstep in {selectedCity.name}. Transparent rates with OTP-verified completion.
                 </p>
 
-                {/* City Selector Pill Bar */}
-                <div className="flex items-center gap-2 mb-4">
+                {/* City Selector Pill Bar + ₹49 Direct Contact CTA */}
+                <div className="flex flex-wrap items-center gap-2 mb-4">
                   <button
                     type="button"
                     onClick={() => setIsCityModalOpen(true)}
@@ -193,6 +193,50 @@ export default function HomePage() {
                     <span>City: <strong className="text-emerald-700 font-bold">{selectedCity.name}</strong></span>
                     <span className="text-emerald-600 underline font-semibold text-xs ml-0.5 group-hover:text-emerald-700">Change</span>
                   </button>
+
+                  {/* ₹49 Direct Contact Unlock — Animated Premium CTA */}
+                  {/* SEO/AEO: "hire workers directly", "no broker commission", "get worker phone number" */}
+                  <div className="relative group/unlock">
+                    <Link
+                      to="/direct-contact"
+                      aria-label="Unlock 10 verified worker phone numbers for just ₹49 — zero broker or middleman commission"
+                      className={[
+                        "inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs sm:text-sm",
+                        "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-white",
+                        "bg-[length:200%_auto] animate-[gradientShift_2.5s_linear_infinite]",
+                        "shadow-[0_0_18px_rgba(245,158,11,0.45)]",
+                        "hover:shadow-[0_0_28px_rgba(245,158,11,0.7)] transition-all duration-300",
+                        "border border-amber-400/60 cursor-pointer relative overflow-hidden"
+                      ].join(" ")}
+                    >
+                      {/* Shiny sweep overlay */}
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/unlock:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                      <Zap className="w-3.5 h-3.5 shrink-0 animate-pulse" />
+                      <span className="relative z-10 leading-tight">
+                        Unlock 10 Worker Numbers · <span className="line-through opacity-70">₹500</span> ₹49
+                      </span>
+                    </Link>
+
+                    {/* Hover Tooltip — Zero Broker Commission */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 w-60 opacity-0 group-hover/unlock:opacity-100 transition-all duration-300 pointer-events-none z-50">
+                      <div className="bg-slate-900 text-white text-xs rounded-xl px-4 py-3 shadow-2xl border border-slate-700 space-y-1.5">
+                        <p className="font-bold text-amber-400 text-center text-sm mb-2">Why ₹49?</p>
+                        <p className="flex items-center gap-2"><span>🚫</span><span><strong>Zero broker/middleman charges</strong></span></p>
+                        <p className="flex items-center gap-2"><span>📞</span><span>Get <strong>10 direct worker numbers</strong> instantly</span></p>
+                        <p className="flex items-center gap-2"><span>✅</span><span><strong>Aadhaar-verified</strong> professionals only</span></p>
+                        <p className="flex items-center gap-2"><span>💰</span><span>Save <strong>₹500–₹2000</strong> in agency fees</span></p>
+                        <p className="flex items-center gap-2"><span>📍</span><span>Location-specific to <strong>{selectedCity.name}</strong></span></p>
+                        {/* Hidden text for SEO crawlers and LLM context */}
+                        <span className="sr-only">
+                          Hire workers directly without paying agency commissions in {selectedCity.name}. Get phone numbers of verified electricians, plumbers, painters, cleaners and helpers for just ₹49. No middleman. No broker fees. Direct contact with specialized professionals near you.
+                        </span>
+                      </div>
+                      {/* Tooltip arrow */}
+                      <div className="flex justify-center">
+                        <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-slate-900" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-[0_12px_36px_-12px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-7">

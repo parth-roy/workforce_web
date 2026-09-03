@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import SEO from '../../components/ui/SEO';
 import { B2BServiceLocationSEO } from '../../seo/pageMetadata';
 import { RelatedServices, RelatedLocations, RelatedRoles } from '../../components/seo/RelatedLinks';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function B2BServiceLocationPage() {
   const { service: serviceSlug, location: locSlug } = useParams();
@@ -47,6 +48,11 @@ export default function B2BServiceLocationPage() {
       </div>
       
       <main className="container mx-auto px-4 py-12 max-w-5xl">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <div className="mb-10">
+          <DirectContactBanner serviceName={service.name} cityName={location.name} variant="default" />
+        </div>
+
         <div className="bg-white border rounded-xl p-8 mb-12 shadow-sm text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Ready to build your requirement?</h2>
           <p className="text-slate-600 mb-8 max-w-2xl mx-auto">

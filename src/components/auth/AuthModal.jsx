@@ -15,14 +15,16 @@ export default function AuthModal() {
 
   if (!isAuthModalOpen) return null;
 
+  const API_BASE = import.meta.env.VITE_API_URL || 'https://api.gomytruck.com/api/v1';
+
   const handleSendOtp = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
       const endpoint = authIntent === 'WORKER' 
-        ? 'http://localhost:3000/api/v1/workforce/auth/send-otp' 
-        : 'http://localhost:3000/api/v1/auth/send-otp';
+        ? `${API_BASE}/workforce/auth/send-otp` 
+        : `${API_BASE}/auth/send-otp`;
 
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -49,8 +51,8 @@ export default function AuthModal() {
     setLoading(true);
     try {
       const endpoint = authIntent === 'WORKER' 
-        ? 'http://localhost:3000/api/v1/workforce/auth/verify-otp' 
-        : 'http://localhost:3000/api/v1/auth/verify-otp';
+        ? `${API_BASE}/workforce/auth/verify-otp` 
+        : `${API_BASE}/auth/verify-otp`;
 
       const res = await fetch(endpoint, {
         method: 'POST',

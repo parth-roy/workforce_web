@@ -83,7 +83,7 @@ function generateFallbackWorkers(category, city) {
 }
 
 export default function DirectContactPage() {
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const [selectedService, setSelectedService] = useState(SERVICE_CATEGORIES[0]);
   const [selectedCity, setSelectedCity] = useState({ name: 'Kolkata', slug: 'kolkata' });
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
@@ -255,7 +255,9 @@ export default function DirectContactPage() {
   // Open UPI QR Scanner Modal (Strictly guarded: User MUST be logged in first!)
   const handleOpenQRModal = () => {
     if (!user) {
-      setIsLoginAlertModalOpen(true);
+      if (typeof openAuthModal === 'function') {
+        openAuthModal('CUSTOMER');
+      }
       return;
     }
     setIsQRModalOpen(true);

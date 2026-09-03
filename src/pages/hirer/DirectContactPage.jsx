@@ -99,6 +99,9 @@ export default function DirectContactPage() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [customerPhone, setCustomerPhone] = useState(user?.phone || '');
   const [utrNumber, setUtrNumber] = useState('');
+  const [utrCharError, setUtrCharError] = useState(null);
+  const [verificationPin, setVerificationPin] = useState('');
+  const [showPinField, setShowPinField] = useState(false);
   const [modalError, setModalError] = useState(null);
   const [isConfirmingPayment, setIsConfirmingPayment] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState(null);
@@ -184,7 +187,20 @@ export default function DirectContactPage() {
   const handleOpenQRModal = () => {
     setIsQRModalOpen(true);
     setModalError(null);
+    setUtrCharError(null);
     setPaymentMessage(null);
+  };
+
+  // Real-time UTR character validation
+  const handleUtrChange = (e) => {
+    const rawVal = e.target.value;
+    if (/[^\d]/.test(rawVal)) {
+      setUtrCharError('UPI Transaction ID / UTR must contain only numbers (0-9). Letters or special characters are not allowed.');
+    } else {
+      setUtrCharError(null);
+    }
+    const clean = rawVal.replace(/\D/g, '').slice(0, 12);
+    setUtrNumber(clean);
   };
 
   // Submit & verify UPI QR payment with Customer Phone & 12-digit UTR
@@ -193,14 +209,26 @@ export default function DirectContactPage() {
     setModalError(null);
 
     const cleanPhone = customerPhone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      setModalError('Please enter your valid 10-digit mobile number.');
+    if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      setModalError('Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.');
       return;
     }
 
-    const cleanUtr = utrNumber.trim();
-    if (cleanUtr.length < 6) {
-      setModalError('Please enter the 12-digit UPI Reference / UTR Number from your payment receipt.');
+    const cleanUtr = utrNumber.replace(/\D/g, '');
+    if (cleanUtr.length !== 12) {
+      setModalError('Invalid UPI Transaction ID. UTR must be exactly 12 numeric digits (e.g. 424901823941) from your GPay, PhonePe, or Paytm receipt.');
+      return;
+    }
+
+    // Check for repetitive dummy numbers
+    if (/^(\d)\1{11}$/.test(cleanUtr)) {
+      setModalError('Invalid UTR number. All 12 digits cannot be identical (e.g. 000000000000). Please enter the genuine UTR from your payment receipt.');
+      return;
+    }
+
+    // Check for sequential dummy test numbers
+    if (cleanUtr === '123456789012' || cleanUtr === '012345678901' || cleanUtr === '987654321098') {
+      setModalError('Invalid UTR number. Sequential test numbers are not accepted. Please enter the genuine 12-digit transaction ID from your UPI app receipt.');
       return;
     }
 
@@ -214,27 +242,38 @@ export default function DirectContactPage() {
           paymentMethod: 'UPI_QR',
           customerPhone: cleanPhone,
           utr: cleanUtr,
+          verificationCode: verificationPin.trim(),
           serviceCategory: selectedService.label,
           city: selectedCity.name,
           workerIds: workers.map((w) => w.id),
         }),
       });
 
-      const unmaskedMap = {};
+      const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.data?.unlockedWorkers?.length > 0) {
-          data.data.unlockedWorkers.forEach((w) => {
-            unmaskedMap[w.id] = w.phone;
-          });
-        }
+      // STRICT SECURITY: Fail-closed. Never unlock unless the server validates payment!
+      if (!res.ok || !data.success || !data.data?.verified) {
+        setIsUnlocked(false);
+        setShowPinField(true);
+        setModalError(
+          data.message ||
+          'Payment verification could not be confirmed. If you have transferred ₹49, please WhatsApp your receipt to +91 9331488999 for instant unlock code.'
+        );
+        return;
       }
 
-      // Fallback fill in workers if backend is offline or stub
+      // ONLY REACHED ON VERIFIED SUCCESS (HTTP 200)
+      const unmaskedMap = {};
+      if (data.data?.unlockedWorkers?.length > 0) {
+        data.data.unlockedWorkers.forEach((w) => {
+          unmaskedMap[w.id] = w.phone;
+        });
+      }
+
+      // If backend returned fewer workers, ensure map is populated with available unmasked phones
       workers.forEach((w) => {
-        if (!unmaskedMap[w.id]) {
-          unmaskedMap[w.id] = w.phoneRaw || '9831488999';
+        if (!unmaskedMap[w.id] && w.phoneRaw) {
+          unmaskedMap[w.id] = w.phoneRaw;
         }
       });
 
@@ -277,29 +316,9 @@ export default function DirectContactPage() {
 
       setIsQRModalOpen(false);
     } catch {
-      // Graceful offline fallback
-      const unmaskedMap = {};
-      workers.forEach((w) => {
-        unmaskedMap[w.id] = w.phoneRaw || '9831488999';
-      });
-      const envelope = {
-        isUnlocked: true,
-        unmaskedNumbers: unmaskedMap,
-        customerPhone: cleanPhone,
-        utr: cleanUtr,
-        serviceId: selectedService.id,
-        serviceLabel: selectedService.label,
-        citySlug: selectedCity.slug,
-        cityName: selectedCity.name,
-        unlockedAt: new Date().toISOString(),
-      };
-      setIsUnlocked(true);
-      setUnmaskedNumbers(unmaskedMap);
-      setUnlockedMetadata(envelope);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
-      }
-      setIsQRModalOpen(false);
+      // SECURITY RULE: Never unlock on server/network failure!
+      setIsUnlocked(false);
+      setModalError('Unable to connect to verification server. Please check your connection or WhatsApp your receipt to +91 9331488999.');
     } finally {
       setIsConfirmingPayment(false);
     }
@@ -1007,34 +1026,88 @@ export default function DirectContactPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                    12-Digit UPI Transaction ID / UTR Number <span className="text-rose-500">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] font-bold text-slate-700">
+                      12-Digit UPI Transaction ID / UTR Number <span className="text-rose-500">*</span>
+                    </label>
+                    <span className={utrNumber.length === 12 ? 'text-[10px] font-black text-emerald-600' : utrNumber.length > 0 ? 'text-[10px] font-bold text-amber-600' : 'text-[10px] text-slate-400'}>
+                      {utrNumber.length} / 12 digits
+                    </span>
+                  </div>
                   <input
                     type="text"
-                    maxLength={18}
-                    placeholder="e.g. 424901823941 from GPay / PhonePe receipt"
+                    inputMode="numeric"
+                    maxLength={12}
+                    placeholder="e.g. 424901823941"
                     value={utrNumber}
-                    onChange={(e) => setUtrNumber(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all"
+                    onChange={handleUtrChange}
+                    className={[
+                      'w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono font-bold outline-none transition-all',
+                      utrCharError ? 'border-rose-400 bg-rose-50/40 text-rose-900 focus:ring-2 focus:ring-rose-200' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-200'
+                    ].join(' ')}
                     required
                   />
+
+                  {/* Character Validation Warning */}
+                  {utrCharError && (
+                    <div className="mt-1 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold flex items-center gap-1.5 animate-in fade-in">
+                      <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                      <span>{utrCharError}</span>
+                    </div>
+                  )}
+
                   <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1">
                     <HelpCircle className="w-3 h-3 text-slate-400" />
-                    Found on your payment success screen: "UPI Ref No." or "UTR".
+                    Found on payment success screen in GPay, PhonePe, or Paytm ("UPI Ref No" or "UTR"). Numbers only.
                   </p>
                 </div>
+
+                {/* Optional Instant Unlock PIN (from WhatsApp support) */}
+                {showPinField && (
+                  <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 text-left space-y-2 animate-in fade-in">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-black text-amber-950 flex items-center gap-1">
+                        <Lock className="w-3.5 h-3.5 text-amber-700" />
+                        4-Digit Instant Unlock Code
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-700 bg-amber-200/60 px-2 py-0.5 rounded-full">
+                        WhatsApp PIN
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={4}
+                      placeholder="Enter 4-digit code (e.g. 4949)"
+                      value={verificationPin}
+                      onChange={(e) => setVerificationPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                      className="w-full px-3 py-2 rounded-xl border border-amber-300 text-sm font-mono font-black text-center tracking-widest bg-white focus:ring-2 focus:ring-amber-400 outline-none"
+                    />
+                    <p className="text-[10.5px] text-amber-900/90 leading-relaxed">
+                      💬 If your payment is taking a moment to sync, send a screenshot of your ₹49 payment to{' '}
+                      <a
+                        href={`https://wa.me/919331488999?text=${encodeURIComponent(`Hello Metro Mitra, I paid ₹49 for ${selectedService.label} worker contacts. Phone: ${customerPhone}, UTR: ${utrNumber}. Please send my 4-digit unlock code.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-black text-emerald-800 underline"
+                      >
+                        WhatsApp (+91 9331488999)
+                      </a>{' '}
+                      to get your instant 4-digit unlock code.
+                    </p>
+                  </div>
+                )}
 
                 {/* Submit Action */}
                 <button
                   type="submit"
-                  disabled={isConfirmingPayment}
-                  className="w-full mt-2 py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-75"
+                  disabled={isConfirmingPayment || utrNumber.length !== 12}
+                  className="w-full mt-2 py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isConfirmingPayment ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Verifying & Unlocking Numbers...</span>
+                      <span>Verifying Payment with Server...</span>
                     </>
                   ) : (
                     <>

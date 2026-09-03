@@ -9,7 +9,7 @@ import { DirectContactSEO } from '../../seo/pageMetadata';
 import CitySelectorModal from '../../components/common/CitySelectorModal';
 import { useAuth } from '../../context/AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'https://api.gomytruck.com/api/v1';
 
 /* ══════════════════════════════════════════════════════════════════════════════════
    PRODUCTION RAZORPAY INTEGRATION CREDENTIALS (RETAINED FOR PRODUCTION DEPLOYMENT)

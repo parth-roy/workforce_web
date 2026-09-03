@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Zap, Phone, Shield, ChevronRight, MapPin, CheckCircle,
+  Zap, Phone, Shield, ChevronRight, MapPin, CheckCircle, CheckCircle2,
   Star, ArrowRight, BadgeCheck, Lock, Banknote, Unlock, Copy, Check, MessageSquare, AlertCircle, RefreshCw,
-  QrCode, X, ExternalLink, Download, Smartphone, HelpCircle, Share2, FileText, RotateCcw
+  QrCode, X, ExternalLink, Download, Smartphone, HelpCircle, Share2, FileText, RotateCcw,
+  Upload, Clock, Image as ImageIcon
 } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { DirectContactSEO } from '../../seo/pageMetadata';
@@ -97,11 +98,13 @@ export default function DirectContactPage() {
 
   // UPI QR Code Modal State
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [isLoginAlertModalOpen, setIsLoginAlertModalOpen] = useState(false);
   const [customerPhone, setCustomerPhone] = useState(user?.phone || '');
   const [utrNumber, setUtrNumber] = useState('');
   const [utrCharError, setUtrCharError] = useState(null);
-  const [verificationPin, setVerificationPin] = useState('');
-  const [showPinField, setShowPinField] = useState(false);
+  const [paymentScreenshot, setPaymentScreenshot] = useState(null);
+  const [screenshotPreview, setScreenshotPreview] = useState(null);
+  const [requestStatus, setRequestStatus] = useState(null); // 'PENDING' | 'VERIFIED' | null
   const [modalError, setModalError] = useState(null);
   const [isConfirmingPayment, setIsConfirmingPayment] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState(null);
@@ -115,7 +118,7 @@ export default function DirectContactPage() {
 
   // Lock body scroll when any modal is open
   useEffect(() => {
-    if (isQRModalOpen || isRestoreModalOpen) {
+    if (isQRModalOpen || isRestoreModalOpen || isLoginAlertModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -123,7 +126,7 @@ export default function DirectContactPage() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isQRModalOpen, isRestoreModalOpen]);
+  }, [isQRModalOpen, isRestoreModalOpen, isLoginAlertModalOpen]);
 
   // Check local storage for unlocked status on service or city change
   useEffect(() => {
@@ -183,12 +186,85 @@ export default function DirectContactPage() {
     return () => { isMounted = false; };
   }, [selectedService.id, selectedCity.name]);
 
-  // Open UPI QR Scanner Modal
+  // Check if current user phone has an approved/verified unlock on backend
+  const checkExistingUnlock = useCallback(async (phone) => {
+    if (!phone) return;
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length < 10) return;
+
+    try {
+      const url = `${API_BASE}/payments/check-direct-contact-status?phone=${cleanPhone}&service=${encodeURIComponent(selectedService.label)}&city=${encodeURIComponent(selectedCity.name)}`;
+      const res = await fetch(url);
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.data?.isVerified) {
+        const unmaskedMap = {};
+        if (data.data.unlockedWorkers?.length > 0) {
+          data.data.unlockedWorkers.forEach((w) => {
+            unmaskedMap[w.id] = w.phone;
+          });
+        }
+        workers.forEach((w) => {
+          if (!unmaskedMap[w.id] && w.phoneRaw) {
+            unmaskedMap[w.id] = w.phoneRaw;
+          }
+        });
+        const envelope = {
+          isUnlocked: true,
+          unmaskedNumbers: unmaskedMap,
+          customerPhone: cleanPhone,
+          utr: data.data.utr,
+          serviceId: selectedService.id,
+          serviceLabel: selectedService.label,
+          citySlug: selectedCity.slug,
+          cityName: selectedCity.name,
+          unlockedAt: data.data.verifiedAt || new Date().toISOString(),
+        };
+        setIsUnlocked(true);
+        setUnmaskedNumbers(unmaskedMap);
+        setUnlockedMetadata(envelope);
+        setRequestStatus('VERIFIED');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+        }
+      } else if (data.data?.status === 'PENDING') {
+        setRequestStatus('PENDING');
+      }
+    } catch {
+      // silent
+    }
+  }, [selectedService.id, selectedService.label, selectedCity.slug, selectedCity.name, workers]);
+
+  // Automatically check status whenever user logs in or phone changes
+  useEffect(() => {
+    const activePhone = user?.phone || customerPhone;
+    if (activePhone && activePhone.length >= 10) {
+      checkExistingUnlock(activePhone);
+    }
+  }, [user?.phone, customerPhone, checkExistingUnlock]);
+
+  // Only unmask full phone numbers if the user is authenticated and matches the verified customer phone!
+  const loggedInPhone = user?.phone ? user.phone.replace(/\D/g, '') : null;
+  const unlockedTargetPhone = unlockedMetadata?.customerPhone ? unlockedMetadata.customerPhone.replace(/\D/g, '') : null;
+  const isUnlockedForCurrentSession = Boolean(
+    isUnlocked &&
+    loggedInPhone &&
+    unlockedTargetPhone &&
+    loggedInPhone === unlockedTargetPhone
+  );
+
+  // Open UPI QR Scanner Modal (Strictly guarded: User MUST be logged in first!)
   const handleOpenQRModal = () => {
+    if (!user) {
+      setIsLoginAlertModalOpen(true);
+      return;
+    }
     setIsQRModalOpen(true);
     setModalError(null);
     setUtrCharError(null);
     setPaymentMessage(null);
+    if (user.phone) {
+      setCustomerPhone(user.phone.replace(/\D/g, ''));
+    }
   };
 
   // Real-time UTR character validation
@@ -203,7 +279,44 @@ export default function DirectContactPage() {
     setUtrNumber(clean);
   };
 
-  // Submit & verify UPI QR payment with Customer Phone & 12-digit UTR
+  // Handle Screenshot selection with client-side canvas compression (< 100KB)
+  const handleScreenshotSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setModalError('Please upload an image file (PNG, JPG, JPEG, WEBP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxDim = 1000;
+        let width = img.width;
+        let height = img.height;
+        if (width > height && width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+        setScreenshotPreview(compressed);
+        setPaymentScreenshot(compressed);
+        setModalError(null);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Submit payment proof with Phone, UTR, and Screenshot for Admin Verification
   const handleConfirmQRPayment = async (e) => {
     if (e) e.preventDefault();
     setModalError(null);
@@ -232,17 +345,21 @@ export default function DirectContactPage() {
       return;
     }
 
+    if (!paymentScreenshot) {
+      setModalError('Please upload a screenshot of your ₹49 UPI payment receipt.');
+      return;
+    }
+
     setIsConfirmingPayment(true);
 
     try {
-      const res = await fetch(`${API_BASE}/payments/verify-direct-contact`, {
+      const res = await fetch(`${API_BASE}/payments/submit-direct-contact-request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          paymentMethod: 'UPI_QR',
           customerPhone: cleanPhone,
           utr: cleanUtr,
-          verificationCode: verificationPin.trim(),
+          screenshotUrl: paymentScreenshot,
           serviceCategory: selectedService.label,
           city: selectedCity.name,
           workerIds: workers.map((w) => w.id),
@@ -251,72 +368,63 @@ export default function DirectContactPage() {
 
       const data = await res.json().catch(() => ({}));
 
-      // STRICT SECURITY: Fail-closed. Never unlock unless the server validates payment!
-      if (!res.ok || !data.success || !data.data?.verified) {
+      if (!res.ok || !data.success) {
         setIsUnlocked(false);
-        setShowPinField(true);
-        setModalError(
-          data.message ||
-          'Payment verification could not be confirmed. If you have transferred ₹49, please WhatsApp your receipt to +91 9331488999 for instant unlock code.'
-        );
+        setModalError(data.message || 'Failed to submit payment proof. Please check details and try again.');
         return;
       }
 
-      // ONLY REACHED ON VERIFIED SUCCESS (HTTP 200)
-      const unmaskedMap = {};
-      if (data.data?.unlockedWorkers?.length > 0) {
-        data.data.unlockedWorkers.forEach((w) => {
-          unmaskedMap[w.id] = w.phone;
+      // If already verified by admin or system
+      if (data.data?.isVerified) {
+        const unmaskedMap = {};
+        if (data.data?.unlockedWorkers?.length > 0) {
+          data.data.unlockedWorkers.forEach((w) => {
+            unmaskedMap[w.id] = w.phone;
+          });
+        }
+        workers.forEach((w) => {
+          if (!unmaskedMap[w.id] && w.phoneRaw) {
+            unmaskedMap[w.id] = w.phoneRaw;
+          }
         });
+
+        const envelope = {
+          isUnlocked: true,
+          unmaskedNumbers: unmaskedMap,
+          customerPhone: cleanPhone,
+          utr: cleanUtr,
+          serviceId: selectedService.id,
+          serviceLabel: selectedService.label,
+          citySlug: selectedCity.slug,
+          cityName: selectedCity.name,
+          unlockedAt: new Date().toISOString(),
+        };
+
+        setIsUnlocked(true);
+        setUnmaskedNumbers(unmaskedMap);
+        setUnlockedMetadata(envelope);
+        setRequestStatus('VERIFIED');
+        setPaymentMessage({
+          type: 'success',
+          text: `Payment of ₹49 verified (UTR: ${cleanUtr})! All 10 ${selectedService.label} numbers unlocked and saved to your device.`,
+        });
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+        }
+
+        setIsQRModalOpen(false);
+        return;
       }
 
-      // If backend returned fewer workers, ensure map is populated with available unmasked phones
-      workers.forEach((w) => {
-        if (!unmaskedMap[w.id] && w.phoneRaw) {
-          unmaskedMap[w.id] = w.phoneRaw;
-        }
-      });
-
-      const envelope = {
-        isUnlocked: true,
-        unmaskedNumbers: unmaskedMap,
-        customerPhone: cleanPhone,
-        utr: cleanUtr,
-        serviceId: selectedService.id,
-        serviceLabel: selectedService.label,
-        citySlug: selectedCity.slug,
-        cityName: selectedCity.name,
-        unlockedAt: new Date().toISOString(),
-      };
-
-      setIsUnlocked(true);
-      setUnmaskedNumbers(unmaskedMap);
-      setUnlockedMetadata(envelope);
+      // SUBMISSION PENDING ADMIN REVIEW
+      setRequestStatus('PENDING');
       setPaymentMessage({
-        type: 'success',
-        text: `Payment of ₹49 verified (UTR: ${cleanUtr})! All 10 ${selectedService.label} numbers unlocked and saved to your device.`,
+        type: 'pending',
+        text: `Payment proof submitted (UTR: ${cleanUtr})! Our admin is verifying your ₹49 payment screenshot. As soon as approved, all 10 ${selectedService.label} numbers will unlock automatically for +91 ${cleanPhone}.`,
       });
-
-      // Save category-specific state to localStorage (PERSISTS ON REFRESH)
-      const storageKey = `unlocked_dc_${selectedService.id}_${selectedCity.slug}`;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(storageKey, JSON.stringify(envelope));
-
-        // Also save to global history array (so user can restore on any device / across categories)
-        try {
-          const historyRaw = localStorage.getItem('unlocked_dc_history') || '[]';
-          const history = JSON.parse(historyRaw);
-          const filtered = history.filter((h) => !(h.serviceId === selectedService.id && h.citySlug === selectedCity.slug));
-          filtered.unshift(envelope);
-          localStorage.setItem('unlocked_dc_history', JSON.stringify(filtered.slice(0, 50)));
-        } catch {
-          // ignore
-        }
-      }
-
       setIsQRModalOpen(false);
     } catch {
-      // SECURITY RULE: Never unlock on server/network failure!
       setIsUnlocked(false);
       setModalError('Unable to connect to verification server. Please check your connection or WhatsApp your receipt to +91 9331488999.');
     } finally {
@@ -553,17 +661,69 @@ export default function DirectContactPage() {
                 )}
 
                 {/* Unlock Button / State Panel */}
-                {!isUnlocked ? (
-                  <div className="space-y-2.5">
-                    <button
-                      type="button"
-                      onClick={handleOpenQRModal}
-                      className="w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-2 text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-200 hover:shadow-amber-300 transition-all active:scale-98 cursor-pointer"
-                    >
-                      <QrCode className="w-5 h-5" />
-                      <span>Unlock 10 Worker Numbers — ₹49</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                {!isUnlockedForCurrentSession ? (
+                  <div className="space-y-3">
+                    {/* If unlocked on device/backend but user not logged in */}
+                    {isUnlocked && !user && (
+                      <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 space-y-2.5 animate-in fade-in">
+                        <div className="flex items-center gap-2 font-black text-xs text-emerald-900">
+                          <Lock className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>Contacts Unlocked — Please Log In</span>
+                        </div>
+                        <p className="text-[11.5px] text-emerald-800/90 leading-relaxed">
+                          10 {selectedService.label} numbers were unlocked for <strong>+91 {unlockedTargetPhone ? `${unlockedTargetPhone.slice(0, 2)}••••••${unlockedTargetPhone.slice(-2)}` : 'verified phone'}</strong>. Log in with this number to unblur contacts.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => openAuthModal('CUSTOMER')}
+                          className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-200 transition-all cursor-pointer active:scale-98"
+                        >
+                          <Lock className="w-3.5 h-3.5" />
+                          <span>Log In to View 10 Numbers</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* If payment proof submitted and pending verification */}
+                    {requestStatus === 'PENDING' && (
+                      <div className="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-950 space-y-2 animate-in fade-in">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 font-black text-xs text-amber-900">
+                            <Clock className="w-4 h-4 text-amber-600 animate-pulse shrink-0" />
+                            <span>Payment Proof Under Review</span>
+                          </div>
+                          <span className="text-[10px] font-bold text-amber-700 bg-amber-200/60 px-2 py-0.5 rounded-full">
+                            Pending Admin
+                          </span>
+                        </div>
+                        <p className="text-[11.5px] text-amber-900/90 leading-relaxed">
+                          Your ₹49 payment screenshot was received. Once verified by our admin, all 10 worker numbers will unlock here automatically.
+                        </p>
+                        <div className="flex items-center justify-between text-[11px] pt-1.5 border-t border-amber-200/60">
+                          <span className="text-amber-800 font-semibold">Phone: +91 {user?.phone || customerPhone}</span>
+                          <button
+                            type="button"
+                            onClick={() => checkExistingUnlock(user?.phone || customerPhone)}
+                            className="font-bold text-emerald-800 hover:text-emerald-950 underline flex items-center gap-1 cursor-pointer"
+                          >
+                            <RefreshCw className="w-3 h-3" /> Check Now
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Unlock CTA Button (shown if not yet unlocked or to re-open modal) */}
+                    {(!isUnlocked || user) && (
+                      <button
+                        type="button"
+                        onClick={handleOpenQRModal}
+                        className="w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-2 text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-200 hover:shadow-amber-300 transition-all active:scale-98 cursor-pointer"
+                      >
+                        <QrCode className="w-5 h-5" />
+                        <span>{requestStatus === 'PENDING' ? 'Submit New Payment Proof' : 'Unlock 10 Worker Numbers — ₹49'}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    )}
 
                     {/* Restore Purchase Option */}
                     <div className="text-center">
@@ -649,7 +809,7 @@ export default function DirectContactPage() {
                   </p>
                 </div>
 
-                {isUnlocked && (
+                {isUnlockedForCurrentSession && (
                   <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
                     <button
                       onClick={downloadContactsTxt}
@@ -685,11 +845,41 @@ export default function DirectContactPage() {
                 </div>
               )}
 
+              {/* Unlocked but Logged Out Prompt */}
+              {isUnlocked && !isUnlockedForCurrentSession && (
+                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in shadow-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0">
+                      <Lock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-amber-900">
+                        10 Contacts Unlocked for +91 {unlockedTargetPhone ? `${unlockedTargetPhone.slice(0, 2)}••••••${unlockedTargetPhone.slice(-2)}` : 'verified phone'}
+                      </p>
+                      <p className="text-[11px] text-amber-800/90 mt-0.5">
+                        {!user
+                          ? 'Please log in with your verified mobile number to remove blur and call workers directly.'
+                          : `You are logged in as +91 ${loggedInPhone}. Please switch to the account that unlocked these contacts.`}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('CUSTOMER')}
+                    className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs whitespace-nowrap shadow-md shadow-emerald-200 transition-all cursor-pointer active:scale-98"
+                  >
+                    {!user ? 'Log In to Unblur Numbers' : 'Switch Account'}
+                  </button>
+                </div>
+              )}
+
               {/* Workers List Display */}
               {!isLoadingWorkers && workers.length > 0 && (
                 <div className="space-y-3">
                   {workers.map((worker, index) => {
-                    const fullNumber = unmaskedNumbers[worker.id] || (isUnlocked ? (worker.phoneRaw || '9831488999') : null);
+                    const fullNumber = isUnlockedForCurrentSession
+                      ? (unmaskedNumbers[worker.id] || worker.phoneRaw)
+                      : null;
                     const isWorkerUnlocked = Boolean(fullNumber);
                     const displayedNumber = isWorkerUnlocked
                       ? (fullNumber.length === 10 ? `+91 ${fullNumber.slice(0, 5)} ${fullNumber.slice(5)}` : fullNumber)
@@ -1062,57 +1252,72 @@ export default function DirectContactPage() {
                   </p>
                 </div>
 
-                {/* Optional Instant Unlock PIN (from WhatsApp support) */}
-                {showPinField && (
-                  <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 text-left space-y-2 animate-in fade-in">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-amber-950 flex items-center gap-1">
-                        <Lock className="w-3.5 h-3.5 text-amber-700" />
-                        4-Digit Instant Unlock Code
-                      </span>
-                      <span className="text-[10px] font-bold text-amber-700 bg-amber-200/60 px-2 py-0.5 rounded-full">
-                        WhatsApp PIN
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={4}
-                      placeholder="Enter 4-digit code (e.g. 4949)"
-                      value={verificationPin}
-                      onChange={(e) => setVerificationPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                      className="w-full px-3 py-2 rounded-xl border border-amber-300 text-sm font-mono font-black text-center tracking-widest bg-white focus:ring-2 focus:ring-amber-400 outline-none"
-                    />
-                    <p className="text-[10.5px] text-amber-900/90 leading-relaxed">
-                      💬 If your payment is taking a moment to sync, send a screenshot of your ₹49 payment to{' '}
-                      <a
-                        href={`https://wa.me/919331488999?text=${encodeURIComponent(`Hello Metro Mitra, I paid ₹49 for ${selectedService.label} worker contacts. Phone: ${customerPhone}, UTR: ${utrNumber}. Please send my 4-digit unlock code.`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-black text-emerald-800 underline"
+                {/* Upload Payment Screenshot Proof */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] font-bold text-slate-700">
+                      Upload Payment Screenshot <span className="text-rose-500">*</span>
+                    </label>
+                    {screenshotPreview && (
+                      <button
+                        type="button"
+                        onClick={() => { setScreenshotPreview(null); setPaymentScreenshot(null); }}
+                        className="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer"
                       >
-                        WhatsApp (+91 9331488999)
-                      </a>{' '}
-                      to get your instant 4-digit unlock code.
-                    </p>
+                        Remove / Change
+                      </button>
+                    )}
                   </div>
-                )}
+
+                  {!screenshotPreview ? (
+                    <label className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-4 flex flex-col items-center justify-center gap-1.5 cursor-pointer bg-slate-50/70 hover:bg-emerald-50/30 transition-all text-center group">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleScreenshotSelect}
+                        className="hidden"
+                      />
+                      <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:scale-105 transition-transform">
+                        <Upload className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-bold text-slate-800">Tap to upload payment screenshot</span>
+                      <span className="text-[10px] text-slate-400">GPay, PhonePe, or Paytm receipt (PNG, JPG, WEBP)</span>
+                    </label>
+                  ) : (
+                    <div className="relative rounded-xl border border-emerald-300 bg-emerald-50/50 p-2.5 flex items-center gap-3 animate-in fade-in">
+                      <img
+                        src={screenshotPreview}
+                        alt="Payment receipt preview"
+                        className="w-14 h-14 object-cover rounded-lg border border-emerald-200 shadow-xs shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1 text-emerald-900 font-bold text-xs">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Receipt Attached</span>
+                        </div>
+                        <p className="text-[10px] text-emerald-700 mt-0.5 leading-snug">
+                          Ready for admin verification.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 {/* Submit Action */}
                 <button
                   type="submit"
-                  disabled={isConfirmingPayment || utrNumber.length !== 12}
+                  disabled={isConfirmingPayment || utrNumber.length !== 12 || !paymentScreenshot}
                   className="w-full mt-2 py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isConfirmingPayment ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Verifying Payment with Server...</span>
+                      <span>Submitting Payment Proof...</span>
                     </>
                   ) : (
                     <>
                       <CheckCircle className="w-4 h-4" />
-                      <span>Confirm Payment & Unlock 10 Numbers</span>
+                      <span>Submit Payment Proof for Verification</span>
                     </>
                   )}
                 </button>
@@ -1144,6 +1349,79 @@ export default function DirectContactPage() {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════════
+          LOGIN REQUIRED ALERT MODAL (VERIFIES REAL USER BEFORE PAYMENT)
+         ══════════════════════════════════════════════════════════════════════════ */}
+      {isLoginAlertModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-md w-full overflow-hidden p-6 text-left relative animate-in zoom-in-95 duration-200">
+            {/* Close */}
+            <button
+              type="button"
+              onClick={() => setIsLoginAlertModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Header Badge */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase bg-amber-100 text-amber-900 border border-amber-300">
+                <Shield className="w-3.5 h-3.5 text-amber-700" />
+                Login Required First
+              </span>
+            </div>
+
+            <h3 className="text-xl font-black text-slate-900 mb-2 leading-tight">
+              Please Log In Before Making Payment
+            </h3>
+
+            <p className="text-xs text-slate-600 mb-4 leading-relaxed">
+              To verify your identity as the genuine user and ensure your ₹49 unlocked worker contacts are permanently attached to your personal account, please log in with your mobile number.
+            </p>
+
+            {/* Key benefits / Verification points */}
+            <div className="space-y-2.5 bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 mb-5 text-xs text-slate-700">
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Real User Identity:</strong> Verifies you are the real person making payment.</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Permanent Access:</strong> Unlocked numbers stay linked to your mobile number across all devices.</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Privacy Protection:</strong> Only you can view unmasked worker numbers for your payment.</span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="space-y-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsLoginAlertModalOpen(false);
+                  openAuthModal('CUSTOMER');
+                }}
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm shadow-md shadow-emerald-200 hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+              >
+                <Lock className="w-4 h-4" />
+                <span>Log In / Register with Mobile OTP</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsLoginAlertModalOpen(false)}
+                className="w-full py-2.5 px-4 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors text-center cursor-pointer"
+              >
+                Cancel / Return to Page
+              </button>
+            </div>
           </div>
         </div>
       )}

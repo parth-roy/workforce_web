@@ -85,9 +85,9 @@ export default function AuthModal() {
   };
 
   const handleRedirect = () => {
-    // If they were trying to checkout, they just stay on the checkout page.
-    // If they clicked Login from the navbar, maybe redirect to their profile/orders.
-    if (!location.pathname.includes('/checkout')) {
+    // If they were trying to checkout or on direct-contact, stay on the current page.
+    // If they clicked Login from the navbar on a generic page, redirect to orders.
+    if (!location.pathname.includes('/checkout') && !location.pathname.includes('/direct-contact')) {
       navigate('/user/orders');
     }
   };

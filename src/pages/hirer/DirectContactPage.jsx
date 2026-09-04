@@ -3,7 +3,7 @@ import {
   Zap, Phone, Shield, ChevronRight, MapPin, CheckCircle, CheckCircle2,
   Star, ArrowRight, BadgeCheck, Lock, Banknote, Unlock, Copy, Check, MessageSquare, AlertCircle, RefreshCw,
   QrCode, X, ExternalLink, Download, Smartphone, HelpCircle, Share2, FileText, RotateCcw,
-  Upload, Clock, Image as ImageIcon
+  Upload, Clock, Image as ImageIcon, ShieldCheck, CreditCard, Sparkles
 } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { DirectContactSEO } from '../../seo/pageMetadata';
@@ -11,6 +11,23 @@ import CitySelectorModal from '../../components/common/CitySelectorModal';
 import { useAuth } from '../../context/AuthContext';
 
 const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'https://api.gomytruck.com/api/v1';
+
+// Dynamic Razorpay Checkout SDK loader (SSR-safe)
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return resolve(false);
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 /* ══════════════════════════════════════════════════════════════════════════════════
    PRODUCTION RAZORPAY INTEGRATION CREDENTIALS (RETAINED FOR PRODUCTION DEPLOYMENT)
@@ -96,7 +113,17 @@ export default function DirectContactPage() {
   const [unlockedMetadata, setUnlockedMetadata] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
-  // UPI QR Code Modal State
+  // Razorpay Checkout Modal & Success Modal State
+  const [isRazorpayModalOpen, setIsRazorpayModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [successData, setSuccessData] = useState(null);
+  const [customerName, setCustomerName] = useState(user?.name || '');
+  const [customerEmail, setCustomerEmail] = useState(user?.email || '');
+  const [isPayingRazorpay, setIsPayingRazorpay] = useState(false);
+  const [razorpayError, setRazorpayError] = useState(null);
+  const [purchasedPacks, setPurchasedPacks] = useState([]);
+
+  // Legacy UPI QR Code Modal State (Retained for backup / offline support)
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isLoginAlertModalOpen, setIsLoginAlertModalOpen] = useState(false);
   const [customerPhone, setCustomerPhone] = useState(user?.phone || '');
@@ -118,7 +145,7 @@ export default function DirectContactPage() {
 
   // Lock body scroll when any modal is open
   useEffect(() => {
-    if (isQRModalOpen || isRestoreModalOpen || isLoginAlertModalOpen) {
+    if (isQRModalOpen || isRestoreModalOpen || isLoginAlertModalOpen || isRazorpayModalOpen || isSuccessModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -126,7 +153,7 @@ export default function DirectContactPage() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isQRModalOpen, isRestoreModalOpen, isLoginAlertModalOpen]);
+  }, [isQRModalOpen, isRestoreModalOpen, isLoginAlertModalOpen, isRazorpayModalOpen, isSuccessModalOpen]);
 
   // Check local storage for unlocked status on service or city change
   useEffect(() => {
@@ -196,43 +223,100 @@ export default function DirectContactPage() {
       const url = `${API_BASE}/payments/check-direct-contact-status?phone=${cleanPhone}&service=${encodeURIComponent(selectedService.label)}&city=${encodeURIComponent(selectedCity.name)}`;
       const res = await fetch(url);
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success && data.data?.isVerified) {
-        const unmaskedMap = {};
-        if (data.data.unlockedWorkers?.length > 0) {
-          data.data.unlockedWorkers.forEach((w) => {
-            unmaskedMap[w.id] = w.phone;
-          });
+      if (res.ok && data.success) {
+        if (Array.isArray(data.data?.purchasedPacks) && data.data.purchasedPacks.length > 0) {
+          setPurchasedPacks(data.data.purchasedPacks);
         }
-        workers.forEach((w) => {
-          if (!unmaskedMap[w.id] && w.phoneRaw) {
-            unmaskedMap[w.id] = w.phoneRaw;
+        if (data.data?.isVerified) {
+          const unmaskedMap = {};
+          if (data.data.unlockedWorkers?.length > 0) {
+            data.data.unlockedWorkers.forEach((w) => {
+              unmaskedMap[w.id] = w.phone;
+            });
           }
-        });
-        const envelope = {
-          isUnlocked: true,
-          unmaskedNumbers: unmaskedMap,
-          customerPhone: cleanPhone,
-          utr: data.data.utr,
-          serviceId: selectedService.id,
-          serviceLabel: selectedService.label,
-          citySlug: selectedCity.slug,
-          cityName: selectedCity.name,
-          unlockedAt: data.data.verifiedAt || new Date().toISOString(),
-        };
-        setIsUnlocked(true);
-        setUnmaskedNumbers(unmaskedMap);
-        setUnlockedMetadata(envelope);
-        setRequestStatus('VERIFIED');
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+          workers.forEach((w) => {
+            if (!unmaskedMap[w.id] && w.phoneRaw) {
+              unmaskedMap[w.id] = w.phoneRaw;
+            }
+          });
+          const envelope = {
+            isUnlocked: true,
+            unmaskedNumbers: unmaskedMap,
+            customerPhone: cleanPhone,
+            utr: data.data.utr,
+            serviceId: selectedService.id,
+            serviceLabel: selectedService.label,
+            citySlug: selectedCity.slug,
+            cityName: selectedCity.name,
+            unlockedAt: data.data.verifiedAt || new Date().toISOString(),
+          };
+          setIsUnlocked(true);
+          setUnmaskedNumbers(unmaskedMap);
+          setUnlockedMetadata(envelope);
+          setRequestStatus('VERIFIED');
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+          }
+        } else if (data.data?.status === 'PENDING') {
+          setRequestStatus('PENDING');
         }
-      } else if (data.data?.status === 'PENDING') {
-        setRequestStatus('PENDING');
       }
     } catch {
       // silent
     }
   }, [selectedService.id, selectedService.label, selectedCity.slug, selectedCity.name, workers]);
+
+  // Handle switching to a previously purchased service pack
+  const handleSelectPurchasedPack = (pack) => {
+    const matchedService = SERVICE_CATEGORIES.find(
+      (c) => c.label.toLowerCase() === pack.serviceCategory.toLowerCase() ||
+             c.trade.toLowerCase() === pack.serviceCategory.toLowerCase() ||
+             pack.serviceCategory.toLowerCase().includes(c.id)
+    ) || SERVICE_CATEGORIES[0];
+    setSelectedService(matchedService);
+
+    setSelectedCity({ name: pack.city, slug: pack.city.toLowerCase().replace(/\s+/g, '-') });
+
+    if (pack.workers && pack.workers.length > 0) {
+      setWorkers(pack.workers.map((w, idx) => ({
+        id: w.id,
+        name: w.name,
+        jobType: w.jobType,
+        experience: `${3 + (idx % 6)} yrs exp`,
+        city: w.city,
+        area: w.area || pack.city,
+        price: 'Verified Market Rate',
+        skills: `Certified ${w.jobType} · Aadhaar KYC Verified`,
+        rating: '4.8',
+        reviews: 25 + idx * 3,
+        distance: 'Direct Contact',
+        status: 'Aadhaar Verified',
+        phoneMasked: `${w.phone.slice(0, 2)}••••••${w.phone.slice(-2)}`,
+        phoneRaw: w.phone,
+      })));
+
+      const unmaskedMap = {};
+      pack.workers.forEach((w) => {
+        unmaskedMap[w.id] = w.phone;
+      });
+      setUnmaskedNumbers(unmaskedMap);
+      setIsUnlocked(true);
+      setUnlockedMetadata({
+        isUnlocked: true,
+        unmaskedNumbers: unmaskedMap,
+        customerPhone: user?.phone?.replace(/\D/g, '') || pack.customerPhone,
+        paymentId: pack.razorpayPaymentId || pack.utr,
+        serviceId: matchedService.id,
+        serviceLabel: matchedService.label,
+        citySlug: pack.city.toLowerCase().replace(/\s+/g, '-'),
+        cityName: pack.city,
+        unlockedAt: pack.verifiedAt,
+      });
+    }
+
+    const el = document.getElementById('workers-grid');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   // Automatically check status whenever user logs in or phone changes
   useEffect(() => {
@@ -242,30 +326,189 @@ export default function DirectContactPage() {
     }
   }, [user?.phone, customerPhone, checkExistingUnlock]);
 
-  // Only unmask full phone numbers if the user is authenticated and matches the verified customer phone!
+  // Only unmask full phone numbers if the user is authenticated and matches the verified customer phone, OR if unlocked via Razorpay in this session
   const loggedInPhone = user?.phone ? user.phone.replace(/\D/g, '') : null;
   const unlockedTargetPhone = unlockedMetadata?.customerPhone ? unlockedMetadata.customerPhone.replace(/\D/g, '') : null;
   const isUnlockedForCurrentSession = Boolean(
-    isUnlocked &&
-    loggedInPhone &&
-    unlockedTargetPhone &&
-    loggedInPhone === unlockedTargetPhone
+    isUnlocked && (
+      (loggedInPhone && unlockedTargetPhone && loggedInPhone === unlockedTargetPhone) ||
+      (unlockedMetadata?.paymentId && unlockedMetadata?.customerPhone)
+    )
   );
 
-  // Open UPI QR Scanner Modal (Strictly guarded: User MUST be logged in first!)
+  // Open Razorpay Checkout Details Modal
   const handleOpenQRModal = () => {
-    if (!user) {
-      if (typeof openAuthModal === 'function') {
-        openAuthModal('CUSTOMER');
-      }
+    setIsRazorpayModalOpen(true);
+    setRazorpayError(null);
+    if (user?.phone) {
+      setCustomerPhone(user.phone.replace(/\D/g, ''));
+    }
+    if (user?.name) {
+      setCustomerName(user.name);
+    }
+    if (user?.email) {
+      setCustomerEmail(user.email);
+    }
+  };
+
+  // Process Official Razorpay Checkout Payment (₹49)
+  const handlePayWithRazorpay = async (e) => {
+    if (e) e.preventDefault();
+    setRazorpayError(null);
+
+    const cleanPhone = String(customerPhone || '').replace(/\D/g, '');
+    if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      setRazorpayError('Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).');
       return;
     }
-    setIsQRModalOpen(true);
-    setModalError(null);
-    setUtrCharError(null);
-    setPaymentMessage(null);
-    if (user.phone) {
-      setCustomerPhone(user.phone.replace(/\D/g, ''));
+
+    if (!customerName || customerName.trim().length < 2) {
+      setRazorpayError('Please enter your full name.');
+      return;
+    }
+
+    setIsPayingRazorpay(true);
+
+    try {
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        throw new Error('Could not load Razorpay payment gateway. Please check your internet connection.');
+      }
+
+      // 1. Create order on backend with platform & metadata
+      const orderRes = await fetch(`${API_BASE}/payments/create-direct-contact-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          city: selectedCity.name,
+          serviceCategory: selectedService.label,
+          customerName: customerName.trim(),
+          customerPhone: cleanPhone,
+          customerEmail: customerEmail?.trim() || undefined,
+          workerIds: workers.map((w) => w.id),
+          platform: 'WORKFORCE_WEB',
+        }),
+      });
+
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.success || !orderData.data?.orderId) {
+        throw new Error(orderData.message || 'Failed to initialize payment order with gateway. Please try again.');
+      }
+
+      const { orderId, amount, currency, keyId } = orderData.data;
+
+      // 2. Open standard Razorpay Checkout Modal
+      const options = {
+        key: keyId,
+        amount: amount || 4900,
+        currency: currency || 'INR',
+        name: 'Metro Mitra',
+        description: `Unlock 10 ${selectedService.label} Contacts in ${selectedCity.name}`,
+        image: '/favicon.png',
+        order_id: orderId,
+        prefill: {
+          name: customerName.trim(),
+          contact: cleanPhone,
+          email: customerEmail?.trim() || '',
+        },
+        theme: {
+          color: '#0F766E', // MetroMitra Teal
+        },
+        modal: {
+          ondismiss: function () {
+            setIsPayingRazorpay(false);
+          },
+        },
+        handler: async function (response) {
+          try {
+            // 3. Verify Razorpay payment on backend
+            const verifyRes = await fetch(`${API_BASE}/payments/verify-direct-contact`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                customerPhone: cleanPhone,
+                customerName: customerName.trim(),
+                customerEmail: customerEmail?.trim() || undefined,
+                workerIds: workers.map((w) => w.id),
+                serviceCategory: selectedService.label,
+                city: selectedCity.name,
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+            if (!verifyRes.ok || !verifyData.success) {
+              throw new Error(verifyData.message || 'Payment verification failed. Please contact support.');
+            }
+
+            // 4. Unmask worker contacts immediately in UI
+            const unmaskedMap = {};
+            if (verifyData.data?.unlockedWorkers?.length > 0) {
+              verifyData.data.unlockedWorkers.forEach((w) => {
+                unmaskedMap[w.id] = w.phone;
+              });
+            }
+            workers.forEach((w) => {
+              if (!unmaskedMap[w.id] && w.phoneRaw) {
+                unmaskedMap[w.id] = w.phoneRaw;
+              }
+            });
+
+            const envelope = {
+              isUnlocked: true,
+              unmaskedNumbers: unmaskedMap,
+              customerPhone: cleanPhone,
+              customerName: customerName.trim(),
+              customerEmail: customerEmail?.trim() || null,
+              serviceId: selectedService.id,
+              serviceLabel: selectedService.label,
+              citySlug: selectedCity.slug,
+              cityName: selectedCity.name,
+              unlockedAt: new Date().toISOString(),
+              paymentId: response.razorpay_payment_id,
+            };
+
+            setIsUnlocked(true);
+            setUnmaskedNumbers(unmaskedMap);
+            setUnlockedMetadata(envelope);
+            setRequestStatus('VERIFIED');
+
+            if (typeof window !== 'undefined') {
+              localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+              localStorage.setItem('purchased_customer_phone', cleanPhone);
+            }
+
+            // 5. Close checkout modal and show celebratory Success Popup Modal
+            setIsRazorpayModalOpen(false);
+            setSuccessData({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              customerPhone: cleanPhone,
+              customerName: customerName.trim(),
+              customerEmail: customerEmail?.trim() || '',
+              serviceLabel: selectedService.label,
+              cityName: selectedCity.name,
+            });
+            setIsSuccessModalOpen(true);
+          } catch (verifyErr) {
+            setRazorpayError(verifyErr.message || 'Payment verification failed. Please contact support with your Payment ID.');
+          } finally {
+            setIsPayingRazorpay(false);
+          }
+        },
+      };
+
+      const rzpInstance = new window.Razorpay(options);
+      rzpInstance.on('payment.failed', function (resp) {
+        setRazorpayError(resp.error?.description || 'Payment was declined or cancelled.');
+        setIsPayingRazorpay(false);
+      });
+      rzpInstance.open();
+    } catch (err) {
+      setRazorpayError(err.message || 'Unable to open payment gateway.');
+      setIsPayingRazorpay(false);
     }
   };
 
@@ -832,6 +1075,67 @@ export default function DirectContactPage() {
                 )}
               </div>
 
+              {/* Active Purchased Service Packs (For Logged-in Customers) */}
+              {user && purchasedPacks.length > 0 && (
+                <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 rounded-2xl p-4 border border-emerald-200 shadow-2xs space-y-2.5 animate-in fade-in">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-2.5 w-2.5 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                      </span>
+                      <h3 className="text-xs font-black text-emerald-950 uppercase tracking-wider">
+                        Your Unlocked Worker Packs ({purchasedPacks.length})
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full">
+                      Permanent Access
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {purchasedPacks.map((pack) => {
+                      const isCurrent =
+                        selectedService.label.toLowerCase() === pack.serviceCategory.toLowerCase() &&
+                        selectedCity.name.toLowerCase() === pack.city.toLowerCase();
+                      return (
+                        <div
+                          key={pack.id}
+                          className={`p-3 rounded-xl border transition-all flex items-center justify-between gap-2 ${
+                            isCurrent
+                              ? 'bg-white border-emerald-400 shadow-xs ring-1 ring-emerald-400'
+                              : 'bg-white/80 border-slate-200 hover:border-emerald-300'
+                          }`}
+                        >
+                          <div>
+                            <div className="flex items-center gap-1.5 font-black text-xs text-slate-900">
+                              <span>{pack.serviceCategory}</span>
+                              <span className="text-slate-400 font-normal">·</span>
+                              <span className="text-emerald-700 font-semibold">{pack.city}</span>
+                            </div>
+                            <p className="text-[10.5px] text-slate-500 mt-0.5">
+                              {pack.workerCount || pack.workers?.length || 10} numbers unlocked
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleSelectPurchasedPack(pack)}
+                            className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                              isCurrent
+                                ? 'bg-emerald-600 text-white shadow-xs'
+                                : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800'
+                            }`}
+                          >
+                            {isCurrent ? 'Viewing' : 'View Numbers'}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Workers Loading Skeleton */}
               {isLoadingWorkers && (
                 <div className="space-y-3">
@@ -1097,254 +1401,153 @@ export default function DirectContactPage() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════════════════════
-          UPI QR CODE SCANNER MODAL (PARTHER TECHNOLOGIES OFFICIAL PAYMENT MODAL)
+          RAZORPAY PRODUCTION CHECKOUT MODAL (COLLECTS NAME, PHONE, EMAIL)
           Z-INDEX 200: Overlays entire window, including navbar.
          ══════════════════════════════════════════════════════════════════════════ */}
-      {isQRModalOpen && (
+      {isRazorpayModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg sm:max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto flex flex-col animate-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-md sm:max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto flex flex-col animate-in zoom-in-95 duration-200">
             
             {/* Header */}
-            <div className="pt-6 px-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 text-left relative">
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-wide uppercase text-amber-900 bg-amber-200/80 px-3 py-1 rounded-full mb-1.5 shadow-2xs">
-                <QrCode className="w-3.5 h-3.5 text-amber-700" />
-                <span>Official UPI QR Payment</span>
+            <div className="pt-6 px-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 text-left relative">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-wide uppercase text-teal-900 bg-teal-200/80 px-3 py-1 rounded-full mb-1.5 shadow-2xs">
+                <CreditCard className="w-3.5 h-3.5 text-teal-700" />
+                <span>Razorpay Secure Checkout</span>
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                Scan & Pay ₹49
+                Unlock 10 Worker Numbers
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Unlock 10 verified {selectedService.label} mobile numbers in {selectedCity.name}
+                Verified <strong>{selectedService.label}s</strong> in <strong>{selectedCity.name}</strong> • Flat ₹49
               </p>
 
               <button
                 type="button"
-                onClick={() => setIsQRModalOpen(false)}
+                onClick={() => setIsRazorpayModalOpen(false)}
                 className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer"
-                title="Close Modal"
+                title="Close Checkout"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Modal Scrollable Body */}
-            <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 max-h-[75vh] custom-scrollbar text-center">
+            {/* Modal Body */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-4 max-h-[75vh] custom-scrollbar text-left">
               
-              {/* Merchant Summary Bar */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-left">
-                <div className="flex justify-between items-center text-slate-900 font-black text-xs sm:text-sm">
-                  <span>Merchant: Parther Technologies</span>
-                  <span className="text-emerald-700 font-black text-sm">₹49 One-Time</span>
+              {/* Pricing & Value Summary Card */}
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
+                <div className="flex justify-between items-center text-slate-900 font-black text-sm">
+                  <span>Direct Contact Unlock Fee</span>
+                  <span className="text-emerald-700 text-base font-black">₹49.00</span>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Unlocks: 10 Verified <strong>{selectedService.label}s</strong> in <strong>{selectedCity.name}</strong>. Zero broker margin.
-                </p>
+                <div className="mt-2 text-[11px] text-slate-600 space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span><strong>10 Aadhaar-KYC Verified</strong> mobile numbers unmasked instantly</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span><strong>Zero Brokerage:</strong> Deal, negotiate & pay workers directly</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Large High-Resolution QR Code Card */}
-              <div className="bg-white p-3 sm:p-4 rounded-3xl border-2 border-amber-300 shadow-md inline-block max-w-[320px] sm:max-w-[360px] w-full mx-auto space-y-2.5">
-                <img
-                  src="/parthertechnologies-qr-card.png"
-                  alt="Parther Technologies Official UPI QR Code"
-                  className="w-full h-auto max-w-[280px] sm:max-w-[320px] object-contain mx-auto rounded-xl"
-                />
-
-                {/* Download QR Code Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    fetch('/parthertechnologies-qr.png')
-                      .then((res) => res.blob())
-                      .then((blob) => {
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        a.download = 'parthertechnologies-qr.png';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                        document.body.removeChild(a);
-                      })
-                      .catch(() => {
-                        const a = document.createElement('a');
-                        a.href = '/parthertechnologies-qr.png';
-                        a.download = 'parthertechnologies-qr.png';
-                        a.click();
-                      });
-                  }}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-98 cursor-pointer"
-                  title="Download QR Code to phone"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download QR Code</span>
-                </button>
-              </div>
-
-              {/* Simple Hint for Mobile Users */}
-              <p className="text-[11px] text-slate-500 bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 max-w-[320px] sm:max-w-[360px] mx-auto text-left leading-relaxed">
-                💡 <strong>Using phone?</strong> Click <em>"Download QR Code"</em> above → Open GPay / PhonePe / Paytm → Tap scanner icon → Select <strong>"Upload from Gallery"</strong> to pay ₹49.
-              </p>
-
-              {/* Form: Customer Phone & Mandatory UTR */}
-              <form onSubmit={handleConfirmQRPayment} className="space-y-3 text-left pt-1">
-                
-                {modalError && (
+              {/* Checkout Form */}
+              <form onSubmit={handlePayWithRazorpay} className="space-y-3.5">
+                {razorpayError && (
                   <div className="p-3 rounded-xl bg-rose-50 text-rose-800 border border-rose-200 text-xs font-bold flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-                    <span>{modalError}</span>
+                    <span>{razorpayError}</span>
                   </div>
                 )}
 
+                {/* Name */}
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Your Full Name <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Rahul Sharma"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
+                    required
+                  />
+                </div>
+
+                {/* Mobile Number */}
                 <div>
                   <label className="block text-[11px] font-bold text-slate-700 mb-1">
                     Your 10-Digit Mobile Number <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-xs text-slate-500 font-bold">+91</span>
+                    <span className="absolute left-3.5 top-2.5 text-xs text-slate-500 font-bold">+91</span>
                     <input
                       type="tel"
                       maxLength={10}
-                      placeholder="e.g. 9831488999"
+                      placeholder="e.g. 9831000000"
                       value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full pl-11 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all"
+                      onChange={(e) => setCustomerPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
                       required
                     />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1">
-                    Used to link and secure your unlocked worker contacts.
+                    Your unmasked worker numbers will be permanently linked to this number.
                   </p>
                 </div>
 
+                {/* Email (Optional) */}
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-[11px] font-bold text-slate-700">
-                      12-Digit UPI Transaction ID / UTR Number <span className="text-rose-500">*</span>
-                    </label>
-                    <span className={utrNumber.length === 12 ? 'text-[10px] font-black text-emerald-600' : utrNumber.length > 0 ? 'text-[10px] font-bold text-amber-600' : 'text-[10px] text-slate-400'}>
-                      {utrNumber.length} / 12 digits
-                    </span>
-                  </div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                    Email Address <span className="text-slate-400 font-normal">(for payment receipt)</span>
+                  </label>
                   <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={12}
-                    placeholder="e.g. 424901823941"
-                    value={utrNumber}
-                    onChange={handleUtrChange}
-                    className={[
-                      'w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono font-bold outline-none transition-all',
-                      utrCharError ? 'border-rose-400 bg-rose-50/40 text-rose-900 focus:ring-2 focus:ring-rose-200' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-200'
-                    ].join(' ')}
-                    required
+                    type="email"
+                    placeholder="e.g. rahul@gmail.com"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
                   />
-
-                  {/* Character Validation Warning */}
-                  {utrCharError && (
-                    <div className="mt-1 p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold flex items-center gap-1.5 animate-in fade-in">
-                      <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                      <span>{utrCharError}</span>
-                    </div>
-                  )}
-
-                  <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1">
-                    <HelpCircle className="w-3 h-3 text-slate-400" />
-                    Found on payment success screen in GPay, PhonePe, or Paytm ("UPI Ref No" or "UTR"). Numbers only.
-                  </p>
                 </div>
 
-                {/* Upload Payment Screenshot Proof */}
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-[11px] font-bold text-slate-700">
-                      Upload Payment Screenshot <span className="text-rose-500">*</span>
-                    </label>
-                    {screenshotPreview && (
-                      <button
-                        type="button"
-                        onClick={() => { setScreenshotPreview(null); setPaymentScreenshot(null); }}
-                        className="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer"
-                      >
-                        Remove / Change
-                      </button>
-                    )}
+                {/* Payment Security Badge */}
+                <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-2.5 flex items-center justify-between text-[11px] text-emerald-900 font-medium">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Razorpay 256-Bit SSL Protected</span>
                   </div>
-
-                  {!screenshotPreview ? (
-                    <label className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-4 flex flex-col items-center justify-center gap-1.5 cursor-pointer bg-slate-50/70 hover:bg-emerald-50/30 transition-all text-center group">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleScreenshotSelect}
-                        className="hidden"
-                      />
-                      <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:scale-105 transition-transform">
-                        <Upload className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-bold text-slate-800">Tap to upload payment screenshot</span>
-                      <span className="text-[10px] text-slate-400">GPay, PhonePe, or Paytm receipt (PNG, JPG, WEBP)</span>
-                    </label>
-                  ) : (
-                    <div className="relative rounded-xl border border-emerald-300 bg-emerald-50/50 p-2.5 flex items-center gap-3 animate-in fade-in">
-                      <img
-                        src={screenshotPreview}
-                        alt="Payment receipt preview"
-                        className="w-14 h-14 object-cover rounded-lg border border-emerald-200 shadow-xs shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1 text-emerald-900 font-bold text-xs">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>Receipt Attached</span>
-                        </div>
-                        <p className="text-[10px] text-emerald-700 mt-0.5 leading-snug">
-                          Ready for admin verification.
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  <span className="text-[10px] text-slate-500">UPI • Cards • NetBanking</span>
                 </div>
 
                 {/* Submit Action */}
                 <button
                   type="submit"
-                  disabled={isConfirmingPayment || utrNumber.length !== 12 || !paymentScreenshot}
-                  className="w-full mt-2 py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isPayingRazorpay || !customerPhone || customerPhone.length < 10 || !customerName}
+                  className="w-full py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isConfirmingPayment ? (
+                  {isPayingRazorpay ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Submitting Payment Proof...</span>
+                      <span>Opening Payment Gateway...</span>
                     </>
                   ) : (
                     <>
-                      <CheckCircle className="w-4 h-4" />
-                      <span>Submit Payment Proof for Verification</span>
+                      <Lock className="w-4 h-4" />
+                      <span>Proceed to Pay ₹49 via Razorpay</span>
                     </>
                   )}
                 </button>
               </form>
 
-              {/* WhatsApp Verification Alternative */}
-              <div className="pt-1">
-                <a
-                  href={`https://wa.me/919331488999?text=${encodeURIComponent(`Hello Metro Mitra team, I paid ₹49 via UPI QR for ${selectedService.label} worker numbers in ${selectedCity.name}. Please verify.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500 hover:text-green-700 hover:underline"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-green-600" />
-                  <span>Facing an issue? WhatsApp payment screenshot to +91 9331488999</span>
-                </a>
-              </div>
-
             </div>
 
-            {/* Footer / Dismiss */}
+            {/* Footer */}
             <div className="p-3 border-t border-slate-100 bg-slate-50 text-center">
               <button
                 type="button"
-                onClick={() => setIsQRModalOpen(false)}
+                onClick={() => setIsRazorpayModalOpen(false)}
                 className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
               >
                 Cancel / Close
@@ -1354,6 +1557,119 @@ export default function DirectContactPage() {
           </div>
         </div>
       )}
+
+      {/* ══════════════════════════════════════════════════════════════════════════
+          BIG PAYMENT SUCCESS MODAL (PERSISTENCE & LOGIN CALLOUT)
+          Z-INDEX 250: Prominently alerts user to login so numbers stay saved!
+         ══════════════════════════════════════════════════════════════════════════ */}
+      {isSuccessModalOpen && (
+        <div className="fixed inset-0 z-[250] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto flex flex-col animate-in zoom-in-95 duration-200 text-center">
+            
+            {/* Close */}
+            <button
+              type="button"
+              onClick={() => setIsSuccessModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="p-6 sm:p-8 space-y-5">
+              {/* Success Badge */}
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+                <CheckCircle2 className="w-10 h-10" />
+              </div>
+
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 mb-2">
+                  <Sparkles className="w-3 h-3 text-emerald-600" />
+                  <span>Payment Verified Successfully</span>
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  ₹49 Payment Received!
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  10 Verified <strong>{successData?.serviceLabel}</strong> contacts in <strong>{successData?.cityName}</strong> are unlocked!
+                </p>
+                {successData?.paymentId && (
+                  <p className="text-[10px] font-mono text-slate-400 mt-1">
+                    Razorpay Payment ID: {successData.paymentId}
+                  </p>
+                )}
+              </div>
+
+              {/* Crucial Account Persistence Callout Box */}
+              {!user ? (
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 text-left space-y-2">
+                  <div className="flex items-center gap-2 text-amber-900 font-black text-sm">
+                    <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0" />
+                    <span>Login to Keep Your Purchased Numbers!</span>
+                  </div>
+                  <p className="text-xs text-amber-800 leading-relaxed font-medium">
+                    Please Log In with your mobile number (<strong>+91 {successData?.customerPhone}</strong>) so these 10 worker numbers stay permanently saved to your account! Whenever you visit MetroMitra from any phone or computer, simply log in to view and call your unlocked workers anytime without paying again.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSuccessModalOpen(false);
+                      if (typeof openAuthModal === 'function') {
+                        openAuthModal('CUSTOMER');
+                      }
+                    }}
+                    className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Log In with Mobile OTP (+91 {successData?.customerPhone})</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-left space-y-1.5">
+                  <div className="flex items-center gap-2 text-emerald-900 font-black text-sm">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                    <span>Saved to Your Account (+91 {user.phone})</span>
+                  </div>
+                  <p className="text-xs text-emerald-800 leading-relaxed">
+                    All 10 worker contacts are permanently saved to your account. You can return anytime and access their numbers directly from this page or your dashboard.
+                  </p>
+                </div>
+              )}
+
+              {/* Action: Call Workers Now */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSuccessModalOpen(false);
+                    const el = document.getElementById('workers-grid');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="w-full py-3.5 px-6 rounded-2xl font-black text-sm text-white bg-slate-900 hover:bg-slate-800 shadow-md transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Phone className="w-4 h-4 text-emerald-400" />
+                  <span>View Unlocked Numbers & Start Calling</span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════════
+          LEGACY STATIC UPI QR CODE SCANNER MODAL (COMMENTED OUT FOR PRODUCTION)
+          Preserved for offline manual backup if needed.
+         ══════════════════════════════════════════════════════════════════════════ */}
+      {/*
+      {isQRModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200">
+          ...
+        </div>
+      )}
+      */}
 
       {/* ══════════════════════════════════════════════════════════════════════════
           LOGIN REQUIRED ALERT MODAL (VERIFIES REAL USER BEFORE PAYMENT)

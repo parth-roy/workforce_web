@@ -12,14 +12,24 @@ Disallow: /contractor/dashboard/
 Disallow: /user/orders
 Disallow: /checkout
 
-# AI Search & Answer Engines (Explicitly Allowed for Geo/AI Discovery)
+# Search Engines & Web Crawlers
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+# AI Search & Generative Answer Engines (Explicitly Allowed for Geo/AI Discovery & RAG)
+User-agent: Google-Extended
+Allow: /
+User-agent: GPTBot
+Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 User-agent: PerplexityBot
 Allow: /
-User-agent: Applebot
+User-agent: ClaudeBot
 Allow: /
-User-agent: Google-Extended
+User-agent: Applebot
 Allow: /
 
 # Canonical Sitemap Index

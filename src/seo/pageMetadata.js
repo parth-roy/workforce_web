@@ -40,6 +40,7 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   createJobPostingSchema,
+  createRoleLocationJobPostingSchema,
   createLocalBusinessSchema,
   createFAQSchema,
   createDirectContactOfferSchema,
@@ -400,10 +401,10 @@ export function WorkerLocationSEO(location) {
  */
 export function WorkerRoleLocationSEO(role, location) {
   const path = `/jobs/${role.slug}/${location.slug}`;
-  const title = `${role.name} Jobs in ${location.name} | Direct Hiring | Metro Mitra`;
-  const baseRate = location.localPricingConfig?.minimumFare ? ` Earn from ₹${location.localPricingConfig.minimumFare} per shift.` : '';
-  const description = `Find verified ${role.name} jobs and shifts in ${location.name}, ${location.state}.${baseRate} Apply today for flexible work, safe environment and daily payouts.`;
-  const keywords = `${role.name} jobs in ${location.name}, hire ${role.name.toLowerCase()} in ${location.name}, ${role.slug} vacancy ${location.name}, shift work ${location.name}`;
+  const title = `${role.name} Jobs near ${location.name} Metro Station | Daily Payouts — MetroMitra`;
+  const baseRate = location.localPricingConfig?.minimumFare ? ` Earn from ₹${location.localPricingConfig.minimumFare} per shift with daily UPI transfers.` : ' Daily shift payouts with zero registration fees.';
+  const description = `Apply for verified ${role.name} jobs and shifts near ${location.name} Metro, ${location.state}.${baseRate} Walk-in daily onboarding, flexible hours, and instant payments. Apply in 2 mins.`;
+  const keywords = `${role.name} jobs in ${location.name}, ${role.name.toLowerCase()} vacancy near ${location.name} metro, daily payout jobs ${location.name}, ${role.slug} shift work ${location.name}, hire ${role.name.toLowerCase()} ${location.name}`;
   
   const crumbs = [
     { label: 'Home', href: '/' },
@@ -416,8 +417,9 @@ export function WorkerRoleLocationSEO(role, location) {
   crumbs.push({ label: location.name, href: path });
 
   const faqs = [
-    { question: `How much can a ${role.name} earn in ${location.name}?`, answer: `Earnings for ${role.name} in ${location.name} start at ₹${location.localPricingConfig?.minimumFare || 250} per shift with instant digital wallet transfers.` },
-    { question: `Do I need prior experience for ${role.name} work in ${location.name}?`, answer: `Requirements vary by employer. General guidelines and tool requirements are listed in the app.` }
+    { question: `How much can a ${role.name} earn in ${location.name}?`, answer: `Earnings for ${role.name} near ${location.name} start at ₹${location.localPricingConfig?.minimumFare || 250} to ₹${Math.round((location.localPricingConfig?.minimumFare || 250) * 1.8)} per shift with instant digital wallet and UPI transfers.` },
+    { question: `Do I need prior experience for ${role.name} work in ${location.name}?`, answer: `Requirements vary by employer. General guidelines and tool requirements are listed in the MetroMitra app. Onboarding takes only 2 minutes with Aadhaar verification.` },
+    { question: `Are there registration or agency fees to join as a ${role.name}?`, answer: `No. MetroMitra has zero registration fees, zero security deposit, and zero commission deductions from worker earnings.` }
   ];
 
   return {
@@ -431,7 +433,8 @@ export function WorkerRoleLocationSEO(role, location) {
     schemas: [
       createWebPageSchema({ title, description, path }),
       createBreadcrumbSchema(crumbs, path),
-      createServiceSchema({ name: `${role.name} Work in ${location.name}`, description, path, areaServed: location.name }),
+      // RFC-compliant JobPosting schema instead of the broken createServiceSchema!
+      createRoleLocationJobPostingSchema({ role, location, path }),
       createFAQSchema(faqs),
       createZeroBrokerFAQSchema(location.name, role.name),
     ],

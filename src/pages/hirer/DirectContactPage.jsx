@@ -99,6 +99,15 @@ function generateFallbackWorkers(category, city) {
   });
 }
 
+// Helper to extract first 2 and last 2 digits for clear display, and middle 6 for security blur
+function getPhoneDisplayParts(phoneRaw, phoneMasked) {
+  const clean = String(phoneRaw || phoneMasked || '9876543210').replace(/\D/g, '');
+  const prefix = clean.length >= 4 ? clean.slice(0, 2) : '98';
+  const suffix = clean.length >= 4 ? clean.slice(-2) : '21';
+  const middle = clean.length >= 8 ? clean.slice(2, -2) : '765432';
+  return { prefix, suffix, middle };
+}
+
 export default function DirectContactPage() {
   const { user, openAuthModal } = useAuth();
   const [selectedService, setSelectedService] = useState(SERVICE_CATEGORIES[0]);
@@ -122,6 +131,7 @@ export default function DirectContactPage() {
   const [isPayingRazorpay, setIsPayingRazorpay] = useState(false);
   const [razorpayError, setRazorpayError] = useState(null);
   const [purchasedPacks, setPurchasedPacks] = useState([]);
+  const [isWorkerModalOpen, setIsWorkerModalOpen] = useState(false);
 
   // Legacy UPI QR Code Modal State (Retained for backup / offline support)
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
@@ -145,7 +155,7 @@ export default function DirectContactPage() {
 
   // Lock body scroll when any modal is open
   useEffect(() => {
-    if (isQRModalOpen || isRestoreModalOpen || isLoginAlertModalOpen || isRazorpayModalOpen || isSuccessModalOpen) {
+    if (isQRModalOpen || isRestoreModalOpen || isLoginAlertModalOpen || isRazorpayModalOpen || isSuccessModalOpen || isWorkerModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -153,7 +163,7 @@ export default function DirectContactPage() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isQRModalOpen, isRestoreModalOpen, isLoginAlertModalOpen, isRazorpayModalOpen, isSuccessModalOpen]);
+  }, [isQRModalOpen, isRestoreModalOpen, isLoginAlertModalOpen, isRazorpayModalOpen, isSuccessModalOpen, isWorkerModalOpen]);
 
   // Check local storage for unlocked status on service or city change
   useEffect(() => {
@@ -316,6 +326,7 @@ export default function DirectContactPage() {
 
     const el = document.getElementById('workers-grid');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setIsWorkerModalOpen(true);
   };
 
   // Automatically check status whenever user logs in or phone changes
@@ -860,18 +871,21 @@ export default function DirectContactPage() {
                         <button
                           key={svc.id}
                           type="button"
-                          onClick={() => setSelectedService(svc)}
+                          onClick={() => {
+                            setSelectedService(svc);
+                            setIsWorkerModalOpen(true);
+                          }}
                           className={[
-                            'flex flex-col items-center gap-1 p-2 rounded-xl border transition-all text-center relative cursor-pointer',
+                            'flex flex-col items-center gap-1.5 p-2 rounded-xl border transition-all text-center relative cursor-pointer',
                             isSelected
-                              ? 'border-amber-500 bg-amber-50/80 shadow-xs ring-2 ring-amber-400/30'
-                              : 'border-slate-200 bg-slate-50/70 hover:border-slate-300 hover:bg-white'
+                              ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/25 ring-2 ring-amber-400/40 scale-[1.02]'
+                              : 'border-slate-200 bg-white/80 hover:border-amber-300 hover:bg-white text-slate-700 shadow-2xs'
                           ].join(' ')}
                         >
-                          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center">
+                          <div className={`w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center p-0.5 ${isSelected ? 'bg-white/20' : 'bg-slate-50'}`}>
                             <img src={svc.icon} alt={svc.label} className="w-full h-full object-contain" />
                           </div>
-                          <span className={['text-[10px] font-bold leading-tight line-clamp-1', isSelected ? 'text-amber-900' : 'text-slate-600'].join(' ')}>
+                          <span className={['text-[10.5px] font-extrabold leading-tight line-clamp-1', isSelected ? 'text-white' : 'text-slate-700'].join(' ')}>
                             {svc.label}
                           </span>
                         </button>
@@ -895,6 +909,19 @@ export default function DirectContactPage() {
                   <p className="text-xs text-slate-600 leading-relaxed">
                     Unlocks direct mobile phone numbers of 10 verified <strong>{selectedService.label}</strong> professionals in <strong>{selectedCity.name}</strong>. One-time payment. Zero commission.
                   </p>
+                </div>
+
+                {/* Mobile Trigger Button: View 10 Numbers in Pop-up Modal */}
+                <div className="lg:hidden mb-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsWorkerModalOpen(true)}
+                    className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-sm shadow-md shadow-amber-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98 transition-all"
+                  >
+                    <Phone className="w-4 h-4 fill-current" />
+                    <span>View 10 Verified {selectedService.label} Numbers</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
 
                 {/* Payment Feedback */}
@@ -1035,8 +1062,8 @@ export default function DirectContactPage() {
               </div>
             </div>
 
-            {/* ── RIGHT COLUMN: 10 WORKERS LIST ── */}
-            <div className="lg:col-span-7 space-y-4">
+            {/* ── RIGHT COLUMN: 10 WORKERS LIST (DESKTOP MODE) ── */}
+            <div className="hidden lg:block lg:col-span-7 space-y-4">
               
               {/* Header Box */}
               <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1195,127 +1222,138 @@ export default function DirectContactPage() {
                       <div
                         key={worker.id || index}
                         className={[
-                          'bg-white rounded-2xl border transition-all p-4 sm:p-5 shadow-2xs hover:shadow-sm',
-                          isWorkerUnlocked ? 'border-emerald-200 bg-emerald-50/10' : 'border-slate-200'
+                          'relative overflow-hidden rounded-2xl p-3 sm:p-3.5 border-2 transition-all space-y-2.5',
+                          isWorkerUnlocked
+                            ? 'border-emerald-300 bg-gradient-to-b from-white via-emerald-50/10 to-emerald-50/20 shadow-[0_4px_12px_-2px_rgba(16,185,129,0.12)]'
+                            : 'border-amber-200/90 bg-gradient-to-b from-white via-white to-amber-50/20 shadow-[0_4px_14px_-2px_rgba(217,119,6,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_18px_-3px_rgba(217,119,6,0.16)] hover:border-amber-400/90'
                         ].join(' ')}
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          
+                        {/* 3D Top Accent Bar */}
+                        <div className={`absolute inset-x-0 top-0 h-1 ${isWorkerUnlocked ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500'}`} />
+
+                        {/* Top Section: Avatar, Info & Upper-Right Floating Rating & Price */}
+                        <div className="flex items-start justify-between gap-2.5 pt-0.5">
                           {/* Left: Worker Info */}
-                          <div className="flex items-start gap-3.5">
+                          <div className="flex items-center gap-2.5 min-w-0">
                             {/* Avatar */}
                             <div className="relative shrink-0">
-                              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-700 text-white font-black text-base flex items-center justify-center shadow-xs">
+                              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 text-white font-black text-xs sm:text-sm flex items-center justify-center shadow-xs ring-2 ring-white">
                                 {worker.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
                               </div>
-                              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+                              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
                             </div>
 
                             {/* Details */}
-                            <div>
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="font-black text-slate-900 text-base leading-tight">
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <h4 className="font-black text-slate-900 text-sm sm:text-base leading-tight truncate">
                                   {worker.name}
-                                </h3>
-                                <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                  <BadgeCheck className="w-3 h-3 text-emerald-600" />
-                                  Aadhaar Verified
+                                </h4>
+                                <span className="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300/80 text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-full shadow-2xs">
+                                  <BadgeCheck className="w-3 h-3 text-emerald-600 shrink-0" />
+                                  Verified
                                 </span>
                               </div>
 
-                              <p className="text-xs text-slate-600 font-semibold mt-0.5">
+                              <p className="text-[11px] text-slate-600 font-semibold leading-snug">
                                 {worker.jobType} · <span className="text-slate-500 font-normal">{worker.experience}</span>
                               </p>
 
-                              {/* Badges row */}
-                              <div className="flex items-center gap-3 mt-2 flex-wrap text-xs">
-                                <span className="flex items-center gap-1 text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100">
-                                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                                  {worker.rating} <span className="text-slate-400 font-normal">({worker.reviews})</span>
-                                </span>
-
-                                <span className="text-slate-500 font-medium">
-                                  📍 {worker.distance}
-                                </span>
-
-                                <span className="text-slate-800 font-black bg-slate-100 px-2 py-0.5 rounded-md">
-                                  {worker.price}
-                                </span>
+                              {/* Kilometer first, then location of worker */}
+                              <div className="flex items-center gap-1 text-[10.5px] text-slate-500 font-medium leading-snug truncate">
+                                <span className="text-amber-800 font-bold whitespace-nowrap">📍 {worker.distance || '1.2 km away'}</span>
+                                <span className="text-slate-300">·</span>
+                                <span className="text-slate-600 font-medium truncate">{worker.area || `${selectedCity.name} Central`}</span>
                               </div>
-
-                              {worker.skills && (
-                                <p className="text-[11px] text-slate-500 mt-2 line-clamp-1 italic">
-                                  "{worker.skills}"
-                                </p>
-                              )}
                             </div>
                           </div>
 
-                          {/* Right: Phone & Action Box */}
-                          <div className="shrink-0 flex flex-col sm:items-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                            
-                            {/* Number Box */}
-                            <div className="flex items-center gap-2">
-                              <div className={[
-                                'px-3 py-1.5 rounded-xl text-xs font-mono font-black flex items-center gap-1.5 tracking-wide',
-                                isWorkerUnlocked
-                                  ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
-                                  : 'bg-slate-100 text-slate-600 border border-slate-200'
-                              ].join(' ')}>
-                                {isWorkerUnlocked ? (
-                                  <Unlock className="w-3.5 h-3.5 text-emerald-600" />
-                                ) : (
-                                  <Lock className="w-3.5 h-3.5 text-slate-400" />
-                                )}
-                                <span className={!isWorkerUnlocked ? 'blur-[1.5px] select-none' : ''}>
-                                  {displayedNumber}
-                                </span>
-                              </div>
-
-                              {isWorkerUnlocked && (
-                                <button
-                                  onClick={() => copyToClipboard(fullNumber, worker.id)}
-                                  className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-slate-100 transition-colors cursor-pointer"
-                                  title="Copy Phone Number"
-                                >
-                                  {copiedId === worker.id ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                                </button>
-                              )}
+                          {/* Right: UPPER RIGHT RATING + JOBS + PRICE */}
+                          <div className="flex flex-col items-end gap-0.5 shrink-0">
+                            <div className="flex items-center gap-1 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 text-amber-950 px-2 py-0.5 rounded-lg shadow-2xs">
+                              <Star className="w-3 h-3 fill-amber-400 text-amber-500 shrink-0" />
+                              <span className="font-black text-xs text-amber-950">{worker.rating}</span>
                             </div>
-
-                            {/* Actions */}
-                            {isWorkerUnlocked ? (
-                              <div className="flex items-center gap-2 w-full sm:w-auto">
-                                <a
-                                  href={`tel:${fullNumber}`}
-                                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-2xs"
-                                >
-                                  <Phone className="w-3.5 h-3.5" />
-                                  <span>Call</span>
-                                </a>
-                                <a
-                                  href={`https://wa.me/${fullNumber.replace(/\D/g, '')}?text=Hello%20${encodeURIComponent(worker.name)}%2C%20I%20got%20your%20number%20via%20Metro%20Mitra%20for%20${encodeURIComponent(selectedService.label)}%20work.`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors shadow-2xs"
-                                >
-                                  <MessageSquare className="w-3.5 h-3.5" />
-                                  <span>WhatsApp</span>
-                                </a>
-                              </div>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={handleOpenQRModal}
-                                className="inline-flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold px-3 py-1.5 rounded-xl transition-colors active:scale-95 cursor-pointer"
-                              >
-                                <QrCode className="w-3 h-3 text-amber-700" />
-                                <span>Unlock Number (₹49)</span>
-                              </button>
-                            )}
-
+                            <span className="text-[9.5px] font-bold text-slate-400 whitespace-nowrap">
+                              {worker.reviews || 23}+ jobs
+                            </span>
+                            <span className="font-black text-[10.5px] text-slate-800 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded-md whitespace-nowrap mt-0.5">
+                              {worker.price}
+                            </span>
                           </div>
                         </div>
+
+                        {/* BIG & WIDE Number Section */}
+                        {isWorkerUnlocked ? (
+                          <div className="w-full py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-300 shadow-2xs flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-2xs shrink-0">
+                                <Unlock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                              </div>
+                              <div className="font-mono text-xs sm:text-sm font-black text-emerald-950 tracking-tight flex items-center gap-0.5">
+                                <span className="text-emerald-700 text-[11px] sm:text-xs font-bold mr-0.5 select-none">+91</span>
+                                <span>{fullNumber.length === 10 ? `${fullNumber.slice(0, 5)} ${fullNumber.slice(5)}` : fullNumber}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => copyToClipboard(fullNumber, worker.id)}
+                                className="p-1 rounded-md text-emerald-700 hover:text-emerald-950 hover:bg-emerald-100 transition-colors cursor-pointer"
+                                title="Copy Phone Number"
+                              >
+                                {copiedId === worker.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                              </button>
+                            </div>
+
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <a
+                                href={`tel:${fullNumber}`}
+                                className="inline-flex items-center justify-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg transition-all shadow-2xs active:scale-95"
+                              >
+                                <Phone className="w-3 h-3" />
+                                <span>Call</span>
+                              </a>
+                              <a
+                                href={`https://wa.me/${fullNumber.replace(/\D/g, '')}?text=Hello%20${encodeURIComponent(worker.name)}%2C%20I%20got%20your%20number%20via%20Metro%20Mitra%20for%20${encodeURIComponent(selectedService.label)}%20work.`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 rounded-lg transition-all shadow-2xs active:scale-95"
+                              >
+                                <MessageSquare className="w-3 h-3" />
+                                <span>WA</span>
+                              </a>
+                            </div>
+                          </div>
+                        ) : (
+                          (() => {
+                            const { prefix, suffix, middle } = getPhoneDisplayParts(worker.phoneRaw, worker.phoneMasked);
+                            return (
+                              <div className="w-full py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-xl bg-gradient-to-r from-amber-50/90 via-orange-50/50 to-amber-100/70 border border-amber-200/90 shadow-2xs flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-2xs shrink-0">
+                                    <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                  </div>
+                                  <div className="flex items-center font-mono text-xs sm:text-sm font-black text-slate-900 tracking-tight">
+                                    <span className="text-slate-400 text-[11px] sm:text-xs font-bold mr-0.5 select-none">+91</span>
+                                    <span className="text-slate-900 font-black">{prefix}</span>
+                                    <span className="mx-0.5 px-1 py-0.5 rounded select-none filter blur-[3.5px] text-slate-500 font-mono tracking-wider bg-amber-100/60 pointer-events-none inline-block text-[11px] sm:text-xs">
+                                      {middle}
+                                    </span>
+                                    <span className="text-slate-900 font-black">{suffix}</span>
+                                  </div>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  onClick={handleOpenQRModal}
+                                  className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
+                                >
+                                  <span>Unlock (₹49)</span>
+                                  <ChevronRight className="w-3 h-3" />
+                                </button>
+                              </div>
+                            );
+                          })()
+                        )}
                       </div>
                     );
                   })}
@@ -1399,6 +1437,332 @@ export default function DirectContactPage() {
         </section>
 
       </div>
+
+      {/* ══════════════════════════════════════════════════════════════════════════
+          MODULAR POP-UP MODAL FOR WORKER NUMBERS (MOBILE-FIRST POP-UP ARCHITECTURE)
+          Styled exactly after the About Page Hero Promotional Card UI & Background.
+         ══════════════════════════════════════════════════════════════════════════ */}
+      {isWorkerModalOpen && (
+        <div className="fixed inset-0 z-[190] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div
+            className="relative overflow-hidden rounded-t-[32px] sm:rounded-3xl border-2 border-amber-300/90 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100/70 p-0 shadow-2xl shadow-amber-200/50 flex flex-col max-h-[92vh] sm:max-h-[88vh] w-full max-w-2xl animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+          >
+            {/* Background Decorative Blobs from About Page */}
+            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-56 h-56 rounded-full bg-gradient-to-br from-amber-300/35 to-orange-300/25 blur-2xl pointer-events-none" />
+            <div className="absolute bottom-16 left-0 -mb-8 -ml-8 w-56 h-56 rounded-full bg-gradient-to-tr from-yellow-300/35 to-amber-200/35 blur-2xl pointer-events-none" />
+
+            {/* Mobile Top Drag Handle */}
+            <div className="w-12 h-1.5 bg-amber-300/80 rounded-full mx-auto mt-2.5 mb-1 sm:hidden shrink-0" />
+
+            {/* Header: Close Button, Animated Badge, Title, Trust Pills & Category Switcher */}
+            <div className="p-4 sm:p-5 pb-3 border-b border-amber-200/70 relative shrink-0 z-10 text-left">
+              <button
+                type="button"
+                onClick={() => setIsWorkerModalOpen(false)}
+                className="absolute top-3.5 right-3.5 p-2 rounded-full bg-white/80 hover:bg-white text-slate-400 hover:text-slate-700 transition-colors border border-amber-200/80 shadow-2xs cursor-pointer z-20"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-xs mb-1.5 animate-pulse">
+                <Zap className="w-3.5 h-3.5 fill-current animate-bounce" />
+                <span>Direct Hire · Zero Broker Fee · Flat ₹49</span>
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                10 Verified <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">{selectedService.label}s</span> in {selectedCity.name}
+              </h3>
+
+              <p className="text-xs text-slate-600 font-medium mt-0.5 leading-relaxed">
+                Aadhaar KYC verified professionals. Zero agency commissions. Contact directly.
+              </p>
+
+              {/* Trust Badges Strip from About Page */}
+              <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden pt-2 pb-1">
+                {[
+                  { icon: BadgeCheck, text: '100% Aadhaar Verified', color: 'bg-emerald-50 text-emerald-800 border-emerald-200/90', iconColor: 'text-emerald-600' },
+                  { icon: Banknote, text: 'Zero Broker Commission', color: 'bg-amber-50 text-amber-900 border-amber-200/90', iconColor: 'text-amber-600' },
+                  { icon: Phone, text: '10 Direct Numbers', color: 'bg-blue-50 text-blue-900 border-blue-200/90', iconColor: 'text-blue-600' },
+                  { icon: ShieldCheck, text: 'Direct WhatsApp & Call', color: 'bg-teal-50 text-teal-900 border-teal-200/90', iconColor: 'text-teal-600' },
+                ].map(({ icon: Icon, text, color, iconColor }) => (
+                  <span
+                    key={text}
+                    className={`inline-flex items-center gap-1.5 border text-[11px] font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-xs shrink-0 ${color}`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${iconColor} shrink-0`} />
+                    {text}
+                  </span>
+                ))}
+              </div>
+
+              {/* Slidable Category Switcher inside Modal Header */}
+              <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden pt-2.5 pb-1 mt-1">
+                {SERVICE_CATEGORIES.map((svc) => {
+                  const isSelected = selectedService.id === svc.id;
+                  return (
+                    <button
+                      key={svc.id}
+                      type="button"
+                      onClick={() => setSelectedService(svc)}
+                      className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md shadow-amber-500/25 ring-2 ring-amber-400/40 border border-amber-400 font-black scale-[1.02]'
+                          : 'bg-white/90 hover:bg-white text-slate-700 hover:text-amber-950 border border-amber-200/80 hover:border-amber-300 shadow-2xs font-semibold'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 rounded-lg flex items-center justify-center p-0.5 shrink-0 ${isSelected ? 'bg-white/20' : 'bg-amber-50'}`}>
+                        <img src={svc.icon} alt="" className="w-full h-full object-contain" />
+                      </div>
+                      <span>{svc.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Slidable/Scrollable List of 10 Worker Cards */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 sm:px-6 space-y-3 z-10 custom-scrollbar text-left">
+              {isLoadingWorkers ? (
+                <div className="space-y-3 py-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="bg-white/80 rounded-2xl p-4 border border-amber-200 animate-pulse flex items-center justify-between">
+                      <div className="space-y-2 w-2/3">
+                        <div className="h-4 bg-amber-200/50 rounded w-1/2"></div>
+                        <div className="h-3 bg-amber-100/50 rounded w-3/4"></div>
+                      </div>
+                      <div className="h-8 bg-amber-200/50 rounded-xl w-24"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                workers.map((worker, index) => {
+                  const fullNumber = isUnlockedForCurrentSession
+                    ? (unmaskedNumbers[worker.id] || worker.phoneRaw)
+                    : null;
+                  const isWorkerUnlocked = Boolean(fullNumber);
+                  const displayedNumber = isWorkerUnlocked
+                    ? (fullNumber.length === 10 ? `+91 ${fullNumber.slice(0, 5)} ${fullNumber.slice(5)}` : fullNumber)
+                    : worker.phoneMasked;
+
+                  return (
+                    <div
+                      key={worker.id || index}
+                      className={[
+                        'relative overflow-hidden rounded-2xl p-3 sm:p-3.5 border-2 transition-all space-y-2.5',
+                        isWorkerUnlocked
+                          ? 'border-emerald-300 bg-gradient-to-b from-white via-emerald-50/10 to-emerald-50/20 shadow-[0_4px_12px_-2px_rgba(16,185,129,0.12)]'
+                          : 'border-amber-200/90 bg-gradient-to-b from-white via-white to-amber-50/20 shadow-[0_4px_14px_-2px_rgba(217,119,6,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_18px_-3px_rgba(217,119,6,0.16)] hover:border-amber-400/90'
+                      ].join(' ')}
+                    >
+                      {/* 3D Top Accent Bar */}
+                      <div className={`absolute inset-x-0 top-0 h-1 ${isWorkerUnlocked ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500'}`} />
+
+                      {/* Top Section: Avatar, Info & Upper-Right Floating Rating & Price */}
+                      <div className="flex items-start justify-between gap-2.5 pt-0.5">
+                        {/* Left: Worker Info */}
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          {/* Avatar */}
+                          <div className="relative shrink-0">
+                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 text-white font-black text-xs sm:text-sm flex items-center justify-center shadow-xs ring-2 ring-white">
+                              {worker.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
+                            </div>
+                            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+                          </div>
+
+                          {/* Details */}
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <h4 className="font-black text-slate-900 text-sm sm:text-base leading-tight truncate">
+                                {worker.name}
+                              </h4>
+                              <span className="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300/80 text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-full shadow-2xs">
+                                <BadgeCheck className="w-3 h-3 text-emerald-600 shrink-0" />
+                                Verified
+                              </span>
+                            </div>
+
+                            <p className="text-[11px] text-slate-600 font-semibold leading-snug">
+                              {worker.jobType} · <span className="text-slate-500 font-normal">{worker.experience}</span>
+                            </p>
+
+                            {/* Kilometer first, then location of worker */}
+                            <div className="flex items-center gap-1 text-[10.5px] text-slate-500 font-medium leading-snug truncate">
+                              <span className="text-amber-800 font-bold whitespace-nowrap">📍 {worker.distance || '1.2 km away'}</span>
+                              <span className="text-slate-300">·</span>
+                              <span className="text-slate-600 font-medium truncate">{worker.area || `${selectedCity.name} Central`}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right: UPPER RIGHT RATING + JOBS + PRICE */}
+                        <div className="flex flex-col items-end gap-0.5 shrink-0">
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 text-amber-950 px-2 py-0.5 rounded-lg shadow-2xs">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-500 shrink-0" />
+                            <span className="font-black text-xs text-amber-950">{worker.rating}</span>
+                          </div>
+                          <span className="text-[9.5px] font-bold text-slate-400 whitespace-nowrap">
+                            {worker.reviews || 23}+ jobs
+                          </span>
+                          <span className="font-black text-[10.5px] text-slate-800 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded-md whitespace-nowrap mt-0.5">
+                            {worker.price}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* BIG & WIDE Number Section */}
+                      {isWorkerUnlocked ? (
+                        <div className="w-full py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-300 shadow-2xs flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-2xs shrink-0">
+                              <Unlock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                            </div>
+                            <div className="font-mono text-xs sm:text-sm font-black text-emerald-950 tracking-tight flex items-center gap-0.5">
+                              <span className="text-emerald-700 text-[11px] sm:text-xs font-bold mr-0.5 select-none">+91</span>
+                              <span>{fullNumber.length === 10 ? `${fullNumber.slice(0, 5)} ${fullNumber.slice(5)}` : fullNumber}</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => copyToClipboard(fullNumber, worker.id)}
+                              className="p-1 rounded-md text-emerald-700 hover:text-emerald-950 hover:bg-emerald-100 transition-colors cursor-pointer"
+                              title="Copy Phone Number"
+                            >
+                              {copiedId === worker.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <a
+                              href={`tel:${fullNumber}`}
+                              className="inline-flex items-center justify-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg transition-all shadow-2xs active:scale-95"
+                            >
+                              <Phone className="w-3.5 h-3.5" />
+                              <span>Call</span>
+                            </a>
+                            <a
+                              href={`https://wa.me/${fullNumber.replace(/\D/g, '')}?text=Hello%20${encodeURIComponent(worker.name)}%2C%20I%20got%20your%20number%20via%20Metro%20Mitra%20for%20${encodeURIComponent(selectedService.label)}%20work.`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1.5 rounded-lg transition-all shadow-2xs active:scale-95"
+                            >
+                              <MessageSquare className="w-3.5 h-3.5" />
+                              <span>WA</span>
+                            </a>
+                          </div>
+                        </div>
+                      ) : (
+                        (() => {
+                          const { prefix, suffix, middle } = getPhoneDisplayParts(worker.phoneRaw, worker.phoneMasked);
+                          return (
+                            <div className="w-full py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-xl bg-gradient-to-r from-amber-50/90 via-orange-50/50 to-amber-100/70 border border-amber-200/90 shadow-2xs flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-2xs shrink-0">
+                                  <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                </div>
+                                <div className="flex items-center font-mono text-xs sm:text-sm font-black text-slate-900 tracking-tight">
+                                  <span className="text-slate-400 text-[11px] sm:text-xs font-bold mr-0.5 select-none">+91</span>
+                                  <span className="text-slate-900 font-black">{prefix}</span>
+                                  <span className="mx-0.5 px-1 py-0.5 rounded select-none filter blur-[3.5px] text-slate-500 font-mono tracking-wider bg-amber-100/60 pointer-events-none inline-block text-[11px] sm:text-xs">
+                                    {middle}
+                                  </span>
+                                  <span className="text-slate-900 font-black">{suffix}</span>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={handleOpenQRModal}
+                                className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
+                              >
+                                <span>Unlock (₹49)</span>
+                                <ChevronRight className="w-3 h-3" />
+                              </button>
+                            </div>
+                          );
+                        })()
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Fixed Downside Sticky Action Bar (Price & Unlock Section) */}
+            <div className="sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-200/90 p-4 sm:p-5 shadow-2xl z-20 shrink-0 text-left">
+              <div className="flex items-center justify-between gap-3 mb-2.5">
+                <div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xs text-slate-400 line-through font-semibold">₹500</span>
+                    <span className="text-2xl sm:text-3xl font-black text-emerald-600">₹49</span>
+                    <span className="text-[10px] sm:text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      Flat Fee
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 font-medium">
+                    Instant unlock · 10 {selectedService.label} numbers · Zero broker commission
+                  </p>
+                </div>
+
+                <div className="text-right hidden sm:block">
+                  <span className="text-[11px] font-bold text-slate-500">Traditional agencies:</span>
+                  <p className="text-xs font-black text-rose-600 line-through">₹500 – ₹2,000 finder fee</p>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              {!isUnlockedForCurrentSession ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsWorkerModalOpen(false);
+                    handleOpenQRModal();
+                  }}
+                  className="w-full py-3.5 sm:py-4 px-6 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2.5 text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 shadow-xl shadow-amber-300/80 hover:shadow-2xl transition-all active:scale-98 cursor-pointer text-center"
+                >
+                  <Zap className="w-5 h-5 fill-current animate-bounce shrink-0" />
+                  <span>Unlock 10 Worker Numbers — ₹49</span>
+                  <ArrowRight className="w-5 h-5 shrink-0" />
+                </button>
+              ) : (
+                <div className="space-y-2">
+                  <div className="w-full py-2 px-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-black text-xs flex items-center justify-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>All 10 Worker Contacts Unlocked & Ready to Call!</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={copyAllNumbers}
+                      className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors cursor-pointer"
+                    >
+                      {copiedId === 'all' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedId === 'all' ? 'Copied All' : 'Copy All'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={shareToWhatsApp}
+                      className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition-colors cursor-pointer"
+                    >
+                      <Share2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Share WhatsApp</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-center gap-3 text-[10.5px] font-semibold text-slate-500 mt-2">
+                <span className="flex items-center gap-1 text-emerald-700">
+                  <ShieldCheck className="w-3 h-3" /> 100% Aadhaar Verified
+                </span>
+                <span>·</span>
+                <span className="flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-slate-400" /> Secured by Razorpay
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ══════════════════════════════════════════════════════════════════════════
           RAZORPAY PRODUCTION CHECKOUT MODAL (COLLECTS NAME, PHONE, EMAIL)

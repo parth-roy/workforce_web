@@ -122,7 +122,6 @@ export default function DirectContactPage() {
   const [isPayingRazorpay, setIsPayingRazorpay] = useState(false);
   const [razorpayError, setRazorpayError] = useState(null);
   const [purchasedPacks, setPurchasedPacks] = useState([]);
-  const [unlockAmount, setUnlockAmount] = useState(1); // Test Mode default: ₹1 for live testing, switchable to ₹49
 
   // Legacy UPI QR Code Modal State (Retained for backup / offline support)
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
@@ -368,8 +367,6 @@ export default function DirectContactPage() {
       return;
     }
 
-    const payAmount = Math.max(1, Number(unlockAmount) || 1);
-
     setIsPayingRazorpay(true);
 
     try {
@@ -390,7 +387,6 @@ export default function DirectContactPage() {
           customerEmail: customerEmail?.trim() || undefined,
           workerIds: workers.map((w) => w.id),
           platform: 'WORKFORCE_WEB',
-          amount: payAmount,
         }),
       });
 
@@ -404,10 +400,10 @@ export default function DirectContactPage() {
       // 2. Open standard Razorpay Checkout Modal
       const options = {
         key: keyId,
-        amount: amount || Math.round(payAmount * 100),
+        amount: amount || 4900,
         currency: currency || 'INR',
         name: 'Metro Mitra',
-        description: `Unlock 10 ${selectedService.label} Contacts in ${selectedCity.name} (₹${payAmount})`,
+        description: `Unlock 10 ${selectedService.label} Contacts in ${selectedCity.name}`,
         image: '/favicon.png',
         order_id: orderId,
         prefill: {
@@ -439,7 +435,6 @@ export default function DirectContactPage() {
                 workerIds: workers.map((w) => w.id),
                 serviceCategory: selectedService.label,
                 city: selectedCity.name,
-                amount: payAmount,
               }),
             });
 
@@ -1443,7 +1438,7 @@ export default function DirectContactPage() {
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5">
                 <div className="flex justify-between items-center text-slate-900 font-black text-sm">
                   <span>Direct Contact Unlock Fee</span>
-                  <span className="text-emerald-700 text-base font-black">₹{unlockAmount}.00</span>
+                  <span className="text-emerald-700 text-base font-black">₹49.00</span>
                 </div>
                 <div className="mt-2 text-[11px] text-slate-600 space-y-1">
                   <div className="flex items-center gap-1.5">
@@ -1455,53 +1450,6 @@ export default function DirectContactPage() {
                     <span><strong>Zero Brokerage:</strong> Deal, negotiate & pay workers directly</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Dynamic Test Mode Amount Selector */}
-              <div className="bg-amber-50/90 border border-amber-300 rounded-2xl p-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black text-amber-950 uppercase tracking-wide flex items-center gap-1.5">
-                    <Zap className="w-3 h-3 text-amber-600 fill-amber-500" />
-                    <span>Test Payment Amount</span>
-                  </span>
-                  <span className="text-[10px] font-bold text-amber-800 bg-amber-200/80 px-2 py-0.5 rounded-full">
-                    Testing Mode
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <span className="absolute left-3 top-2 text-xs font-black text-slate-400">₹</span>
-                    <input
-                      type="number"
-                      min="1"
-                      step="1"
-                      value={unlockAmount}
-                      onChange={(e) => setUnlockAmount(Math.max(1, Number(e.target.value) || 1))}
-                      className="w-full pl-7 pr-3 py-1.5 rounded-xl border border-amber-300 text-xs font-black text-slate-900 bg-white outline-none focus:ring-2 focus:ring-amber-400"
-                      placeholder="1"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {[1, 2, 5, 49].map((amt) => (
-                      <button
-                        key={amt}
-                        type="button"
-                        onClick={() => setUnlockAmount(amt)}
-                        className={`px-2.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                          unlockAmount === amt
-                            ? 'bg-amber-600 text-white shadow-xs'
-                            : 'bg-white border border-amber-200 text-amber-900 hover:bg-amber-100'
-                        }`}
-                      >
-                        ₹{amt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-[10px] text-amber-800/90 leading-tight">
-                  Quick test amount: Set to <strong>₹1</strong> so you can test UPI & Cards without paying full ₹49.
-                </p>
               </div>
 
               {/* Checkout Form */}
@@ -1587,7 +1535,7 @@ export default function DirectContactPage() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4" />
-                      <span>Proceed to Pay ₹{unlockAmount} via Razorpay</span>
+                      <span>Proceed to Pay ₹49 via Razorpay</span>
                     </>
                   )}
                 </button>

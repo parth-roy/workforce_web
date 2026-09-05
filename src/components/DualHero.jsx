@@ -13,7 +13,13 @@ export default function DualHero({ title, subtitle }) {
             href="https://wa.me/919331488999?text=I%20want%20to%20work" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-6 bg-blue-600 hover:bg-blue-500 rounded-2xl shadow-xl transition-all active:scale-95"
+            onClick={(e) => {
+              if (typeof window !== 'undefined') {
+                e.preventDefault();
+                window.dispatchEvent(new CustomEvent('open_whatsapp_modal', { detail: { intent: 'JOIN' } }));
+              }
+            }}
+            className="flex flex-col items-center justify-center p-6 bg-blue-600 hover:bg-blue-500 rounded-2xl shadow-xl transition-all active:scale-95 cursor-pointer"
           >
             <span className="text-xl font-bold">I Want to Work</span>
             <span className="text-sm text-blue-200 mt-1">Mujhe Kaam Chahiye</span>

@@ -99,6 +99,12 @@ export default function ContactPage() {
                 href={href}
                 target={label === 'Office' || label === 'WhatsApp' ? '_blank' : '_self'}
                 rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (label === 'WhatsApp' && typeof window !== 'undefined') {
+                    e.preventDefault();
+                    window.dispatchEvent(new CustomEvent('open_whatsapp_modal', { detail: { intent: 'SUPPORT' } }));
+                  }
+                }}
                 className={`block ${bg} border ${border} rounded-2xl p-6 hover:-translate-y-1 hover:shadow-md transition-all cursor-pointer`}
               >
                 <div className={`w-10 h-10 rounded-lg bg-white flex items-center justify-center mb-3 shadow-sm`}>

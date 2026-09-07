@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronRight, ArrowLeft, Plus, Minus, Calendar, MapPin, CheckCircle, Clock } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Plus, Minus, Calendar, CheckCircle, Clock } from 'lucide-react';
 
 const MOCK_CATALOG = {
   electrician: [
@@ -184,7 +184,7 @@ export default function ServiceBookingWizard({ service, onClose }) {
           <div className="p-4 space-y-6">
             <h3 className="font-bold text-2xl text-slate-900">Where do you need the service?</h3>
             <div className="bg-white p-5 rounded-xl border shadow-sm">
-              <label className="block font-bold text-slate-700 mb-3 flex items-center gap-2"><MapPin className="w-5 h-5 text-emerald-600" /> Service Location</label>
+              <label className="block font-bold text-slate-700 mb-3 flex items-center gap-2"><img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="w-5 h-5 object-contain" /> Service Location</label>
               <textarea 
                 rows={3} 
                 value={location} 
@@ -227,7 +227,7 @@ export default function ServiceBookingWizard({ service, onClose }) {
             <div className="bg-white rounded-xl border shadow-sm p-4 space-y-3">
               <div className="flex items-center gap-3 text-sm"><Calendar className="w-5 h-5 text-slate-400 shrink-0" /><span className="text-slate-700 font-medium">{date || 'Not selected'}</span></div>
               <div className="flex items-center gap-3 text-sm"><Clock className="w-5 h-5 text-slate-400 shrink-0" /><span className="text-slate-700 font-medium">{time || 'Not selected'}</span></div>
-              <div className="flex items-center gap-3 text-sm"><MapPin className="w-5 h-5 text-slate-400 shrink-0" /><span className="text-slate-700 font-medium">{location || 'No address provided'}</span></div>
+              <div className="flex items-center gap-3 text-sm"><img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="w-5 h-5 object-contain shrink-0" /><span className="text-slate-700 font-medium">{location || 'No address provided'}</span></div>
             </div>
           </div>
         )}

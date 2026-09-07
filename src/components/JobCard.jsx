@@ -1,5 +1,5 @@
 import React from 'react'
-import { MapPin, IndianRupee, Clock, ShieldCheck } from 'lucide-react'
+import { IndianRupee, Clock, ShieldCheck } from 'lucide-react'
 
 export default function JobCard({ title, location, wage, type, urgent }) {
   return (
@@ -11,7 +11,7 @@ export default function JobCard({ title, location, wage, type, urgent }) {
       
       <div className="space-y-2 mb-5">
         <div className="flex items-center gap-2 text-sm text-slate-600">
-          <MapPin size={16} className="text-slate-400" />
+          <img src="/google-maps-icon.webp" alt="Location" width={16} height={16} className="w-4 h-4 object-contain" />
           {location}
         </div>
         <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">

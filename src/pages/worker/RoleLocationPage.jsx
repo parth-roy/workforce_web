@@ -8,7 +8,7 @@ import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerRoleLocationSEO } from '../../seo/pageMetadata';
 import { RelatedRoles, RelatedLocations } from '../../components/seo/RelatedLinks';
-import { MapPin, CheckCircle, ChevronDown, ChevronUp, ArrowRight, Zap, ShieldCheck, Clock, Banknote, CalendarCheck, TrendingUp, Users } from 'lucide-react';
+import { CheckCircle, ChevronDown, ChevronUp, ArrowRight, Zap, ShieldCheck, Clock, Banknote, CalendarCheck, TrendingUp, Users } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function RoleLocationPage() {

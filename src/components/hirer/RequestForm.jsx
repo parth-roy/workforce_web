@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { mockServices } from '../../data/mock/services';
 import {
   CheckCircle, ArrowLeft, ArrowRight, X, Zap, Wrench, Package, Sparkles, Truck, Users,
-  MapPin, Clock, Calendar, FileText, ClipboardList, AlertTriangle
+  Clock, Calendar, FileText, ClipboardList, AlertTriangle
 } from 'lucide-react';
 
 const SERVICE_ICONS = {
@@ -246,7 +246,7 @@ export default function RequestForm({ service: preselectedService, initialLocati
             <p className="text-slate-500 text-sm mb-6">Enter your address or area.</p>
             {errors.location && <p className="text-red-600 text-sm mb-3">{errors.location}</p>}
             <div className="relative mb-4">
-              <MapPin className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+              <img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="absolute left-3 top-3.5 w-5 h-5 object-contain" />
               <input
                 type="text"
                 placeholder="e.g. Barrackpore, North 24 Parganas"
@@ -259,7 +259,7 @@ export default function RequestForm({ service: preselectedService, initialLocati
               onClick={() => { set('location', 'Barrackpore, West Bengal (simulated GPS)'); clearErr('location'); }}
               className="text-sm text-emerald-600 hover:underline flex items-center gap-1"
             >
-              <MapPin className="w-4 h-4" /> Use current location (simulated)
+              <img src="/google-maps-icon.webp" alt="Current Location" width={16} height={16} className="w-4 h-4 object-contain" /> Use current location (simulated)
             </button>
           </div>
         );

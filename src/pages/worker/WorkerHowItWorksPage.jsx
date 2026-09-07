@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { WorkerHowItWorksSEO } from '../../seo/pageMetadata';
-import { Smartphone, Search, Briefcase, MapPin, CheckCircle, Clock } from 'lucide-react';
+import { Smartphone, Search, Briefcase, CheckCircle, Clock } from 'lucide-react';
 
 export default function WorkerHowItWorksPage() {
   const steps = [
     { icon: Search, title: 'Join as Employee', desc: 'Browse available shifts and tasks matching your chosen roles and locations. Filter by duration, urgency, and category.' },
     { icon: Briefcase, title: 'Review Opportunity', desc: 'Check the job details, including location, requirements, duration, and what the work involves before accepting.' },
     { icon: CheckCircle, title: 'Accept Assignment', desc: 'Confirm your availability and accept the job directly in the app. The hirer will be notified.' },
-    { icon: MapPin, title: 'Arrive on Site', desc: 'Navigate to the worksite using the app and check in when you arrive.' },
+    { icon: ({ className }) => <img src="/google-maps-icon.webp" alt="Location" width={24} height={24} className={className || "w-6 h-6 object-contain"} />, title: 'Arrive on Site', desc: 'Navigate to the worksite using the app and check in when you arrive.' },
     { icon: Clock, title: 'Complete Work', desc: 'Finish the agreed-upon tasks. For shift work, complete your hours. Mark the task as done in the app.' },
     { icon: Smartphone, title: 'Track Activity', desc: 'View your completed jobs, track your history, and manage your upcoming schedule in your worker dashboard.' }
   ];

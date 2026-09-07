@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight, Briefcase, User, Building2, HardHat,
   CheckCircle, Clock, Shield, Zap, ChevronDown, ChevronUp,
-  MapPin, Wrench, Package, Sparkles, Truck, Users, Smartphone, Star
+  Wrench, Package, Sparkles, Truck, Users, Smartphone, Star
 } from 'lucide-react';
 import SEO from '../ui/SEO';
 import { HomePageSEO } from '../../seo/pageMetadata';
@@ -189,7 +189,7 @@ export default function HomePage() {
                     onClick={() => setIsCityModalOpen(true)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 border border-emerald-200/90 text-slate-800 text-xs sm:text-sm font-semibold hover:bg-emerald-50 hover:border-emerald-300 transition-all shadow-xs group cursor-pointer"
                   >
-                    <MapPin className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform shrink-0" />
+                    <img src="/google-maps-icon.webp" alt="City" width={16} height={16} className="w-4 h-4 object-contain group-hover:scale-110 transition-transform shrink-0" />
                     <span>City: <strong className="text-emerald-700 font-bold">{selectedCity.name}</strong></span>
                     <span className="text-emerald-600 underline font-semibold text-xs ml-0.5 group-hover:text-emerald-700">Change</span>
                   </button>
@@ -559,7 +559,7 @@ export default function HomePage() {
               ).map(loc => (
                 <Link key={loc.slug} to={`/jobs/location/${loc.slug}`} className="group bg-white border border-slate-200 rounded-2xl p-6 hover:border-emerald-300 hover:shadow-md transition-all">
                   <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="w-4 h-4 text-emerald-500" />
+                    <img src="/google-maps-icon.webp" alt="Location" width={16} height={16} className="w-4 h-4 object-contain shrink-0" />
                     <span className="text-xs font-semibold text-slate-400">{loc.state}</span>
                   </div>
                   <h3 className="font-bold text-slate-900 text-lg mb-1">{loc.name}</h3>
@@ -585,7 +585,7 @@ export default function HomePage() {
               {[
                 { icon: Shield, title: 'OTP-Verified Completion', desc: 'No payment is released until you confirm task completion with your OTP. Your control, your confirmation.' },
                 { icon: Clock, title: 'Flexible Scheduling', desc: 'Book for immediate tasks or schedule ahead. Day, evening, and shift-based options available.' },
-                { icon: MapPin, title: 'Local Workers', desc: 'Workers are matched based on proximity to your location, reducing travel time and improving reliability.' },
+                { icon: ({ className }) => <img src="/google-maps-icon.webp" alt="Local Workers" width={28} height={28} className={className || "w-7 h-7 object-contain"} />, title: 'Local Workers', desc: 'Workers are matched based on proximity to your location, reducing travel time and improving reliability.' },
               ].map(({ icon: Icon, title, desc }) => (
                 <div key={title} className="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center hover:shadow-md transition-all">
                   <div className="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-5">

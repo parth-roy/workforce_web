@@ -6,7 +6,7 @@ import WorkerCTA from '../../components/worker/WorkerCTA';
 import SEO from '../../components/ui/SEO';
 import { WorkerRoleSEO } from '../../seo/pageMetadata';
 import { RelatedRoles, RelatedLocations } from '../../components/seo/RelatedLinks';
-import { CheckCircle, MapPin, Briefcase, Users, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { CheckCircle, Briefcase, Users, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function RolePage() {
@@ -143,7 +143,7 @@ export default function RolePage() {
           <section className="mb-16">
             <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
               <h2 className="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-slate-500" /> Work Environment
+                <img src="/google-maps-icon.webp" alt="Work Environment" width={20} height={20} className="w-5 h-5 object-contain" /> Work Environment
               </h2>
               <p className="text-slate-600 leading-relaxed">{role.workEnvironment}</p>
             </div>
@@ -163,7 +163,7 @@ export default function RolePage() {
                 to={`/jobs/${role.slug}/${loc.slug}`}
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
               >
-                <MapPin className="w-4 h-4" /> {role.name} in {loc.name}
+                <img src="/google-maps-icon.webp" alt="Location" width={16} height={16} className="w-4 h-4 object-contain" /> {role.name} in {loc.name}
               </Link>
             ))}
           </div>

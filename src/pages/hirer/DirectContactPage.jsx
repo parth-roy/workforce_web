@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Zap, Phone, Shield, ChevronRight, MapPin, CheckCircle, CheckCircle2,
+  Zap, Phone, Shield, ChevronRight, CheckCircle, CheckCircle2,
   Star, ArrowRight, BadgeCheck, Lock, Banknote, Unlock, Copy, Check, MessageSquare, AlertCircle, RefreshCw,
   QrCode, X, ExternalLink, Download, Smartphone, HelpCircle, Share2, FileText, RotateCcw,
   Upload, Clock, Image as ImageIcon, ShieldCheck, CreditCard, Sparkles
@@ -904,7 +904,7 @@ export default function DirectContactPage() {
                     className="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/40 transition-all group cursor-pointer"
                   >
                     <span className="flex items-center gap-2.5 font-bold text-slate-800 text-sm">
-                      <MapPin className="w-4 h-4 text-emerald-600" />
+                      <img src="/google-maps-icon.webp" alt="City" width={16} height={16} className="w-4 h-4 object-contain shrink-0" />
                       {selectedCity.name}
                     </span>
                     <span className="text-xs text-emerald-700 font-black group-hover:underline">Change City</span>

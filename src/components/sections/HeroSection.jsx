@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Download, ArrowRight, CheckCircle2, Star, Shield, MapPin, Package, PackageOpen, Sparkles, Handshake, X } from 'lucide-react'
+import { Download, ArrowRight, CheckCircle2, Star, Shield, Package, PackageOpen, Sparkles, Handshake, X } from 'lucide-react'
 import BookingFormModal from '../modals/BookingFormModal'
 import { APP_DOWNLOAD_URL } from '../../config/constants.js'
 import PlayStoreIcon from '../ui/PlayStoreIcon.jsx'
@@ -337,7 +337,7 @@ function DualHero({ h1, subtitle, workerCta, employerCta, stats, heroImage }) {
             
             {/* Top City Selector */}
             <div className="flex items-center gap-2 text-slate-900 font-bold text-sm px-2 w-fit">
-              <MapPin size={20} className="text-slate-800" />
+              <img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="w-5 h-5 object-contain shrink-0" />
               <span>City: Kolkata</span>
             </div>
 

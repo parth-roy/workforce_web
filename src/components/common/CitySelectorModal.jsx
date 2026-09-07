@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Search, MapPin, X, LocateFixed, Check } from 'lucide-react';
+import { Search, X, LocateFixed, Check } from 'lucide-react';
 import { mockLocations } from '../../data/mock/locations';
 
 export const TOP_CITIES = [
@@ -238,7 +238,7 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                         isSelected ? "bg-emerald-200/70 text-emerald-800" : "bg-slate-100 text-slate-400 group-hover:bg-emerald-100 group-hover:text-emerald-600"
                       }`}>
-                        <MapPin size={14} />
+                        <img src="/google-maps-icon.webp" alt="City" width={16} height={16} className="w-4 h-4 object-contain" />
                       </div>
                       <div className="truncate">
                         <p className="text-xs sm:text-sm font-semibold truncate leading-tight">{city.name}</p>
@@ -250,7 +250,7 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
               </div>
             ) : (
               <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                <MapPin className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                <img src="/google-maps-icon.webp" alt="Location" width={32} height={32} className="w-8 h-8 object-contain mx-auto mb-2 opacity-40 grayscale" />
                 <p className="text-slate-600 font-semibold text-sm">No cities found matching "{searchQuery}"</p>
                 <p className="text-slate-400 text-xs mt-1">Try searching by state name or choosing from the top cities list.</p>
               </div>

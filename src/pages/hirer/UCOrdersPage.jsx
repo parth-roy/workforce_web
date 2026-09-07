@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, MapPin, Package, CheckCircle2, Phone } from 'lucide-react';
+import { ArrowLeft, Clock, Package, CheckCircle2, Phone } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
 
 export default function UCOrdersPage() {
@@ -84,7 +84,7 @@ export default function UCOrdersPage() {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                      <img src="/google-maps-icon.webp" alt="Service Address" width={16} height={16} className="w-4 h-4 object-contain mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-xs text-slate-500 font-semibold mb-0.5">Service Address</p>
                         <p className="text-sm text-slate-900 line-clamp-1">{order.address}</p>

@@ -4,7 +4,7 @@ import SEO from '../../components/ui/SEO';
 import { ContractorSEO } from '../../seo/pageMetadata';
 import ContractorHero from '../../components/contractor/ContractorHero';
 import ContractorRequirementBuilder from '../../components/contractor/ContractorRequirementBuilder';
-import { CheckCircle, ChevronDown, ChevronUp, Users, Clock, MapPin, Package, Zap, Wrench, Sparkles, Phone } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp, Users, Clock, Package, Zap, Wrench, Sparkles, Phone } from "lucide-react";
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const WORKFORCE_TYPES = [

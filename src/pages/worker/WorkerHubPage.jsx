@@ -10,7 +10,7 @@ import LocationCard from '../../components/worker/LocationCard';
 import WorkerCTA from '../../components/worker/WorkerCTA';
 import { WorkerHubSEO } from '../../seo/pageMetadata';
 import {
-  Briefcase, MapPin, CheckCircle, ChevronDown, ChevronUp,
+  Briefcase, CheckCircle, ChevronDown, ChevronUp,
   Clock, Shield, Smartphone, ArrowRight
 } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
@@ -99,7 +99,7 @@ export default function WorkerHubPage() {
         <div className="container mx-auto max-w-5xl flex flex-wrap justify-center gap-6 text-sm font-semibold">
           <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4" /> Transparent Payouts</span>
           <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> Flexible Scheduling</span>
-          <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Work Near Home</span>
+          <span className="flex items-center gap-2"><img src="/google-maps-icon.webp" alt="Location" width={16} height={16} className="w-4 h-4 object-contain" /> Work Near Home</span>
           <span className="flex items-center gap-2"><Shield className="w-4 h-4" /> Verified Employers</span>
         </div>
       </div>

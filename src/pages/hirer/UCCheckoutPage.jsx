@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2, Sparkles, Lock, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2, Sparkles, Lock, ShieldCheck, Zap } from "lucide-react";
 import { useUCCart } from "../../context/UCCartContext";
 import { useAuth } from "../../context/AuthContext";
 import LocationPicker from "../../components/shared/LocationPicker";
@@ -159,7 +159,7 @@ export default function UCCheckoutPage() {
             {/* Address */}
             <div className="p-5 border-b border-slate-100 flex items-start gap-4">
               <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4 text-slate-600" />
+                <img src="/google-maps-icon.webp" alt="Address" width={16} height={16} className="w-4 h-4 object-contain" />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start">

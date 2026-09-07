@@ -8,7 +8,7 @@ import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerLocationSEO } from '../../seo/pageMetadata';
 import { RelatedLocations } from '../../components/seo/RelatedLinks';
-import { MapPin, Building2, Briefcase, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { Building2, Briefcase, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function LocationPage() {
@@ -48,7 +48,7 @@ export default function LocationPage() {
           <Breadcrumbs items={breadcrumbs} light />
           <div className="mt-6">
             <div className="flex items-center gap-2 text-emerald-400 mb-3">
-              <MapPin className="w-5 h-5" />
+              <img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="w-5 h-5 object-contain" />
               <span className="font-semibold">{loc.state}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">

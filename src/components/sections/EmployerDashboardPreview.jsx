@@ -1,9 +1,9 @@
 import React from 'react'
-import { Monitor, MapPin, Users, DollarSign, BarChart2, CheckCircle2 } from 'lucide-react'
+import { Monitor, Users, DollarSign, BarChart2, CheckCircle2 } from 'lucide-react'
 
 const features = [
   { icon: Users,      label: 'Worker List',         desc: '28 verified workers · Active today' },
-  { icon: MapPin,     label: 'Live Location',        desc: 'GPS check-in confirmed 08:03 AM' },
+  { icon: ({ size }) => <img src="/google-maps-icon.webp" alt="Live Location" width={size || 15} height={size || 15} className="w-[15px] h-[15px] object-contain" />, label: 'Live Location', desc: 'GPS check-in confirmed 08:03 AM' },
   { icon: CheckCircle2,label:'Task Status',          desc: '22 of 28 tasks completed' },
   { icon: DollarSign, label: 'Payout Summary',       desc: '₹8,400 pending · Auto-transfer 6pm' },
   { icon: BarChart2,  label: 'Completion Rate',      desc: '96.4% this month' },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Mic, MicOff, Plus, CheckCircle2, ChevronRight, MapPin, Calendar, Clock, Phone } from 'lucide-react';
+import { X, Mic, MicOff, Plus, CheckCircle2, ChevronRight, Calendar, Clock, Phone } from 'lucide-react';
 import { workerSchemas } from '../../data/workerSchemas';
 import { roles } from '../../data/roles';
 
@@ -212,7 +212,7 @@ export default function BookingFormModal({ isOpen, onClose, activeWorkers = [], 
             {/* Location & Contact */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
               <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <MapPin size={18} className="text-trust-blue-500" /> Location & Contact
+                <img src="/google-maps-icon.webp" alt="Location" width={18} height={18} className="w-[18px] h-[18px] object-contain" /> Location & Contact
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">

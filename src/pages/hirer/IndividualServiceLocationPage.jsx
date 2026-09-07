@@ -7,7 +7,7 @@ import { mockLocations } from '../../data/mock/locations';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import ServiceBookingWizard from '../../components/hirer/ServiceBookingWizard';
 import { RelatedServices } from '../../components/seo/RelatedLinks';
-import { MapPin, ArrowRight, X } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
@@ -44,7 +44,7 @@ export default function IndividualServiceLocationPage() {
         <div className="container mx-auto max-w-5xl">
           <Breadcrumbs items={breadcrumbs} light />
           <div className="mt-6 flex items-center gap-2 text-emerald-400 mb-3">
-            <MapPin className="w-5 h-5" />
+            <img src="/google-maps-icon.webp" alt="Location" width={20} height={20} className="w-5 h-5 object-contain" />
             <span className="font-semibold">{loc.name}, {loc.state}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">

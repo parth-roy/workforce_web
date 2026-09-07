@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useUCCart } from '../../context/UCCartContext';
-import { User, Phone, Mail, MapPin, Package, LogOut, FileText } from 'lucide-react';
+import { User, Phone, Mail, Package, LogOut, FileText } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 export default function UserProfilePage() {
@@ -97,7 +97,7 @@ export default function UserProfilePage() {
                     <div className="md:col-span-2">
                       <label className="block text-sm font-bold text-slate-500 mb-2">Saved Address</label>
                       <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl text-slate-900 font-medium border border-slate-200">
-                        <MapPin size={18} className="text-slate-400" />
+                        <img src="/google-maps-icon.webp" alt="Address" width={18} height={18} className="w-[18px] h-[18px] object-contain" />
                         {user.address || 'No address saved yet'}
                       </div>
                     </div>

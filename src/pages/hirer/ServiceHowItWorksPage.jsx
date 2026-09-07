@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServiceHowItWorksSEO } from '../../seo/pageMetadata';
-import { Search, MapPin, Calendar, FileText, CheckCircle, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Calendar, FileText, CheckCircle, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ServiceHowItWorksPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -21,7 +21,7 @@ export default function ServiceHowItWorksPage() {
   const steps = [
     { icon: Search, title: 'Choose Service', desc: 'Select the exact service or worker type you need from our directory.' },
     { icon: FileText, title: 'Tell Us What You Need', desc: 'Specify how many workers you need and briefly describe the task.' },
-    { icon: MapPin, title: 'Add Location', desc: 'Provide the worksite location so we can match you with nearby professionals.' },
+    { icon: ({ className }) => <img src="/google-maps-icon.webp" alt="Location" width={24} height={24} className={className || "w-6 h-6 object-contain"} />, title: 'Add Location', desc: 'Provide the worksite location so we can match you with nearby professionals.' },
     { icon: Calendar, title: 'Select Timing', desc: 'Choose the duration and schedule for when the work should happen.' },
     { icon: CheckCircle, title: 'Review & Request', desc: 'Review your total estimate (when available) and submit your request.' },
     { icon: Truck, title: 'Worker Fulfillment', desc: 'Verified workers accept your request and arrive at your location to complete the job.' }

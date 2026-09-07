@@ -7,7 +7,7 @@ import { mockRoles } from '../../data/mock/roles';
 import LocationPicker from '../../components/shared/LocationPicker';
 import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import {
-  User, FileText, MapPin, Truck, CheckCircle2, Briefcase, ShieldCheck, ArrowRight,
+  User, FileText, Truck, CheckCircle2, Briefcase, ShieldCheck, ArrowRight,
   Sparkles, Zap, Crown, CreditCard, QrCode, Copy, Check, AlertCircle, X,
   Loader2, Lock, Phone, MessageCircle, CheckCircle, ExternalLink
 } from 'lucide-react';
@@ -790,8 +790,8 @@ export default function WorkerOnboardingPage() {
           {/* 3. Location */}
           <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
             <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-              <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5" />
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center shrink-0">
+                <img src="/google-maps-icon.webp" alt="Work Location" width={20} height={20} className="w-5 h-5 object-contain" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-slate-900">Work Location</h2>
@@ -811,7 +811,7 @@ export default function WorkerOnboardingPage() {
               />
               {(formData.city || givenLocation?.district) && (
                 <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
+                  <img src="/google-maps-icon.webp" alt="Selected Location" width={20} height={20} className="w-5 h-5 object-contain mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-semibold text-emerald-900">Selected Hub / Location:</p>
                     <p className="text-sm text-emerald-700">{formData.area || givenLocation?.address || ''}, {formData.city || givenLocation?.district || ''}</p>

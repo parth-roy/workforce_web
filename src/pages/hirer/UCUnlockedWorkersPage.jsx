@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Phone, MessageSquare, CheckCircle, Star, ShieldCheck, MapPin, Sparkles, Award, Lock } from 'lucide-react';
+import { ArrowLeft, Phone, MessageSquare, CheckCircle, Star, ShieldCheck, Sparkles, Award, Lock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function UCUnlockedWorkersPage() {
@@ -202,7 +202,7 @@ export default function UCUnlockedWorkersPage() {
                       <span className="font-semibold text-slate-700">{w.experienceYears} Yrs Exp</span>
                       <span>•</span>
                       <span className="flex items-center gap-1 text-slate-600">
-                        <MapPin className="w-3 h-3 text-blue-600" />
+                        <img src="/google-maps-icon.webp" alt="Location" width={12} height={12} className="w-3 h-3 object-contain" />
                         {w.distanceKm} km away
                       </span>
                       <span>•</span>

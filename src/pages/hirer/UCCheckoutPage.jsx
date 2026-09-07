@@ -287,7 +287,7 @@ export default function UCCheckoutPage() {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-900">Payment Method</p>
-                {selectedSlot && <p className="text-xs text-slate-500 mt-1">{isSmartUnlock ? "Online UPI / Card (Razorpay)" : "Pay on service completion"}</p>}
+                {selectedSlot && <p className="text-xs text-slate-500 mt-1">{isSmartUnlock ? "Online UPI / Card / NetBanking" : "Pay on service completion"}</p>}
               </div>
             </div>
             

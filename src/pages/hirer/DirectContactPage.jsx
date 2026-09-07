@@ -12,28 +12,22 @@ import { useAuth } from '../../context/AuthContext';
 
 const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'https://api.gomytruck.com/api/v1';
 
-// Dynamic Razorpay Checkout SDK loader (SSR-safe)
-const loadRazorpayScript = () => {
+// Dynamic Cashfree Web Checkout SDK loader (SSR-safe)
+const loadCashfreeScript = () => {
   return new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve(false);
-    if (window.Razorpay) {
+    if (window.Cashfree) {
       resolve(true);
       return;
     }
     const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
     script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
 };
-
-/* ══════════════════════════════════════════════════════════════════════════════════
-   PRODUCTION RAZORPAY INTEGRATION CREDENTIALS (RETAINED FOR PRODUCTION DEPLOYMENT)
-   Uncomment when production merchant keys are issued.
-   ══════════════════════════════════════════════════════════════════════════════════ */
-// const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SttHUdu0eZT95x';
 
 const SERVICE_CATEGORIES = [
   { id: 'electrician',        label: 'Electrician',         icon: '/electrician-icon.webp',        trade: 'Electrician' },
@@ -122,14 +116,14 @@ export default function DirectContactPage() {
   const [unlockedMetadata, setUnlockedMetadata] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
-  // Razorpay Checkout Modal & Success Modal State
+  // Cashfree Checkout Modal & Success Modal State
   const [isRazorpayModalOpen, setIsRazorpayModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [successData, setSuccessData] = useState(null);
   const [customerName, setCustomerName] = useState(user?.name || '');
   const [customerEmail, setCustomerEmail] = useState(user?.email || '');
-  const [isPayingRazorpay, setIsPayingRazorpay] = useState(false);
-  const [razorpayError, setRazorpayError] = useState(null);
+  const [isPayingCashfree, setIsPayingCashfree] = useState(false);
+  const [cashfreeError, setCashfreeError] = useState(null);
   const [purchasedPacks, setPurchasedPacks] = useState([]);
   const [isWorkerModalOpen, setIsWorkerModalOpen] = useState(false);
 
@@ -347,10 +341,10 @@ export default function DirectContactPage() {
     )
   );
 
-  // Open Razorpay Checkout Details Modal
+  // Open Cashfree Checkout Details Modal
   const handleOpenQRModal = () => {
     setIsRazorpayModalOpen(true);
-    setRazorpayError(null);
+    setCashfreeError(null);
     if (user?.phone) {
       setCustomerPhone(user.phone.replace(/\D/g, ''));
     }
@@ -362,32 +356,32 @@ export default function DirectContactPage() {
     }
   };
 
-  // Process Official Razorpay Checkout Payment (₹49)
-  const handlePayWithRazorpay = async (e) => {
+  // Process Official Cashfree Checkout Payment (₹49)
+  const handlePayWithCashfree = async (e) => {
     if (e) e.preventDefault();
-    setRazorpayError(null);
+    setCashfreeError(null);
 
-    const cleanPhone = String(customerPhone || '').replace(/\D/g, '');
+    const cleanPhone = String(customerPhone || '').replace(/\D/g, '').slice(-10);
     if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
-      setRazorpayError('Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).');
+      setCashfreeError('Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).');
       return;
     }
 
     if (!customerName || customerName.trim().length < 2) {
-      setRazorpayError('Please enter your full name.');
+      setCashfreeError('Please enter your full name.');
       return;
     }
 
-    setIsPayingRazorpay(true);
+    setIsPayingCashfree(true);
 
     try {
-      const scriptLoaded = await loadRazorpayScript();
+      const scriptLoaded = await loadCashfreeScript();
       if (!scriptLoaded) {
-        throw new Error('Could not load Razorpay payment gateway. Please check your internet connection.');
+        throw new Error('Could not load Cashfree payment gateway. Please check your internet connection.');
       }
 
       // 1. Create order on backend with platform & metadata
-      const orderRes = await fetch(`${API_BASE}/payments/create-direct-contact-order`, {
+      const orderRes = await fetch(`${API_BASE}/payments/cashfree-create-order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -398,128 +392,116 @@ export default function DirectContactPage() {
           customerEmail: customerEmail?.trim() || undefined,
           workerIds: workers.map((w) => w.id),
           platform: 'WORKFORCE_WEB',
+          amount: 49.0,
         }),
       });
 
       const orderData = await orderRes.json();
-      if (!orderRes.ok || !orderData.success || !orderData.data?.orderId) {
-        throw new Error(orderData.message || 'Failed to initialize payment order with gateway. Please try again.');
+      if (!orderRes.ok || !orderData.success || !orderData.data?.paymentSessionId) {
+        throw new Error(orderData.message || 'Failed to initialize payment with Cashfree. Please try again.');
       }
 
-      const { orderId, amount, currency, keyId } = orderData.data;
+      const { orderId, paymentSessionId } = orderData.data;
 
-      // 2. Open standard Razorpay Checkout Modal
-      const options = {
-        key: keyId,
-        amount: amount || 4900,
-        currency: currency || 'INR',
-        name: 'Metro Mitra',
-        description: `Unlock 10 ${selectedService.label} Contacts in ${selectedCity.name}`,
-        image: '/favicon.png',
-        order_id: orderId,
-        prefill: {
-          name: customerName.trim(),
-          contact: cleanPhone,
-          email: customerEmail?.trim() || '',
-        },
-        theme: {
-          color: '#0F766E', // MetroMitra Teal
-        },
-        modal: {
-          ondismiss: function () {
-            setIsPayingRazorpay(false);
-          },
-        },
-        handler: async function (response) {
-          try {
-            // 3. Verify Razorpay payment on backend
-            const verifyRes = await fetch(`${API_BASE}/payments/verify-direct-contact`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                customerPhone: cleanPhone,
-                customerName: customerName.trim(),
-                customerEmail: customerEmail?.trim() || undefined,
-                workerIds: workers.map((w) => w.id),
-                serviceCategory: selectedService.label,
-                city: selectedCity.name,
-              }),
-            });
+      // 2. Initialize Cashfree Web SDK
+      const cashfreeMode = import.meta.env.VITE_CASHFREE_MODE || 'sandbox';
+      const cashfree = window.Cashfree({ mode: cashfreeMode });
 
-            const verifyData = await verifyRes.json();
-            if (!verifyRes.ok || !verifyData.success) {
-              throw new Error(verifyData.message || 'Payment verification failed. Please contact support.');
-            }
-
-            // 4. Unmask worker contacts immediately in UI
-            const unmaskedMap = {};
-            if (verifyData.data?.unlockedWorkers?.length > 0) {
-              verifyData.data.unlockedWorkers.forEach((w) => {
-                unmaskedMap[w.id] = w.phone;
-              });
-            }
-            workers.forEach((w) => {
-              if (!unmaskedMap[w.id] && w.phoneRaw) {
-                unmaskedMap[w.id] = w.phoneRaw;
-              }
-            });
-
-            const envelope = {
-              isUnlocked: true,
-              unmaskedNumbers: unmaskedMap,
+      // Verification helper
+      const verifyAndUnmaskPayment = async () => {
+        try {
+          const verifyRes = await fetch(`${API_BASE}/payments/cashfree-verify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderId,
               customerPhone: cleanPhone,
               customerName: customerName.trim(),
-              customerEmail: customerEmail?.trim() || null,
-              serviceId: selectedService.id,
-              serviceLabel: selectedService.label,
-              citySlug: selectedCity.slug,
-              cityName: selectedCity.name,
-              unlockedAt: new Date().toISOString(),
-              paymentId: response.razorpay_payment_id,
-            };
+              customerEmail: customerEmail?.trim() || undefined,
+              workerIds: workers.map((w) => w.id),
+              serviceCategory: selectedService.label,
+              city: selectedCity.name,
+            }),
+          });
 
-            setIsUnlocked(true);
-            setUnmaskedNumbers(unmaskedMap);
-            setUnlockedMetadata(envelope);
-            setRequestStatus('VERIFIED');
-
-            if (typeof window !== 'undefined') {
-              localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
-              localStorage.setItem('purchased_customer_phone', cleanPhone);
-            }
-
-            // 5. Close checkout modal and show celebratory Success Popup Modal
-            setIsRazorpayModalOpen(false);
-            setSuccessData({
-              orderId: response.razorpay_order_id,
-              paymentId: response.razorpay_payment_id,
-              customerPhone: cleanPhone,
-              customerName: customerName.trim(),
-              customerEmail: customerEmail?.trim() || '',
-              serviceLabel: selectedService.label,
-              cityName: selectedCity.name,
-            });
-            setIsSuccessModalOpen(true);
-          } catch (verifyErr) {
-            setRazorpayError(verifyErr.message || 'Payment verification failed. Please contact support with your Payment ID.');
-          } finally {
-            setIsPayingRazorpay(false);
+          const verifyData = await verifyRes.json();
+          if (!verifyRes.ok || !verifyData.success) {
+            throw new Error(verifyData.message || 'Payment verification pending. If amount was deducted, please contact support.');
           }
-        },
+
+          // Unmask worker contacts immediately in UI
+          const unmaskedMap = {};
+          if (verifyData.data?.unlockedWorkers?.length > 0) {
+            verifyData.data.unlockedWorkers.forEach((w) => {
+              unmaskedMap[w.id] = w.phone;
+            });
+          }
+          workers.forEach((w) => {
+            if (!unmaskedMap[w.id] && w.phoneRaw) {
+              unmaskedMap[w.id] = w.phoneRaw;
+            }
+          });
+
+          const envelope = {
+            isUnlocked: true,
+            unmaskedNumbers: unmaskedMap,
+            customerPhone: cleanPhone,
+            customerName: customerName.trim(),
+            customerEmail: customerEmail?.trim() || null,
+            serviceId: selectedService.id,
+            serviceLabel: selectedService.label,
+            citySlug: selectedCity.slug,
+            cityName: selectedCity.name,
+            unlockedAt: new Date().toISOString(),
+            paymentId: verifyData.data?.paymentId || orderId,
+          };
+
+          setIsUnlocked(true);
+          setUnmaskedNumbers(unmaskedMap);
+          setUnlockedMetadata(envelope);
+          setRequestStatus('VERIFIED');
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+            localStorage.setItem('purchased_customer_phone', cleanPhone);
+          }
+
+          setIsRazorpayModalOpen(false);
+          setSuccessData({
+            orderId,
+            paymentId: verifyData.data?.paymentId || orderId,
+            customerPhone: cleanPhone,
+            customerName: customerName.trim(),
+            customerEmail: customerEmail?.trim() || '',
+            serviceLabel: selectedService.label,
+            cityName: selectedCity.name,
+          });
+          setIsSuccessModalOpen(true);
+        } catch (verifyErr) {
+          setCashfreeError(verifyErr.message || 'Payment verification failed. Please contact support.');
+        } finally {
+          setIsPayingCashfree(false);
+        }
       };
 
-      const rzpInstance = new window.Razorpay(options);
-      rzpInstance.on('payment.failed', function (resp) {
-        setRazorpayError(resp.error?.description || 'Payment was declined or cancelled.');
-        setIsPayingRazorpay(false);
+      // 3. Open Cashfree in-page popup modal
+      cashfree.checkout({
+        paymentSessionId,
+        redirectTarget: '_modal',
+      }).then(async (result) => {
+        if (result?.error) {
+          setCashfreeError(result.error?.message || 'Payment was cancelled or closed.');
+          setIsPayingCashfree(false);
+          return;
+        }
+        await verifyAndUnmaskPayment();
+      }).catch(async () => {
+        await verifyAndUnmaskPayment();
       });
-      rzpInstance.open();
+
     } catch (err) {
-      setRazorpayError(err.message || 'Unable to open payment gateway.');
-      setIsPayingRazorpay(false);
+      setCashfreeError(err.message || 'Unable to open Cashfree payment gateway.');
+      setIsPayingCashfree(false);
     }
   };
 
@@ -1756,7 +1738,7 @@ export default function DirectContactPage() {
                 </span>
                 <span>·</span>
                 <span className="flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-slate-400" /> Secured by Razorpay
+                  <Lock className="w-3 h-3 text-slate-400" /> Secured by Cashfree PG
                 </span>
               </div>
             </div>
@@ -1765,7 +1747,7 @@ export default function DirectContactPage() {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════════
-          RAZORPAY PRODUCTION CHECKOUT MODAL (COLLECTS NAME, PHONE, EMAIL)
+          CASHFREE CHECKOUT MODAL (COLLECTS NAME, PHONE, EMAIL)
           Z-INDEX 200: Overlays entire window, including navbar.
          ══════════════════════════════════════════════════════════════════════════ */}
       {isRazorpayModalOpen && (
@@ -1776,7 +1758,7 @@ export default function DirectContactPage() {
             <div className="pt-6 px-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 text-left relative">
               <span className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-wide uppercase text-teal-900 bg-teal-200/80 px-3 py-1 rounded-full mb-1.5 shadow-2xs">
                 <CreditCard className="w-3.5 h-3.5 text-teal-700" />
-                <span>Razorpay Secure Checkout</span>
+                <span>Cashfree Secure Checkout</span>
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
                 Unlock 10 Worker Numbers
@@ -1817,11 +1799,11 @@ export default function DirectContactPage() {
               </div>
 
               {/* Checkout Form */}
-              <form onSubmit={handlePayWithRazorpay} className="space-y-3.5">
-                {razorpayError && (
+              <form onSubmit={handlePayWithCashfree} className="space-y-3.5">
+                {cashfreeError && (
                   <div className="p-3 rounded-xl bg-rose-50 text-rose-800 border border-rose-200 text-xs font-bold flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-                    <span>{razorpayError}</span>
+                    <span>{cashfreeError}</span>
                   </div>
                 )}
 
@@ -1880,26 +1862,26 @@ export default function DirectContactPage() {
                 <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-2.5 flex items-center justify-between text-[11px] text-emerald-900 font-medium">
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Razorpay 256-Bit SSL Protected</span>
+                    <span>Cashfree 256-Bit SSL Protected</span>
                   </div>
-                  <span className="text-[10px] text-slate-500">UPI • Cards • NetBanking</span>
+                  <span className="text-[10px] text-slate-500">UPI • Cards • NetBanking • Wallets</span>
                 </div>
 
                 {/* Submit Action */}
                 <button
                   type="submit"
-                  disabled={isPayingRazorpay || !customerPhone || customerPhone.length < 10 || !customerName}
+                  disabled={isPayingCashfree || !customerPhone || customerPhone.length < 10 || !customerName}
                   className="w-full py-3.5 px-6 rounded-2xl font-black text-sm flex items-center justify-center gap-2 text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 shadow-md shadow-emerald-200 hover:shadow-lg transition-all active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isPayingRazorpay ? (
+                  {isPayingCashfree ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Opening Payment Gateway...</span>
+                      <span>Opening Cashfree Gateway...</span>
                     </>
                   ) : (
                     <>
                       <Lock className="w-4 h-4" />
-                      <span>Proceed to Pay ₹49 via Razorpay</span>
+                      <span>Proceed to Pay ₹49 via Cashfree</span>
                     </>
                   )}
                 </button>
@@ -1958,7 +1940,7 @@ export default function DirectContactPage() {
                 </p>
                 {successData?.paymentId && (
                   <p className="text-[10px] font-mono text-slate-400 mt-1">
-                    Razorpay Payment ID: {successData.paymentId}
+                    Payment Reference: {successData.paymentId}
                   </p>
                 )}
               </div>

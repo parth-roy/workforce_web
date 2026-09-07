@@ -393,6 +393,7 @@ export default function DirectContactPage() {
           workerIds: workers.map((w) => w.id),
           platform: 'WORKFORCE_WEB',
           amount: 49.0,
+          returnUrl: typeof window !== 'undefined' ? `${window.location.origin}/direct-contact?cf_order_id={order_id}` : undefined,
         }),
       });
 

@@ -243,17 +243,6 @@ export default function WorkerOnboardingPage() {
       setErrorMessage('Please enter a valid 10-character PAN number.');
       return;
     }
-
-    if (!files.aadharFront) {
-      setErrorMessage('Please upload your Aadhaar Card document.');
-      return;
-    }
-
-    if (!files.panFront) {
-      setErrorMessage('Please upload your PAN Card document.');
-      return;
-    }
-
     if (isDriverRole) {
       if (!formData.vehicleType || formData.vehicleType === 'none') {
         setErrorMessage('Vehicle selection is required for driver and rider roles.');
@@ -335,10 +324,10 @@ export default function WorkerOnboardingPage() {
       const liveKey = keyId || import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_TXq11IOe0ZKrQH';
       const options = {
         key: liveKey,
-        amount: amount || 100,
+        amount: amount || 4900,
         currency: 'INR',
         name: 'Metro Mitra',
-        description: 'Worker Onboarding Fee (Test ₹1) & 90-Day Premium Membership',
+        description: 'Worker Onboarding Fee ₹49 & 90-Day Premium Membership',
         image: '/icon-192.png',
         order_id: orderId,
         prefill: {
@@ -520,7 +509,7 @@ export default function WorkerOnboardingPage() {
 
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase tracking-wider mb-3">
             <Crown className="w-3.5 h-3.5 text-amber-500" />
-            <span>Registration &amp; ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : (successData?.paymentMethod === 'UPI_QR' ? '49' : '1')} Payment Verified</span>
+            <span>Registration & ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : '49'} Payment Verified</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
@@ -528,7 +517,7 @@ export default function WorkerOnboardingPage() {
           </h1>
 
           <p className="text-sm text-slate-600 mb-6">
-            Congratulations <strong>{formData.firstName} {formData.lastName}</strong>! Your gig worker profile and ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : (successData?.paymentMethod === 'UPI_QR' ? '49' : '1')} onboarding payment are verified.
+            Congratulations <strong>{formData.firstName} {formData.lastName}</strong>! Your gig worker profile and ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : '49'} onboarding payment are verified.
           </p>
 
           {/* Reference ID Card */}
@@ -851,10 +840,36 @@ export default function WorkerOnboardingPage() {
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Vehicle Type</label>
                 <select name="vehicleType" value={formData.vehicleType} onChange={handleInput} required={isDriverRole} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
-                  <option value="">-- Select --</option>
-                  <option value="bike">Two Wheeler / Bike</option>
-                  <option value="toto">Toto / E-Rickshaw</option>
-                  <option value="pickup">Pickup Truck / Tata Ace</option>
+                  <option value="">-- Select Vehicle Type --</option>
+                  <optgroup label="Two Wheelers (Express Courier & Parcel)">
+                    <option value="BIKE">Two Wheeler / Bike (up to 30 kg)</option>
+                  </optgroup>
+                  <optgroup label="Three Wheelers (Local City Delivery)">
+                    <option value="THREE_WHEELER">3-Wheeler Auto / Ape (up to 500 kg)</option>
+                  </optgroup>
+                  <optgroup label="Mini Trucks & SCVs (Small Commercial Vehicles)">
+                    <option value="MAHINDRA_JEETO">Mahindra Jeeto (600 kg)</option>
+                    <option value="TATA_ACE">Tata Ace / Chota Hathi (750 kg)</option>
+                    <option value="MINI_OPEN_PICKUP">Mini Open Pickup (750 kg)</option>
+                    <option value="MINI_CLOSED_VAN">Mini Closed Van (750 kg)</option>
+                    <option value="ASHOK_LEYLAND_DOST">Ashok Leyland Dost / Dost+ (1.0 Ton)</option>
+                    <option value="BOLERO_PICKUP">Mahindra Bolero Pickup (1.3 Ton)</option>
+                    <option value="TATA_INTRA">Tata Intra V10 / V30 (1.5 Ton)</option>
+                    <option value="MINI_TRUCK">Pickup 8ft / Mini Truck (1.25 Ton)</option>
+                  </optgroup>
+                  <optgroup label="Medium & Intermediate Commercial Vehicles (LCV / ICV)">
+                    <option value="LCV_BOX_TRUCK">LCV Box Truck (2.5 Ton)</option>
+                    <option value="TRUCK_14FT">14ft Truck / Tata 407 (3.5 Ton)</option>
+                    <option value="TRUCK_14FT_OPEN">14ft Open Truck (3.5 Ton)</option>
+                    <option value="TRUCK_14FT_CLOSED">14ft Closed Container (3.5 Ton)</option>
+                    <option value="TRUCK_17FT">17ft Truck (6.5 Ton)</option>
+                    <option value="TRUCK_17FT_CLOSED">17ft Closed Container (6.5 Ton)</option>
+                    <option value="TRUCK_19FT">19ft Truck (8.0 Ton)</option>
+                  </optgroup>
+                  <optgroup label="Heavy Commercial Vehicles (HCV) & Long-Haul Containers">
+                    <option value="TRUCK_20FT">20ft Truck / Open-Container (8–10 Ton)</option>
+                    <option value="CONTAINER_32FT">32ft Container Truck (16 Ton)</option>
+                  </optgroup>
                   <option value="none">No Vehicle</option>
                 </select>
               </div>
@@ -945,9 +960,7 @@ export default function WorkerOnboardingPage() {
                 <div>
                   <h3 className="font-black text-lg">Worker Onboarding &amp; Membership</h3>
                   <p className="text-xs text-emerald-100">
-                    {paymentTab === 'GATEWAY'
-                      ? 'Pay ₹1.00 (Test Activation) for instant verified status'
-                      : 'Pay ₹49.00 to activate verified worker status'}
+                    Pay ₹49.00 to activate your 90-Day Verified Worker status
                   </p>
                 </div>
               </div>
@@ -981,7 +994,7 @@ export default function WorkerOnboardingPage() {
                 }`}
               >
                 <CreditCard className="w-4 h-4 text-emerald-600" />
-                <span>Instant Checkout (₹1)</span>
+                <span>Instant Checkout (₹49)</span>
               </button>
 
               <button
@@ -1007,9 +1020,7 @@ export default function WorkerOnboardingPage() {
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
                 <div className="flex justify-between items-center text-slate-900 font-black text-sm">
                   <span>90-Day Verified Gig Worker Membership</span>
-                  <span className="text-emerald-700 text-base font-black">
-                    {paymentTab === 'GATEWAY' ? '₹1.00' : '₹49.00'}
-                  </span>
+                  <span className="text-emerald-700 text-base font-black">₹49.00</span>
                 </div>
                 <div className="flex justify-between items-center text-xs text-slate-500">
                   <span>Operating District / Hub</span>
@@ -1023,9 +1034,7 @@ export default function WorkerOnboardingPage() {
                 </div>
                 <div className="border-t border-slate-200 pt-2 flex justify-between items-center text-xs">
                   <span className="text-slate-700 font-bold">Total Amount Payable</span>
-                  <span className="text-slate-900 font-black text-base">
-                    {paymentTab === 'GATEWAY' ? '₹1.00' : '₹49.00'}
-                  </span>
+                  <span className="text-slate-900 font-black text-base">₹49.00</span>
                 </div>
               </div>
 
@@ -1043,7 +1052,7 @@ export default function WorkerOnboardingPage() {
                   <div className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-900 space-y-1">
                     <p className="font-bold">Instant Online Activation via Cashfree / Official Gateway</p>
                     <p className="text-[11px] text-emerald-800">
-                      Production test fee: ₹1.00. Pay using UPI, Cards, or NetBanking.
+                      One-time activation fee: ₹49.00. Pay using UPI, Cards, or NetBanking.
                       Your 90-day verified worker membership will activate automatically on success.
                     </p>
                   </div>
@@ -1062,7 +1071,7 @@ export default function WorkerOnboardingPage() {
                     ) : (
                       <>
                         <Zap className="w-5 h-5 fill-current animate-bounce shrink-0 text-yellow-300" />
-                        <span>Pay ₹1 via Instant Gateway</span>
+                        <span>Pay ₹49 via Instant Gateway</span>
                         <ArrowRight className="w-4 h-4 shrink-0" />
                       </>
                     )}

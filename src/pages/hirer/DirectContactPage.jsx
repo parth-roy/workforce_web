@@ -217,6 +217,73 @@ export default function DirectContactPage() {
     return () => { isMounted = false; };
   }, [selectedService.id, selectedCity.name]);
 
+  // Handle external redirects (e.g. 3DS bank authorization or UPI app return)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectOrderId = urlParams.get('cf_order_id') || urlParams.get('order_id');
+    if (!redirectOrderId || isUnlocked) return;
+
+    const storedPhone = localStorage.getItem('purchased_customer_phone') || '';
+    (async () => {
+      try {
+        const verifyRes = await fetch(`${API_BASE}/payments/cashfree-verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: redirectOrderId,
+            customerPhone: storedPhone || '9999999999',
+            workerIds: workers.map((w) => w.id),
+            serviceCategory: selectedService.label,
+            city: selectedCity.name,
+          }),
+        });
+        const verifyData = await verifyRes.json();
+        if (verifyData.success) {
+          const unmaskedMap = {};
+          if (verifyData.data?.unlockedWorkers?.length > 0) {
+            verifyData.data.unlockedWorkers.forEach((w) => {
+              unmaskedMap[w.id] = w.phone;
+            });
+          }
+          workers.forEach((w) => {
+            if (!unmaskedMap[w.id] && w.phoneRaw) {
+              unmaskedMap[w.id] = w.phoneRaw;
+            }
+          });
+          const envelope = {
+            isUnlocked: true,
+            unmaskedNumbers: unmaskedMap,
+            customerPhone: storedPhone,
+            serviceId: selectedService.id,
+            serviceLabel: selectedService.label,
+            citySlug: selectedCity.slug,
+            cityName: selectedCity.name,
+            unlockedAt: new Date().toISOString(),
+            paymentId: verifyData.data?.paymentId || redirectOrderId,
+          };
+          setIsUnlocked(true);
+          setUnmaskedNumbers(unmaskedMap);
+          setUnlockedMetadata(envelope);
+          setRequestStatus('VERIFIED');
+          localStorage.setItem(`unlocked_dc_${selectedService.id}_${selectedCity.slug}`, JSON.stringify(envelope));
+          setSuccessData({
+            orderId: redirectOrderId,
+            paymentId: verifyData.data?.paymentId || redirectOrderId,
+            customerPhone: storedPhone,
+            customerName: 'Verified Hirer',
+            serviceLabel: selectedService.label,
+            cityName: selectedCity.name,
+          });
+          setIsSuccessModalOpen(true);
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      } catch (err) {
+        console.warn('[Cashfree Redirect Recovery] Could not verify redirect order:', err);
+      }
+    })();
+  }, [selectedService, selectedCity, workers, isUnlocked]);
+
   // Check if current user phone has an approved/verified unlock on backend
   const checkExistingUnlock = useCallback(async (phone) => {
     if (!phone) return;
@@ -495,9 +562,15 @@ export default function DirectContactPage() {
           setIsPayingCashfree(false);
           return;
         }
-        await verifyAndUnmaskPayment();
-      }).catch(async () => {
-        await verifyAndUnmaskPayment();
+        if (result?.paymentDetails) {
+          await verifyAndUnmaskPayment();
+        } else {
+          // Modal closed or dismissed
+          setIsPayingCashfree(false);
+        }
+      }).catch(async (err) => {
+        console.warn('[Cashfree Checkout] Modal closed or failed:', err);
+        setIsPayingCashfree(false);
       });
 
     } catch (err) {

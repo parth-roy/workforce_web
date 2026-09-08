@@ -28,7 +28,9 @@ export const CORE_ROUTES = [
   '/contact',
   '/faq',
   '/guides',
-  '/direct-contact'
+  '/direct-contact',
+  '/directory',
+  '/locations'
 ];
 
 const routeSet = new Set(CORE_ROUTES);

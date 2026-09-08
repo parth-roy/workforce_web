@@ -132,18 +132,30 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Service Locations & Operational Hubs Grid */}
-        <div className="pt-6 pb-8 border-t border-slate-800/80">
-          <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">Service Locations &amp; Operational Hubs</h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-3 gap-x-4">
+        {/* Pan-India 550+ Operational Hubs & Service Areas Grid */}
+        <div className="pt-8 pb-10 border-t border-slate-800/80 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider">
+              Pan-India Service Coverage ({mockLocations.length}+ Operational Hubs &amp; Cities)
+            </h4>
+            <Link
+              to="/directory"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-emerald-400 hover:text-emerald-300 text-[11px] font-semibold transition-colors"
+            >
+              Explore Full State Directory →
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-x-2.5 gap-y-1.5 text-left">
             {mockLocations.map((loc) => (
               <Link
                 key={loc.slug}
                 to={`/jobs/location/${loc.slug}`}
                 title={`Workforce & Home Services in ${loc.name}, ${loc.state}`}
-                className="text-xs text-slate-400 hover:text-emerald-400 transition-colors truncate font-medium"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="text-slate-400 hover:text-emerald-400 transition-colors text-[10px] sm:text-[11px] leading-tight truncate font-medium"
               >
-                {loc.name}, {loc.state}
+                {loc.name}
               </Link>
             ))}
           </div>

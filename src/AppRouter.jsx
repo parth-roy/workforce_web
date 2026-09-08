@@ -36,6 +36,7 @@ import AboutPage from './pages/shared/AboutPage';
 import ContactPage from './pages/shared/ContactPage';
 import FAQPage from './pages/shared/FAQPage';
 import GuidesPage from './pages/shared/GuidesPage';
+import DirectoryPage from './pages/shared/DirectoryPage';
 import UCServicePage from './pages/hirer/UCServicePage';
 import UCCheckoutPage from './pages/hirer/UCCheckoutPage';
 import UCUnlockedWorkersPage from './pages/hirer/UCUnlockedWorkersPage';
@@ -97,6 +98,8 @@ export default function AppRouter() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/faq" element={<FAQPage />} />
       <Route path="/guides" element={<GuidesPage />} />
+      <Route path="/directory" element={<DirectoryPage />} />
+      <Route path="/locations" element={<DirectoryPage />} />
       <Route path="/checkout" element={<UCCheckoutPage />} />
       <Route path="/unlocked-experts" element={<UCUnlockedWorkersPage />} />
       <Route path="/user/orders" element={<UCOrdersPage />} />

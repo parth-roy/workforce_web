@@ -152,7 +152,8 @@ export default function Footer() {
                 key={loc.slug}
                 to={`/jobs/location/${loc.slug}`}
                 title={`Workforce & Home Services in ${loc.name}, ${loc.state}`}
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-slate-400 hover:text-emerald-400 transition-colors text-[10px] sm:text-[11px] leading-tight truncate font-medium"
               >
                 {loc.name}

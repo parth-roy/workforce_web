@@ -134,15 +134,22 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
       <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh] animate-in fade-in zoom-in-95 duration-200 z-10 border border-slate-100">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Choose your city</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Find verified local workers and home services in your area</p>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-white shadow-xs border border-slate-100 flex items-center justify-center p-1.5 shrink-0">
+              <img src="/google-maps-icon.webp" alt="Location" width={22} height={22} className="w-5 h-5 object-contain" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">Choose your city or location</h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Covering <strong className="text-slate-800 font-bold">500+</strong> cities, industrial zones, hubs &amp; service areas across India
+              </p>
+            </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-2.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-all"
-            aria-label="Close"
+            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+            aria-label="Close modal"
           >
             <X size={20} />
           </button>
@@ -179,7 +186,7 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Top Cities</h3>
-                <span className="text-xs font-semibold text-emerald-600">60+ Cities Available</span>
+                <span className="text-xs font-semibold text-emerald-600">500+ Cities Available</span>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4">
                 {TOP_CITIES.map((city) => {

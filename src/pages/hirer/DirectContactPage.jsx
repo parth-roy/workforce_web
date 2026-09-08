@@ -57,7 +57,7 @@ const TRUST_ITEMS = [
 ];
 
 const HOW_IT_WORKS = [
-  { step: '01', title: 'Choose Category & City', desc: 'Select the trade you need and your city from our 60+ service operational hubs.' },
+  { step: '01', title: 'Choose Category & City', desc: 'Select the trade you need and your city from our 500+ service operational hubs.' },
   { step: '02', title: 'Scan UPI QR & Pay Rs.49', desc: 'One-time flat fee via Parther Technologies official UPI QR. Zero subscription or agency margin.' },
   { step: '03', title: 'Direct WhatsApp & Call',  desc: 'Instantly view all 10 unmasked phone numbers. Call or message on WhatsApp directly with zero middleman.' },
 ];
@@ -975,7 +975,7 @@ export default function DirectContactPage() {
                 <div className="mb-5">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Your City</p>
-                    <span className="text-[11px] text-emerald-600 font-bold">60+ Cities Available</span>
+                    <span className="text-[11px] text-emerald-600 font-bold">500+ Cities Available</span>
                   </div>
                   <button
                     type="button"
@@ -1558,7 +1558,7 @@ export default function DirectContactPage() {
               { q: "What is the Rs.49 worker contact unlock?", a: "For Rs.49 you receive direct mobile numbers of 10 Aadhaar-KYC-verified professionals in your chosen service category and city. No agency fee, no percentage commission." },
               { q: "What if I refresh the page or lose the numbers?", a: "All unlocked numbers are automatically preserved in your device storage and can be downloaded as a text file, shared directly to your WhatsApp, or restored anytime using your phone number." },
               { q: "How much does an agency charge vs Metro Mitra?", a: "Traditional agencies charge Rs.500 to Rs.2000 as finder fee or 15 to 30% ongoing commission. Metro Mitra replaces this with a flat Rs.49 one-time unlock fee." },
-              { q: "Which cities are covered?", a: "Kolkata, Barrackpore, Howrah, Dum Dum, Salt Lake, New Town, Delhi NCR, Mumbai, Bengaluru, and 60+ cities across India." },
+              { q: "Which cities are covered?", a: "Kolkata, Barrackpore, Howrah, Dum Dum, Salt Lake, New Town, Delhi NCR, Mumbai, Bengaluru, and 500+ cities across India." },
             ].map(({ q, a }) => (
               <details key={q} className="bg-white border border-slate-200 rounded-2xl shadow-2xs group">
                 <summary className="px-5 py-4 font-semibold text-slate-800 cursor-pointer flex items-center justify-between list-none">

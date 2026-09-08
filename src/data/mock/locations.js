@@ -2,7 +2,7 @@
  * src/data/mock/locations.js
  * ─────────────────────────────────────────────────────────────────────────────
  * METRO MITRA — Pan-India Geographic Entities & Hub Locations
- * Complete 60+ City National Footprint (Aligned with Vahan / GoMyTruck Hubs)
+ * Complete 500+ City National Footprint (Aligned with Vahan / GoMyTruck Hubs)
  */
 
 import { SEO_CITIES, SUB_LOCALITIES } from '../cities.js';

@@ -14,8 +14,29 @@ import { Zap, Phone, BadgeCheck, Banknote, ArrowRight, ShieldCheck, Sparkles } f
  *   cityName     — string  (e.g. "Kolkata") — defaults to "your city"
  *   variant      — "default" | "compact" | "inline"
  */
-export default function DirectContactBanner({ serviceName = 'Workers', cityName = 'your city', variant = 'default' }) {
+export default function DirectContactBanner({
+  serviceName = 'Workers',
+  cityName = 'your city',
+  serviceSlug,
+  citySlug,
+  variant = 'default'
+}) {
   const cityLabel = cityName === 'your city' ? 'near you' : ('in ' + cityName);
+
+  // Build query string for preselection on /direct-contact
+  const cleanCitySlug = citySlug || (cityName && cityName !== 'your city'
+    ? cityName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    : null);
+
+  const cleanServiceSlug = serviceSlug || (serviceName && serviceName !== 'Workers'
+    ? serviceName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    : null);
+
+  const queryParams = new URLSearchParams();
+  if (cleanServiceSlug) queryParams.set('service', cleanServiceSlug);
+  if (cleanCitySlug) queryParams.set('city', cleanCitySlug);
+  const queryString = queryParams.toString();
+  const directLink = queryString ? `/direct-contact?${queryString}` : '/direct-contact';
 
   /* ── COMPACT VARIANT (Used on compact catalog screens) ── */
   if (variant === 'compact') {
@@ -38,7 +59,7 @@ export default function DirectContactBanner({ serviceName = 'Workers', cityName 
             </p>
           </div>
           <Link
-            to="/direct-contact"
+            to={directLink}
             className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black px-4 py-2 rounded-xl transition-all shadow-sm hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
           >
             <Phone className="w-3.5 h-3.5" />
@@ -121,7 +142,7 @@ export default function DirectContactBanner({ serviceName = 'Workers', cityName 
         {/* Right: Big Animating CTA */}
         <div className="shrink-0 w-full lg:w-auto flex flex-col items-center lg:items-end gap-2.5">
           <Link
-            to="/direct-contact"
+            to={directLink}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-base sm:text-lg px-8 py-4 sm:py-4.5 rounded-2xl transition-all shadow-xl shadow-amber-300/80 hover:shadow-2xl hover:scale-105 active:scale-95 group text-center"
           >
             <Zap className="w-5 h-5 fill-current animate-bounce" />

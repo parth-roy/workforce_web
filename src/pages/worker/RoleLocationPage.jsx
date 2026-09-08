@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
+import { useCity } from '../../context/CityContext';
 import { routes } from '../../routes/registry';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import WorkerCTA from '../../components/worker/WorkerCTA';
@@ -14,10 +15,32 @@ import DirectContactBanner from '../../components/common/DirectContactBanner';
 export default function RoleLocationPage() {
   const { role: roleSlug, location: locSlug } = useParams();
   const { getRoleBySlug, getLocationBySlug } = useWorkforce();
+  const { currentCity, setCity } = useCity();
   const [openFaq, setOpenFaq] = useState(null);
 
   const role = getRoleBySlug(roleSlug);
-  const loc = getLocationBySlug(locSlug);
+  const loc = getLocationBySlug(locSlug) || (locSlug ? {
+    id: `loc-${locSlug}`,
+    slug: locSlug,
+    name: locSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+    state: 'India',
+    localPricingConfig: { minimumFare: 450 },
+    description: `Daily gig work opportunities for ${role?.name || 'workers'} in ${locSlug.replace(/-/g, ' ')}.`,
+    context: `${locSlug.replace(/-/g, ' ')} has active daily shift requirements and flexible hourly work.`,
+    industries: ['Home Services', 'Retail', 'Logistics', 'Trade Services']
+  } : null);
+
+  // Synchronize global CityContext with viewed location
+  useEffect(() => {
+    if (loc && currentCity?.slug !== loc.slug) {
+      setCity({
+        name: loc.name,
+        slug: loc.slug,
+        state: loc.state || 'India',
+        region: loc.state || 'India',
+      }, true);
+    }
+  }, [loc, currentCity?.slug, setCity]);
 
   if (!role || !loc) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -131,7 +154,13 @@ export default function RoleLocationPage() {
       <main className="container mx-auto px-4 max-w-5xl py-12">
 
         {/* Direct Worker Contact Banner — Right After Hero */}
-        <DirectContactBanner serviceName={role.name} cityName={loc.name} variant="default" />
+        <DirectContactBanner
+          serviceName={role.name}
+          cityName={loc.name}
+          serviceSlug={role.slug}
+          citySlug={loc.slug}
+          variant="default"
+        />
 
         {/* Dynamic Modular Assembly: Live Hiring & Local Transit Hub Card */}
         <section className="mb-10">

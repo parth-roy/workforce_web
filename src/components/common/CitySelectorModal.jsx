@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Search, X, LocateFixed, Check } from 'lucide-react';
 import { mockLocations } from '../../data/mock/locations';
+import { useCity } from '../../context/CityContext';
 
 export const TOP_CITIES = [
   { name: "Mumbai", slug: "mumbai", image: "/cities/mumbai.webp", state: "Maharashtra" },
@@ -40,11 +41,14 @@ export function detectNearestCity(lat, lng) {
   return nearest;
 }
 
-export default function CitySelectorModal({ isOpen, onClose, onCitySelect, currentCitySlug = 'kolkata' }) {
+export default function CitySelectorModal({ isOpen, onClose, onCitySelect, currentCitySlug }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isDetecting, setIsDetecting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { currentCity, setCity, detectLocation } = useCity();
+
+  const activeSlug = currentCitySlug || currentCity?.slug || 'kolkata';
 
   useEffect(() => {
     if (isOpen) {
@@ -60,14 +64,14 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
   if (!isOpen) return null;
 
   const handleCitySelect = (citySlug, cityName) => {
-    const locObj = mockLocations.find(l => l.slug === citySlug) || { slug: citySlug, name: cityName };
+    const locObj = mockLocations.find(l => l.slug === citySlug) || {
+      slug: citySlug,
+      name: cityName || citySlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      state: 'India'
+    };
     
-    // Persist in localStorage
-    try {
-      localStorage.setItem('metromitra_user_city', JSON.stringify({ slug: locObj.slug, name: locObj.name }));
-    } catch (e) {
-      // ignore
-    }
+    // Update global CityContext
+    setCity(locObj, true);
 
     if (onCitySelect) {
       onCitySelect(locObj);
@@ -79,39 +83,38 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
     const pathParts = location.pathname.split('/').filter(Boolean);
     if (pathParts[0] === 'jobs' && pathParts[1] === 'location') {
       navigate(`/jobs/location/${citySlug}`);
-    } else if (pathParts[0] === 'services' && pathParts.length >= 3) {
+    } else if (pathParts[0] === 'services' && pathParts.length >= 2) {
       navigate(`/services/${pathParts[1]}/${citySlug}`);
-    } else if (pathParts[0] === 'hire-workers' && pathParts.length >= 3) {
+    } else if (pathParts[0] === 'hire-workers' && pathParts.length >= 2) {
       navigate(`/hire-workers/${pathParts[1]}/${citySlug}`);
-    } else if (pathParts[0] === 'jobs' && pathParts.length >= 3) {
+    } else if (pathParts[0] === 'jobs' && pathParts.length >= 2 && pathParts[1] !== 'location') {
       navigate(`/jobs/${pathParts[1]}/${citySlug}`);
+    } else if (pathParts[0] === 'direct-contact') {
+      const params = new URLSearchParams(location.search);
+      params.set('city', citySlug);
+      navigate(`/direct-contact?${params.toString()}`, { replace: true });
+    } else if (pathParts[0] === 'join-as-worker' && location.search) {
+      const params = new URLSearchParams(location.search);
+      if (params.has('location')) {
+        params.set('location', citySlug);
+        navigate(`/join-as-worker?${params.toString()}`, { replace: true });
+      }
     }
     onClose();
   };
 
-  const handleAutoDetect = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
-      return;
-    }
-
+  const handleAutoDetect = async () => {
     setIsDetecting(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setIsDetecting(false);
-        const { latitude, longitude } = position.coords;
-        const nearest = detectNearestCity(latitude, longitude);
-        if (nearest) {
-          handleCitySelect(nearest.slug, nearest.name);
-        }
-      },
-      (error) => {
-        setIsDetecting(false);
-        console.warn('Geolocation error:', error.message);
-        alert('Could not auto-detect location. Please select your city from the list.');
-      },
-      { timeout: 8000, enableHighAccuracy: true }
-    );
+    try {
+      const detected = await detectLocation(true);
+      if (detected && detected.slug) {
+        handleCitySelect(detected.slug, detected.name);
+      }
+    } catch (e) {
+      console.warn('Auto-detect failed:', e);
+    } finally {
+      setIsDetecting(false);
+    }
   };
 
   const filteredCities = mockLocations.filter((c) =>
@@ -180,7 +183,7 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4">
                 {TOP_CITIES.map((city) => {
-                  const isSelected = currentCitySlug === city.slug;
+                  const isSelected = activeSlug === city.slug;
                   return (
                     <button
                       key={city.slug}
@@ -224,7 +227,7 @@ export default function CitySelectorModal({ isOpen, onClose, onCitySelect, curre
             {filteredCities.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                 {filteredCities.map((city) => {
-                  const isSelected = currentCitySlug === city.slug;
+                  const isSelected = activeSlug === city.slug;
                   return (
                     <button
                       key={city.slug}

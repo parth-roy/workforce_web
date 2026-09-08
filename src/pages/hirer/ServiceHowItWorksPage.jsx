@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServiceHowItWorksSEO } from '../../seo/pageMetadata';
 import { Search, Calendar, FileText, CheckCircle, Truck, ChevronLeft, ChevronRight } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function ServiceHowItWorksPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -64,6 +65,8 @@ export default function ServiceHowItWorksPage() {
       </section>
       
       <main className="container mx-auto max-w-7xl px-4 py-16">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
         <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 items-center mb-16">
           <div className="order-2 md:order-1 lg:sticky lg:top-24 h-full flex flex-col justify-center">
             <div className="relative w-full mx-auto rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 bg-slate-50">

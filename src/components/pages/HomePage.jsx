@@ -10,6 +10,7 @@ import { HomePageSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
 import { mockLocations } from '../../data/mock/locations';
 import CitySelectorModal, { detectNearestCity } from '../common/CitySelectorModal';
+import { useCity } from '../../context/CityContext';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -31,36 +32,8 @@ const HERO_SLIDES = [
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
-  const [isCityModalOpen, setIsCityModalOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState({ name: 'Kolkata', slug: 'kolkata' });
+  const { currentCity: selectedCity, isCityModalOpen, setIsCityModalOpen, setCity } = useCity();
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('metromitra_user_city');
-      if (saved) {
-        setSelectedCity(JSON.parse(saved));
-        return;
-      }
-    } catch (e) {}
-
-    if (typeof window !== 'undefined' && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          const nearest = detectNearestCity(latitude, longitude);
-          if (nearest) {
-            setSelectedCity({ name: nearest.name, slug: nearest.slug });
-            try {
-              localStorage.setItem('metromitra_user_city', JSON.stringify({ name: nearest.name, slug: nearest.slug }));
-            } catch (e) {}
-          }
-        },
-        () => {},
-        { timeout: 5000, maximumAge: 600000 }
-      );
-    }
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -198,7 +171,7 @@ export default function HomePage() {
                   {/* SEO/AEO: "hire workers directly", "no broker commission", "get worker phone number" */}
                   <div className="relative group/unlock">
                     <Link
-                      to="/direct-contact"
+                      to={`/direct-contact?city=${selectedCity.slug}`}
                       aria-label="Unlock 10 verified worker phone numbers for just ₹49 — zero broker or middleman commission"
                       className={[
                         "inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs sm:text-sm",
@@ -648,7 +621,7 @@ export default function HomePage() {
         <CitySelectorModal
           isOpen={isCityModalOpen}
           onClose={() => setIsCityModalOpen(false)}
-          onCitySelect={(city) => setSelectedCity(city)}
+          onCitySelect={(city) => setCity(city, true)}
           currentCitySlug={selectedCity.slug}
         />
 

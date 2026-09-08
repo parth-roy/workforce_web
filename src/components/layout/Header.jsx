@@ -1,37 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, PhoneCall, LogIn, ShoppingCart, Package, ArrowRight, Briefcase } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
 import { useAuth } from '../../context/AuthContext';
+import { useCity } from '../../context/CityContext';
+import CitySelectorModal from '../common/CitySelectorModal';
 import { useNavigate } from 'react-router-dom';
-
-const DESKTOP_NAV = [
-  {
-    label: 'Find Work',
-    href: '/jobs',
-    dropdown: [
-      { label: 'All Jobs', href: '/jobs' },
-      { label: 'Locations', href: '/jobs#locations' },
-      { label: 'How It Works', href: '/workers/how-it-works' },
-      { label: 'Join as Worker', href: '/join-as-worker' },
-    ]
-  },
-  {
-    label: 'Services',
-    href: '/services',
-    dropdown: [
-      { label: 'All Services', href: '/services' },
-      { label: 'Service Categories', href: '/services/categories' },
-      { label: 'Hire Workers (B2B)', href: '/hire-workers' },
-      { label: 'How Hiring Works', href: '/services/how-it-works' },
-    ]
-  },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-];
 
 export default function Header() {
   const { cart, orders, setIsCartOpen, clearAllData } = useUCCart();
+  const { currentCity, isCityModalOpen, setIsCityModalOpen } = useCity();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -39,6 +17,31 @@ export default function Header() {
   const location = useLocation();
   const { user, openAuthModal, logout } = useAuth();
   const navigate = useNavigate();
+
+  const desktopNav = useMemo(() => [
+    {
+      label: 'Find Work',
+      href: '/jobs',
+      dropdown: [
+        { label: 'All Jobs', href: '/jobs' },
+        { label: `Jobs in ${currentCity?.name || 'Local Area'}`, href: `/jobs/location/${currentCity?.slug || 'kolkata'}` },
+        { label: 'How It Works', href: '/workers/how-it-works' },
+        { label: 'Join as Worker', href: '/join-as-worker' },
+      ]
+    },
+    {
+      label: 'Services',
+      href: '/services',
+      dropdown: [
+        { label: 'All Services', href: '/services' },
+        { label: 'Service Categories', href: '/services/categories' },
+        { label: 'Hire Workers (B2B)', href: '/hire-workers' },
+        { label: 'How Hiring Works', href: '/services/how-it-works' },
+      ]
+    },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+  ], [currentCity]);
 
   const handleCheckoutClick = (e) => {
     e.preventDefault();
@@ -71,17 +74,32 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-[100] bg-white border-b border-slate-200 shadow-xs transition-shadow duration-200">
       <div className="container mx-auto px-4 max-w-7xl h-16 flex justify-between items-center">
         
-        {/* Logo */}
-        <Link to="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer z-[101]" onClick={() => setIsOpen(false)}>
-          <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 sm:h-12 sm:w-12 object-contain" />
-          <span className="font-black text-[20px] sm:text-[24px] tracking-tight leading-none mt-1 text-slate-900">
-            Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-emerald-500">Mitra</span>
-          </span>
-        </Link>
+        {/* Logo & City Pill */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link to="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer z-[101]" onClick={() => setIsOpen(false)}>
+            <img src="/logo.png" alt="Metro Mitra Logo" className="h-10 w-10 sm:h-12 sm:w-12 object-contain" />
+            <span className="font-black text-[20px] sm:text-[24px] tracking-tight leading-none mt-1 text-slate-900">
+              Metro<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-emerald-500">Mitra</span>
+            </span>
+          </Link>
+
+          {/* City Selector Badge Button */}
+          <button
+            type="button"
+            onClick={() => setIsCityModalOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold border border-emerald-200/90 bg-emerald-50/90 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+            title="Change City"
+            aria-label="Change current city"
+          >
+            <img src="/google-maps-icon.webp" alt="Location" width={14} height={14} className="w-3.5 h-3.5 object-contain shrink-0" />
+            <span className="max-w-[75px] sm:max-w-[120px] truncate">{currentCity?.name || "Kolkata"}</span>
+            <ChevronDown size={11} className="text-emerald-700 shrink-0" />
+          </button>
+        </div>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-7">
-            {DESKTOP_NAV.map((item, idx) => (
+            {desktopNav.map((item, idx) => (
               <div key={idx} className={item.dropdown ? "relative group" : ""}
                    onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
                    onMouseLeave={() => item.dropdown && setActiveDropdown(null)}>
@@ -117,7 +135,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-2 xl:gap-3">
             {/* Direct Numbers ₹49 — Star Feature Badge */}
             <Link
-              to="/direct-contact"
+              to={`/direct-contact?city=${currentCity?.slug || 'kolkata'}`}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black text-amber-900 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 hover:text-white shadow-xs transition-all whitespace-nowrap active:scale-95"
               aria-label="Unlock 10 direct worker phone numbers for Rs.49"
             >
@@ -222,7 +240,23 @@ export default function Header() {
       {/* Mobile Menu Accordion */}
       <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[85vh] overflow-y-auto border-t border-slate-200 bg-white shadow-2xl" : "max-h-0 pointer-events-none"}`}>
         <div className="px-4 pt-2 pb-24 space-y-1">
-          {DESKTOP_NAV.map((item, idx) => (
+
+          {/* Mobile Drawer City Switcher Bar */}
+          <div className="pt-2 pb-2">
+            <button
+              type="button"
+              onClick={() => { setIsOpen(false); setIsCityModalOpen(true); }}
+              className="flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/90 text-slate-800 text-xs font-bold hover:bg-emerald-100 transition-all shadow-2xs"
+            >
+              <div className="flex items-center gap-2">
+                <img src="/google-maps-icon.webp" alt="City" width={16} height={16} className="w-4 h-4 object-contain shrink-0" />
+                <span>Active City: <strong className="text-emerald-700 font-extrabold">{currentCity?.name || "Kolkata"}</strong></span>
+              </div>
+              <span className="text-emerald-700 underline text-xs font-semibold">Change</span>
+            </button>
+          </div>
+
+          {desktopNav.map((item, idx) => (
             <div key={idx} className="border-b border-slate-100 last:border-0">
               {!item.dropdown ? (
                 <Link 
@@ -272,7 +306,7 @@ export default function Header() {
           {/* ₹49 Direct Contact — mobile drawer CTA */}
           <div className="px-2 mb-2">
             <Link
-              to="/direct-contact"
+              to={`/direct-contact?city=${currentCity?.slug || 'kolkata'}`}
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center gap-2 w-full border border-amber-400 text-amber-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 active:scale-98 transition-all"
               aria-label="Get direct worker phone numbers for Rs.49 without broker or middleman"
@@ -351,6 +385,12 @@ export default function Header() {
           )}
         </div>
       </div>
+
+      {/* Global City Selector Modal */}
+      <CitySelectorModal
+        isOpen={isCityModalOpen}
+        onClose={() => setIsCityModalOpen(false)}
+      />
     </header>
   );
 }

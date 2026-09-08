@@ -18,9 +18,17 @@ export const AuthProvider = ({ children }) => {
     const storedRole = localStorage.getItem('role');
     
     if (storedUser && storedToken && storedRole) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
       setToken(storedToken);
       setRole(storedRole);
+      if (parsedUser?.city && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('metromitra:city_change', {
+          detail: typeof parsedUser.city === 'string'
+            ? { name: parsedUser.city, slug: parsedUser.city.toLowerCase().replace(/\s+/g, '-') }
+            : parsedUser.city
+        }));
+      }
     }
   }, []);
 
@@ -32,6 +40,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', jwtToken);
     localStorage.setItem('role', userRole);
+
+    if (userData?.city && typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('metromitra:city_change', {
+        detail: typeof userData.city === 'string'
+          ? { name: userData.city, slug: userData.city.toLowerCase().replace(/\s+/g, '-') }
+          : userData.city
+      }));
+    }
   };
 
   const logout = () => {

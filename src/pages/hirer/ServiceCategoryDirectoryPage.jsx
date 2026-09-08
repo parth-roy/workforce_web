@@ -4,6 +4,7 @@ import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import SEO from '../../components/ui/SEO';
 import { ServiceCategoryDirectorySEO } from '../../seo/pageMetadata';
 import { Grid, ArrowRight, Wrench, Shield } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function ServiceCategoryDirectoryPage() {
   const { services } = useWorkforce();
@@ -53,6 +54,8 @@ export default function ServiceCategoryDirectoryPage() {
       </section>
       
       <main className="container mx-auto max-w-6xl px-4 py-16">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
         <div className="space-y-20">
           {Object.entries(categories).map(([category, catServices]) => (
             <section key={category} className="scroll-mt-24">

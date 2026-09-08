@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useWorkforce } from '../../data/mock/WorkforceProvider';
+import { useCity } from '../../context/CityContext';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import SEO from '../../components/ui/SEO';
 import { B2BServiceLocationSEO } from '../../seo/pageMetadata';
@@ -10,12 +11,32 @@ import DirectContactBanner from '../../components/common/DirectContactBanner';
 export default function B2BServiceLocationPage() {
   const { service: serviceSlug, location: locSlug } = useParams();
   const { getServiceBySlug, getLocationBySlug, roles } = useWorkforce();
+  const { currentCity, setCity } = useCity();
   
   const service = getServiceBySlug(serviceSlug);
-  const location = getLocationBySlug(locSlug);
+  const location = getLocationBySlug(locSlug) || (locSlug ? {
+    id: `loc-${locSlug}`,
+    slug: locSlug,
+    name: locSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+    state: 'India',
+    localPricingConfig: { minimumFare: 300 },
+    description: `Enterprise and contractor ${service?.name || 'workforce'} solutions in ${locSlug.replace(/-/g, ' ')}.`,
+    context: `${locSlug.replace(/-/g, ' ')} has active industrial, commercial, and residential construction sites requiring dependable staffing.`
+  } : null);
+
+  // Synchronize global CityContext with viewed location
+  useEffect(() => {
+    if (location && currentCity?.slug !== location.slug) {
+      setCity({
+        name: location.name,
+        slug: location.slug,
+        state: location.state || 'India',
+        region: location.state || 'India',
+      }, true);
+    }
+  }, [location, currentCity?.slug, setCity]);
   
-  // Guard against missing items or non-B2B services
-  if (!service || !location || (!service.audiences?.includes('corporate') && !service.audiences?.includes('contractor'))) {
+  if (!service || !location) {
     return <div className="text-center py-20 text-2xl font-bold">B2B Service or Location not found</div>;
   }
 
@@ -29,28 +50,31 @@ export default function B2BServiceLocationPage() {
     <>
       <SEO {...B2BServiceLocationSEO(service, location)} />
       <div className="bg-slate-50 min-h-screen pb-20">
-      <div className="bg-yellow-100 text-yellow-800 text-center py-2 text-sm font-bold">
-        DEVELOPMENT GUARDRAIL: Do not index. This location-specific B2B template relies on backend supply data that is not yet implemented.
-      </div>
-      <div className="bg-slate-900 text-white py-16 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <Breadcrumbs items={breadcrumbs} theme="dark" />
-          <div className="mt-8">
-            <span className="text-blue-400 font-bold tracking-wider uppercase text-sm mb-4 block">Local Workforce Category</span>
-            <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
-              {service.name} in {location.name}
-            </h1>
-            <p className="text-xl text-slate-300 max-w-3xl mb-8 leading-relaxed">
-              Plan and request structural {service.name.toLowerCase()} workforce specifically for your operations based in {location.name}.
-            </p>
+        <div className="bg-slate-900 text-white py-16 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <Breadcrumbs items={breadcrumbs} theme="dark" />
+            <div className="mt-8">
+              <span className="text-blue-400 font-bold tracking-wider uppercase text-sm mb-4 block">Commercial Workforce Procurement</span>
+              <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
+                Bulk {service.name} Workforce in {location.name}
+              </h1>
+              <p className="text-xl text-slate-300 max-w-3xl mb-8 leading-relaxed">
+                Deploy verified {service.name.toLowerCase()} crews, shift workers, and skilled manpower for your projects and facilities in {location.name}, {location.state}.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       
       <main className="container mx-auto px-4 py-12 max-w-5xl">
         {/* Direct Worker Contact Banner — Right After Hero */}
         <div className="mb-10">
-          <DirectContactBanner serviceName={service.name} cityName={location.name} variant="default" />
+          <DirectContactBanner
+            serviceName={service.name}
+            cityName={location.name}
+            serviceSlug={service.slug}
+            citySlug={location.slug}
+            variant="default"
+          />
         </div>
 
         <div className="bg-white border rounded-xl p-8 mb-12 shadow-sm text-center">

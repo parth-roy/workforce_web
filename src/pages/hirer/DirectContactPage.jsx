@@ -5,10 +5,12 @@ import {
   QrCode, X, ExternalLink, Download, Smartphone, HelpCircle, Share2, FileText, RotateCcw,
   Upload, Clock, Image as ImageIcon, ShieldCheck, CreditCard, Sparkles
 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { DirectContactSEO } from '../../seo/pageMetadata';
 import CitySelectorModal from '../../components/common/CitySelectorModal';
 import { useAuth } from '../../context/AuthContext';
+import { useCity, resolveCityConfig } from '../../context/CityContext';
 
 const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || 'https://api.gomytruck.com/api/v1';
 
@@ -104,12 +106,89 @@ function getPhoneDisplayParts(phoneRaw, phoneMasked) {
 
 export default function DirectContactPage() {
   const { user, openAuthModal } = useAuth();
-  const [selectedService, setSelectedService] = useState(SERVICE_CATEGORIES[0]);
-  const [selectedCity, setSelectedCity] = useState({ name: 'Kolkata', slug: 'kolkata' });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { currentCity, setCity } = useCity();
+
+  // Resolve initial city from URL search param or CityContext
+  const initialCity = (() => {
+    const paramCity = searchParams.get('city');
+    if (paramCity) {
+      const matched = resolveCityConfig(paramCity);
+      if (matched) return matched;
+    }
+    return currentCity || { name: 'Kolkata', slug: 'kolkata' };
+  })();
+
+  // Resolve initial service from URL search param
+  const initialService = (() => {
+    const paramService = searchParams.get('service');
+    if (paramService) {
+      const cleanParam = paramService.toLowerCase().trim();
+      const matched = SERVICE_CATEGORIES.find(
+        (c) => c.id.toLowerCase() === cleanParam || c.label.toLowerCase() === cleanParam
+      );
+      if (matched) return matched;
+    }
+    return SERVICE_CATEGORIES[0];
+  })();
+
+  const [selectedService, setSelectedService] = useState(initialService);
+  const [selectedCity, setSelectedCity] = useState(initialCity);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
 
+  // Synchronous city update that keeps URL searchParams, local state, and global CityContext in perfect sync
+  const handleCityChange = useCallback((newCity) => {
+    if (!newCity) return;
+    setSelectedCity(newCity);
+    setCity(newCity, true);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('city', newCity.slug);
+      return next;
+    }, { replace: true });
+  }, [setCity, setSearchParams]);
+
+  // Synchronous category update that keeps URL searchParams and local state in sync
+  const handleServiceChange = useCallback((newService) => {
+    if (!newService) return;
+    setSelectedService(newService);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('service', newService.id);
+      return next;
+    }, { replace: true });
+  }, [setSearchParams]);
+
+  // Synchronize when searchParams or currentCity changes externally
+  useEffect(() => {
+    const paramCity = searchParams.get('city');
+    const paramService = searchParams.get('service');
+
+    if (paramCity) {
+      const matched = resolveCityConfig(paramCity);
+      if (matched && matched.slug !== selectedCity.slug) {
+        setSelectedCity(matched);
+      }
+      if (matched && currentCity && currentCity.slug !== matched.slug) {
+        setCity(matched, true);
+      }
+    } else if (currentCity && currentCity.slug !== selectedCity.slug) {
+      setSelectedCity(currentCity);
+    }
+
+    if (paramService) {
+      const cleanParam = paramService.toLowerCase().trim();
+      const matched = SERVICE_CATEGORIES.find(
+        (c) => c.id.toLowerCase() === cleanParam || c.label.toLowerCase() === cleanParam
+      );
+      if (matched && matched.id !== selectedService.id) {
+        setSelectedService(matched);
+      }
+    }
+  }, [searchParams, currentCity]);
+
   // Worker list state
-  const [workers, setWorkers] = useState(() => generateFallbackWorkers(SERVICE_CATEGORIES[0], { name: 'Kolkata', slug: 'kolkata' }));
+  const [workers, setWorkers] = useState(() => generateFallbackWorkers(initialService, initialCity));
   const [isLoadingWorkers, setIsLoadingWorkers] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [unmaskedNumbers, setUnmaskedNumbers] = useState({});
@@ -928,7 +1007,7 @@ export default function DirectContactPage() {
                           key={svc.id}
                           type="button"
                           onClick={() => {
-                            setSelectedService(svc);
+                            handleServiceChange(svc);
                             setIsWorkerModalOpen(true);
                           }}
                           className={[
@@ -2224,7 +2303,7 @@ export default function DirectContactPage() {
       <CitySelectorModal
         isOpen={isCityModalOpen}
         onClose={() => setIsCityModalOpen(false)}
-        onCitySelect={(city) => setSelectedCity(city)}
+        onCitySelect={handleCityChange}
         currentCitySlug={selectedCity.slug}
       />
     </>

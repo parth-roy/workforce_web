@@ -1,63 +1,37 @@
 /**
  * scripts/generate-sitemap.js
  * ─────────────────────────────────────────────────────────────────────────────
- * METRO MITRA — Modular Sitemap & Robots Generator
- * Complete Multi-Category Sitemap Index Architecture (Aligned with Vahan)
+ * METRO MITRA — Segmented Programmatic Sitemap & Robots Generator
+ * Scales to 25,000+ URLs with < 5,000 URLs per segment file
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Mock Data
+// Route Manifest
+import { CORE_ROUTES } from '../src/route-manifest.js';
 import { mockRoles } from '../src/data/mock/roles.js';
 import { mockLocations } from '../src/data/mock/locations.js';
 import { mockServices } from '../src/data/mock/services.js';
 import { mockJobs } from '../src/data/mock/jobs.js';
 
-// SEO Factories
-import {
-  HomePageSEO,
-  WorkerHubSEO,
-  WorkerRoleSEO,
-  WorkerLocationSEO,
-  WorkerRoleLocationSEO,
-  JobDetailSEO,
-  ServicesHubSEO,
-  IndividualServiceSEO,
-  IndividualServiceLocationSEO,
-  B2BHirerHubSEO,
-  B2BServiceSEO,
-  B2BServiceLocationSEO,
-  ContractorSEO,
-  CorporateSEO,
-  WorkerRolesDirectorySEO,
-  WorkerOnboardingSEO,
-  WorkerHowItWorksSEO,
-  WorkerFAQSEO,
-  ServiceCategoryDirectorySEO,
-  ServiceHowItWorksSEO,
-  ServiceFAQSEO,
-  ServiceHiringFlowSEO,
-  DirectContactSEO,
-} from '../src/seo/pageMetadata.js';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const BASE_URL = 'https://metromitra.com';
 
-function cleanCanonical(pathOrObj) {
-  if (typeof pathOrObj === 'object' && pathOrObj !== null) {
-    if (pathOrObj.indexable === false) return null;
-    const p = pathOrObj.canonicalPath || '';
-    if (!p || p.includes('demo')) return null;
-    const cleanPath = p === '/' ? '' : p.replace(/\/$/, '');
-    return `${BASE_URL}${cleanPath}`;
-  }
-  const p = typeof pathOrObj === 'string' ? pathOrObj : '';
-  if (!p || p.includes('demo')) return null;
-  const cleanPath = p === '/' ? '' : p.replace(/\/$/, '');
+function toUrl(path) {
+  if (!path) return null;
+  const cleanPath = path === '/' ? '' : path.replace(/\/$/, '');
   return `${BASE_URL}${cleanPath}`;
+}
+
+function chunkArray(array, size) {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size));
+  }
+  return chunks;
 }
 
 function generateSitemaps() {
@@ -66,140 +40,95 @@ function generateSitemaps() {
     fs.mkdirSync(publicDir, { recursive: true });
   }
 
-  const categories = {
+  const buckets = {
     core: [],
-    jobs: [],
-    services: [],
-    b2b: [],
     locations: [],
-    'role-locations': [],
-    'service-locations': [],
+    services: [],
+    jobs: [],
+    b2b: []
   };
 
-  // 1. Core Evergreen Pages
-  const coreMetas = [
-    HomePageSEO(),
-    WorkerHubSEO(),
-    ServicesHubSEO(),
-    B2BHirerHubSEO(),
-    ContractorSEO(),
-    CorporateSEO(),
-    WorkerRolesDirectorySEO(),
-    WorkerOnboardingSEO(),
-    WorkerHowItWorksSEO(),
-    WorkerFAQSEO(),
-    ServiceCategoryDirectorySEO(),
-    ServiceHowItWorksSEO(),
-    ServiceFAQSEO(),
-    DirectContactSEO(),
-    { canonicalPath: '/about' },
-    { canonicalPath: '/contact' },
-    { canonicalPath: '/faq' },
-    { canonicalPath: '/guides' },
-  ];
-  coreMetas.forEach(meta => {
-    const url = cleanCanonical(meta);
-    if (url) categories.core.push(url);
+  // 1. Core Evergreen
+  CORE_ROUTES.forEach(r => buckets.core.push(toUrl(r)));
+  mockServices.forEach(s => {
+    buckets.services.push(toUrl(`/services/${s.slug}`));
+    buckets.services.push(toUrl(`/services/${s.slug}/hire`));
+    buckets.b2b.push(toUrl(`/hire-workers/${s.slug}`));
   });
-
-  // 2. Worker Roles & Jobs
-  mockRoles.forEach(r => {
-    const url = cleanCanonical(WorkerRoleSEO(r));
-    if (url) categories.jobs.push(url);
-  });
+  mockRoles.forEach(r => buckets.jobs.push(toUrl(`/jobs/${r.slug}`)));
   mockJobs.forEach(job => {
-    if (job.status === 'active' || job.status === 'ACTIVE') {
-      const url = cleanCanonical(JobDetailSEO(job));
-      if (url) categories.jobs.push(url);
+    if (job.status === 'active' || job.status === 'ACTIVE' || !job.isDemo) {
+      buckets.jobs.push(toUrl(`/jobs/detail/${job.id}`));
     }
   });
 
-  // 3. Individual Services (B2C)
+  // 2. Locations
+  mockLocations.forEach(loc => {
+    buckets.locations.push(toUrl(`/jobs/location/${loc.slug}`));
+  });
+
+  // 3. Matrix: B2C Services × Locations
   mockServices.forEach(s => {
-    const sUrl = cleanCanonical(IndividualServiceSEO(s));
-    if (sUrl) categories.services.push(sUrl);
-    const flowUrl = cleanCanonical(ServiceHiringFlowSEO(s));
-    if (flowUrl) categories.services.push(flowUrl);
+    mockLocations.forEach(loc => {
+      buckets.services.push(toUrl(`/services/${s.slug}/${loc.slug}`));
+    });
   });
 
-  // 4. B2B Services
-  mockServices.forEach(s => {
-    const b2bUrl = cleanCanonical(B2BServiceSEO(s));
-    if (b2bUrl) categories.b2b.push(b2bUrl);
-  });
-
-  // 5. Locations Hubs
-  mockLocations.forEach(l => {
-    const locUrl = cleanCanonical(WorkerLocationSEO(l));
-    if (locUrl) categories.locations.push(locUrl);
-  });
-
-  // 6. Worker Role + Location Combinations
+  // 4. Matrix: Worker Jobs × Locations
   mockRoles.forEach(r => {
-    mockLocations.forEach(l => {
-      const rlUrl = cleanCanonical(WorkerRoleLocationSEO(r, l));
-      if (rlUrl) categories['role-locations'].push(rlUrl);
+    mockLocations.forEach(loc => {
+      buckets.jobs.push(toUrl(`/jobs/${r.slug}/${loc.slug}`));
     });
   });
 
-  // 7. Service + Location Combinations (B2C & B2B)
+  // 5. Matrix: B2B Manpower × Locations
   mockServices.forEach(s => {
-    mockLocations.forEach(l => {
-      const slUrl = cleanCanonical(IndividualServiceLocationSEO(s, l));
-      if (slUrl) categories['service-locations'].push(slUrl);
-      const b2blUrl = cleanCanonical(B2BServiceLocationSEO(s, l));
-      if (b2blUrl) categories['service-locations'].push(b2blUrl);
+    mockLocations.forEach(loc => {
+      buckets.b2b.push(toUrl(`/hire-workers/${s.slug}/${loc.slug}`));
     });
   });
 
+  const CHUNK_SIZE = 5000;
   const sitemapFiles = [];
-  let totalUrls = 0;
+  let grandTotal = 0;
 
-  // Build each category sitemap
-  for (const [category, urls] of Object.entries(categories)) {
-    const uniqueUrls = [...new Set(urls)];
-    if (uniqueUrls.length === 0) continue;
+  for (const [category, rawUrls] of Object.entries(buckets)) {
+    const urls = [...new Set(rawUrls.filter(Boolean))];
+    if (urls.length === 0) continue;
 
-    const filename = `sitemap-${category}.xml`;
-    const sitemapPath = path.join(publicDir, filename);
+    const chunks = chunkArray(urls, CHUNK_SIZE);
+    chunks.forEach((chunk, index) => {
+      const filename = chunks.length > 1
+        ? `sitemap-${category}-${index + 1}.xml`
+        : `sitemap-${category}.xml`;
 
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+      chunk.forEach(u => {
+        xml += `  <url>\n    <loc>${u}</loc>\n  </url>\n`;
+      });
+      xml += `</urlset>`;
 
-    uniqueUrls.forEach(url => {
-      xml += `  <url>\n`;
-      xml += `    <loc>${url}</loc>\n`;
-      xml += `  </url>\n`;
+      fs.writeFileSync(path.join(publicDir, filename), xml);
+      console.log(`✅ ${filename} generated with ${chunk.length} URLs`);
+      sitemapFiles.push(filename);
+      grandTotal += chunk.length;
     });
-
-    xml += `</urlset>`;
-
-    fs.writeFileSync(sitemapPath, xml);
-    console.log(`✅ ${filename} generated with ${uniqueUrls.length} URLs`);
-    sitemapFiles.push(filename);
-    totalUrls += uniqueUrls.length;
   }
 
-  // Generate canonical sitemap.xml index
-  const indexPath = path.join(publicDir, 'sitemap.xml');
+  // Master Sitemap Index
   let indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   indexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
   sitemapFiles.forEach(file => {
-    indexXml += `  <sitemap>\n`;
-    indexXml += `    <loc>${BASE_URL}/${file}</loc>\n`;
-    indexXml += `  </sitemap>\n`;
+    indexXml += `  <sitemap>\n    <loc>${BASE_URL}/${file}</loc>\n  </sitemap>\n`;
   });
-
   indexXml += `</sitemapindex>`;
 
-  fs.writeFileSync(indexPath, indexXml);
-  console.log(`✅ sitemap.xml (index) successfully generated referencing ${sitemapFiles.length} sitemaps and ${totalUrls} total URLs.`);
+  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), indexXml);
+  console.log(`\n🎉 sitemap.xml generated with ${sitemapFiles.length} segmented sitemaps and ${grandTotal} total URLs!\n`);
 
-  // Generate robots.txt
-  const robotsTxt = `# METRO MITRA — Crawler Policy
-# Complete AEO & Search Engine Indexing Policy
-
+  // Robots.txt
+  const robotsTxt = `# METRO MITRA — Crawler & Generative Engine Policy
 User-agent: *
 Allow: /
 Disallow: /*?q=
@@ -211,13 +140,13 @@ Disallow: /contractor/dashboard/
 Disallow: /user/orders
 Disallow: /checkout
 
-# Search Engines & Web Crawlers
+# Search Engines
 User-agent: Googlebot
 Allow: /
 User-agent: Bingbot
 Allow: /
 
-# AI Search & Generative Answer Engines (Explicitly Allowed for Geo/AI Discovery & RAG)
+# AI Answer Engines & Generative Search
 User-agent: Google-Extended
 Allow: /
 User-agent: GPTBot
@@ -235,10 +164,8 @@ Allow: /
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
 
-  const robotsPath = path.join(publicDir, 'robots.txt');
-  fs.writeFileSync(robotsPath, robotsTxt);
-  console.log(`✅ robots.txt generated with AI answer engine policies and sitemap index.`);
+  fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsTxt);
+  console.log(`✅ robots.txt generated successfully.\n`);
 }
 
 generateSitemaps();
-

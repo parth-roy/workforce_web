@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { WorkerHowItWorksSEO } from '../../seo/pageMetadata';
 import { Smartphone, Search, Briefcase, CheckCircle, Clock } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function WorkerHowItWorksPage() {
   const steps = [
@@ -27,6 +28,8 @@ export default function WorkerHowItWorksPage() {
       </div>
       
       <main className="container mx-auto max-w-7xl px-4 py-16">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
         <div className="grid md:grid-cols-[1.5fr_1fr] gap-12 items-center mb-16">
           <div>
             <h2 className="text-3xl font-bold text-slate-900 mb-6">The Worker Lifecycle</h2>

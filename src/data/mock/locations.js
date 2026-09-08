@@ -5,6 +5,8 @@
  * Complete 60+ City National Footprint (Aligned with Vahan / GoMyTruck Hubs)
  */
 
+import { SEO_CITIES, SUB_LOCALITIES } from '../cities.js';
+
 export const geoEntities = {
   countries: [
     { id: 'c-IN', code: 'IN', name: 'India', indexabilityStatus: 'eligible' }
@@ -57,7 +59,7 @@ export const geoEntities = {
   ]
 };
 
-export const mockLocations = [
+const baseDetailedLocations = [
   // ─────────────────────────────────────────────────────────────────────────────
   // WEST BENGAL HUBS & INDUSTRIAL CORRIDORS
   // ─────────────────────────────────────────────────────────────────────────────
@@ -2000,3 +2002,56 @@ export const mockLocations = [
     featured: true,
   },
 ];
+
+// Helper to synthesize standard SEO_HUB for any Indian city or sub-locality
+function createDynamicLocation(item) {
+  const isSuburb = Boolean(item.metro);
+  return {
+    id: `loc-${item.slug}`,
+    slug: item.slug,
+    name: item.name,
+    type: 'SEO_HUB',
+    districtId: `d-${item.slug}`,
+    stateId: `s-${item.state.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    countryCode: 'IN',
+    state: item.state,
+    region: isSuburb ? `${item.metro} Metropolitan Suburb` : `${item.name} District`,
+    latitude: 20.5937,
+    longitude: 78.9629,
+    schemaData: {
+      addressLocality: item.name,
+      addressRegion: item.state,
+      postalCode: '100001',
+      geo: { lat: 20.5937, lng: 78.9629 }
+    },
+    localPricingConfig: { minimumFare: 250 },
+    description: `Trusted on-demand home service technicians, daily wage labor, and verified gig workers in ${item.name}, ${item.state}.`,
+    context: `${item.name} is an active urban economic center in ${item.state} with strong local demand for skilled home service technicians, commercial helpers, and daily gig workers.`,
+    availability: 'active',
+    industries: ['Home Services', 'Retail', 'Hospitality', 'Logistics', 'Trade Services', 'Construction'],
+    indexabilityStatus: 'eligible',
+    featured: true
+  };
+}
+
+const detailedSlugMap = new Map(baseDetailedLocations.map(l => [l.slug, l]));
+
+export const mockLocations = [...baseDetailedLocations];
+
+// Merge all 516 validated cities
+for (const city of SEO_CITIES) {
+  if (!detailedSlugMap.has(city.slug)) {
+    const locObj = createDynamicLocation(city);
+    mockLocations.push(locObj);
+    detailedSlugMap.set(city.slug, locObj);
+  }
+}
+
+// Merge all sub-localities
+for (const sub of SUB_LOCALITIES) {
+  if (!detailedSlugMap.has(sub.slug)) {
+    const locObj = createDynamicLocation(sub);
+    mockLocations.push(locObj);
+    detailedSlugMap.set(sub.slug, locObj);
+  }
+}

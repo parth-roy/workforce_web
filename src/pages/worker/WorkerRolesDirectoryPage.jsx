@@ -4,6 +4,7 @@ import { useWorkforce } from '../../data/mock/WorkforceProvider';
 import SEO from '../../components/ui/SEO';
 import { WorkerRolesDirectorySEO } from '../../seo/pageMetadata';
 import { Briefcase, ArrowRight, Zap, Wrench, Package, Sparkles, Truck, Users, Shield } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users, Shield, Briefcase };
 
@@ -23,6 +24,8 @@ export default function WorkerRolesDirectoryPage() {
       </div>
       
       <main className="container mx-auto max-w-5xl px-4 py-12">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {roles.map((role) => {
             const Icon = ICON_MAP[role.icon] || Briefcase;

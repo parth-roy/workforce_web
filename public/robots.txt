@@ -1,6 +1,4 @@
-# METRO MITRA — Crawler Policy
-# Complete AEO & Search Engine Indexing Policy
-
+# METRO MITRA — Crawler & Generative Engine Policy
 User-agent: *
 Allow: /
 Disallow: /*?q=
@@ -12,13 +10,13 @@ Disallow: /contractor/dashboard/
 Disallow: /user/orders
 Disallow: /checkout
 
-# Search Engines & Web Crawlers
+# Search Engines
 User-agent: Googlebot
 Allow: /
 User-agent: Bingbot
 Allow: /
 
-# AI Search & Generative Answer Engines (Explicitly Allowed for Geo/AI Discovery & RAG)
+# AI Answer Engines & Generative Search
 User-agent: Google-Extended
 Allow: /
 User-agent: GPTBot

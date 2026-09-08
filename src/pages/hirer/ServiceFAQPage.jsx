@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { ServiceFAQSEO } from '../../seo/pageMetadata';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 const FAQ_DATA = [
   {
@@ -49,6 +50,8 @@ export default function ServiceFAQPage() {
       </div>
       
       <main className="container mx-auto max-w-7xl px-4 py-16">
+        {/* Direct Worker Contact Banner — Right After Hero */}
+        <DirectContactBanner variant="default" />
         <div className="space-y-12 max-w-4xl">
           {FAQ_DATA.map((section, sIdx) => (
             <div key={sIdx}>

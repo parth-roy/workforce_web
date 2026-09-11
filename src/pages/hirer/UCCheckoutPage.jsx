@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2, Sparkles
 import { useUCCart } from "../../context/UCCartContext";
 import { useAuth } from "../../context/AuthContext";
 import LocationPicker from "../../components/shared/LocationPicker";
+import { getPluralServiceName } from "../../components/common/DirectContactBanner";
 
 export default function UCCheckoutPage() {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ export default function UCCheckoutPage() {
   const [isSmartUnlock, setIsSmartUnlock] = useState(true);
   const [tipAmount, setTipAmount] = useState(75);
   const [avoidCalling, setAvoidCalling] = useState(false);
+
+  const cartCategory = cart[0]?.category || "Workers";
+  const pluralExperts = getPluralServiceName(cartCategory);
   
   // Custom contact phone state (falls back to user.phone or localStorage)
   const [customPhone, setCustomPhone] = useState(() => {
@@ -231,13 +235,13 @@ export default function UCCheckoutPage() {
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-sm text-slate-900">Direct Connect (Top 5-10 Verified Experts)</span>
+                          <span className="font-bold text-sm text-slate-900">Direct Connect (Call 10 Verified {pluralExperts})</span>
                           <span className="bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded">
                             PAY ONLY 1% • ₹49
                           </span>
                         </div>
                         <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                          Unlock direct Phone & WhatsApp contacts. Call, negotiate live quotes, and hire directly on your own terms. 0% middlemen platform commission!
+                          Call direct Phone & WhatsApp contacts. Call, negotiate live quotes, and hire directly on your own terms. 0% middlemen platform commission!
                         </p>
                         <div className="mt-2 flex items-center gap-2 text-xs">
                           <span className="font-bold text-emerald-700 text-sm">Pay: ₹49 Only</span>
@@ -628,7 +632,7 @@ export default function UCCheckoutPage() {
             {isSmartUnlock ? (
               <>
                 <Lock className="w-4 h-4 text-emerald-200" />
-                <span>Unlock 5-10 Experts • ₹49</span>
+                <span>Call 10 Verified {pluralExperts} • ₹49</span>
               </>
             ) : (
               <span>Proceed to Payment</span>

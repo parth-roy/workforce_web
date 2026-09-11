@@ -2,6 +2,38 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Zap, Phone, BadgeCheck, Banknote, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 
+// Pluralize service name cleanly (e.g. Electrician -> Electricians, AC Repair -> AC Technicians, Workers -> Workers)
+export const getPluralServiceName = (name) => {
+  if (!name || name === 'Workers' || name === 'Worker') return 'Workers';
+  const clean = name.trim();
+  const lower = clean.toLowerCase();
+  const custom = {
+    'ac repair': 'AC Technicians',
+    'appliance repair': 'Appliance Technicians',
+    'loading / unloading': 'Loading / Unloading Helpers',
+    'loading-unloading': 'Loading / Unloading Helpers',
+    'furniture moving': 'Furniture Movers',
+    'furniture-moving': 'Furniture Movers',
+    'delivery': 'Delivery Associates',
+    'last mile delivery': 'Delivery Associates',
+    'last-mile-delivery': 'Delivery Associates',
+    'general helper': 'General Helpers',
+    'general-helper': 'General Helpers',
+    'security': 'Security Guards',
+    'security guard': 'Security Guards',
+    'cleaning': 'Cleaners',
+    'cleaner': 'Cleaners',
+    'packer': 'Packers',
+    'electrician': 'Electricians',
+    'plumber': 'Plumbers',
+    'carpenter': 'Carpenters',
+    'painter': 'Painters',
+  };
+  if (custom[lower]) return custom[lower];
+  if (clean.endsWith('s') || clean.endsWith('S')) return clean;
+  return `${clean}s`;
+};
+
 /**
  * DirectContactBanner
  * ─────────────────────────────────────────────────────────────────────────────
@@ -22,6 +54,7 @@ export default function DirectContactBanner({
   variant = 'default'
 }) {
   const cityLabel = cityName === 'your city' ? 'near you' : ('in ' + cityName);
+  const pluralService = getPluralServiceName(serviceName);
 
   // Build query string for preselection on /direct-contact
   const cleanCitySlug = citySlug || (cityName && cityName !== 'your city'
@@ -44,8 +77,8 @@ export default function DirectContactBanner({
       <div className="my-4 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 p-0.5 shadow-md shadow-amber-200/50">
         <div className="bg-amber-50/95 rounded-[14px] px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
           <span className="sr-only">
-            Get direct phone numbers of verified {serviceName} {cityLabel} for just Rs.49. Zero broker commission. Zero middleman charges.
-            Metro Mitra Direct Connect: Aadhaar-KYC verified {serviceName} contact numbers without paying any agency fee.
+            Get direct phone numbers of verified {pluralService} {cityLabel} for just Rs.49. Zero broker commission. Zero middleman charges.
+            Metro Mitra Direct Connect: Aadhaar-KYC verified {pluralService} contact numbers without paying any agency fee.
           </span>
           <div className="flex items-center gap-2.5">
             <span className="relative flex h-3 w-3 shrink-0">
@@ -53,7 +86,7 @@ export default function DirectContactBanner({
               <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
             </span>
             <p className="text-sm font-black text-slate-800">
-              Direct Contact: <span className="text-amber-800">Unlock 10 verified {serviceName} numbers {cityLabel}</span>{' '}
+              Direct Contact: <span className="text-amber-800">Call 10 Verified {pluralService} {cityLabel}</span>{' '}
               <span className="text-slate-400 line-through text-xs font-normal">₹500</span>{' '}
               <span className="text-emerald-700 font-black text-base">₹49</span>
             </p>
@@ -63,7 +96,7 @@ export default function DirectContactBanner({
             className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black px-4 py-2 rounded-xl transition-all shadow-sm hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
           >
             <Phone className="w-3.5 h-3.5" />
-            <span>Unlock Numbers · ₹49</span>
+            <span>Call 10 Verified · ₹49</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -83,10 +116,10 @@ export default function DirectContactBanner({
 
       {/* Hidden crawler text for SEO / GEO / AEO indexing */}
       <div className="sr-only">
-        <h2>Get Direct Phone Numbers of Verified {serviceName} {cityLabel} for Just Rs.49 — No Broker, No Middleman</h2>
+        <h2>Get Direct Phone Numbers of Verified {pluralService} {cityLabel} for Just Rs.49 — No Broker, No Middleman</h2>
         <p>
-          Metro Mitra is a zero-broker workforce platform. For a one-time flat fee of Rs.49, you can unlock
-          the direct mobile phone numbers of 10 Aadhaar-KYC-verified {serviceName} {cityLabel}. There are
+          Metro Mitra is a zero-broker workforce platform. For a one-time flat fee of Rs.49, you can call
+          the direct mobile phone numbers of 10 Aadhaar-KYC-verified {pluralService} {cityLabel}. There are
           no agency commissions, no middleman charges, and no hidden fees. Traditional placement agencies
           charge Rs.500 to Rs.2000 or take 15 to 30 percent commission per booking. Metro Mitra replaces
           this entirely with a flat Rs.49 Direct Connect fee.
@@ -107,14 +140,14 @@ export default function DirectContactBanner({
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-2 leading-tight tracking-tight">
             Skip the middleman!{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">
-              Unlock 10 direct {serviceName} numbers {cityLabel}
+              Call 10 Verified {pluralService} {cityLabel}
             </span>
           </h3>
 
           {/* Subtext */}
           <p className="text-slate-700 text-sm sm:text-base font-medium mb-5 leading-relaxed">
             Pay a flat <strong className="text-emerald-700 font-black text-base sm:text-lg">₹49 one-time fee</strong> — get instant mobile numbers of 10
-            Aadhaar-verified {serviceName} {cityLabel}.
+            Aadhaar-verified {pluralService} {cityLabel}.
             Zero agency commissions. Zero middleman markup. You contact and negotiate with the professional directly.
             Traditional agencies charge{' '}
             <span className="line-through text-rose-500 font-bold">₹500–₹2,000</span>.
@@ -146,7 +179,7 @@ export default function DirectContactBanner({
             className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-base sm:text-lg px-8 py-4 sm:py-4.5 rounded-2xl transition-all shadow-xl shadow-amber-300/80 hover:shadow-2xl hover:scale-105 active:scale-95 group text-center"
           >
             <Zap className="w-5 h-5 fill-current animate-bounce" />
-            <span>Unlock 10 Numbers — ₹49</span>
+            <span>Call 10 Verified {pluralService} — ₹49</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
           </Link>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
@@ -164,7 +197,7 @@ export default function DirectContactBanner({
             Can I get direct worker numbers without paying broker commission?
           </p>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Yes. Metro Mitra charges a flat Rs.49 one-time fee to unlock 10 verified {serviceName} phone numbers
+            Yes. Metro Mitra charges a flat Rs.49 one-time fee to call 10 verified {pluralService}
             {cityLabel !== 'near you' ? (' ' + cityLabel) : ''}. Zero broker commission. Zero middleman. You contact the worker directly.
           </p>
         </div>

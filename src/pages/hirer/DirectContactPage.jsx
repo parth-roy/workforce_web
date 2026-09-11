@@ -9,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import SEO from '../../components/ui/SEO';
 import { DirectContactSEO } from '../../seo/pageMetadata';
 import CitySelectorModal from '../../components/common/CitySelectorModal';
+import { getPluralServiceName } from '../../components/common/DirectContactBanner';
 import { useAuth } from '../../context/AuthContext';
 import { useCity, resolveCityConfig } from '../../context/CityContext';
 
@@ -133,6 +134,7 @@ export default function DirectContactPage() {
   })();
 
   const [selectedService, setSelectedService] = useState(initialService);
+  const pluralService = getPluralServiceName(selectedService?.label || selectedService?.trade || 'Workers');
   const [selectedCity, setSelectedCity] = useState(initialCity);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
 
@@ -942,7 +944,7 @@ export default function DirectContactPage() {
             <span>Direct Hire · Zero Commission · No Middleman</span>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-3">
-            Get <span className="text-amber-500">10 Verified Worker</span> Phone Numbers for{' '}
+            Call <span className="text-amber-500">10 Verified {pluralService}</span> for{' '}
             <span className="text-emerald-600">₹49</span>
           </h1>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
@@ -1054,7 +1056,7 @@ export default function DirectContactPage() {
                     className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-sm shadow-md shadow-amber-200 flex items-center justify-center gap-2 cursor-pointer active:scale-98 transition-all"
                   >
                     <Phone className="w-4 h-4 fill-current" />
-                    <span>View 10 Verified {selectedService.label} Numbers</span>
+                    <span>Call 10 Verified {pluralService}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -1127,7 +1129,7 @@ export default function DirectContactPage() {
                         className="w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-2 text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-200 hover:shadow-amber-300 transition-all active:scale-98 cursor-pointer"
                       >
                         <QrCode className="w-5 h-5" />
-                        <span>{requestStatus === 'PENDING' ? 'Submit New Payment Proof' : 'Unlock 10 Worker Numbers — ₹49'}</span>
+                        <span>{requestStatus === 'PENDING' ? 'Submit New Payment Proof' : `Call 10 Verified ${pluralService} — ₹49`}</span>
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     )}
@@ -1149,7 +1151,7 @@ export default function DirectContactPage() {
                     {/* Unlocked Confirmation Badge */}
                     <div className="w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 text-emerald-800 bg-emerald-100 border border-emerald-300">
                       <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
-                      <span>10 Worker Numbers Unlocked & Saved!</span>
+                      <span>10 Verified {pluralService} Ready to Call!</span>
                     </div>
 
                     {/* Action Buttons: Copy All, Download TXT, Share WhatsApp */}
@@ -1205,7 +1207,7 @@ export default function DirectContactPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                      10 Verified {selectedService.label}s
+                      Call 10 Verified {pluralService}
                     </h2>
                     <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
                       Live
@@ -1482,7 +1484,7 @@ export default function DirectContactPage() {
                                   onClick={handleOpenQRModal}
                                   className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
                                 >
-                                  <span>Unlock (₹49)</span>
+                                  <span>Call Verified (₹49)</span>
                                   <ChevronRight className="w-3 h-3" />
                                 </button>
                               </div>
@@ -1606,7 +1608,7 @@ export default function DirectContactPage() {
               </div>
 
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                10 Verified <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">{selectedService.label}s</span> in {selectedCity.name}
+                Call 10 Verified <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">{pluralService}</span> in {selectedCity.name}
               </h3>
 
               <p className="text-xs text-slate-600 font-medium mt-0.5 leading-relaxed">
@@ -1809,7 +1811,7 @@ export default function DirectContactPage() {
                                 onClick={handleOpenQRModal}
                                 className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
                               >
-                                <span>Unlock (₹49)</span>
+                                <span>Call Verified (₹49)</span>
                                 <ChevronRight className="w-3 h-3" />
                               </button>
                             </div>
@@ -1855,14 +1857,14 @@ export default function DirectContactPage() {
                   className="w-full py-3.5 sm:py-4 px-6 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2.5 text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 shadow-xl shadow-amber-300/80 hover:shadow-2xl transition-all active:scale-98 cursor-pointer text-center"
                 >
                   <Zap className="w-5 h-5 fill-current animate-bounce shrink-0" />
-                  <span>Unlock 10 Worker Numbers — ₹49</span>
+                  <span>Call 10 Verified {pluralService} — ₹49</span>
                   <ArrowRight className="w-5 h-5 shrink-0" />
                 </button>
               ) : (
                 <div className="space-y-2">
                   <div className="w-full py-2 px-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-black text-xs flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>All 10 Worker Contacts Unlocked & Ready to Call!</span>
+                    <span>All 10 Verified {pluralService} Ready to Call!</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -1914,7 +1916,7 @@ export default function DirectContactPage() {
                 <span>Cashfree Secure Checkout</span>
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                Unlock 10 Worker Numbers
+                Call 10 Verified {pluralService}
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
                 Verified <strong>{selectedService.label}s</strong> in <strong>{selectedCity.name}</strong> • Flat ₹49

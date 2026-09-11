@@ -174,6 +174,21 @@ export default function Footer() {
             <p className="mb-1">Email: <a href="mailto:admin@metromitra.com" className="hover:text-emerald-400 transition-colors">admin@metromitra.com</a></p>
             <p className="text-slate-500 mt-2">Metro Mitra connects customers with verified workforce and local service professionals. Coverage, assignment, pricing, and service scope are confirmed for each booking.</p>
           </div>
+
+          <div className="pt-4 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+            <p>&copy; 2026 Metro Mitra. All rights reserved.</p>
+            <p>
+              Developed by{' '}
+              <a
+                href="https://parthertech.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors hover:underline"
+              >
+                Parther Technologies Private Limited
+              </a>
+            </p>
+          </div>
         </div>
 
       </div>

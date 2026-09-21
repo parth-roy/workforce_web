@@ -41,7 +41,9 @@ import UCServicePage from './pages/hirer/UCServicePage';
 import UCCheckoutPage from './pages/hirer/UCCheckoutPage';
 import UCUnlockedWorkersPage from './pages/hirer/UCUnlockedWorkersPage';
 import UCOrdersPage from './pages/hirer/UCOrdersPage';
+import PostJobPage from './pages/hirer/PostJobPage';
 import UserProfilePage from './pages/user/UserProfilePage';
+import UserPostedJobsPage from './pages/user/UserPostedJobsPage';
 import { useParams, useLocation } from 'react-router-dom';
 
 function ServiceDispatcher() {
@@ -104,6 +106,8 @@ export default function AppRouter() {
       <Route path="/unlocked-experts" element={<UCUnlockedWorkersPage />} />
       <Route path="/user/orders" element={<UCOrdersPage />} />
       <Route path="/user/profile" element={<UserProfilePage />} />
+      <Route path="/post-job" element={<PostJobPage />} />
+      <Route path="/user/posted-jobs" element={<UserPostedJobsPage />} />
     </Routes>
       </main>
       {!hideHeaderFooter && <Footer />}

@@ -146,22 +146,28 @@ export default function Header() {
               <span>Direct Numbers · ₹49</span>
             </Link>
 
-            {/* Compact Segmented Role Links */}
-            <div className="hidden xl:flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold">
-              <Link
-                to="/join-as-worker"
-                className="px-2.5 py-1 rounded-lg text-emerald-800 hover:bg-white hover:shadow-2xs transition-all whitespace-nowrap"
-              >
-                Work
-              </Link>
-              <div className="w-px h-3 bg-slate-300" />
-              <Link
-                to="/hire-workers"
-                className="px-2.5 py-1 rounded-lg text-blue-800 hover:bg-white hover:shadow-2xs transition-all whitespace-nowrap"
-              >
-                Hire
-              </Link>
-            </div>
+            {/* Glossy "Post a Job" CTA button */}
+            <Link
+              to="/post-job"
+              className="relative hidden xl:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black overflow-hidden shadow-lg hover:shadow-xl active:scale-95 transition-all whitespace-nowrap"
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7, #d946ef)' }}
+              aria-label="Post a job on MetroMitra"
+            >
+              {/* Shimmer sweep */}
+              <span
+                className="pointer-events-none absolute inset-0 opacity-40"
+                style={{
+                  background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)',
+                  animation: 'shimmer-sweep 2.4s ease-in-out infinite',
+                }}
+              />
+              {/* Pulsing beacon dot */}
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-200 opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+              </span>
+              <span className="relative">Post a Job</span>
+            </Link>
 
             {user && (
               <Link to="/user/orders" className="relative p-1.5 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
@@ -190,9 +196,13 @@ export default function Header() {
                     {user.firstName?.[0] || user.name?.[0] || 'U'}
                   </div>
                 </button>
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                   <Link to="/user/profile" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 font-medium border-b border-slate-50">My Profile</Link>
                   <Link to="/user/orders" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 font-medium border-b border-slate-50">My Bookings</Link>
+                  <Link to="/user/posted-jobs" className="flex items-center justify-between px-4 py-3 text-sm text-violet-700 hover:bg-violet-50 font-bold border-b border-slate-50">
+                    <span>My Posted Jobs</span>
+                    <span className="text-[10px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full font-bold">NEW</span>
+                  </Link>
                   <button onClick={handleLogout} className="w-full text-left block px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-medium rounded-b-xl">Log out</button>
                 </div>
               </div>
@@ -319,6 +329,28 @@ export default function Header() {
             </Link>
           </div>
 
+          <div className="px-2 mb-3">
+            <Link
+              to="/post-job"
+              onClick={() => setIsOpen(false)}
+              className="relative flex items-center justify-center gap-2 w-full text-white font-black text-sm py-3 rounded-xl overflow-hidden shadow-lg active:scale-98 transition-all"
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7, #d946ef)' }}
+            >
+              <span
+                className="pointer-events-none absolute inset-0 opacity-30"
+                style={{
+                  background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
+                  animation: 'shimmer-sweep 2.4s ease-in-out infinite',
+                }}
+              />
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-200 opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+              </span>
+              <span className="relative">Post a Job — Find Workers Now</span>
+            </Link>
+          </div>
+
           <div className="grid grid-cols-2 gap-2.5 px-2 mb-3">
             <Link
               to="/join-as-worker"
@@ -326,8 +358,8 @@ export default function Header() {
               className="flex items-center justify-center gap-1.5 border border-emerald-300 text-emerald-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-98 transition-all"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               <span>I'm a Job Seeker</span>
             </Link>
@@ -337,8 +369,8 @@ export default function Header() {
               className="flex items-center justify-center gap-1.5 border border-blue-300 text-blue-800 font-bold text-xs sm:text-sm py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 active:scale-98 transition-all"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600" />
               </span>
               <span>I'm an Employer</span>
             </Link>
@@ -364,6 +396,17 @@ export default function Header() {
               >
                 <Package size={18} />
                 <span>My Bookings {orders?.length > 0 && `(${orders.length})`}</span>
+              </Link>
+              <Link
+                to="/user/posted-jobs"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-between py-2.5 px-3 text-sm font-bold text-violet-700 hover:bg-violet-50 rounded-lg"
+              >
+                <span className="flex items-center gap-2">
+                  <Briefcase size={18} />
+                  My Posted Jobs
+                </span>
+                <span className="text-[10px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full font-bold">NEW</span>
               </Link>
               <button
                 onClick={() => { setIsOpen(false); handleLogout(); }}

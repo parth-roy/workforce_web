@@ -17,9 +17,9 @@ export default function Layout() {
               </span>
             </Link>
             <div className="flex items-center gap-4">
-              <a href="tel:9331488999" className="flex items-center gap-2 font-bold text-slate-700 hover:text-brand-600">
+              <a href="tel:6291957542" className="flex items-center gap-2 font-bold text-slate-700 hover:text-brand-600">
                 <PhoneCall size={18} className="text-brand-500" />
-                <span className="hidden sm:inline">9331488999</span>
+                <span className="hidden sm:inline">6291957542</span>
               </a>
               
               {user ? (

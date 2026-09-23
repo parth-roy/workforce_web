@@ -89,7 +89,7 @@ function EmployerLeadForm() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="emp-phone" className="text-xs font-bold text-slate-600 mb-1 block">Phone Number *</label>
-                    <input id="emp-phone" required type="tel" pattern="[0-9]{10}" title="10 digit mobile number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} placeholder="9331488999" className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:border-trust-blue-500 outline-none transition-colors" />
+                    <input id="emp-phone" required type="tel" pattern="[0-9]{10}" title="10 digit mobile number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} placeholder="6291957542" className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:border-trust-blue-500 outline-none transition-colors" />
                   </div>
                   <div>
                     <label htmlFor="emp-city" className="text-xs font-bold text-slate-600 mb-1 block">City *</label>

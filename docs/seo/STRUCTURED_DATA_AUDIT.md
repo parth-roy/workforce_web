@@ -47,7 +47,7 @@ export function createLocalBusinessSchema({ name, city, latitude, longitude, pat
     name: name || 'Metro Mitra',
     image: `${BASE_URL}/og-default.jpg`,
     url: `${BASE_URL}${path}`,
-    telephone: '+91-9331488999',
+    telephone: '+91-6291957542',
     address: {
       '@type': 'PostalAddress',
       addressLocality: city || 'Kolkata',

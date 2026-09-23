@@ -5,6 +5,7 @@ import { useUCCart } from "../../context/UCCartContext";
 import { useAuth } from "../../context/AuthContext";
 import LocationPicker from "../../components/shared/LocationPicker";
 import { getPluralServiceName } from "../../components/common/DirectContactBanner";
+import SlotPickerModal, { isSlotValid } from "../../components/hirer/SlotPickerModal";
 
 export default function UCCheckoutPage() {
   const navigate = useNavigate();
@@ -46,18 +47,34 @@ export default function UCCheckoutPage() {
   };
   const displayPhone = formatPhone(rawPhone);
 
-  // Slot state
+  // Slot state with date-aware validation to prevent stale slots across days
   const [selectedSlot, setSelectedSlot] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("uc_selectedSlot");
-      if (saved) return saved;
+      const savedDate = localStorage.getItem("uc_slotSavedDate");
+      const todayYmd = new Date().toISOString().slice(0, 10);
+      
+      // If slot was saved today and is not in the past, keep it
+      if (saved && savedDate === todayYmd && isSlotValid(saved)) {
+        return saved;
+      }
+      try {
+        localStorage.removeItem("uc_selectedSlot");
+        localStorage.removeItem("uc_slotSavedDate");
+      } catch (e) {}
     }
     return null;
   });
   
   useEffect(() => {
-    if (typeof window !== "undefined" && selectedSlot) {
-      localStorage.setItem("uc_selectedSlot", selectedSlot);
+    if (typeof window !== "undefined") {
+      if (selectedSlot) {
+        localStorage.setItem("uc_selectedSlot", selectedSlot);
+        localStorage.setItem("uc_slotSavedDate", new Date().toISOString().slice(0, 10));
+      } else {
+        localStorage.removeItem("uc_selectedSlot");
+        localStorage.removeItem("uc_slotSavedDate");
+      }
     }
   }, [selectedSlot]);
   
@@ -182,24 +199,40 @@ export default function UCCheckoutPage() {
 
             {/* Slot */}
             <div className="p-5 border-b border-slate-100 flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Clock className="w-4 h-4 text-slate-600" />
+              <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0 mt-0.5 text-[#6B46C1]">
+                <Clock className="w-4 h-4" />
               </div>
               <div className="flex-1">
-                <div className="flex justify-between items-start mb-3">
-                  <p className="text-sm font-semibold text-slate-900">Slot</p>
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">Service Schedule / Slot</p>
+                    <p className="text-xs text-slate-500">When should the professional arrive?</p>
+                  </div>
                   {selectedSlot && (
-                    <button onClick={() => setIsSlotModalOpen(true)} className="px-3 py-1 text-sm font-semibold text-slate-700 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
-                      Edit
+                    <button 
+                      onClick={() => setIsSlotModalOpen(true)} 
+                      className="px-3 py-1 text-xs font-bold text-[#6B46C1] border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Edit2 className="w-3 h-3" />
+                      <span>Change</span>
                     </button>
                   )}
                 </div>
                 {!selectedSlot ? (
-                  <button onClick={() => setIsSlotModalOpen(true)} className="w-full bg-[#6B46C1] hover:bg-[#553C9A] text-white font-semibold py-3 rounded-lg transition-colors text-sm">
-                    Select time & date
+                  <button 
+                    onClick={() => setIsSlotModalOpen(true)} 
+                    className="w-full bg-[#6B46C1] hover:bg-[#553C9A] text-white font-bold py-3 rounded-xl transition-all text-sm shadow-sm flex items-center justify-center gap-2 mt-1 active:scale-98 cursor-pointer"
+                  >
+                    <Clock className="w-4 h-4" />
+                    <span>Select Time & Date</span>
                   </button>
                 ) : (
-                  <p className="text-sm text-slate-700 font-semibold">{selectedSlot}</p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 text-[#6B46C1] font-bold text-sm border border-purple-200/80 shadow-2xs">
+                      <Clock className="w-4 h-4 text-[#6B46C1]" />
+                      <span>{selectedSlot}</span>
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -761,48 +794,13 @@ export default function UCCheckoutPage() {
         </div>
       )}
 
-      {/* Slot Modal */}
-      {isSlotModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 animate-in fade-in duration-200" onClick={() => setIsSlotModalOpen(false)}>
-          <div className="bg-white w-full sm:w-[450px] rounded-t-2xl sm:rounded-2xl p-6 flex flex-col gap-4 animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0" onClick={e => e.stopPropagation()}>
-            <h3 className="font-bold text-xl text-slate-900 mb-2">Select Date & Time</h3>
-            
-            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 snap-x">
-              {["Today", "Tomorrow", "Day After"].map((day, idx) => {
-                const date = new Date();
-                date.setDate(date.getDate() + idx);
-                const dateStr = date.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
-                return (
-                  <div key={day} className="snap-start min-w-[120px] p-3 border rounded-xl cursor-pointer text-center hover:border-purple-600 transition-colors border-slate-200">
-                    <p className="font-bold text-slate-900">{day}</p>
-                    <p className="text-xs text-slate-500">{dateStr}</p>
-                  </div>
-                );
-              })}
-            </div>
-
-            <p className="font-semibold text-slate-900 mt-2">Select Start Time</p>
-            <div className="grid grid-cols-3 gap-3">
-              {["09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM"].map(time => (
-                <button 
-                  key={time}
-                  onClick={() => { setSelectedSlot(`Tomorrow, ${time}`); setIsSlotModalOpen(false); }}
-                  className="py-2.5 px-2 text-sm border border-slate-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors font-semibold text-slate-700 text-center"
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-            
-            <button 
-              onClick={() => setIsSlotModalOpen(false)}
-              className="mt-4 py-3 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Dynamic, Glitch-Free Date & Time Slot Modal */}
+      <SlotPickerModal
+        isOpen={isSlotModalOpen}
+        onClose={() => setIsSlotModalOpen(false)}
+        onSelectSlot={(slot) => setSelectedSlot(slot)}
+        currentSlot={selectedSlot}
+      />
 
       {/* Custom Alert Modal */}
       {alertModal.isOpen && (

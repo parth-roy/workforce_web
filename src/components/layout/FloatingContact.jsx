@@ -24,7 +24,7 @@ export default function FloatingContact() {
       {/* Mobile Sticky Bottom Bar (GoMyTruck Style) */}
       <div className="fixed inset-x-0 bottom-0 z-[70] grid grid-cols-2 gap-2 border-t border-slate-200 bg-white p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-6px_20px_rgba(15,23,42,0.14)] md:hidden">
         <a 
-          href="tel:+919331488999" 
+          href="tel:+916291957542" 
           className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-emerald-600 bg-white px-3 py-2.5 text-sm font-extrabold text-emerald-700"
         >
           <Phone className="w-5 h-5" /> Call Now
@@ -54,7 +54,7 @@ export default function FloatingContact() {
 
         {/* Phone Button */}
         <a
-          href="tel:+919331488999"
+          href="tel:+916291957542"
           className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 hover:-translate-y-1 hover:shadow-blue-600/30 transition-all duration-200"
           aria-label="Call us"
         >

@@ -153,7 +153,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <span className="block text-slate-400 font-medium mb-1">Contact Channels</span>
-                <strong className="text-white text-base">+91 9331488999 | admin@metromitra.com</strong>
+                <strong className="text-white text-base">+91 6291957542 | admin@metromitra.com</strong>
               </div>
               <div>
                 <span className="block text-slate-400 font-medium mb-1">Sister Logistics Entity</span>

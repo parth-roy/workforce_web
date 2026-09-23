@@ -38,7 +38,7 @@ export default function ContactPage() {
 
   const contacts = [
     { icon: MessageSquare, label: 'WhatsApp', value: '+91 9331488999', note: 'Chat with us directly', href: 'https://wa.me/919331488999?text=Hello%20Metro%20Mitra', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
-    { icon: Phone, label: 'Phone', value: '9331488999', note: 'Available during business hours', href: 'tel:+919331488999', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
+    { icon: Phone, label: 'Phone', value: '6291957542', note: 'Available during business hours', href: 'tel:+916291957542', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' },
     { icon: Mail, label: 'Email', value: 'admin@metromitra.com', note: 'Drop us a line anytime', href: 'mailto:admin@metromitra.com', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200' },
     { icon: ({ className }) => <img src="/google-maps-icon.webp" alt="Office" width={20} height={20} className={className ? `${className} object-contain` : "w-5 h-5 object-contain"} />, label: 'Office', value: 'Barrackpore, WB', note: '1/2, Bhattacharjee Para, 700120', href: 'https://maps.google.com/?q=1/2,+Bhattacharjee+Para,+Barrackpore,+West+Bengal+700120', color: '', bg: 'bg-emerald-50', border: 'border-emerald-200' },
   ];

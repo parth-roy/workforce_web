@@ -102,7 +102,7 @@ export default defineConfig({
 - Hardcoded static `<title>Metro Mitra</title>`.
 - `<link rel="icon" type="image/png" href="/favicon.png" />`.
 - Embedded static JSON-LD in `<head>`:
-  - `Organization`: Parther Technologies Pvt. Ltd., `https://metromitra.com`, Logo: `https://metromitra.com/logo.png`, Tax ID: `U62099WR2026PTC293183`, Contact: `+91-9331488999`.
+  - `Organization`: Parther Technologies Pvt. Ltd., `https://metromitra.com`, Logo: `https://metromitra.com/logo.png`, Tax ID: `U62099WR2026PTC293183`, Contact: `+91-6291957542`.
   - `LocalBusiness`: Metro Mitra, Parent Org: `#organization`, Chiriyamore, Barrackpore, West Bengal 700120, IN.
 - **Deficiency**: Raw HTML lacks page-level `<meta name="description">`, `og:*`, `twitter:*`, and canonical tags. Search engine spiders that do not evaluate client JavaScript will only index the generic homepage title and static organization snippet.
 
@@ -169,7 +169,7 @@ export default defineConfig({
   - `Book On-Demand` (`/book-workers`)
   - `Enterprise Solutions` (`/workforce-solutions`)
   - `Temporary Staffing` (`/temporary-jobs`)
-- **Header Actions**: Direct phone call `tel:9331488999`, B2B button (`/employer-hiring`), and Play Store download link (`com.metromitra.workforce`).
+- **Header Actions**: Direct phone call `tel:6291957542`, B2B button (`/employer-hiring`), and Play Store download link (`com.metromitra.workforce`).
 - **Mobile Navigation**: Slide-out drawer with backdrop blur, scroll locking, and full link hierarchy.
 
 ### Active Footer (`src/components/layout/Footer.jsx`):
@@ -340,7 +340,7 @@ Contains tailored input schemas (AC types, phase type, furniture handling, clean
 
 ### 2. `public/llms.txt`
 - Structured prompt briefing file for AI/LLM crawlers.
-- Mentions corporate identity (Parther Technologies Pvt. Ltd., CIN: `U62099WR2026PTC293183`, Barrackpore), 0% commission model, Gatidhara/e-Shram alignment, vehicle fleet types, and contact info (`+91 9331488999`).
+- Mentions corporate identity (Parther Technologies Pvt. Ltd., CIN: `U62099WR2026PTC293183`, Barrackpore), 0% commission model, Gatidhara/e-Shram alignment, vehicle fleet types, and contact info (`+91 6291957542`).
 
 ---
 
@@ -419,7 +419,7 @@ Contains tailored input schemas (AC types, phase type, furniture handling, clean
 | **Worker Booking Modal** | `BookingFormModal.jsx` | Client-side simulation (`alert()`) | N/A | ⚠️ Mockup only |
 | **Worker App Download** | `Header.jsx`, `Footer.jsx`, `AppDownloadCTA.jsx` | `https://play.google.com/store/apps/details?id=com.metromitra.workforce` | N/A | ✅ Live Store Link |
 | **WhatsApp Support** | `WhatsAppWidget.jsx`, `Footer.jsx` | `https://wa.me/919331488999` | Pre-filled inquiry text | ✅ Operational |
-| **Direct Phone Dial** | `Header.jsx`, `Footer.jsx` | `tel:9331488999` | N/A | ✅ Operational |
+| **Direct Phone Dial** | `Header.jsx`, `Footer.jsx` | `tel:6291957542` | N/A | ✅ Operational |
 
 ---
 

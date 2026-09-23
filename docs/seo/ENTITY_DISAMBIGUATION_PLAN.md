@@ -105,7 +105,7 @@ Replace the fragmented JSON-LD schemas with the following unified `@graph` speci
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-9331488999",
+        "telephone": "+91-6291957542",
         "contactType": "customer support",
         "areaServed": "IN-WB",
         "availableLanguage": ["English", "Bengali", "Hindi"]
@@ -155,7 +155,7 @@ Replace the fragmented JSON-LD schemas with the following unified `@graph` speci
           "name": "Barrackpore"
         }
       ],
-      "telephone": "+91-9331488999",
+      "telephone": "+91-6291957542",
       "priceRange": "₹₹",
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",

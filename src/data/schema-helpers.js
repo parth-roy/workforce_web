@@ -64,7 +64,7 @@ export function createOrganizationSchema() {
       ],
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91-9331488999',
+        telephone: '+91-6291957542',
         contactType: 'customer service',
         areaServed: 'IN',
         availableLanguage: ['English', 'Hindi', 'Bengali']
@@ -322,7 +322,7 @@ export function createLocalBusinessSchema({ name, city, state, postalCode, geo, 
     description: `On-demand workforce and local home services in ${city || 'India'} provided by Metro Mitra.`,
     url: canonicalUrl,
     image: `${BASE_URL}/logo.png`,
-    telephone: '+91-9331488999',
+    telephone: '+91-6291957542',
     priceRange: '₹₹',
     parentOrganization: { '@id': ORG_ID },
     address: {

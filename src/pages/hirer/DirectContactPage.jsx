@@ -900,7 +900,7 @@ export default function DirectContactPage() {
       }),
       `-------------------------------------------------------------`,
       `Direct Call & WhatsApp Enabled. Zero Middleman Fees.`,
-      `Support: admin@metromitra.com | +91 9331488999 | metromitra.in`,
+      `Support: admin@metromitra.com | +91 62919 57542 | metromitra.in`,
       `=============================================================`,
     ].join('\n');
 

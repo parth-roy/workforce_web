@@ -254,10 +254,17 @@ export default function WorkerOnboardingPage() {
       }
     }
 
-    // All form validation passed — open ₹49 Payment Modal
+    /*
+    // All form validation passed — open ₹49 Payment Modal (Temporarily commented out)
     setIsPaymentModalOpen(true);
+    */
+
+    // Direct onboarding without payment
+    submitOnboardingDirectly();
   };
 
+  /*
+  // ── PAYMENT FUNCTIONALITIES (TEMPORARILY COMMENTED OUT) ──
   // 1. Online Gateway Checkout (Cashfree primary, Razorpay fallback)
   const handlePayWithGateway = async () => {
     setPaymentError('');
@@ -470,6 +477,85 @@ export default function WorkerOnboardingPage() {
       setIsPaying(false);
     }
   };
+  */
+
+  // Submits onboarding payload directly without payment
+  const submitOnboardingDirectly = async () => {
+    setStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      const data = new FormData();
+
+      // Resolve city and area cleanly
+      const resolvedCity = formData.city || givenLocation?.district || autoLocation?.district || '';
+      const resolvedArea = formData.area || givenLocation?.address || autoLocation?.address || resolvedCity;
+
+      // Append text fields from formData, skipping location keys to avoid duplicate entries
+      const locationKeys = new Set([
+        'city', 'area',
+        'givenAddress', 'givenStreet', 'givenDistrict', 'givenState', 'givenPincode', 'givenLat', 'givenLng',
+        'autoAddress', 'autoStreet', 'autoDistrict', 'autoState', 'autoPincode', 'autoLat', 'autoLng'
+      ]);
+
+      Object.keys(formData).forEach((key) => {
+        if (!locationKeys.has(key) && formData[key] !== null && formData[key] !== undefined) {
+          data.set(key, String(formData[key]));
+        }
+      });
+
+      // Explicitly set single city and area
+      data.set('city', resolvedCity);
+      data.set('area', resolvedArea);
+
+      // Append Given Location Data
+      if (givenLocation) {
+        if (givenLocation.address) data.set('givenAddress', givenLocation.address);
+        if (givenLocation.street) data.set('givenStreet', givenLocation.street);
+        if (givenLocation.district) data.set('givenDistrict', givenLocation.district);
+        if (givenLocation.state) data.set('givenState', givenLocation.state);
+        if (givenLocation.pincode) data.set('givenPincode', givenLocation.pincode);
+        if (givenLocation.lat) data.set('givenLat', String(givenLocation.lat));
+        if (givenLocation.lng) data.set('givenLng', String(givenLocation.lng));
+      }
+
+      // Append Auto Location Data
+      if (autoLocation) {
+        if (autoLocation.address) data.set('autoAddress', autoLocation.address);
+        if (autoLocation.street) data.set('autoStreet', autoLocation.street);
+        if (autoLocation.district) data.set('autoDistrict', autoLocation.district);
+        if (autoLocation.state) data.set('autoState', autoLocation.state);
+        if (autoLocation.pincode) data.set('autoPincode', autoLocation.pincode);
+        if (autoLocation.lat) data.set('autoLat', String(autoLocation.lat));
+        if (autoLocation.lng) data.set('autoLng', String(autoLocation.lng));
+      }
+
+      // Append file uploads
+      Object.keys(files).forEach((key) => {
+        if (files[key]) {
+          data.set(key, files[key]);
+        }
+      });
+
+      const response = await fetch(`${API_BASE}/form-gig-leads`, {
+        method: 'POST',
+        body: data,
+      });
+
+      const json = await response.json();
+      if (!response.ok || !json.success) {
+        throw new Error(json.message || 'Failed to submit registration. Please try again.');
+      }
+
+      setSuccessData(json.data);
+      setStatus('success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error('Onboarding Submission Error:', error);
+      setErrorMessage(error.message || 'An unexpected error occurred during submission.');
+      setStatus('error');
+    }
+  };
 
   const copyVpaToClipboard = () => {
     if (typeof navigator !== 'undefined') {
@@ -507,17 +593,28 @@ export default function WorkerOnboardingPage() {
             <CheckCircle className="w-10 h-10" />
           </div>
 
+          {/*
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase tracking-wider mb-3">
             <Crown className="w-3.5 h-3.5 text-amber-500" />
             <span>Registration & ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : '49'} Payment Verified</span>
+          </div>
+          */}
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase tracking-wider mb-3">
+            <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Registration Submitted Successfully</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
             Welcome to Metro Mitra! 👷
           </h1>
 
+          {/*
           <p className="text-sm text-slate-600 mb-6">
             Congratulations <strong>{formData.firstName} {formData.lastName}</strong>! Your gig worker profile and ₹{successData?.amountPaid != null ? Number(successData.amountPaid).toFixed(0) : '49'} onboarding payment are verified.
+          </p>
+          */}
+          <p className="text-sm text-slate-600 mb-6">
+            Congratulations <strong>{formData.firstName} {formData.lastName}</strong>! Your gig worker profile registration has been submitted successfully.
           </p>
 
           {/* Reference ID Card */}
@@ -675,6 +772,7 @@ export default function WorkerOnboardingPage() {
                 />
                 <span>90-Day Verified Premium Gig Worker Membership</span>
               </div>
+              {/*
               <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
                 One-Time Onboarding Fee:{' '}
                 <span className="underline decoration-yellow-300 underline-offset-4 font-extrabold text-yellow-300">
@@ -683,6 +781,14 @@ export default function WorkerOnboardingPage() {
               </h2>
               <p className="text-xs sm:text-sm text-emerald-100 font-medium leading-relaxed max-w-xl">
                 Pay ₹49 to activate your <strong>90-Day Verified Membership</strong>.
+                Get direct hiring calls from verified homeowners and businesses in your operating hub with <strong>0% commission deductions</strong>!
+              </p>
+              */}
+              <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                Free Worker Onboarding &amp; Verification
+              </h2>
+              <p className="text-xs sm:text-sm text-emerald-100 font-medium leading-relaxed max-w-xl">
+                Join Metro Mitra as a verified professional with <strong>Free Onboarding</strong>.
                 Get direct hiring calls from verified homeowners and businesses in your operating hub with <strong>0% commission deductions</strong>!
               </p>
             </div>
@@ -934,24 +1040,42 @@ export default function WorkerOnboardingPage() {
           <div className="pt-2">
             <button 
               type="submit" 
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-5 rounded-2xl font-black text-xl transition-all shadow-xl shadow-emerald-200 active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer"
+              disabled={status === 'submitting'}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-5 rounded-2xl font-black text-xl transition-all shadow-xl shadow-emerald-200 active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <span>Continue to Verification &amp; Pay ₹49</span>
-              <ArrowRight className="w-6 h-6" />
+              {status === 'submitting' ? (
+                <>
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                  <span>Processing Registration...</span>
+                </>
+              ) : (
+                <>
+                  {/*
+                  <span>Continue to Verification &amp; Pay ₹49</span>
+                  <ArrowRight className="w-6 h-6" />
+                  */}
+                  <CheckCircle2 className="w-6 h-6" />
+                  <span>Submit Worker Registration</span>
+                  <ArrowRight className="w-6 h-6" />
+                </>
+              )}
             </button>
+            {/*
             <p className="text-center text-xs text-slate-500 mt-3 flex items-center justify-center gap-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Flat ₹49 one-time activation fee. 0% Commission on all future gig earnings.</span>
             </p>
+            */}
           </div>
         </form>
       </main>
 
-      {/* ── DUAL PAYMENT MODAL (₹49) ── */}
+      {/* ── DUAL PAYMENT MODAL (TEMPORARILY COMMENTED OUT FOR FREE ONBOARDING) ──
+// ── DUAL PAYMENT MODAL (₹49) ──
       {isPaymentModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
+            // Modal Header
             <div className="bg-gradient-to-r from-emerald-700 to-teal-700 p-5 text-white flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -979,7 +1103,7 @@ export default function WorkerOnboardingPage() {
               </button>
             </div>
 
-            {/* Modal Tabs */}
+            // Modal Tabs
             <div className="grid grid-cols-2 p-1.5 bg-slate-100 border-b border-slate-200 text-xs font-bold">
               <button
                 type="button"
@@ -1014,9 +1138,9 @@ export default function WorkerOnboardingPage() {
               </button>
             </div>
 
-            {/* Modal Body */}
+            // Modal Body
             <div className="p-5 sm:p-6 overflow-y-auto space-y-4 max-h-[75vh] text-left">
-              {/* Membership Breakdown Box */}
+              // Membership Breakdown Box
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
                 <div className="flex justify-between items-center text-slate-900 font-black text-sm">
                   <span>90-Day Verified Gig Worker Membership</span>
@@ -1038,7 +1162,7 @@ export default function WorkerOnboardingPage() {
                 </div>
               </div>
 
-              {/* Error Message */}
+              // Error Message
               {paymentError && (
                 <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 flex items-start gap-2 animate-in fade-in">
                   <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
@@ -1046,7 +1170,7 @@ export default function WorkerOnboardingPage() {
                 </div>
               )}
 
-              {/* TAB 1: INSTANT GATEWAY CHECKOUT */}
+              // TAB 1: INSTANT GATEWAY CHECKOUT
               {paymentTab === 'GATEWAY' && (
                 <div className="space-y-4 pt-1">
                   <div className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-900 space-y-1">
@@ -1079,7 +1203,7 @@ export default function WorkerOnboardingPage() {
                 </div>
               )}
 
-              {/* TAB 2: STATIC UPI QR CODE */}
+              // TAB 2: STATIC UPI QR CODE
               {paymentTab === 'QR' && (
                 <div className="space-y-4 pt-1">
                   <div className="text-center">
@@ -1087,7 +1211,7 @@ export default function WorkerOnboardingPage() {
                       Scan with any UPI App (GPay, PhonePe, Paytm, BHIM)
                     </p>
 
-                    {/* QR Code Container */}
+                    // QR Code Container
                     <div className="w-48 h-48 mx-auto p-2 bg-white rounded-2xl border-2 border-dashed border-slate-300 shadow-inner flex items-center justify-center">
                       {qrCodeUrl ? (
                         <img
@@ -1103,7 +1227,7 @@ export default function WorkerOnboardingPage() {
                       )}
                     </div>
 
-                    {/* UPI ID Pill & Copy Button */}
+                    // UPI ID Pill & Copy Button
                     <div className="mt-3 inline-flex items-center gap-2 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs">
                       <span className="text-slate-500 font-semibold">UPI ID:</span>
                       <span className="font-mono font-bold text-slate-900">rzppay@icici</span>
@@ -1122,7 +1246,7 @@ export default function WorkerOnboardingPage() {
                     </div>
                   </div>
 
-                  {/* UTR Input Form */}
+                  // UTR Input Form
                   <form onSubmit={handleConfirmUtrPayment} className="space-y-3 pt-2 border-t border-slate-200">
                     <div>
                       <label className="block text-xs font-bold text-slate-800 mb-1">
@@ -1164,7 +1288,7 @@ export default function WorkerOnboardingPage() {
                 </div>
               )}
 
-              {/* Security Badge */}
+              // Security Badge
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
                 <span className="flex items-center gap-1.5 font-medium">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -1176,6 +1300,7 @@ export default function WorkerOnboardingPage() {
           </div>
         </div>
       )}
+      ── END DUAL PAYMENT MODAL ── */}
     </>
   );
 }

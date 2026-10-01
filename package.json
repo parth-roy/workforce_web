@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/generate-sitemap.js && node --max-old-space-size=4096 scripts/prerender.js",
+    "build": "node -e \"const fs=require('fs');['dist','dist-ssr'].forEach(d=>{try{fs.rmSync(d,{recursive:true,force:true})}catch(e){}})\" && vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/generate-sitemap.js && node --max-old-space-size=4096 scripts/prerender.js",
     "build:client": "vite build",
     "build:ssr": "vite build --ssr src/entry-server.jsx --outDir dist-ssr",
     "generate:sitemap": "node scripts/generate-sitemap.js",

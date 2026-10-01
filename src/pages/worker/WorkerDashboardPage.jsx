@@ -9,7 +9,7 @@ import {
   FileText, Shield, Award, Bell, LogOut, ChevronDown, Star, Phone,
   AlertCircle, Loader2, RefreshCw, ArrowRight, Building2, UploadCloud,
   Check, Lock, Sparkles, CheckCircle2, Search, Filter, Zap, Wrench,
-  Package, Truck, Users, Trash2, Download, ExternalLink
+  Package, Truck, Users, Trash2, Download, ExternalLink, X
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://api.gomytruck.com/api/v1';
@@ -103,6 +103,15 @@ export default function WorkerDashboardPage() {
   });
   const [isUploadingCv, setIsUploadingCv] = useState(false);
   const [cvUploadMsg, setCvUploadMsg] = useState('');
+
+  // Floating in-app toast notification state (modern, elegant, non-blocking)
+  const [toast, setToast] = useState(null);
+  const showToast = useCallback((message, type = 'success', title = '') => {
+    setToast({ message, type, title });
+    setTimeout(() => {
+      setToast(curr => (curr?.message === message ? null : curr));
+    }, 4500);
+  }, []);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -214,7 +223,7 @@ export default function WorkerDashboardPage() {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size exceeds 5MB limit. Please choose a smaller document.');
+      showToast('File size exceeds 5MB limit. Please choose a smaller document.', 'error', 'Upload Limit');
       return;
     }
 
@@ -258,23 +267,19 @@ export default function WorkerDashboardPage() {
 
       setCvFile(cvMeta);
       localStorage.setItem('metromitra_worker_cv', JSON.stringify(cvMeta));
-      setCvUploadMsg('CV uploaded successfully and attached to your worker profile!');
-      setTimeout(() => setCvUploadMsg(''), 4000);
+      showToast('CV uploaded successfully and attached to your worker profile!', 'success', 'CV Uploaded');
     } catch (err) {
       console.error('CV upload error:', err);
-      alert('Failed to upload CV. Please try again.');
+      showToast('Failed to upload CV. Please try again.', 'error', 'Upload Error');
     } finally {
       setIsUploadingCv(false);
     }
   };
 
   const handleRemoveCv = () => {
-    if (window.confirm('Are you sure you want to remove your uploaded CV?')) {
-      setCvFile(null);
-      localStorage.removeItem('metromitra_worker_cv');
-      setCvUploadMsg('CV removed.');
-      setTimeout(() => setCvUploadMsg(''), 3000);
-    }
+    setCvFile(null);
+    localStorage.removeItem('metromitra_worker_cv');
+    showToast('Your CV has been removed from your profile.', 'info', 'CV Removed');
   };
 
   // Robust onboarding data reader that inspects all formats (GetAJobPage, WorkerOnboardingPage, draft, submitted)
@@ -434,9 +439,13 @@ export default function WorkerDashboardPage() {
 
     setTimeout(() => {
       setApplyingRoleId(null);
-      alert(`Application submitted for ${roleItem.name}! Tracking added to 'My Applications'.`);
+      showToast(
+        `Application submitted for ${roleItem.name}! Tracking added to 'My Applications'.`,
+        'success',
+        'Applied Successfully 🎉'
+      );
       handleTabChange('applications');
-    }, 400);
+    }, 300);
   };
 
   if (!user) return null;
@@ -448,6 +457,57 @@ export default function WorkerDashboardPage() {
         description="Manage your job applications, track your profile & KYC, and find new opportunities near you."
         canonical="/worker/dashboard"
       />
+
+      {/* Sleek Floating In-App Toast Notification */}
+      {toast && (
+        <div className="fixed top-20 right-4 sm:right-6 z-[9999] max-w-sm w-full transition-all duration-300 ease-out pointer-events-auto">
+          <div
+            className={`flex items-start gap-3 p-4 rounded-2xl shadow-xl border backdrop-blur-md ${
+              toast.type === 'error'
+                ? 'bg-red-50/95 border-red-200 text-red-950 shadow-red-500/10'
+                : toast.type === 'info'
+                ? 'bg-blue-50/95 border-blue-200 text-blue-950 shadow-blue-500/10'
+                : 'bg-emerald-50/95 border-emerald-200 text-emerald-950 shadow-emerald-500/10'
+            }`}
+          >
+            <div
+              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                toast.type === 'error'
+                  ? 'bg-red-100 text-red-600'
+                  : toast.type === 'info'
+                  ? 'bg-blue-100 text-blue-600'
+                  : 'bg-emerald-100 text-emerald-700'
+              }`}
+            >
+              {toast.type === 'error' ? (
+                <AlertCircle className="w-5 h-5" />
+              ) : toast.type === 'info' ? (
+                <Bell className="w-5 h-5" />
+              ) : (
+                <CheckCircle2 className="w-5 h-5" />
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0 pt-0.5">
+              {toast.title && (
+                <h4 className="text-xs font-black uppercase tracking-wider mb-0.5">
+                  {toast.title}
+                </h4>
+              )}
+              <p className="text-xs font-bold leading-relaxed">{toast.message}</p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setToast(null)}
+              className="text-slate-400 hover:text-slate-700 p-1 -mr-1 -mt-1 rounded-lg transition-colors cursor-pointer"
+              aria-label="Close Notification"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Marquee Ticker Keyframes */}
       <style>{`

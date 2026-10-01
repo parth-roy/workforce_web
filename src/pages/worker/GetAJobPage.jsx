@@ -302,14 +302,8 @@ export default function GetAJobPage() {
       });
       const resJson = await res.json().catch(() => null);
 
-      // Optional webhook
-      const webhookUrl = import.meta.env.VITE_SHEETS_WEBHOOK_URL;
-      if (webhookUrl) {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          body: formData
-        }).catch(err => console.error("Webhook error:", err));
-      }
+      // Google Sheets append is handled server-side via appendToSheet() after createLead()
+      // No browser-side webhook call needed (Apps Script expects JSON, not FormData)
 
       // Persist complete submitted onboarding state
       const fullName = `${profile.firstName} ${profile.lastName}`.trim();

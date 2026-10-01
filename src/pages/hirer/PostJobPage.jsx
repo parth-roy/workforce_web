@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
 import AuthModal from '../../components/auth/AuthModal';
@@ -39,8 +39,13 @@ const STEPS = ['Service', 'Details', 'Schedule', 'Review'];
 
 export default function PostJobPage() {
   const navigate = useNavigate();
-  const { user, token, openAuthModal, isAuthModalOpen, closeAuthModal, login } = useAuth();
+  const { user, token, role, isWorker, openAuthModal, isAuthModalOpen, closeAuthModal, login } = useAuth();
   const { currentCity } = useCity();
+
+  // If logged in as worker, redirect to worker dashboard
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return <Navigate to="/worker/dashboard" replace />;
+  }
 
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);

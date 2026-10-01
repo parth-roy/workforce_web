@@ -591,6 +591,13 @@ export const SUB_LOCALITIES = [
   { name: "Behala", slug: "behala", state: "West Bengal", metro: "Kolkata" },
   { name: "Jadavpur", slug: "jadavpur", state: "West Bengal", metro: "Kolkata" },
   { name: "Rajarhat", slug: "rajarhat", state: "West Bengal", metro: "Kolkata" },
+  { name: "Talpukur", slug: "talpukur", state: "West Bengal", metro: "Barrackpore" },
+  { name: "Anandapuri", slug: "anandapuri", state: "West Bengal", metro: "Barrackpore" },
+  { name: "Palta", slug: "palta", state: "West Bengal", metro: "Barrackpore" },
+  { name: "Titagarh", slug: "titagarh", state: "West Bengal", metro: "Barrackpore" },
+  { name: "Monirampore", slug: "monirampore", state: "West Bengal", metro: "Barrackpore" },
+  { name: "Sodepur", slug: "sodepur", state: "West Bengal", metro: "Kolkata" },
+  { name: "Khardaha", slug: "khardaha", state: "West Bengal", metro: "Barrackpore" },
 
   // Mumbai / MMR
   { name: "Andheri", slug: "andheri", state: "Maharashtra", metro: "Mumbai" },

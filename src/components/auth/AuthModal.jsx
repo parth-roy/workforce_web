@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,6 +13,25 @@ export default function AuthModal() {
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const resetState = () => {
+    setStep('PHONE');
+    setOtp('');
+    setGeneratedOtp('');
+    setError('');
+    setLoading(false);
+  };
+
+  const handleClose = () => {
+    resetState();
+    closeAuthModal();
+  };
+
+  useEffect(() => {
+    if (isAuthModalOpen) {
+      resetState();
+    }
+  }, [isAuthModalOpen]);
 
   if (!isAuthModalOpen) return null;
 
@@ -65,38 +84,44 @@ export default function AuthModal() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to verify OTP');
       
+      if (authIntent === 'WORKER') {
+        sessionStorage.setItem('metromitra_worker_session_verified', 'true');
+        window.dispatchEvent(new CustomEvent('metromitra:worker_verified', { detail: data.data.user }));
+      }
       login(data.data.user, data.data.accessToken, authIntent);
-      closeAuthModal();
+      handleClose();
       handleRedirect();
       
     } catch (err) {
-      // DEVELOPMENT FALLBACK
-      console.warn('Backend failed, falling back to mock login:', err.message);
-      login(
-        { id: `user-${phone}`, name: 'Customer', phone },
-        'mock-jwt-token',
-        authIntent
-      );
-      closeAuthModal();
-      handleRedirect();
+      // Show the real error — never silently log in with a fake token
+      setError(err.message || 'Invalid OTP. Please check and try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleRedirect = () => {
-    // If they were trying to checkout or on direct-contact, stay on the current page.
-    // If they clicked Login from the navbar on a generic page, redirect to orders.
+    if (authIntent === 'WORKER') {
+      if (!location.pathname.includes('/get-a-job')) {
+        navigate('/get-a-job');
+      }
+      return;
+    }
     if (!location.pathname.includes('/checkout') && !location.pathname.includes('/direct-contact')) {
       navigate('/user/orders');
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[250] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div 
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+      className="fixed inset-0 z-[250] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+    >
       <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden relative shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200">
         <button
-          onClick={closeAuthModal}
+          onClick={handleClose}
           className="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
@@ -104,7 +129,7 @@ export default function AuthModal() {
         
         <div className="p-7 sm:p-8">
           <h2 className="text-2xl font-black text-slate-900 mb-1">
-            {authIntent === 'WORKER' ? 'Login as Partner' : 'Login / Register'}
+            {authIntent === 'WORKER' ? 'Login to Find Work' : 'Login / Register'}
           </h2>
           <p className="text-xs text-slate-500 mb-6">
             {step === 'PHONE' ? 'Enter your 10-digit mobile number to proceed' : 'Enter the 6-digit OTP to verify your account'}

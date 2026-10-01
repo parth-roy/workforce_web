@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   ArrowRight, Briefcase, User, Building2, HardHat,
   CheckCircle, Clock, Shield, Zap, ChevronDown, ChevronUp,
@@ -11,6 +11,7 @@ import { mockServices } from '../../data/mock/services';
 import { mockLocations } from '../../data/mock/locations';
 import CitySelectorModal, { detectNearestCity } from '../common/CitySelectorModal';
 import { useCity } from '../../context/CityContext';
+import { useAuth } from '../../context/AuthContext';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -31,9 +32,15 @@ const HERO_SLIDES = [
 ];
 
 export default function HomePage() {
+  const { user, role, isWorker } = useAuth();
   const [openFaq, setOpenFaq] = useState(null);
   const { currentCity: selectedCity, isCityModalOpen, setIsCityModalOpen, setCity } = useCity();
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+
+  // When logged in as worker/employee, stay within worker dashboard until logout
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return <Navigate to="/worker/dashboard" replace />;
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {

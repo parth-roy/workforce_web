@@ -13,6 +13,7 @@ import RoleLocationPage from './pages/worker/RoleLocationPage';
 import JobDetailPage from './pages/worker/JobDetailPage';
 import WorkerRolesDirectoryPage from './pages/worker/WorkerRolesDirectoryPage';
 import WorkerOnboardingPage from './pages/worker/WorkerOnboardingPage';
+import GetAJobPage from './pages/worker/GetAJobPage';
 import WorkerHowItWorksPage from './pages/worker/WorkerHowItWorksPage';
 import WorkerFAQPage from './pages/worker/WorkerFAQPage';
 
@@ -43,6 +44,7 @@ import UCUnlockedWorkersPage from './pages/hirer/UCUnlockedWorkersPage';
 import UCOrdersPage from './pages/hirer/UCOrdersPage';
 import PostJobPage from './pages/hirer/PostJobPage';
 import UserProfilePage from './pages/user/UserProfilePage';
+import WorkerDashboardPage from './pages/worker/WorkerDashboardPage';
 import UserPostedJobsPage from './pages/user/UserPostedJobsPage';
 import { useParams, useLocation } from 'react-router-dom';
 
@@ -53,6 +55,7 @@ function ServiceDispatcher() {
 export default function AppRouter() {
   const location = useLocation();
   const hideHeaderFooter = location.pathname === '/checkout' || location.pathname === '/user/orders';
+  const isWorkerDashboard = location.pathname.startsWith('/worker/dashboard');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,6 +74,7 @@ export default function AppRouter() {
       <Route path="/jobs/:role/:location" element={<RoleLocationPage />} />
       
       <Route path="/join-as-worker" element={<WorkerOnboardingPage />} />
+      <Route path="/get-a-job" element={<GetAJobPage />} />
       <Route path="/workers/how-it-works" element={<WorkerHowItWorksPage />} />
       <Route path="/workers/faq" element={<WorkerFAQPage />} />
 
@@ -108,10 +112,12 @@ export default function AppRouter() {
       <Route path="/user/profile" element={<UserProfilePage />} />
       <Route path="/post-job" element={<PostJobPage />} />
       <Route path="/user/posted-jobs" element={<UserPostedJobsPage />} />
+      <Route path="/get-a-job" element={<GetAJobPage />} />
+      <Route path="/worker/dashboard" element={<WorkerDashboardPage />} />
     </Routes>
       </main>
-      {!hideHeaderFooter && <Footer />}
-      {!hideHeaderFooter && <FloatingContact />}
+      {!hideHeaderFooter && !isWorkerDashboard && <Footer />}
+      {!hideHeaderFooter && !isWorkerDashboard && <FloatingContact />}
     </div>
   );
 }

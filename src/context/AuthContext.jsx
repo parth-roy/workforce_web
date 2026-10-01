@@ -5,41 +5,55 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null); // 'CUSTOMER' | 'WORKER'
+  const [user, setUser] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const u = localStorage.getItem('user');
+      return u ? JSON.parse(u) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [token, setToken] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('token') || null;
+  });
+  const [role, setRole] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const stored = localStorage.getItem('role');
+    if (stored) return stored;
+    try {
+      const u = localStorage.getItem('user');
+      const parsed = u ? JSON.parse(u) : null;
+      return parsed?.role || null;
+    } catch {
+      return null;
+    }
+  }); // 'CUSTOMER' | 'WORKER'
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authIntent, setAuthIntent] = useState('CUSTOMER'); // Default to customer login
 
+  const isWorker = role === 'WORKER' || user?.role === 'WORKER';
+
   useEffect(() => {
-    // Load from local storage on mount
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
-    const storedRole = localStorage.getItem('role');
-    
-    if (storedUser && storedToken && storedRole) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setToken(storedToken);
-      setRole(storedRole);
-      if (parsedUser?.city && typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('metromitra:city_change', {
-          detail: typeof parsedUser.city === 'string'
-            ? { name: parsedUser.city, slug: parsedUser.city.toLowerCase().replace(/\s+/g, '-') }
-            : parsedUser.city
-        }));
-      }
+    if (user?.city && typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('metromitra:city_change', {
+        detail: typeof user.city === 'string'
+          ? { name: user.city, slug: user.city.toLowerCase().replace(/\s+/g, '-') }
+          : user.city
+      }));
     }
   }, []);
 
   const login = (userData, jwtToken, userRole) => {
     setUser(userData);
     setToken(jwtToken);
-    setRole(userRole);
+    const resolvedRole = userRole || userData?.role || 'CUSTOMER';
+    setRole(resolvedRole);
     
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', jwtToken);
-    localStorage.setItem('role', userRole);
+    localStorage.setItem('role', resolvedRole);
 
     if (userData?.city && typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('metromitra:city_change', {
@@ -75,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      user, token, role, login, logout,
+      user, token, role, isWorker, login, logout,
       isAuthModalOpen, openAuthModal, closeAuthModal, authIntent
     }}>
       {children}

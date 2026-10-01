@@ -391,6 +391,72 @@ export default function WorkerOnboardingPage() {
     });
   };
 
+  const persistOnboardingSuccess = (resolvedCity, resolvedArea, refId) => {
+    try {
+      const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+      const completedData = {
+        name: fullName,
+        fullName: fullName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        email: formData.email,
+        jobType: formData.jobType,
+        city: resolvedCity,
+        locality: resolvedArea,
+        area: resolvedArea,
+        vehicleType: formData.vehicleType,
+        aadharNumber: formData.aadharNumber,
+        panNumber: formData.panNumber,
+        dlNumber: formData.dlNumber,
+        refId,
+        profile: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          name: fullName,
+          fullName: fullName,
+          phone: formData.phone,
+          email: formData.email,
+          city: resolvedCity,
+          locality: resolvedArea,
+        },
+        submittedAt: new Date().toISOString()
+      };
+      localStorage.setItem('metromitra_onboarding_submitted', JSON.stringify(completedData));
+
+      const rawUser = localStorage.getItem('user');
+      const parsedUser = rawUser ? JSON.parse(rawUser) : {};
+      const updatedUser = {
+        ...parsedUser,
+        name: fullName || parsedUser.name,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone || parsedUser.phone,
+        city: resolvedCity,
+        role: 'WORKER',
+        profileComplete: true,
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      localStorage.setItem('role', 'WORKER');
+      window.dispatchEvent(new Event('storage'));
+
+      const token = localStorage.getItem('token');
+      if (token && fullName) {
+        fetch(`${API_BASE}/users/me`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name: fullName,
+            profileComplete: true,
+          })
+        }).catch(() => {});
+      }
+    } catch (e) {}
+  };
+
   // Submits complete onboarding payload with payment tokens to backend
   const submitOnboardingWithPayment = async (paymentDetails) => {
     setIsPaying(true);
@@ -468,6 +534,7 @@ export default function WorkerOnboardingPage() {
 
       setIsPaymentModalOpen(false);
       setSuccessData(json.data);
+      persistOnboardingSuccess(resolvedCity, resolvedArea, json.data?.refId || json.data?.id);
       setStatus('success');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
@@ -548,6 +615,7 @@ export default function WorkerOnboardingPage() {
       }
 
       setSuccessData(json.data);
+      persistOnboardingSuccess(resolvedCity, resolvedArea, json.data?.refId || json.data?.id);
       setStatus('success');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {

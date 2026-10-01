@@ -256,6 +256,7 @@ export function CityProvider({ children }) {
         detectLocation,
         isCityModalOpen,
         setIsCityModalOpen,
+        cities: mockLocations,
       }}
     >
       {children}
@@ -274,6 +275,7 @@ export function useCity() {
       detectLocation: async () => DEFAULT_CITY,
       isCityModalOpen: false,
       setIsCityModalOpen: () => {},
+      cities: mockLocations,
     };
   }
   return context;

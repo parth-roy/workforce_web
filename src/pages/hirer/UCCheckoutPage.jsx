@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { ArrowLeft, Clock, Percent, Plus, Minus, X, Info, Phone, Edit2, Sparkles, Lock, ShieldCheck, Zap } from "lucide-react";
 import { useUCCart } from "../../context/UCCartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -9,7 +9,12 @@ import SlotPickerModal, { isSlotValid } from "../../components/hirer/SlotPickerM
 
 export default function UCCheckoutPage() {
   const navigate = useNavigate();
-  const { user, token, openAuthModal } = useAuth();
+  const { user, token, role, isWorker, openAuthModal } = useAuth();
+
+  // If logged in as worker, redirect to worker dashboard
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return <Navigate to="/worker/dashboard" replace />;
+  }
   const { cart, getTotalPrice, addToCart, removeFromCart, clearCart, addOrder } = useUCCart();
   
   const [isSmartUnlock, setIsSmartUnlock] = useState(true);

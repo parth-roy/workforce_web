@@ -36,7 +36,7 @@ const SKILL_LABELS = {
 };
 
 export default function UserPostedJobsPage() {
-  const { user, token, openAuthModal } = useAuth();
+  const { user, token, role, isWorker, openAuthModal } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [gigs, setGigs] = useState([]);
@@ -46,12 +46,20 @@ export default function UserPostedJobsPage() {
   const showSuccess = location.state?.success;
 
   useEffect(() => {
+    if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+      navigate('/worker/dashboard', { replace: true });
+      return;
+    }
     if (!user || !token) {
       openAuthModal('CUSTOMER');
       return;
     }
     fetchGigs();
-  }, [user, token]);
+  }, [user, token, isWorker, role]);
+
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return null;
+  }
 
   const fetchGigs = async () => {
     setLoading(true);

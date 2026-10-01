@@ -1,11 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Package, CheckCircle2, Phone } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function UCOrdersPage() {
   const navigate = useNavigate();
   const { orders } = useUCCart();
+  const { user, role, isWorker } = useAuth();
+
+  // If logged in as WORKER, redirect to worker dashboard applications tab
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return <Navigate to="/worker/dashboard?tab=applications" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] font-sans pb-24">

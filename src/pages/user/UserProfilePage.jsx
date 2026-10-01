@@ -5,19 +5,24 @@ import { User, Phone, Mail, Package, LogOut, FileText } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 export default function UserProfilePage() {
-  const { user, role, logout } = useAuth();
+  const { user, role, isWorker, logout } = useAuth();
   const { clearAllData } = useUCCart();
   const [activeTab, setActiveTab] = useState('profile');
+
+  // If logged in as WORKER, redirect to protected worker dashboard profile
+  if (isWorker || role === 'WORKER' || user?.role === 'WORKER') {
+    return <Navigate to="/worker/dashboard?tab=profile" replace />;
+  }
+
+  // If not logged in, redirect to home
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleLogout = () => {
     if (clearAllData) clearAllData();
     logout();
   };
-
-  // If not logged in, redirect to home
-  if (!user) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <div className="bg-slate-50 min-h-[calc(100vh-64px)] py-12">
@@ -41,15 +46,6 @@ export default function UserProfilePage() {
               <Package size={18} />
               My Bookings
             </button>
-            {role === 'WORKER' && (
-              <button
-                onClick={() => setActiveTab('documents')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-colors ${activeTab === 'documents' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
-              >
-                <FileText size={18} />
-                Documents
-              </button>
-            )}
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-white text-red-600 hover:bg-red-50 transition-colors mt-4"

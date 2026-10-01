@@ -89,10 +89,15 @@ export default function GetAJobPage() {
   // The onboarding form only unlocks AFTER worker mobile number authorization is completed
   const [isWorkerVerified, setIsWorkerVerified] = useState(() => {
     if (typeof window === 'undefined') return false;
-    const r = role || localStorage.getItem('role');
-    const u = user || localStorage.getItem('user');
-    const session = sessionStorage.getItem('metromitra_worker_session_verified');
-    return Boolean(u && (r === 'WORKER' || session === 'true'));
+    try {
+      const storedUser = localStorage.getItem('user');
+      const u = user || (storedUser ? JSON.parse(storedUser) : null);
+      const r = role || localStorage.getItem('role') || u?.role;
+      const session = sessionStorage.getItem('metromitra_worker_session_verified');
+      return Boolean(u && (r === 'WORKER' || session === 'true'));
+    } catch {
+      return false;
+    }
   });
 
   const savedDraft = loadDraft();
@@ -144,20 +149,58 @@ export default function GetAJobPage() {
     }
   }, [step, selectedRole, selectedExperience, selectedAssets, selectedDocs, selectedSkills, profile]);
 
+  // If user is already an active/onboarded worker in DB, route straight to dashboard
+  useEffect(() => {
+    const isAlreadyWorker = (user && (role === 'WORKER' || user?.role === 'WORKER' || user?.profileComplete)) ||
+      (typeof window !== 'undefined' && localStorage.getItem('role') === 'WORKER');
+
+    if (isAlreadyWorker) {
+      navigate('/worker/dashboard', { replace: true });
+      return;
+    }
+
+    // Check backend to see if this phone number already completed onboarding lead in PostgreSQL
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (user && token) {
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://api.gomytruck.com/api/v1';
+      fetch(`${API_BASE}/form-gig-leads/my-lead`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(resData => {
+          if (resData?.data?.id && (resData.data.name || resData.data.jobType)) {
+            // Already onboarded in DB!
+            navigate('/worker/dashboard', { replace: true });
+          }
+        })
+        .catch(() => {});
+    }
+  }, [user, role, navigate]);
+
   useEffect(() => {
     const handleVerified = (e) => {
       setIsWorkerVerified(true);
       if (e?.detail?.phone) {
         setProfile(prev => ({ ...prev, phone: e.detail.phone }));
       }
+      // If the verified user is ALREADY an existing worker in DB, redirect to dashboard immediately!
+      if (e?.detail?.role === 'WORKER' || e?.detail?.profileComplete) {
+        navigate('/worker/dashboard', { replace: true });
+      }
     };
     window.addEventListener('metromitra:worker_verified', handleVerified);
     return () => window.removeEventListener('metromitra:worker_verified', handleVerified);
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
-    if (role === 'WORKER' && sessionStorage.getItem('metromitra_worker_session_verified') === 'true') {
-      setIsWorkerVerified(true);
+    if (!user) {
+      setIsWorkerVerified(false);
+      hasAutoOpenedModal.current = false;
+    } else {
+      const session = typeof window !== 'undefined' ? sessionStorage.getItem('metromitra_worker_session_verified') : null;
+      if (role === 'WORKER' || user?.role === 'WORKER' || session === 'true') {
+        setIsWorkerVerified(true);
+      }
     }
   }, [role, user]);
 

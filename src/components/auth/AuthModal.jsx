@@ -88,9 +88,10 @@ export default function AuthModal() {
         sessionStorage.setItem('metromitra_worker_session_verified', 'true');
         window.dispatchEvent(new CustomEvent('metromitra:worker_verified', { detail: data.data.user }));
       }
-      login(data.data.user, data.data.accessToken, authIntent);
+      const loggedUser = data.data.user;
+      login(loggedUser, data.data.accessToken, authIntent);
       handleClose();
-      handleRedirect();
+      handleRedirect(loggedUser);
       
     } catch (err) {
       // Show the real error — never silently log in with a fake token
@@ -100,16 +101,30 @@ export default function AuthModal() {
     }
   };
 
-  const handleRedirect = () => {
+  const handleRedirect = (loggedUser) => {
+    const currentUser = loggedUser || user;
+    const isExistingWorker = currentUser?.role === 'WORKER' || role === 'WORKER';
+
+    // If worker flow was initiated
     if (authIntent === 'WORKER') {
-      if (!location.pathname.includes('/get-a-job')) {
-        navigate('/get-a-job');
+      // If already an onboarded worker in DB, go straight to dashboard — no repeat onboarding!
+      if (isExistingWorker) {
+        navigate('/worker/dashboard');
+      } else {
+        if (!location.pathname.includes('/get-a-job')) {
+          navigate('/get-a-job');
+        }
       }
       return;
     }
-    if (!location.pathname.includes('/checkout') && !location.pathname.includes('/direct-contact')) {
-      navigate('/user/orders');
+
+    // If an existing worker logged in via standard header login while on homepage, route to dashboard
+    if (isExistingWorker && (location.pathname === '/' || location.pathname.startsWith('/worker'))) {
+      navigate('/worker/dashboard');
+      return;
     }
+
+    // For all other standard customer logins, remain on current page with zero unwanted redirects.
   };
 
   return (

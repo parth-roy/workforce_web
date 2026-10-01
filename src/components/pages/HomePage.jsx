@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import {
   ArrowRight, Briefcase, User, Building2, HardHat,
   CheckCircle, Clock, Shield, Zap, ChevronDown, ChevronUp,
@@ -32,6 +32,7 @@ const HERO_SLIDES = [
 ];
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const { user, role, isWorker } = useAuth();
   const [openFaq, setOpenFaq] = useState(null);
   const { currentCity: selectedCity, isCityModalOpen, setIsCityModalOpen, setCity } = useCity();
@@ -157,10 +158,36 @@ export default function HomePage() {
                   Home Services &amp; Skilled Workforce in <span className="text-emerald-600">{selectedCity.name}</span>
                 </h1>
 
-                {/* Subtitle for Natural Language / LLM Answer Engines */}
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4 max-w-xl">
+                {/* Subtitle / Description — Shown on Desktop and Tablet (md+) */}
+                <p className="hidden md:block text-slate-600 text-xs sm:text-sm leading-relaxed mb-4 max-w-xl">
                   Book verified electricians, plumbers, cleaners, appliance technicians, and shifting helpers at your doorstep in {selectedCity.name}. Transparent rates with OTP-verified completion.
                 </p>
+
+                {/* Hero CTAs: Only shown in Mobile Mode (< md), stacked one after another, fitting text width */}
+                <div className="flex md:hidden flex-col items-start gap-3 mb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
+                        navigate('/worker/dashboard');
+                      } else {
+                        navigate('/get-a-job');
+                      }
+                    }}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-[15px] font-black whitespace-nowrap cursor-pointer active:scale-95 transition-all shadow-sm"
+                    aria-label="Get a job now on Metro Mitra"
+                  >
+                    Get a Job Now
+                  </button>
+
+                  <Link
+                    to="/post-job"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-[#0368fd] hover:bg-[#0256d0] text-white text-[15px] font-black whitespace-nowrap cursor-pointer active:scale-95 transition-all shadow-sm"
+                    aria-label="Post a job on MetroMitra"
+                  >
+                    Post a Job
+                  </Link>
+                </div>
 
                 {/* City Selector Pill Bar + ₹49 Direct Contact CTA */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">

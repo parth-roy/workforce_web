@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
@@ -107,7 +107,7 @@ export default function WorkerDashboardPage() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
-      navigate('/get-a-job');
+      navigate('/', { replace: true });
     }
   }, [user, navigate]);
 
@@ -139,14 +139,54 @@ export default function WorkerDashboardPage() {
       })
       .catch(() => {});
 
-    // 2. Fetch server applications if available
-    fetch(`${API_BASE}/gig/worker/applications`, {
+    // 2. Fetch full onboarding lead record from PostgreSQL via /form-gig-leads/my-lead
+    fetch(`${API_BASE}/form-gig-leads/my-lead`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.ok ? res.json() : null)
-      .then(data => {
+      .then(leadRes => {
+        if (leadRes?.data) {
+          const d = leadRes.data;
+          setProfileData(prev => ({
+            ...(prev || {}),
+            name: d.name || prev?.name,
+            firstName: d.firstName || prev?.firstName,
+            lastName: d.lastName || prev?.lastName,
+            phone: d.phone || prev?.phone,
+            email: d.email || prev?.email,
+            city: d.city || prev?.city,
+            locality: d.locality || prev?.locality,
+            jobType: d.jobType || prev?.jobType,
+            experience: d.experience || prev?.experience,
+            education: d.education || prev?.education,
+            gender: d.gender || prev?.gender,
+            currentSalary: d.currentSalary || prev?.currentSalary,
+            skills: typeof d.skills === 'string' ? d.skills.split(',').map(s => s.trim()).filter(Boolean) : (Array.isArray(d.skills) ? d.skills : prev?.skills || []),
+            assets: typeof d.assets === 'string' ? d.assets.split(',').map(s => s.trim()).filter(Boolean) : (Array.isArray(d.assets) ? d.assets : prev?.assets || []),
+            documents: typeof d.documents === 'string' ? d.documents.split(',').map(s => s.trim()).filter(Boolean) : (Array.isArray(d.documents) ? d.documents : prev?.documents || []),
+            whatsappOptIn: d.whatsappOptIn ?? prev?.whatsappOptIn ?? true,
+            status: d.status || prev?.status || 'Active',
+          }));
+          setSavedOnboarding(d);
+          try {
+            localStorage.setItem('metromitra_onboarding_submitted', JSON.stringify(d));
+          } catch (e) {}
+        }
+      })
+  }, [token]);
+
+  // 2. Fetch server applications if available
+  const fetchApplications = useCallback(async () => {
+    if (!token) return;
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/gig/worker/applications`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
         const serverApps = data?.data;
-        if (Array.isArray(serverApps) && serverApps.length > 0) {
+        if (Array.isArray(serverApps)) {
           setApplications(prev => {
             const merged = [...serverApps, ...prev.filter(p => !serverApps.some(s => s.id === p.id))];
             try {
@@ -155,9 +195,19 @@ export default function WorkerDashboardPage() {
             return merged;
           });
         }
-      })
-      .catch(() => {});
+      }
+    } catch (err) {
+      console.warn('[WorkerDashboard] Error fetching applications:', err);
+    } finally {
+      setIsLoading(false);
+    }
   }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchApplications();
+    }
+  }, [token, fetchApplications]);
 
   const handleCvUpload = async (e) => {
     const file = e.target.files?.[0];

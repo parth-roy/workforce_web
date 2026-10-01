@@ -18,8 +18,9 @@ export default function Header() {
   const { user, openAuthModal, logout, isWorker: authIsWorker, role } = useAuth();
   const navigate = useNavigate();
 
+  const isGetAJob = location.pathname === '/get-a-job' || location.pathname.startsWith('/get-a-job');
   const isWorker = authIsWorker || role === 'WORKER' || user?.role === 'WORKER';
-  const isWorkerDashboard = location.pathname.startsWith('/worker/dashboard') || isWorker;
+  const isWorkerDashboard = !isGetAJob && (location.pathname.startsWith('/worker/dashboard') || isWorker);
   const searchParams = new URLSearchParams(location.search);
   const currentWorkerTab = searchParams.get('tab') || 'jobs';
 
@@ -55,13 +56,14 @@ export default function Header() {
   ], [currentCity]);
 
   const handleCheckoutClick = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setIsCartOpen(true);
   };
 
   const handleLogout = () => {
     if (clearAllData) clearAllData();
     logout();
+    navigate('/', { replace: true });
   };
 
   useEffect(() => {
@@ -98,22 +100,22 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* City Selector Badge Button — Always visible for location switching */}
+          {/* City Selector Badge Button — Visible on desktop/tablet header */}
           <button
             type="button"
             onClick={() => setIsCityModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold border border-emerald-200/90 bg-emerald-50/90 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-200/90 bg-emerald-50/90 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
             title="Change City"
             aria-label="Change current city"
           >
             <img src="/google-maps-icon.webp" alt="Location" width={14} height={14} className="w-3.5 h-3.5 object-contain shrink-0" />
-            <span className="max-w-[75px] sm:max-w-[120px] truncate">{currentCity?.name || "Kolkata"}</span>
+            <span className="max-w-[120px] truncate">{currentCity?.name || "Kolkata"}</span>
             <ChevronDown size={11} className="text-emerald-700 shrink-0" />
           </button>
         </div>
 
           {/* Desktop Nav */}
-          {isWorkerDashboard ? (
+          {isGetAJob ? null : isWorkerDashboard ? (
             <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
               {workerNav.map((item) => {
                 const isTabActive = currentWorkerTab === item.id;
@@ -170,7 +172,55 @@ export default function Header() {
           )}
 
           {/* Desktop CTA / Worker Actions */}
-          {isWorkerDashboard ? (
+          {isGetAJob ? (
+            <div className="hidden lg:flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Worker Registration
+              </span>
+
+              <a
+                href="https://wa.me/919331488999?text=Hi%20MetroMitra%2C%20I%20need%20help%20with%20Worker%20Onboarding"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-emerald-300 text-xs font-bold text-slate-700 hover:text-emerald-700 transition-colors shadow-2xs"
+              >
+                <PhoneCall size={13} className="text-emerald-600" />
+                <span>Need Help?</span>
+              </a>
+
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-black">
+                      {(user?.name || user?.firstName || 'W')[0].toUpperCase()}
+                    </div>
+                    <span className="text-xs font-black text-slate-800 truncate max-w-[120px]">
+                      {user?.name || user?.phone || 'Worker'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 border border-slate-200 transition-colors cursor-pointer"
+                    title="Logout"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('WORKER')}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black transition-colors cursor-pointer shadow-2xs"
+                >
+                  <LogIn size={13} />
+                  <span>Login</span>
+                </button>
+              )}
+            </div>
+          ) : isWorkerDashboard ? (
             <div className="hidden lg:flex items-center gap-2.5">
               {/* Worker Profile Button & Dropdown (Protected Route) */}
               <div className="relative group">
@@ -261,7 +311,11 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => {
-                  window.open('/get-a-job', '_blank', 'noopener,noreferrer');
+                  if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
+                    navigate('/worker/dashboard');
+                  } else {
+                    navigate('/get-a-job');
+                  }
                 }}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black whitespace-nowrap cursor-pointer active:scale-95 transition-colors"
                 aria-label="Get a job now on Metro Mitra"
@@ -269,27 +323,13 @@ export default function Header() {
                 Get a Job Now
               </button>
 
-              {/* Glossy "Post a Job" CTA button */}
+              {/* Clean Solid "Post a Job" CTA button */}
               <Link
                 to="/post-job"
-                className="relative hidden xl:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black overflow-hidden shadow-lg hover:shadow-xl active:scale-95 transition-all whitespace-nowrap"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7, #d946ef)' }}
+                className="hidden xl:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0368fd] hover:bg-[#0256d0] text-white text-xs font-black whitespace-nowrap cursor-pointer active:scale-95 transition-colors"
                 aria-label="Post a job on MetroMitra"
               >
-                {/* Shimmer sweep */}
-                <span
-                  className="pointer-events-none absolute inset-0 opacity-40"
-                  style={{
-                    background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)',
-                    animation: 'shimmer-sweep 2.4s ease-in-out infinite',
-                  }}
-                />
-                {/* Pulsing beacon dot */}
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-200 opacity-80" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
-                </span>
-                <span className="relative">Post a Job</span>
+                Post a Job
               </Link>
 
               {user && (
@@ -341,42 +381,58 @@ export default function Header() {
             </div>
           )}
 
-          {/* Mobile menu buttons */}
-          <div className="lg:hidden flex items-center gap-2 z-[101]">
-            {!isWorkerDashboard && (
-              <>
-                {user && (
-                  <Link to="/user/orders" className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Bookings">
-                    <Package size={20} className="text-slate-700" />
-                    {orders?.length > 0 && (
-                      <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-emerald-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                        {orders.length}
-                      </span>
-                    )}
-                  </Link>
-                )}
-                <button onClick={handleCheckoutClick} className="relative p-2 rounded-lg text-slate-700 hover:bg-slate-100" title="My Cart">
-                  <ShoppingCart size={20} className="text-slate-700" />
-                  {cart?.length > 0 && (
-                    <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-purple-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                      {cart.length}
-                    </span>
-                  )}
-                </button>
-              </>
-            )}
-            <button 
-              onClick={() => setIsOpen(!isOpen)} 
-              className="p-2 rounded-lg transition-colors text-slate-800 hover:bg-slate-100 ml-1" 
-              aria-label="Toggle Menu"
+          {/* Mobile Right Controls: Map/City Selector BEFORE Hamburger */}
+          <div className="lg:hidden flex items-center gap-1.5 z-[101]">
+            {/* Mobile Location Selector Button — Positioned BEFORE Hamburger */}
+            <button
+              type="button"
+              onClick={() => setIsCityModalOpen(true)}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-bold border border-emerald-200/90 bg-emerald-50/90 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95 cursor-pointer shrink-0 shadow-2xs"
+              title="Change City"
+              aria-label="Change current city"
             >
-              {isOpen ? <X size={26} /> : <Menu size={26} />}
+              <img src="/google-maps-icon.webp" alt="Location" width={14} height={14} className="w-3.5 h-3.5 object-contain shrink-0" />
+              <ChevronDown size={11} className="text-emerald-700 shrink-0" />
             </button>
+
+            {isGetAJob ? (
+              user ? (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-red-600 bg-red-50 border border-red-200 transition-colors cursor-pointer"
+                  title="Logout"
+                  aria-label="Logout"
+                >
+                  <LogOut size={14} />
+                  <span>Logout</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('WORKER')}
+                  className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-black cursor-pointer shadow-2xs"
+                  aria-label="Login"
+                >
+                  Login
+                </button>
+              )
+            ) : (
+              /* Hamburger Menu Toggle Button */
+              <button 
+                onClick={() => setIsOpen(!isOpen)} 
+                className="p-2 rounded-lg transition-colors text-slate-800 hover:bg-slate-100" 
+                aria-label="Toggle Menu"
+              >
+                {isOpen ? <X size={26} /> : <Menu size={26} />}
+              </button>
+            )}
           </div>
         </div>
 
       {/* Mobile Menu Accordion */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[85vh] overflow-y-auto border-t border-slate-200 bg-white shadow-2xl" : "max-h-0 pointer-events-none"}`}>
+      {!isGetAJob && (
+        <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[85vh] overflow-y-auto border-t border-slate-200 bg-white shadow-2xl" : "max-h-0 pointer-events-none"}`}>
         {isWorkerDashboard ? (
           <div className="px-4 pt-3 pb-8 space-y-2">
             {/* Worker Header Card (Protected Profile Link) */}
@@ -457,6 +513,46 @@ export default function Header() {
               </button>
             </div>
 
+            {/* Quick Actions: My Cart & My Bookings (Moved from mobile top bar) */}
+            <div className="grid grid-cols-2 gap-2 pb-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  handleCheckoutClick();
+                }}
+                className="relative flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-purple-200 bg-purple-50/80 hover:bg-purple-100 text-purple-950 text-xs font-bold shadow-2xs transition-all active:scale-95 cursor-pointer"
+              >
+                <ShoppingCart size={16} className="text-purple-700 shrink-0" />
+                <span>My Cart</span>
+                {cart?.length > 0 && (
+                  <span className="px-1.5 py-0.5 bg-purple-600 text-white text-[10px] font-black rounded-full leading-none">
+                    {cart.length}
+                  </span>
+                )}
+              </button>
+
+              <Link
+                to={user ? "/user/orders" : "#"}
+                onClick={(e) => {
+                  setIsOpen(false);
+                  if (!user) {
+                    e.preventDefault();
+                    openAuthModal('CUSTOMER');
+                  }
+                }}
+                className="relative flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100 text-emerald-950 text-xs font-bold shadow-2xs transition-all active:scale-95 cursor-pointer"
+              >
+                <Package size={16} className="text-emerald-700 shrink-0" />
+                <span>My Bookings</span>
+                {orders?.length > 0 && (
+                  <span className="px-1.5 py-0.5 bg-emerald-600 text-white text-[10px] font-black rounded-full leading-none">
+                    {orders.length}
+                  </span>
+                )}
+              </Link>
+            </div>
+
             {desktopNav.map((item, idx) => (
               <div key={idx} className="border-b border-slate-100 last:border-0">
                 {!item.dropdown ? (
@@ -510,7 +606,11 @@ export default function Header() {
                 type="button"
                 onClick={() => {
                   setIsOpen(false);
-                  window.open('/get-a-job', '_blank', 'noopener,noreferrer');
+                  if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
+                    navigate('/worker/dashboard');
+                  } else {
+                    navigate('/get-a-job');
+                  }
                 }}
                 className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-3 rounded-xl active:scale-98 transition-colors cursor-pointer"
               >
@@ -522,21 +622,9 @@ export default function Header() {
               <Link
                 to="/post-job"
                 onClick={() => setIsOpen(false)}
-                className="relative flex items-center justify-center gap-2 w-full text-white font-black text-sm py-3 rounded-xl overflow-hidden shadow-lg active:scale-98 transition-all"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7, #d946ef)' }}
+                className="flex items-center justify-center gap-2 w-full bg-[#0368fd] hover:bg-[#0256d0] text-white font-black text-sm py-3 rounded-xl active:scale-98 transition-colors cursor-pointer"
               >
-                <span
-                  className="pointer-events-none absolute inset-0 opacity-30"
-                  style={{
-                    background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
-                    animation: 'shimmer-sweep 2.4s ease-in-out infinite',
-                  }}
-                />
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-200 opacity-80" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
-                </span>
-                <span className="relative">Post a Job — Find Workers Now</span>
+                <span>Post a Job — Find Workers Now</span>
               </Link>
             </div>
 
@@ -618,6 +706,7 @@ export default function Header() {
           </div>
         )}
       </div>
+      )}
 
       {/* Global City Selector Modal */}
       <CitySelectorModal

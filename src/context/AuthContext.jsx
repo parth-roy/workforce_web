@@ -73,6 +73,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('role');
     localStorage.removeItem('uc_cart');
     localStorage.removeItem('uc_orders');
+    localStorage.removeItem('metromitra_worker_cv');
+    localStorage.removeItem('metromitra_onboarding_draft');
+    localStorage.removeItem('metromitra_onboarding_submitted');
+    localStorage.removeItem('metromitra_worker_applications');
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem('metromitra_worker_session_verified');
+        sessionStorage.removeItem('metromitra_onboarding_draft');
+      } catch (e) {}
+    }
     try {
       window.dispatchEvent(new Event('storage'));
     } catch(e) {}

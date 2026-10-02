@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { X, Wrench, HardHat, Building2, HelpCircle, ArrowRight, Check, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Wrench, HardHat, Building2, HelpCircle, ArrowRight, Check, AlertCircle } from 'lucide-react';
+
+const SHEETS_URL = import.meta.env.VITE_SHEETS_WEBHOOK_URL || '';
 
 const INTENTS = [
   {
@@ -46,62 +48,72 @@ const INTENTS = [
 
 export default function WhatsAppIntentModal({ isOpen, onClose, initialIntent = 'HIRE' }) {
   const [selectedIntent, setSelectedIntent] = useState(initialIntent);
-  
-  // Quick-fill state for Hire
-  const [hireService, setHireService] = useState('Electrician');
+
+  // ── REQUIRED common fields ──────────────────────────────────────────────────
+  const [userName, setUserName]   = useState('');
+  const [userCity, setUserCity]   = useState('');
+  const [userPhone, setUserPhone] = useState('');
+  const [errors, setErrors]       = useState({});
+
+  // ── Intent-specific optional fields ────────────────────────────────────────
+  const [hireService, setHireService]   = useState('Electrician');
   const [hireLocation, setHireLocation] = useState('');
-  const [hireTiming, setHireTiming] = useState('Today (Urgent)');
+  const [hireTiming, setHireTiming]     = useState('Today (Urgent)');
 
-  // Quick-fill state for Join
   const [workerTrade, setWorkerTrade] = useState('General Helper');
-  const [workerName, setWorkerName] = useState('');
-  const [workerCity, setWorkerCity] = useState('');
 
-  // Quick-fill state for Bulk
-  const [bulkType, setBulkType] = useState('General Helpers');
-  const [bulkCount, setBulkCount] = useState('5 - 10 Workers');
+  const [bulkType, setBulkType]       = useState('General Helpers');
+  const [bulkCount, setBulkCount]     = useState('5 - 10 Workers');
   const [bulkLocation, setBulkLocation] = useState('');
 
-  // Quick-fill state for Support
-  const [supportTopic, setSupportTopic] = useState('Existing Booking Status');
-  const [supportPhone, setSupportPhone] = useState('');
+  const [supportTopic, setSupportTopic]   = useState('Existing Booking Status');
+  const [supportPhone, setSupportPhone]   = useState('');
 
-  // Keep selectedIntent in sync if initialIntent changes
+  const nameRef = useRef(null);
+
+  // Sync intent if prop changes
   useEffect(() => {
-    if (initialIntent) {
-      setSelectedIntent(initialIntent);
-    }
+    if (initialIntent) setSelectedIntent(initialIntent);
   }, [initialIntent]);
 
-  // Prevent background scroll and support ESC key
+  // Reset errors & required fields when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setErrors({});
+      // Don't clear name/city/phone so repeated opens are convenient
+    }
+  }, [isOpen]);
+
+  // Scroll-lock + ESC
   useEffect(() => {
     if (!isOpen) return;
-
-    const originalOverflow = document.body.style.overflow;
+    const orig = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
     return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = orig;
+      window.removeEventListener('keydown', onKey);
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  // Build the pre-formatted WhatsApp template based on selected intent
+  // ── Build WhatsApp message ──────────────────────────────────────────────────
   const getWhatsAppMessage = () => {
+    const nameTag  = userName.trim()  || '[Name]';
+    const cityTag  = userCity.trim()  || '[City]';
+    const phoneTag = userPhone.trim() || '[Phone]';
+
     if (selectedIntent === 'HIRE') {
       return (
 `👋 Hello MetroMitra Team,
 
 I want to *book a service / hire a worker*:
+👤 My Name: ${nameTag}
+📱 My Phone: ${phoneTag}
 🛠️ Service Needed: ${hireService}
-📍 Location / Area: ${hireLocation.trim() || 'My Location'}
+📍 City / Area: ${cityTag}${hireLocation.trim() ? ` — ${hireLocation.trim()}` : ''}
 📅 Timing: ${hireTiming}
 
 Please connect me with available verified experts and share the rate estimate!`
@@ -113,9 +125,10 @@ Please connect me with available verified experts and share the rate estimate!`
 `👋 Hello MetroMitra Team,
 
 I want to *join as a worker / earn daily*:
-👤 My Name: ${workerName.trim() || '[My Name]'}
+👤 My Name: ${nameTag}
+📱 My Phone: ${phoneTag}
 🛠️ My Skill / Trade: ${workerTrade}
-📍 My City / Area: ${workerCity.trim() || '[My City]'}
+📍 My City / Area: ${cityTag}
 
 Please guide me on how to register and start getting daily jobs!`
       );
@@ -126,8 +139,10 @@ Please guide me on how to register and start getting daily jobs!`
 `👋 Hello MetroMitra Team,
 
 I have a *bulk / commercial workforce requirement*:
+👤 Contact Name: ${nameTag}
+📱 Contact Phone: ${phoneTag}
 👥 Workers Needed: ${bulkCount} (${bulkType})
-📍 Work Site Location: ${bulkLocation.trim() || '[Site Location]'}
+📍 Work Site / City: ${cityTag}${bulkLocation.trim() ? ` — ${bulkLocation.trim()}` : ''}
 
 Please connect with me for contractor rates and immediate workforce availability!`
       );
@@ -138,16 +153,63 @@ Please connect with me for contractor rates and immediate workforce availability
 `👋 Hello MetroMitra Team,
 
 I need *support / have an inquiry*:
-📋 Topic: ${supportTopic}
-📱 Contact Mobile: ${supportPhone.trim() || '[My Mobile Number]'}
+👤 My Name: ${nameTag}
+📱 My Phone: ${phoneTag}
+📍 My City: ${cityTag}
+📋 Topic: ${supportTopic}${supportPhone.trim() ? `\n🔖 Booking / Ref: ${supportPhone.trim()}` : ''}
 
 Kindly assist me. Thank you!`
     );
   };
 
+  // ── Validation ──────────────────────────────────────────────────────────────
+  const validate = () => {
+    const newErrors = {};
+    if (!userName.trim())                                     newErrors.userName  = 'Name is required';
+    if (!userCity.trim())                                     newErrors.userCity  = 'City is required';
+    if (!/^[6-9]\d{9}$/.test(userPhone.replace(/\s/g, '')))  newErrors.userPhone = 'Enter a valid 10-digit mobile number';
+    return newErrors;
+  };
+
+  // ── Send to Google Sheets (fire-and-forget) ─────────────────────────────────
+  const sendToSheet = () => {
+    const webhookUrl = SHEETS_URL;
+    if (!webhookUrl) return; // silently skip if env var not set
+    const payload = {
+      sheet: 'WhatsApp_Messages',
+      timestamp: new Date().toISOString(),
+      name: userName.trim(),
+      phone: userPhone.trim(),
+      city: userCity.trim(),
+      intent: selectedIntent,
+      // intent-specific extras
+      service:  selectedIntent === 'HIRE'    ? hireService   : selectedIntent === 'JOIN' ? workerTrade : selectedIntent === 'BULK' ? bulkType : supportTopic,
+      location: selectedIntent === 'HIRE'    ? hireLocation  : selectedIntent === 'BULK' ? bulkLocation : '',
+      timing:   selectedIntent === 'HIRE'    ? hireTiming    : '',
+      count:    selectedIntent === 'BULK'    ? bulkCount     : '',
+      message:  getWhatsAppMessage(),
+      sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
+    };
+    fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {}); // fire-and-forget — never block
+  };
+
+  // ── Open WhatsApp ───────────────────────────────────────────────────────────
   const handleOpenWhatsApp = () => {
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      // Scroll to first error
+      nameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    setErrors({});
+    sendToSheet(); // log to sheet first
     const text = getWhatsAppMessage();
-    const url = `https://wa.me/919331488999?text=${encodeURIComponent(text)}`;
+    const url  = `https://wa.me/919331488999?text=${encodeURIComponent(text)}`;
     if (typeof window !== 'undefined') {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -155,6 +217,21 @@ Kindly assist me. Thank you!`
   };
 
   const currentIntentConfig = INTENTS.find(i => i.id === selectedIntent) || INTENTS[0];
+
+  // ── Input field helper ──────────────────────────────────────────────────────
+  const Field = ({ label, required, error, children }) => (
+    <div>
+      <label className="text-[11px] font-bold text-slate-600 block mb-1">
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
+      {children}
+      {error && (
+        <p className="flex items-center gap-1 text-[11px] text-red-500 font-semibold mt-1">
+          <AlertCircle size={11} /> {error}
+        </p>
+      )}
+    </div>
+  );
 
   return (
     <div
@@ -172,7 +249,7 @@ Kindly assist me. Thank you!`
 
       {/* Modal Container */}
       <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 z-10 animate-in fade-in zoom-in-95 duration-200">
-        
+
         {/* Modal Header */}
         <div className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 text-white p-5 sm:p-6 relative shrink-0">
           <button
@@ -198,14 +275,52 @@ Kindly assist me. Thank you!`
             How can we help you today?
           </h2>
           <p className="text-xs sm:text-sm text-emerald-100 font-medium mt-1">
-            Choose what you need so our team responds immediately with the right details.
+            Fill your details so our team responds immediately with the right information.
           </p>
         </div>
 
         {/* Scrollable Content */}
         <div className="overflow-y-auto p-4 sm:p-6 space-y-5">
-          
-          {/* Step 1: Select Intent */}
+
+          {/* ── REQUIRED FIELDS ─────────────────────────────────────────── */}
+          <div ref={nameRef} className="bg-red-50/60 border border-red-200/70 rounded-2xl p-3.5 sm:p-4 space-y-3">
+            <p className="text-xs font-black uppercase tracking-wider text-red-600 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              Your Contact Details <span className="text-red-400">(required)</span>
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <Field label="Full Name" required error={errors.userName}>
+                <input
+                  type="text"
+                  placeholder="e.g. Ramesh Kumar"
+                  value={userName}
+                  onChange={(e) => { setUserName(e.target.value); setErrors(p => ({ ...p, userName: '' })); }}
+                  className={`w-full bg-white border rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-colors ${errors.userName ? 'border-red-400 focus:border-red-500' : 'border-slate-200 focus:border-emerald-500'}`}
+                />
+              </Field>
+              <Field label="Your City" required error={errors.userCity}>
+                <input
+                  type="text"
+                  placeholder="e.g. Kolkata"
+                  value={userCity}
+                  onChange={(e) => { setUserCity(e.target.value); setErrors(p => ({ ...p, userCity: '' })); }}
+                  className={`w-full bg-white border rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-colors ${errors.userCity ? 'border-red-400 focus:border-red-500' : 'border-slate-200 focus:border-emerald-500'}`}
+                />
+              </Field>
+              <Field label="Phone Number" required error={errors.userPhone}>
+                <input
+                  type="tel"
+                  placeholder="10-digit mobile"
+                  value={userPhone}
+                  maxLength={10}
+                  onChange={(e) => { setUserPhone(e.target.value.replace(/\D/g, '')); setErrors(p => ({ ...p, userPhone: '' })); }}
+                  className={`w-full bg-white border rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-colors ${errors.userPhone ? 'border-red-400 focus:border-red-500' : 'border-slate-200 focus:border-emerald-500'}`}
+                />
+              </Field>
+            </div>
+          </div>
+
+          {/* ── INTENT SELECTOR ─────────────────────────────────────────── */}
           <div>
             <label className="block text-xs font-black uppercase tracking-wider text-slate-500 mb-2.5">
               1. Select your requirement:
@@ -231,17 +346,9 @@ Kindly assist me. Thank you!`
                       <Icon size={20} />
                     </div>
                     <div className="flex-1 min-w-0 pr-5">
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="text-sm font-bold text-slate-900 leading-snug">
-                          {intent.title}
-                        </h3>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
-                        {intent.subtitle}
-                      </p>
+                      <h3 className="text-sm font-bold text-slate-900 leading-snug">{intent.title}</h3>
+                      <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{intent.subtitle}</p>
                     </div>
-
-                    {/* Radio Indicator */}
                     <div className="absolute top-3.5 right-3.5">
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
                         isSelected ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300 bg-white'
@@ -255,186 +362,110 @@ Kindly assist me. Thank you!`
             </div>
           </div>
 
-          {/* Step 2: Smart Quick Customizer for Selected Intent */}
+          {/* ── INTENT-SPECIFIC OPTIONAL FIELDS ────────────────────────── */}
           <div className="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-200 space-y-3">
             <label className="block text-xs font-black uppercase tracking-wider text-slate-600">
-              2. Quick Details (Optional):
+              2. Quick Details <span className="font-semibold text-slate-400">(Optional)</span>:
             </label>
 
-            {/* Customizer for HIRE */}
             {selectedIntent === 'HIRE' && (
               <div className="space-y-3">
                 <div>
                   <span className="text-[11px] font-bold text-slate-500 block mb-1.5">Choose Service:</span>
                   <div className="flex flex-wrap gap-1.5">
                     {currentIntentConfig.options.map((svc) => (
-                      <button
-                        key={svc}
-                        type="button"
-                        onClick={() => setHireService(svc)}
-                        className={`text-xs px-2.5 py-1 rounded-lg font-bold border transition-all cursor-pointer ${
-                          hireService === svc
-                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
-                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                        }`}
-                      >
+                      <button key={svc} type="button" onClick={() => setHireService(svc)}
+                        className={`text-xs px-2.5 py-1 rounded-lg font-bold border transition-all cursor-pointer ${hireService === svc ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'}`}>
                         {svc}
                       </button>
                     ))}
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-500 block mb-1">Your City / Area:</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Barrackpore, Kolkata"
-                      value={hireLocation}
+                    <label className="text-[11px] font-bold text-slate-500 block mb-1">Specific Area / Locality:</label>
+                    <input type="text" placeholder="e.g. Barrackpore, Salt Lake" value={hireLocation}
                       onChange={(e) => setHireLocation(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                    />
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500" />
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-slate-500 block mb-1">Timing:</label>
-                    <select
-                      value={hireTiming}
-                      onChange={(e) => setHireTiming(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      <option value="Today (Urgent)">Today (Urgent)</option>
-                      <option value="Tomorrow">Tomorrow</option>
-                      <option value="This Weekend">This Weekend</option>
-                      <option value="Flexible / Exploring">Flexible / Exploring</option>
+                    <select value={hireTiming} onChange={(e) => setHireTiming(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                      <option>Today (Urgent)</option>
+                      <option>Tomorrow</option>
+                      <option>This Weekend</option>
+                      <option>Flexible / Exploring</option>
                     </select>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Customizer for JOIN */}
             {selectedIntent === 'JOIN' && (
-              <div className="space-y-3">
-                <div>
-                  <span className="text-[11px] font-bold text-slate-500 block mb-1.5">Select Your Skill / Trade:</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {currentIntentConfig.options.map((trade) => (
-                      <button
-                        key={trade}
-                        type="button"
-                        onClick={() => setWorkerTrade(trade)}
-                        className={`text-xs px-2.5 py-1 rounded-lg font-bold border transition-all cursor-pointer ${
-                          workerTrade === trade
-                            ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                        }`}
-                      >
-                        {trade}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                  <div>
-                    <label className="text-[11px] font-bold text-slate-500 block mb-1">Your Full Name:</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Ramesh Kumar"
-                      value={workerName}
-                      onChange={(e) => setWorkerName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[11px] font-bold text-slate-500 block mb-1">Your City / Area:</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Kolkata"
-                      value={workerCity}
-                      onChange={(e) => setWorkerCity(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
+              <div>
+                <span className="text-[11px] font-bold text-slate-500 block mb-1.5">Select Your Skill / Trade:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {currentIntentConfig.options.map((trade) => (
+                    <button key={trade} type="button" onClick={() => setWorkerTrade(trade)}
+                      className={`text-xs px-2.5 py-1 rounded-lg font-bold border transition-all cursor-pointer ${workerTrade === trade ? 'bg-blue-600 text-white border-blue-600 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'}`}>
+                      {trade}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
 
-            {/* Customizer for BULK */}
             {selectedIntent === 'BULK' && (
               <div className="space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
                     <label className="text-[11px] font-bold text-slate-500 block mb-1">Worker Type:</label>
-                    <select
-                      value={bulkType}
-                      onChange={(e) => setBulkType(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      {currentIntentConfig.options.map(opt => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
+                    <select value={bulkType} onChange={(e) => setBulkType(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                      {currentIntentConfig.options.map(opt => <option key={opt}>{opt}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-slate-500 block mb-1">Workers Count:</label>
-                    <select
-                      value={bulkCount}
-                      onChange={(e) => setBulkCount(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      <option value="2 - 5 Workers">2 - 5 Workers</option>
-                      <option value="5 - 10 Workers">5 - 10 Workers</option>
-                      <option value="10 - 25 Workers">10 - 25 Workers</option>
-                      <option value="25+ Workers (Enterprise)">25+ Workers (Enterprise)</option>
+                    <select value={bulkCount} onChange={(e) => setBulkCount(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                      <option>2 - 5 Workers</option>
+                      <option>5 - 10 Workers</option>
+                      <option>10 - 25 Workers</option>
+                      <option>25+ Workers (Enterprise)</option>
                     </select>
                   </div>
                 </div>
-
                 <div>
-                  <label className="text-[11px] font-bold text-slate-500 block mb-1">Work Site / City:</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Dankuni Industrial Area / Rajarhat Site"
-                    value={bulkLocation}
+                  <label className="text-[11px] font-bold text-slate-500 block mb-1">Work Site / Area:</label>
+                  <input type="text" placeholder="e.g. Dankuni Industrial Area / Rajarhat Site" value={bulkLocation}
                     onChange={(e) => setBulkLocation(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                  />
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500" />
                 </div>
               </div>
             )}
 
-            {/* Customizer for SUPPORT */}
             {selectedIntent === 'SUPPORT' && (
               <div className="space-y-3">
                 <div>
                   <label className="text-[11px] font-bold text-slate-500 block mb-1">Inquiry Topic:</label>
-                  <select
-                    value={supportTopic}
-                    onChange={(e) => setSupportTopic(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                  >
-                    {currentIntentConfig.options.map(opt => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
+                  <select value={supportTopic} onChange={(e) => setSupportTopic(e.target.value)}
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                    {currentIntentConfig.options.map(opt => <option key={opt}>{opt}</option>)}
                   </select>
                 </div>
-
                 <div>
-                  <label className="text-[11px] font-bold text-slate-500 block mb-1">Registered Phone / Booking ID:</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 9876543210 or MM-12345"
-                    value={supportPhone}
+                  <label className="text-[11px] font-bold text-slate-500 block mb-1">Booking ID / Reference (if any):</label>
+                  <input type="text" placeholder="e.g. MM-12345" value={supportPhone}
                     onChange={(e) => setSupportPhone(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                  />
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500" />
                 </div>
               </div>
             )}
           </div>
 
-          {/* Step 3: Realistic WhatsApp Chat Message Preview */}
+          {/* ── LIVE PREVIEW ─────────────────────────────────────────────── */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
@@ -443,7 +474,6 @@ Kindly assist me. Thank you!`
               </span>
               <span className="text-[11px] font-semibold text-slate-400">Pre-formatted template</span>
             </div>
-
             <div className="p-3 sm:p-4 rounded-2xl bg-[#EFEAE2] border border-slate-200/80 shadow-inner">
               <div className="bg-[#E7FFDB] text-slate-900 text-xs sm:text-[13px] font-sans leading-relaxed p-3 sm:p-3.5 rounded-2xl rounded-tr-xs shadow-xs border border-emerald-200/60 whitespace-pre-line">
                 {getWhatsAppMessage()}
@@ -457,7 +487,7 @@ Kindly assist me. Thank you!`
 
         </div>
 
-        {/* Modal Footer CTA */}
+        {/* Modal Footer */}
         <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col gap-2 shrink-0">
           <button
             type="button"

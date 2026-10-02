@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Wrench, HardHat, Building2, HelpCircle, ArrowRight, Check, AlertCircle } from 'lucide-react';
 
-const SHEETS_URL = import.meta.env.VITE_SHEETS_WEBHOOK_URL || '';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://api.gomytruck.com/api/v1';
+
+// ── Field wrapper — defined at MODULE level so React never remounts inputs ────
+// IMPORTANT: Never define this inside the component function — doing so creates
+// a new component type on every render, causing inputs to lose focus on each keystroke.
+function Field({ label, required, error, children }) {
+  return (
+    <div>
+      <label className="text-[11px] font-bold text-slate-600 block mb-1">
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
+      {children}
+      {error && (
+        <p className="flex items-center gap-1 text-[11px] text-red-500 font-semibold mt-1">
+          <AlertCircle size={11} /> {error}
+        </p>
+      )}
+    </div>
+  );
+}
 
 const INTENTS = [
   {
@@ -171,30 +190,28 @@ Kindly assist me. Thank you!`
     return newErrors;
   };
 
-  // ── Send to Google Sheets (fire-and-forget) ─────────────────────────────────
+  // ── Send to backend → Google Sheets (fire-and-forget) ──────────────────────
+  // We POST to our own backend (/leads/whatsapp-log) which calls appendToSheet()
+  // server-side. This avoids CORS errors that happen when the browser tries to
+  // POST directly to Google Apps Script.
   const sendToSheet = () => {
-    const webhookUrl = SHEETS_URL;
-    if (!webhookUrl) return; // silently skip if env var not set
     const payload = {
-      sheet: 'WhatsApp_Messages',
-      timestamp: new Date().toISOString(),
-      name: userName.trim(),
-      phone: userPhone.trim(),
-      city: userCity.trim(),
-      intent: selectedIntent,
-      // intent-specific extras
-      service:  selectedIntent === 'HIRE'    ? hireService   : selectedIntent === 'JOIN' ? workerTrade : selectedIntent === 'BULK' ? bulkType : supportTopic,
-      location: selectedIntent === 'HIRE'    ? hireLocation  : selectedIntent === 'BULK' ? bulkLocation : '',
-      timing:   selectedIntent === 'HIRE'    ? hireTiming    : '',
-      count:    selectedIntent === 'BULK'    ? bulkCount     : '',
-      message:  getWhatsAppMessage(),
+      name:      userName.trim(),
+      phone:     userPhone.trim(),
+      city:      userCity.trim(),
+      intent:    selectedIntent,
+      service:   selectedIntent === 'HIRE'  ? hireService   : selectedIntent === 'JOIN' ? workerTrade : selectedIntent === 'BULK' ? bulkType : supportTopic,
+      location:  selectedIntent === 'HIRE'  ? hireLocation  : selectedIntent === 'BULK' ? bulkLocation : '',
+      timing:    selectedIntent === 'HIRE'  ? hireTiming    : '',
+      count:     selectedIntent === 'BULK'  ? bulkCount     : '',
+      message:   getWhatsAppMessage(),
       sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
     };
-    fetch(webhookUrl, {
-      method: 'POST',
+    fetch(`${API_BASE}/leads/whatsapp-log`, {
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).catch(() => {}); // fire-and-forget — never block
+      body:    JSON.stringify(payload),
+    }).catch(() => {}); // fire-and-forget — never block WhatsApp from opening
   };
 
   // ── Open WhatsApp ───────────────────────────────────────────────────────────
@@ -217,21 +234,6 @@ Kindly assist me. Thank you!`
   };
 
   const currentIntentConfig = INTENTS.find(i => i.id === selectedIntent) || INTENTS[0];
-
-  // ── Input field helper ──────────────────────────────────────────────────────
-  const Field = ({ label, required, error, children }) => (
-    <div>
-      <label className="text-[11px] font-bold text-slate-600 block mb-1">
-        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
-      </label>
-      {children}
-      {error && (
-        <p className="flex items-center gap-1 text-[11px] text-red-500 font-semibold mt-1">
-          <AlertCircle size={11} /> {error}
-        </p>
-      )}
-    </div>
-  );
 
   return (
     <div

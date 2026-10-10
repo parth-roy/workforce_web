@@ -32,6 +32,23 @@ export default function JobCard({ title, location, wage, type, urgent }) {
           href={`https://wa.me/919331488999?text=Apply%20for%20${encodeURIComponent(title)}`}
           target="_blank" 
           rel="noopener noreferrer"
+          onClick={() => {
+            const API_BASE = import.meta.env.VITE_API_URL || 'https://api.gomytruck.com/api/v1';
+            fetch(`${API_BASE}/leads/whatsapp-log`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: 'Worker Applicant',
+                phone: '',
+                city: location || 'Delhi NCR',
+                intent: 'JOIN',
+                service: title,
+                location: location,
+                message: `Apply for ${title} (${location})`,
+                sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
+              }),
+            }).catch(() => {});
+          }}
           className="text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-lg transition-colors"
         >
           Apply Now

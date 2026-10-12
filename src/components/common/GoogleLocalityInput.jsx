@@ -23,7 +23,7 @@ function loadGoogleMapsPlacesSDK() {
       }
 
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places&loading=async`;
       script.async = true;
       script.defer = true;
       script.onload = () => {
@@ -151,39 +151,74 @@ export default function GoogleLocalityInput({
     if (window.google?.maps?.places) {
       try {
         const maps = window.google.maps;
-        const service = new maps.places.AutocompleteService();
 
-        if (!sessionTokenRef.current) {
+        if (!sessionTokenRef.current && maps?.places?.AutocompleteSessionToken) {
           sessionTokenRef.current = new maps.places.AutocompleteSessionToken();
         }
 
         const scopedInput = cityContext ? `${trimmed}, ${cityContext}` : trimmed;
 
-        service.getPlacePredictions(
-          {
-            input: scopedInput,
-            sessionToken: sessionTokenRef.current,
-            componentRestrictions: { country: 'in' },
-          },
-          (results, status) => {
-            if (status === maps.places.PlacesServiceStatus.OK && Array.isArray(results)) {
-              const formatted = results.map((item) => ({
-                placeId: item.place_id,
-                mainText: item.structured_formatting?.main_text || item.description.split(',')[0].trim(),
-                secondaryText: item.structured_formatting?.secondary_text || item.description,
-                description: item.description,
-                source: 'google',
-              }));
+        // 1. Try modern AutocompleteSuggestion API (recommended 2025/2026, avoids deprecation warning)
+        if (maps?.places?.AutocompleteSuggestion?.fetchAutocompleteSuggestions) {
+          try {
+            const { suggestions } = await maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+              input: scopedInput,
+              includedRegionCodes: ['in'],
+              sessionToken: sessionTokenRef.current || undefined,
+            });
+
+            if (Array.isArray(suggestions) && suggestions.length > 0) {
+              const formatted = suggestions.map((s) => {
+                const p = s.placePrediction;
+                const fullText = p?.text?.toString() || '';
+                return {
+                  placeId: p?.placeId || '',
+                  mainText: p?.mainText?.toString() || fullText.split(',')[0].trim(),
+                  secondaryText: p?.secondaryText?.toString() || fullText,
+                  description: fullText,
+                  source: 'google',
+                };
+              });
 
               localityQueryCache.set(cacheKey, formatted);
               setGooglePredictions(formatted);
-            } else {
-              setGooglePredictions([]);
+              setIsLoadingGoogle(false);
+              return;
             }
-            setIsLoadingGoogle(false);
+          } catch (modernErr) {
+            console.warn('[GoogleLocalityInput] Modern suggestion error, falling back:', modernErr);
           }
-        );
-        return;
+        }
+
+        // 2. Fallback to legacy AutocompleteService
+        if (maps?.places?.AutocompleteService) {
+          const service = new maps.places.AutocompleteService();
+          service.getPlacePredictions(
+            {
+              input: scopedInput,
+              sessionToken: sessionTokenRef.current,
+              componentRestrictions: { country: 'in' },
+            },
+            (results, status) => {
+              if (status === maps.places.PlacesServiceStatus.OK && Array.isArray(results)) {
+                const formatted = results.map((item) => ({
+                  placeId: item.place_id,
+                  mainText: item.structured_formatting?.main_text || item.description.split(',')[0].trim(),
+                  secondaryText: item.structured_formatting?.secondary_text || item.description,
+                  description: item.description,
+                  source: 'google',
+                }));
+
+                localityQueryCache.set(cacheKey, formatted);
+                setGooglePredictions(formatted);
+              } else {
+                setGooglePredictions([]);
+              }
+              setIsLoadingGoogle(false);
+            }
+          );
+          return;
+        }
       } catch (err) {
         console.warn('[GoogleLocalityInput] Client SDK prediction failed, using backend:', err);
       }

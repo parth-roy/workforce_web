@@ -37,6 +37,18 @@ const DURATION_OPTIONS = [1, 2, 3, 4, 6, 8, 10, 12];
 
 const STEPS = ['Service', 'Details', 'Schedule', 'Review'];
 
+const getCityCoords = (cityName) => {
+  const c = (cityName || '').toLowerCase();
+  if (c.includes('bangalore') || c.includes('bengaluru') || c.includes('karnataka') || c.includes('bellandur') || c.includes('koramangala') || c.includes('indiranagar') || c.includes('whitefield')) return { lat: 12.9716, lng: 77.5946 };
+  if (c.includes('kolkata') || c.includes('howrah') || c.includes('west bengal')) return { lat: 22.5726, lng: 88.3639 };
+  if (c.includes('mumbai') || c.includes('thane') || c.includes('navi mumbai')) return { lat: 19.0760, lng: 72.8777 };
+  if (c.includes('delhi') || c.includes('noida') || c.includes('gurgaon') || c.includes('gurugram')) return { lat: 28.6139, lng: 77.2090 };
+  if (c.includes('hyderabad')) return { lat: 17.3850, lng: 78.4867 };
+  if (c.includes('chennai')) return { lat: 13.0827, lng: 80.2707 };
+  if (c.includes('pune')) return { lat: 18.5204, lng: 73.8567 };
+  return { lat: 22.5726, lng: 88.3639 };
+};
+
 export default function PostJobPage() {
   const navigate = useNavigate();
   const { user, token, role, isWorker, openAuthModal, isAuthModalOpen, closeAuthModal, login } = useAuth();
@@ -52,12 +64,13 @@ export default function PostJobPage() {
   const [error, setError] = useState('');
   const [pendingSubmit, setPendingSubmit] = useState(false); // true after auth if we need to re-submit
 
+  const initialCoords = getCityCoords(currentCity?.name);
   const [form, setForm] = useState({
     service: null,       // SERVICE_CATEGORIES item
     description: '',
     address: currentCity?.name ? `${currentCity.name}` : '',
-    locationLat: 22.5726,
-    locationLng: 88.3639,
+    locationLat: initialCoords.lat,
+    locationLng: initialCoords.lng,
     workers: 1,
     duration: 2,
     urgency: 'SCHEDULED',
@@ -65,10 +78,16 @@ export default function PostJobPage() {
     contactPhone: '',
   });
 
-  // When the city changes pre-fill address
+  // When the city changes pre-fill address and coords
   useEffect(() => {
-    if (currentCity?.name && !form.address) {
-      setForm(f => ({ ...f, address: currentCity.name }));
+    if (currentCity?.name) {
+      const coords = getCityCoords(currentCity.name);
+      setForm(f => ({
+        ...f,
+        address: f.address || currentCity.name,
+        locationLat: coords.lat,
+        locationLng: coords.lng,
+      }));
     }
   }, [currentCity]);
 
@@ -100,12 +119,13 @@ export default function PostJobPage() {
     setSubmitting(true);
     setError('');
     try {
+      const finalCoords = getCityCoords(form.address);
       const payload = {
         gigCategory:     form.service.skill,
         description:     form.description || `${form.service.label} service requested`,
         locationAddress: form.address,
-        locationLat:     form.locationLat,
-        locationLng:     form.locationLng,
+        locationLat:     finalCoords.lat,
+        locationLng:     finalCoords.lng,
         workersNeeded:   form.workers,
         durationHours:   form.duration,
         urgency:         form.urgency,

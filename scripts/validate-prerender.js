@@ -35,7 +35,10 @@ for (const route of sampleRoutes) {
   }
 
   const html = fs.readFileSync(file, "utf8");
-  const expectedCanonical = route === "/" ? `${baseUrl}` : `${baseUrl}${route}`;
+  const ALIAS_CANONICALS = {
+    '/locations': `${baseUrl}/directory`,
+  };
+  const expectedCanonical = ALIAS_CANONICALS[route] || (route === "/" ? `${baseUrl}` : `${baseUrl}${route}`);
   const canonical = attribute(html, /<link\b[^>]*rel=["']canonical["'][^>]*>/i, "href");
   const description = attribute(html, /<meta\b[^>]*name=["']description["'][^>]*>/i, "content");
   const robots = attribute(html, /<meta\b[^>]*name=["']robots["'][^>]*>/i, "content") || "";

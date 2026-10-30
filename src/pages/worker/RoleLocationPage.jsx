@@ -178,8 +178,8 @@ export default function RoleLocationPage() {
               </div>
               <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
                 <div className="bg-slate-800/80 border border-slate-600/60 rounded-xl p-3 text-center">
-                  <div className="text-xs text-slate-400 font-medium">Daily Active Openings</div>
-                  <div className="text-2xl font-black text-emerald-400">{activeVacancies} Shifts</div>
+                  <div className="text-xs text-slate-400 font-medium">Onboarding Status</div>
+                  <div className="text-xl font-black text-emerald-400">Immediate Shifts</div>
                 </div>
               </div>
             </div>

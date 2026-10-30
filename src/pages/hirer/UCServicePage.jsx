@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, ArrowLeft } from 'lucide-react';
 import { ucServicesData } from '../../data/mock/ucServicesData';
+import { mockServices } from '../../data/mock/services';
 import UCServiceItem from '../../components/services/UCServiceItem';
 import UCVariantModal from '../../components/modals/UCVariantModal';
 import { useUCCart } from '../../context/UCCartContext';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
+import SEO from '../../components/ui/SEO';
+import { ServiceHiringFlowSEO } from '../../seo/pageMetadata';
 
 function CartSidebar() {
   const { cart, getTotalPrice, setIsCartOpen } = useUCCart();
@@ -79,6 +82,8 @@ function UCServicePageContent() {
   const { service: id } = useParams();
   const navigate = useNavigate();
   const service = ucServicesData[id];
+  const metaService = mockServices.find(s => s.slug === id) || { name: service?.title || id, slug: id };
+  const seo = ServiceHiringFlowSEO(metaService);
   
   const [activeCategory, setActiveCategory] = useState(service?.categories[0]?.id || '');
   const [selectedItem, setSelectedItem] = useState(null);
@@ -198,6 +203,7 @@ function UCServicePageContent() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO {...seo} />
       
       {/* Top Header Placeholder spacing */}
       <div className="h-16" />

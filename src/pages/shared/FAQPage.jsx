@@ -11,7 +11,7 @@ const FAQ_SECTIONS = [
       { q: 'What is Metro Mitra?', a: 'Metro Mitra is a gig workforce platform that connects skilled workers with individuals and businesses across West Bengal. We serve individual hirers (home services), contractors (multi-worker teams), and corporate clients (enterprise staffing).' },
       { q: 'Which areas does Metro Mitra operate in?', a: 'We are currently active in Barrackpore, Dankuni, Kolkata, and surrounding areas in West Bengal. We are expanding as our worker network grows.' },
       { q: 'How does task completion work?', a: 'Workers complete the assigned task and the hirer confirms completion via a one-time OTP code. Payment or closure is not processed until the hirer confirms.' },
-      { q: 'Is Metro Mitra available on mobile?', a: 'The Metro Mitra Worker App is available for workers. Hirers can use the web platform at metromitra.in to browse and book services.' },
+      { q: 'Is Metro Mitra available on mobile?', a: 'The Metro Mitra Worker App is available for workers. Hirers can use the web platform at metromitra.com to browse and book services.' },
     ],
   },
   {
@@ -28,7 +28,7 @@ const FAQ_SECTIONS = [
     id: 'hirers',
     title: 'For Individual Hirers',
     faqs: [
-      { q: 'How do I book a service?', a: 'Go to metromitra.in/services, select the service you need (electrician, plumber, cleaner, etc.), and complete the booking form with your location and timing.' },
+      { q: 'How do I book a service?', a: 'Go to metromitra.com/services, select the service you need (electrician, plumber, cleaner, etc.), and complete the booking form with your location and timing.' },
       { q: 'Do I need to create an account?', a: 'The current frontend is a prototype — no account creation is required for the form demo. Live booking will require phone number verification.' },
       { q: 'How are workers matched?', a: 'Workers are matched based on availability in your location and the skill category of the task. You do not manually select individual workers in the current flow.' },
       { q: 'What if the worker does not arrive?', a: 'In the live platform, you can escalate through the app. This escalation system is part of the backend integration currently in progress.' },
@@ -94,8 +94,8 @@ export default function FAQPage() {
       <SEO
         title="FAQ — Metro Mitra Help & Answers"
         description="Answers to common questions about Metro Mitra — for workers, individual hirers, contractors, and corporate clients."
-        canonical="https://metromitra.in/faq"
-        robots="index, follow"
+        canonicalPath="/faq"
+        indexable={true}
       />
 
       {/* Hero */}

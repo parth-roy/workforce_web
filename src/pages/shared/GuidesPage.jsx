@@ -55,8 +55,8 @@ export default function GuidesPage() {
       <SEO
         title="Guides & How-To Resources — Metro Mitra"
         description="Step-by-step guides for workers, individual hirers, and businesses using the Metro Mitra platform."
-        canonical="https://metromitra.in/guides"
-        robots="index, follow"
+        canonicalPath="/guides"
+        indexable={true}
       />
 
       {/* Hero */}

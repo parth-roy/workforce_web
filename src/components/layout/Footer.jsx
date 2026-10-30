@@ -132,29 +132,27 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Pan-India 550+ Operational Hubs & Service Areas Grid */}
+        {/* Major Operational Hubs & Directory Access */}
         <div className="pt-8 pb-10 border-t border-slate-800/80 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">
-              Pan-India Service Coverage ({mockLocations.length}+ Operational Hubs &amp; Cities)
+              Major Operational Hubs &amp; Coverage
             </h4>
             <Link
               to="/directory"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="text-emerald-400 hover:text-emerald-300 text-[11px] font-semibold transition-colors"
+              className="text-emerald-400 hover:text-emerald-300 text-xs font-bold transition-colors inline-flex items-center gap-1"
             >
-              Explore Full State Directory →
+              Explore All 500+ Cities &amp; States Directory →
             </Link>
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-x-2.5 gap-y-1.5 text-left">
-            {mockLocations.map((loc) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2.5 text-left">
+            {mockLocations.slice(0, 20).map((loc) => (
               <Link
                 key={loc.slug}
                 to={`/jobs/location/${loc.slug}`}
                 title={`Workforce & Home Services in ${loc.name}, ${loc.state}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-emerald-400 transition-colors text-[10px] sm:text-[11px] leading-tight truncate font-medium"
+                className="text-slate-400 hover:text-emerald-400 transition-colors text-xs py-1 px-2 rounded hover:bg-slate-800/50 truncate font-medium"
               >
                 {loc.name}
               </Link>

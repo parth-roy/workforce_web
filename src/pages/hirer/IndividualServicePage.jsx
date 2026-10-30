@@ -5,7 +5,7 @@ import { IndividualServiceSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
 import Breadcrumbs from '../../components/shared/Breadcrumbs';
 import ServiceBookingWizard from '../../components/hirer/ServiceBookingWizard';
-import { RelatedServices } from '../../components/seo/RelatedLinks';
+import { RelatedServices, RelatedLocations } from '../../components/seo/RelatedLinks';
 import {
   Zap, Wrench, Package, Sparkles, Truck, Users, CheckCircle,
   ChevronDown, ChevronUp, X, ArrowRight
@@ -257,6 +257,16 @@ export default function IndividualServicePage() {
             </div>
           </section>
         )}
+
+        {/* Operational Cities for this Service */}
+        <section className="pt-8 border-t border-slate-200 mb-8">
+          <RelatedLocations
+            basePath={`/services/${svc.slug}`}
+            max={12}
+            suffix={svc.name}
+            title={`Book ${svc.name} in Top Cities`}
+          />
+        </section>
 
         {/* Related */}
         <section className="pt-8 border-t border-slate-200">

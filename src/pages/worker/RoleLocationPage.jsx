@@ -54,7 +54,6 @@ export default function RoleLocationPage() {
 
   const minPay = loc.localPricingConfig?.minimumFare || 450;
   const maxPay = Math.round(minPay * 1.8);
-  const activeVacancies = 12 + ((role.name.length * 3 + loc.name.length * 7) % 15);
 
   const breadcrumbs = [
     { label: 'Jobs', path: '/jobs' },
@@ -63,7 +62,7 @@ export default function RoleLocationPage() {
   ];
 
   const faqs = [
-    { q: `How much can a ${role.name} earn near ${loc.name} Metro?`, a: `Earnings for ${role.name} in ${loc.name} range from ₹${minPay} to ₹${maxPay} per shift with daily UPI / bank transfers directly into your account upon shift completion.` },
+    { q: `How much can a ${role.name} earn in ${loc.name}?`, a: `Earnings for ${role.name} in ${loc.name} range from ₹${minPay} to ₹${maxPay} per shift with daily UPI / bank transfers directly into your account upon shift completion.` },
     { q: `What are the shift timings available in ${loc.name}?`, a: `MetroMitra offers flexible 4-hour morning, 8-hour day, and evening shift slots across commercial and residential zones in ${loc.name}.` },
     { q: `Are there any registration or agency fees to join?`, a: 'No. Joining MetroMitra is 100% free with zero commission cut. You receive your full agreed wage directly.' },
     { q: 'How fast can I start working?', a: 'Onboarding takes less than 2 minutes. Complete your Aadhaar-KYC in the MetroMitra Worker App, select your preferred work hub in ' + loc.name + ', and accept active shifts.' },
@@ -85,11 +84,11 @@ export default function RoleLocationPage() {
               {/* Dynamic Live Hiring Pill */}
               <div className="inline-flex items-center gap-2 text-emerald-800 bg-emerald-100 border border-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-4 shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse shrink-0"></span>
-                <span>{activeVacancies} Verified Vacancies · Hiring in {loc.name}</span>
+                <span>Active Hiring Network · Shift Openings in {loc.name}</span>
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.08] mb-5 tracking-tight">
-                {role.name} Jobs<br />near {loc.name} Metro
+                {role.name} Jobs in {loc.name}
               </h1>
               
               <p className="text-base sm:text-lg text-slate-600 mb-6 max-w-lg leading-relaxed font-medium">

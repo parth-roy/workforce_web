@@ -9,14 +9,17 @@ import PlayStoreIcon from '../../components/ui/PlayStoreIcon';
 import SEO from '../../components/ui/SEO';
 import { WorkerLocationSEO } from '../../seo/pageMetadata';
 import { RelatedLocations } from '../../components/seo/RelatedLinks';
-import { Building2, Briefcase, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { Building2, Briefcase, ChevronDown, ChevronUp, ArrowRight, Wrench, Users } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
 
 export default function LocationPage() {
   const { location: locSlug } = useParams();
-  const { getLocationBySlug, roles } = useWorkforce();
+  const { getLocationBySlug, roles, services } = useWorkforce();
   const { currentCity, setCity } = useCity();
   const [openFaq, setOpenFaq] = useState(null);
+
+  const homeServices = (services || []).filter(s => s.audiences?.includes('individual'));
+  const b2bServices = (services || []).filter(s => s.audiences?.includes('corporate') || s.audiences?.includes('contractor'));
 
   const loc = getLocationBySlug(locSlug) || (locSlug ? {
     id: `loc-${locSlug}`,
@@ -132,6 +135,70 @@ export default function LocationPage() {
             ))}
           </div>
         </section>
+
+        {/* On-Demand Doorstep Services (Cross-Funnel Link Mesh) */}
+        {homeServices.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <Wrench className="w-5 h-5 text-emerald-600" /> Book Doorstep Services in {loc.name}
+              </h2>
+              <Link to="/services" className="text-sm font-bold text-emerald-600 hover:underline hidden sm:block">
+                All Services →
+              </Link>
+            </div>
+            <p className="text-slate-500 mb-6">Verified technicians and on-demand home maintenance professionals available in {loc.name}.</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {homeServices.map(svc => (
+                <Link
+                  key={svc.slug}
+                  to={`/services/${svc.slug}/${loc.slug}`}
+                  className="group bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-700 transition-colors mb-1">{svc.name}</h3>
+                    <p className="text-xs text-slate-500 line-clamp-1">{svc.tagline || svc.description}</p>
+                  </div>
+                  <div className="mt-3 text-xs font-semibold text-emerald-600 flex items-center gap-1 group-hover:gap-1.5 transition-all">
+                    Book in {loc.name} <ArrowRight className="w-3 h-3" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* B2B Commercial Staffing & Bulk Workforce (Cross-Funnel Link Mesh) */}
+        {b2bServices.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-600" /> Commercial Staffing in {loc.name}
+              </h2>
+              <Link to="/hire-workers" className="text-sm font-bold text-blue-600 hover:underline hidden sm:block">
+                All B2B Staffing →
+              </Link>
+            </div>
+            <p className="text-slate-500 mb-6">Deploy vetted on-demand crews, warehouse labor, and trade contractors in {loc.name}.</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {b2bServices.map(svc => (
+                <Link
+                  key={svc.slug}
+                  to={`/hire-workers/${svc.slug}/${loc.slug}`}
+                  className="group bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 transition-colors mb-1">{svc.name}</h3>
+                    <p className="text-xs text-slate-500 line-clamp-1">Bulk manpower & contract labor</p>
+                  </div>
+                  <div className="mt-3 text-xs font-semibold text-blue-600 flex items-center gap-1 group-hover:gap-1.5 transition-all">
+                    Deploy in {loc.name} <ArrowRight className="w-3 h-3" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Network Building Section */}
         <section className="mb-16 bg-emerald-600 text-white rounded-2xl p-8 md:p-12">

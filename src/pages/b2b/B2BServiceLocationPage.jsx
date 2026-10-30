@@ -109,13 +109,42 @@ export default function B2BServiceLocationPage() {
             </ul>
           </div>
           <div>
-             <h3 className="text-xl font-bold text-slate-900 mb-4">Local Context ({location.name})</h3>
-             <div className="bg-slate-100 p-6 rounded-xl border border-dashed border-slate-300">
-               <p className="text-slate-500 italic mb-4">
-                 Future integration: Local workforce availability, compliance requirements, and specific industrial zones for {location.name} will be populated dynamically by the backend.
-               </p>
+             <h3 className="text-xl font-bold text-slate-900 mb-4">Operational Standards in {location.name}</h3>
+             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+               <div className="flex items-start gap-3">
+                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 font-bold text-sm">✓</div>
+                 <div>
+                   <h4 className="font-bold text-slate-900 text-sm">Aadhaar &amp; e-Shram Verified Crew</h4>
+                   <p className="text-xs text-slate-500">Every worker assigned to commercial sites in {location.name} undergoes government ID verification and safety screening.</p>
+                 </div>
+               </div>
+               <div className="flex items-start gap-3">
+                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-bold text-sm">✓</div>
+                 <div>
+                   <h4 className="font-bold text-slate-900 text-sm">Daily Attendance &amp; OTP Verification</h4>
+                   <p className="text-xs text-slate-500">Real-time check-in and task closure confirmation for transparent shift rosters and audit-ready attendance logs.</p>
+                 </div>
+               </div>
+               <div className="flex items-start gap-3">
+                 <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-bold text-sm">✓</div>
+                 <div>
+                   <h4 className="font-bold text-slate-900 text-sm">Rapid Shift Replacement</h4>
+                   <p className="text-xs text-slate-500">Backup staff available across {location.state || 'India'} to safeguard against absenteeism and site volume surges.</p>
+                 </div>
+               </div>
              </div>
           </div>
+        </div>
+
+        {/* Peer Location Mesh */}
+        <div className="mt-12 pt-8 border-t border-slate-200">
+          <RelatedLocations
+            basePath={`/hire-workers/${service.slug}`}
+            max={8}
+            suffix={service.name}
+            currentSlug={location.slug}
+            title={`Other ${service.name} Manpower Hubs in ${location.state || 'India'}`}
+          />
         </div>
       </main>
     </div>

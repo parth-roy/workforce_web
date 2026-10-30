@@ -6,6 +6,7 @@ import { ServicesHubSEO } from '../../seo/pageMetadata';
 import { mockServices } from '../../data/mock/services';
 import { Zap, Wrench, Package, Sparkles, Truck, Users, ChevronDown, ChevronUp, ArrowRight, Search , Phone } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
+import { RelatedLocations } from '../../components/seo/RelatedLinks';
 
 const ICON_MAP = { Zap, Wrench, Package, Sparkles, Truck, Users };
 
@@ -209,6 +210,16 @@ export default function ServicesHubPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Popular Service Locations */}
+        <section className="mb-16">
+          <RelatedLocations
+            basePath="/services/electrician"
+            max={14}
+            suffix="Electricians"
+            title="Popular Home Service Operational Hubs"
+          />
         </section>
 
         {/* CTA */}

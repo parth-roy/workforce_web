@@ -192,6 +192,16 @@ export default function B2BServicePage() {
             </div>
 
           </div>
+
+          {/* Operational Cities for this B2B Service */}
+          <div className="mt-12 pt-8 border-t border-slate-200">
+            <RelatedLocations
+              basePath={`/hire-workers/${service.slug}`}
+              max={12}
+              suffix={service.name}
+              title={`Deploy ${service.name} in Top Operational Cities`}
+            />
+          </div>
         </main>
       </div>
     </>

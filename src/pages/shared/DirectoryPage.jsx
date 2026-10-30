@@ -155,17 +155,50 @@ export default function DirectoryPage() {
                       </span>
                     </div>
 
-                    {/* City List */}
-                    <ul className="p-3.5 divide-y divide-slate-50">
+                    {/* City List with Multi-Funnel Crawl Paths */}
+                    <ul className="p-3.5 divide-y divide-slate-100">
                       {stateCities.map((city) => (
-                        <li key={city.slug}>
+                        <li key={city.slug} className="py-2.5 px-2 rounded-xl hover:bg-slate-50/80 transition-colors">
                           <Link
                             to={`/jobs/location/${city.slug}`}
-                            className="flex items-center justify-between py-2 px-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50/50 text-[13px] font-medium transition-all group/link"
+                            className="flex items-center justify-between text-slate-800 hover:text-emerald-700 text-sm font-semibold transition-colors group/link mb-1.5"
                           >
                             <span className="truncate">{city.name}</span>
-                            <ChevronRight size={13} className="text-slate-300 group-hover/link:text-emerald-500 transition-colors shrink-0 ml-1" />
+                            <ChevronRight size={14} className="text-slate-300 group-hover/link:text-emerald-600 transition-colors shrink-0 ml-1" />
                           </Link>
+                          {/* Deep Multi-Funnel Sub-links (Eradicates Orphan Pages) */}
+                          <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <Link
+                              to={`/services/electrician/${city.slug}`}
+                              className="text-slate-500 hover:text-emerald-600 bg-slate-100 hover:bg-emerald-50 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              Electrician
+                            </Link>
+                            <Link
+                              to={`/services/plumber/${city.slug}`}
+                              className="text-slate-500 hover:text-emerald-600 bg-slate-100 hover:bg-emerald-50 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              Plumber
+                            </Link>
+                            <Link
+                              to={`/services/cleaning/${city.slug}`}
+                              className="text-slate-500 hover:text-emerald-600 bg-slate-100 hover:bg-emerald-50 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              Cleaning
+                            </Link>
+                            <Link
+                              to={`/hire-workers/general-helper/${city.slug}`}
+                              className="text-slate-500 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              Helper
+                            </Link>
+                            <Link
+                              to={`/hire-workers/loading-unloading/${city.slug}`}
+                              className="text-slate-500 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              Labor
+                            </Link>
+                          </div>
                         </li>
                       ))}
                     </ul>

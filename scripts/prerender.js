@@ -50,7 +50,8 @@ async function ensureDir(dir) {
 async function writeRoute(url) {
   try {
     const { html: appHtml, head: headTags } = render(url);
-    const finalHtml = templateHtml
+    const cleanTemplate = templateHtml.replace(/<title>.*?<\/title>/gi, '');
+    const finalHtml = cleanTemplate
       .replace('</head>', `${headTags}</head>`)
       .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
@@ -94,7 +95,8 @@ async function runPrerender() {
   // Generate real 404.html
   try {
     const { html: appHtml, head: headTags } = render('/404-not-found');
-    const final404 = templateHtml
+    const cleanTemplate = templateHtml.replace(/<title>.*?<\/title>/gi, '');
+    const final404 = cleanTemplate
       .replace('</head>', `${headTags}</head>`)
       .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
     await fs.writeFile(path.resolve(dist, '404.html'), final404, 'utf-8');

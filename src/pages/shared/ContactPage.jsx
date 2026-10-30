@@ -48,8 +48,8 @@ export default function ContactPage() {
       <SEO
         title="Contact Metro Mitra - Get In Touch"
         description="Contact Metro Mitra for help with hiring workers, finding jobs, or enterprise workforce enquiries."
-        canonical="https://metromitra.in/contact"
-        robots="index, follow"
+        canonicalPath="/contact"
+        indexable={true}
       />
 
       {/* Hero */}

@@ -900,7 +900,7 @@ export default function DirectContactPage() {
       }),
       `-------------------------------------------------------------`,
       `Direct Call & WhatsApp Enabled. Zero Middleman Fees.`,
-      `Support: admin@metromitra.com | +91 62919 57542 | metromitra.in`,
+      `Support: admin@metromitra.com | +91 62919 57542 | metromitra.com`,
       `=============================================================`,
     ].join('\n');
 
@@ -925,7 +925,7 @@ export default function DirectContactPage() {
         const num = unmaskedNumbers[w.id] || w.phoneRaw || '9831488999';
         return `*${idx + 1}. ${w.name}* (${w.jobType})\n📞 Phone: ${num}\n📍 ${w.area} | Rate: ${w.price}\n`;
       }),
-      `Direct Contact via metromitra.in`,
+      `Direct Contact via metromitra.com`,
     ].join('\n');
 
     const waUrl = `https://wa.me/?text=${encodeURIComponent(lines)}`;

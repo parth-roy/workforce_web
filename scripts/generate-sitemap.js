@@ -57,7 +57,7 @@ function generateSitemaps() {
   });
   mockRoles.forEach(r => buckets.jobs.push(toUrl(`/jobs/${r.slug}`)));
   mockJobs.forEach(job => {
-    if (job.status === 'active' || job.status === 'ACTIVE' || !job.isDemo) {
+    if ((job.status === 'active' || job.status === 'ACTIVE') && !job.isDemo && job.indexabilityStatus !== 'noindex') {
       buckets.jobs.push(toUrl(`/jobs/detail/${job.id}`));
     }
   });
@@ -88,6 +88,7 @@ function generateSitemaps() {
     });
   });
 
+  const today = new Date().toISOString().split('T')[0];
   const CHUNK_SIZE = 5000;
   const sitemapFiles = [];
   let grandTotal = 0;
@@ -105,7 +106,7 @@ function generateSitemaps() {
       let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
       xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
       chunk.forEach(u => {
-        xml += `  <url>\n    <loc>${u}</loc>\n  </url>\n`;
+        xml += `  <url>\n    <loc>${u}</loc>\n    <lastmod>${today}</lastmod>\n  </url>\n`;
       });
       xml += `</urlset>`;
 
@@ -120,12 +121,24 @@ function generateSitemaps() {
   let indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   indexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   sitemapFiles.forEach(file => {
-    indexXml += `  <sitemap>\n    <loc>${BASE_URL}/${file}</loc>\n  </sitemap>\n`;
+    indexXml += `  <sitemap>\n    <loc>${BASE_URL}/${file}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
   });
   indexXml += `</sitemapindex>`;
 
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), indexXml);
   console.log(`\n🎉 sitemap.xml generated with ${sitemapFiles.length} segmented sitemaps and ${grandTotal} total URLs!\n`);
+
+  // Sync to dist/ if it exists so web server and validation gate find them immediately
+  const distDir = path.join(__dirname, '../dist');
+  if (fs.existsSync(distDir)) {
+    for (const file of [...sitemapFiles, 'sitemap.xml', 'robots.txt']) {
+      const srcFile = path.join(publicDir, file);
+      if (fs.existsSync(srcFile)) {
+        fs.copyFileSync(srcFile, path.join(distDir, file));
+      }
+    }
+    console.log(`✅ All sitemaps and robots.txt synced to dist/`);
+  }
 
   // Robots.txt
   const robotsTxt = `# METRO MITRA — Crawler & Generative Engine Policy

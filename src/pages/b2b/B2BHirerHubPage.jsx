@@ -9,6 +9,7 @@ import {
   ArrowRight, PhoneCall, Zap
 } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
+import { RelatedLocations } from '../../components/seo/RelatedLinks';
 
 export default function B2BHirerHubPage() {
   const { roles } = useWorkforce();
@@ -185,6 +186,16 @@ export default function B2BHirerHubPage() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Key Commercial & Industrial Hubs */}
+        <section className="py-8 px-4 max-w-5xl mx-auto">
+          <RelatedLocations
+            basePath="/hire-workers/loader-unloader"
+            max={14}
+            suffix="Crew Deployment"
+            title="Key Industrial & Commercial Hubs"
+          />
         </section>
 
         {/* Final CTA */}

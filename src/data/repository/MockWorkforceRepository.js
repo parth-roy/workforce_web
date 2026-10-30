@@ -25,13 +25,9 @@ export class MockWorkforceRepository extends WorkforceRepository {
       countryCode: 'IN',
       state: 'India',
       region: `${formattedName} Region`,
-      latitude: 20.5937,
-      longitude: 78.9629,
       schemaData: {
         addressLocality: formattedName,
         addressRegion: 'India',
-        postalCode: '100001',
-        geo: { lat: 20.5937, lng: 78.9629 }
       },
       localPricingConfig: { minimumFare: 250 },
       description: `Trusted on-demand home service technicians, daily wage labor, and verified gig workers in ${formattedName}.`,

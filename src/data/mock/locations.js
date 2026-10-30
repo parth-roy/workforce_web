@@ -2016,13 +2016,9 @@ function createDynamicLocation(item) {
     countryCode: 'IN',
     state: item.state,
     region: isSuburb ? `${item.metro} Metropolitan Suburb` : `${item.name} District`,
-    latitude: 20.5937,
-    longitude: 78.9629,
     schemaData: {
       addressLocality: item.name,
       addressRegion: item.state,
-      postalCode: '100001',
-      geo: { lat: 20.5937, lng: 78.9629 }
     },
     localPricingConfig: { minimumFare: 250 },
     description: `Trusted on-demand home service technicians, daily wage labor, and verified gig workers in ${item.name}, ${item.state}.`,

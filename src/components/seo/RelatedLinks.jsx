@@ -56,18 +56,55 @@ export function RelatedRoles({ max = 10, currentSlug, title = 'Explore Roles' })
 }
 
 export function RelatedLocations({ basePath = '/jobs/location', max = 10, suffix = 'Jobs', currentSlug, title = 'Explore Locations' }) {
-  const eligible = getEligibleLocations().slice(0, max);
-  const locs = eligible.length > 0 ? eligible : getNavigableLocations(currentSlug).slice(0, max);
+  const currentLoc = mockLocations.find(l => l.slug === currentSlug);
+  const eligible = mockLocations.filter(l => l.indexabilityStatus !== 'noindex' && l.slug !== currentSlug);
+
+  // Prefer same state first for geographical relevance
+  const sameState = currentLoc?.state
+    ? eligible.filter(l => l.state === currentLoc.state)
+    : [];
+  const otherState = eligible.filter(l => l.state !== currentLoc?.state);
+
+  // Deterministic rotation based on currentSlug hash so all 575 cities receive inbound internal link equity
+  let hash = 0;
+  if (currentSlug) {
+    for (let i = 0; i < currentSlug.length; i++) {
+      hash = (hash << 5) - hash + currentSlug.charCodeAt(i);
+      hash |= 0;
+    }
+  }
+  const offset = Math.abs(hash);
+
+  let locs = [];
+  if (sameState.length > 0) {
+    const sOffset = offset % sameState.length;
+    const rotatedState = [...sameState.slice(sOffset), ...sameState.slice(0, sOffset)];
+    locs.push(...rotatedState.slice(0, max));
+  }
+
+  if (locs.length < max && otherState.length > 0) {
+    const oOffset = offset % otherState.length;
+    const rotatedOther = [...otherState.slice(oOffset), ...otherState.slice(0, oOffset)];
+    locs.push(...rotatedOther.slice(0, max - locs.length));
+  }
+
+  if (locs.length === 0) locs = eligible.slice(0, max);
   if (locs.length === 0) return null;
+
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+        <Link to="/directory" className="text-sm font-semibold text-emerald-600 hover:underline">
+          View All 500+ Cities →
+        </Link>
+      </div>
       <ul className="flex flex-wrap gap-2">
         {locs.map(loc => (
-          <li key={loc.id}>
+          <li key={loc.id || loc.slug}>
             <Link
               to={`${basePath}/${loc.slug}`}
-              className="text-slate-700 hover:text-slate-900 hover:underline border border-slate-200 bg-slate-50 rounded-lg px-3 py-1.5 block text-sm font-medium transition-colors"
+              className="text-slate-700 hover:text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/50 border border-slate-200 bg-white rounded-lg px-3 py-1.5 block text-sm font-medium transition-colors"
             >
               {suffix} in {loc.name}
             </Link>

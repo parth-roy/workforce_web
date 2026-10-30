@@ -10,8 +10,8 @@ export default function AboutPage() {
       <SEO
         title="About Metro Mitra — Gig Workforce Platform"
         description="Learn about Metro Mitra, our mission to connect skilled workers with employers across West Bengal, and how our platform works."
-        canonical="https://metromitra.in/about"
-        robots="index, follow"
+        canonicalPath="/about"
+        indexable={true}
       />
 
       {/* Hero */}

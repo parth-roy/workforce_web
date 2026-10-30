@@ -58,9 +58,11 @@ export default function SEO({
   description,
   keywords = 'full-stack gig economy platform, Metro Mitra, workforce',
   schemas = [],
+  canonical,
   canonicalPath,
+  robots,
   ogImage = '/og-default.jpg',
-  indexable = false,
+  indexable,
   type = 'website',
   audience,
   searchIntent,
@@ -69,8 +71,15 @@ export default function SEO({
   const location = useLocation()
 
   // ── Canonical URL ──────────────────────────────────────────────────────────
-  const currentPath = canonicalPath !== undefined ? canonicalPath : location.pathname
-  const cleanPath = currentPath === '/' ? '' : currentPath.replace(/\/$/, '')
+  let rawPath = canonicalPath || canonical || location.pathname
+  if (typeof rawPath === 'string' && rawPath.startsWith('http')) {
+    try {
+      rawPath = new URL(rawPath).pathname
+    } catch {
+      // Keep rawPath if URL parse fails
+    }
+  }
+  const cleanPath = typeof rawPath === 'string' ? (rawPath === '/' ? '' : rawPath.replace(/\/$/, '')) : ''
   const canonicalUrl = `${SITE_URL}${cleanPath}`
 
   // ── Title ──────────────────────────────────────────────────────────────────
@@ -90,12 +99,17 @@ export default function SEO({
     : `${SITE_URL}${ogImage}`
 
   // ── Robots ─────────────────────────────────────────────────────────────────
-  // indexable=false covers both "not-yet-eligible" and "noindex" states.
-  // The distinction between those two states is held in the data layer
-  // (indexabilityStatus) and in pageMetadata.js, not here.
-  const robotsContent = indexable
+  // Default to indexable=true unless explicitly false or robots contains 'noindex'
+  let isIndexable = true
+  if (indexable !== undefined) {
+    isIndexable = Boolean(indexable)
+  } else if (robots) {
+    isIndexable = !robots.toLowerCase().includes('noindex')
+  }
+
+  const robotsContent = robots || (isIndexable
     ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
-    : 'noindex, nofollow'
+    : 'noindex, nofollow')
 
   return (
     <Helmet>
@@ -109,7 +123,7 @@ export default function SEO({
 
       {/* ── Robots ── */}
       <meta name="robots" content={robotsContent} />
-      <meta name="googlebot" content={indexable ? 'index, follow' : 'noindex, nofollow'} />
+      <meta name="googlebot" content={isIndexable ? 'index, follow' : 'noindex, nofollow'} />
 
       {/* ── Application-defined metadata ─────────────────────────────────────
           These are internal content classification fields. They are NOT

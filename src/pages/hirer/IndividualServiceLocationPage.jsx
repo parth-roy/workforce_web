@@ -10,6 +10,7 @@ import ServiceBookingWizard from '../../components/hirer/ServiceBookingWizard';
 import { RelatedServices } from '../../components/seo/RelatedLinks';
 import { ArrowRight, X } from 'lucide-react';
 import DirectContactBanner from '../../components/common/DirectContactBanner';
+import { getRoleSlugForService } from '../../utils/slugMapper';
 
 export default function IndividualServiceLocationPage() {
   const navigate = useNavigate();
@@ -234,7 +235,7 @@ export default function IndividualServiceLocationPage() {
             <Link to={`/services/${svc.slug}`} className="text-emerald-600 hover:underline font-semibold text-sm">
               ← All {svc.name} Hubs
             </Link>
-            <Link to={`/jobs/${svc.slug}/${loc.slug}`} className="text-blue-600 hover:underline font-semibold text-sm">
+            <Link to={`/jobs/${getRoleSlugForService(svc.slug)}/${loc.slug}`} className="text-blue-600 hover:underline font-semibold text-sm">
               Daily {svc.name} Jobs in {loc.name} →
             </Link>
           </div>

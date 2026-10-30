@@ -44,7 +44,7 @@ function addRoute(r) {
 // 1. Role Hubs & Specific Public Jobs
 mockRoles.forEach(r => addRoute(`/jobs/${r.slug}`));
 mockJobs.forEach(job => {
-  if (job.status === 'active' || job.status === 'ACTIVE' || !job.isDemo) {
+  if ((job.status === 'active' || job.status === 'ACTIVE') && !job.isDemo && job.indexabilityStatus !== 'noindex') {
     addRoute(`/jobs/detail/${job.id}`);
   }
 });

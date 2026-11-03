@@ -14,6 +14,11 @@ export default function UCServiceItem({ item, onViewDetails, onAddClick }) {
 
   const handleAdd = (e) => {
     e.stopPropagation();
+    const alreadySeen = typeof window !== 'undefined' && sessionStorage.getItem('metro_mitra_intercept_dismissed');
+    if (!alreadySeen) {
+      window.dispatchEvent(new CustomEvent('open-workforce-modal', { detail: { track: 'customer' } }));
+      sessionStorage.setItem('metro_mitra_intercept_dismissed', 'true');
+    }
     if (hasVariants) {
       onAddClick(item);
     } else {

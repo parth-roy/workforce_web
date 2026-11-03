@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, ChevronRight, PhoneCall, LogIn, ShoppingCart, Package, ArrowRight, Briefcase, User, Shield, MapPin, LogOut, CheckCircle2 } from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronRight, PhoneCall, LogIn, ShoppingCart, Package, ArrowRight, Briefcase, User, Shield, MapPin, LogOut, CheckCircle2, Smartphone, Download } from 'lucide-react';
 import { useUCCart } from '../../context/UCCartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
@@ -64,6 +64,21 @@ export default function Header() {
     if (clearAllData) clearAllData();
     logout();
     navigate('/', { replace: true });
+  };
+
+  const handleGetAJobClick = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const alreadySeen = typeof window !== 'undefined' && sessionStorage.getItem('metro_mitra_worker_intercept_dismissed');
+    if (!alreadySeen) {
+      window.dispatchEvent(new CustomEvent('open-workforce-modal', { detail: { track: 'worker' } }));
+      sessionStorage.setItem('metro_mitra_worker_intercept_dismissed', 'true');
+      return;
+    }
+    if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
+      navigate('/worker/dashboard');
+    } else {
+      navigate('/get-a-job');
+    }
   };
 
   useEffect(() => {
@@ -310,13 +325,7 @@ export default function Header() {
               {/* GET A JOB NOW — Clean Solid CTA */}
               <button
                 type="button"
-                onClick={() => {
-                  if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
-                    navigate('/worker/dashboard');
-                  } else {
-                    navigate('/get-a-job');
-                  }
-                }}
+                onClick={handleGetAJobClick}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black whitespace-nowrap cursor-pointer active:scale-95 transition-colors"
                 aria-label="Get a job now on Metro Mitra"
               >
@@ -331,6 +340,19 @@ export default function Header() {
               >
                 Post a Job
               </Link>
+
+              {/* Download App CTA */}
+              <button
+                type="button"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('open-workforce-modal', { detail: { track: 'customer' } }));
+                }}
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-emerald-300 text-xs font-bold text-slate-700 hover:text-emerald-700 transition-colors shadow-2xs cursor-pointer"
+                title="Download Metro Mitra App"
+              >
+                <Smartphone size={13} className="text-emerald-600" />
+                <span>Download App</span>
+              </button>
 
               {user && (
                 <Link to="/user/orders" className="relative p-1.5 text-slate-600 hover:text-emerald-600 transition-colors" title="My Bookings">
@@ -604,17 +626,28 @@ export default function Header() {
             <div className="px-2 mb-2">
               <button
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
                   setIsOpen(false);
-                  if (user && (isWorker || user?.role === 'WORKER' || role === 'WORKER')) {
-                    navigate('/worker/dashboard');
-                  } else {
-                    navigate('/get-a-job');
-                  }
+                  handleGetAJobClick(e);
                 }}
                 className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-3 rounded-xl active:scale-98 transition-colors cursor-pointer"
               >
                 Get a Job Now
+              </button>
+            </div>
+
+            {/* Mobile Download App CTA */}
+            <div className="px-2 mb-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  window.dispatchEvent(new CustomEvent('open-workforce-modal', { detail: { track: 'customer' } }));
+                }}
+                className="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-sm py-3 rounded-xl active:scale-98 transition-colors cursor-pointer"
+              >
+                <Smartphone size={16} className="text-emerald-400" />
+                <span>Download Metro Mitra App</span>
               </button>
             </div>
 

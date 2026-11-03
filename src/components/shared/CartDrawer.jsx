@@ -12,6 +12,12 @@ export default function CartDrawer() {
   if (!isCartOpen) return null;
 
   const handleCheckout = () => {
+    const alreadySeen = typeof window !== 'undefined' && sessionStorage.getItem('metro_mitra_intercept_dismissed');
+    if (!alreadySeen) {
+      window.dispatchEvent(new CustomEvent('open-workforce-modal', { detail: { track: 'customer' } }));
+      sessionStorage.setItem('metro_mitra_intercept_dismissed', 'true');
+      return;
+    }
     setIsCartOpen(false);
     if (!user) {
       openAuthModal('CUSTOMER');

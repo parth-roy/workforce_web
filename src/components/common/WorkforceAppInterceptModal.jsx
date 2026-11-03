@@ -30,11 +30,11 @@ export default function WorkforceAppInterceptModal({
   // Generate crisp QR code pointing to unified Metro Mitra app
   useEffect(() => {
     QRCode.toDataURL(APP_DOWNLOAD_URL, {
-      width: 160,
-      margin: 1,
+      width: 400,
+      margin: 2,
       color: { dark: '#0f172a', light: '#ffffff' },
       errorCorrectionLevel: 'M'
-    }).then(setQrDataUrl).catch(() => {});
+    }).then(setQrDataUrl).catch(console.error);
   }, []);
 
   if (!isOpen) return null;
@@ -99,27 +99,31 @@ export default function WorkforceAppInterceptModal({
             Book home technicians or find high-paying daily jobs with instant bank payouts on the official app.
           </p>
 
-          {/* Desktop QR Code (Hidden on mobile for ultra compact height) */}
-          <div className="hidden sm:flex flex-col items-center bg-slate-50 border border-slate-200 rounded-xl p-2.5 mb-3 w-full max-w-[190px]">
+          {/* Desktop QR Code (Big, Crisp, High-Resolution) */}
+          <div className="hidden sm:flex flex-col items-center justify-center bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 my-2 w-full max-w-[270px] shadow-sm">
             {activeQr ? (
               <img 
                 src={activeQr} 
                 alt="Metro Mitra App QR Code" 
-                className="w-24 h-24 object-contain rounded-lg bg-white p-1 border border-slate-200"
+                className="w-48 h-48 sm:w-52 sm:h-52 object-contain rounded-xl bg-white p-2 border border-slate-200 shadow-xs"
               />
-            ) : null}
-            <span className="text-[10px] text-slate-500 font-semibold mt-1 flex items-center gap-1">
-              <Smartphone size={10} className="text-slate-400" />
-              Scan to install on phone
-            </span>
+            ) : (
+              <div className="w-48 h-48 sm:w-52 sm:h-52 bg-white border border-slate-200 rounded-xl flex items-center justify-center animate-pulse">
+                <span className="text-xs text-slate-400 font-medium">Loading QR...</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1.5 mt-2 text-xs text-slate-700 font-bold">
+              <Smartphone size={13} className="text-emerald-500" />
+              <span>Scan with phone camera to install</span>
+            </div>
           </div>
 
-          {/* Google Play Install Button (Full Width, 1-Tap on Mobile & Desktop) */}
+          {/* Google Play Install Button (Visible on both Web & Mobile, Pure White Mode) */}
           <a
             href={APP_DOWNLOAD_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 rounded-xl text-white flex items-center justify-center gap-2.5 bg-slate-950 hover:bg-slate-900 active:scale-98 transition-all shadow-md cursor-pointer group"
+            className="w-full py-2.5 px-4 rounded-xl text-slate-900 flex items-center justify-center gap-3 bg-white hover:bg-slate-50 active:bg-slate-100 border border-slate-300 hover:border-slate-400 active:scale-98 transition-all shadow-xs hover:shadow-sm cursor-pointer group mt-1.5"
             onClick={onClose}
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -129,10 +133,10 @@ export default function WorkforceAppInterceptModal({
               <path d="M13.792 12L3.609 22.186c.586.272 1.658.05 2.731-.564l10.815-6.259-3.363-3.363z" fill="#FF3A44"/>
             </svg>
             <div className="flex flex-col text-left leading-none whitespace-nowrap">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-slate-300">GET IT ON</span>
-              <span className="text-sm font-black text-white tracking-tight mt-0.5">Google Play</span>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-600">GET IT ON</span>
+              <span className="text-sm font-black text-slate-900 tracking-tight mt-0.5">Google Play</span>
             </div>
-            <ExternalLink size={14} className="ml-auto text-slate-400 group-hover:text-white transition-colors shrink-0" />
+            <ExternalLink size={14} className="ml-auto text-slate-400 group-hover:text-slate-700 transition-colors shrink-0" />
           </a>
 
           {/* Footer Escape Hatch & Cross-Promotion */}

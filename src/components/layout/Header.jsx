@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
 import CitySelectorModal from '../common/CitySelectorModal';
 import { useNavigate } from 'react-router-dom';
+import { lockScroll, unlockScroll } from '../../utils/scrollLock';
 
 export default function Header() {
   const { cart, orders, setIsCartOpen, clearAllData } = useUCCart();
@@ -54,6 +55,24 @@ export default function Header() {
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ], [currentCity]);
+
+  // Lock background body scroll when mobile navigation drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      lockScroll();
+    } else {
+      unlockScroll();
+    }
+    return () => {
+      if (isOpen) {
+        unlockScroll();
+      }
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const handleCheckoutClick = (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -452,9 +471,19 @@ export default function Header() {
           </div>
         </div>
 
-      {/* Mobile Menu Accordion */}
+      {/* Mobile Menu Accordion - Isolated Scroll Container */}
       {!isGetAJob && (
-        <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[85vh] overflow-y-auto border-t border-slate-200 bg-white shadow-2xl" : "max-h-0 pointer-events-none"}`}>
+        <div 
+          className={`lg:hidden fixed top-[56px] inset-x-0 bottom-0 bg-white border-t border-slate-200 shadow-2xl overflow-y-auto overscroll-contain transition-all duration-300 ease-in-out ${
+            isOpen ? "opacity-100 pointer-events-auto translate-y-0 visible" : "opacity-0 pointer-events-none -translate-y-2 invisible"
+          }`}
+          style={{
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
+            overscrollBehaviorY: "contain",
+            touchAction: "pan-y"
+          }}
+        >
         {isWorkerDashboard ? (
           <div className="px-4 pt-3 pb-8 space-y-2">
             {/* Worker Header Card (Protected Profile Link) */}
